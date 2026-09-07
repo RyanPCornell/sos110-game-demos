@@ -510,6 +510,12 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
    never moves in lockstep, plus a contact shadow that grounds each one */
 @keyframes ev-bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(-3.5px)}}
 .ev-unit{animation:ev-bob 2.6s ease-in-out infinite; transform-box:view-box;}
+/* an animal that survives keeps its element and just changes where it stands;
+   one that appears or is eaten fades rather than popping */
+.ev-cell{opacity:0; transition:opacity .55s ease, transform 1.1s cubic-bezier(.4,0,.2,1);}
+.ev-cell.in{opacity:1;}
+.ev-cell.out{opacity:0;}
+@media(prefers-reduced-motion:reduce){ .ev-cell{transition:none;} }
 .ev-shadow{fill:rgba(28,42,34,.20);}
 .ev-mine-ring{fill:none; stroke:#fff; stroke-width:3; opacity:.75;}
 @keyframes ev-flap{0%,100%{transform:scaleY(1)} 50%{transform:scaleY(.82)}}
@@ -704,6 +710,13 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .fm-life{stroke:#c3b79b; stroke-width:2.4; fill:none; stroke-linecap:round;}
 .fm-life.dead{stroke:#d8c9c7; stroke-dasharray:5 5;}
 .fm-tip{fill:#a89a7c;}
+.fm-dot{stroke:rgba(30,24,12,.42); stroke-width:1.6; cursor:pointer;}
+.fm-dot.dead{stroke:#cbbfae; stroke-dasharray:3 3;}
+.fm-node:hover .fm-dot{stroke:var(--accent); stroke-width:2.6;}
+.fm-ring{fill:none; stroke:var(--accent); stroke-width:2.6;}
+.fm-sidetag{font-family:'Inter',sans-serif; font-size:10px; font-weight:800; fill:#fffdf8;}
+.fm-keybox{fill:#fffdf6; stroke:rgba(120,100,60,.3);}
+.fm-keylab{font-family:'Inter',sans-serif; font-size:11.5px; fill:#7a7260;}
 /* the after-the-barrier figure */
 .sp-rib{stroke:rgba(120,100,60,.3); stroke-width:1.2;}
 .sp-rib.gone{fill:#ded8cc; stroke:rgba(120,100,60,.22);}
@@ -754,6 +767,23 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .ev-wm{display:block; width:46rem; max-width:100%; height:auto; margin:.2rem 0 .05rem;}
 .ev-slide .cg-sub{color:#7a7260;}
 .ev-slide .cg-clock{color:#8a6a2f;}
+/* the play-again ballot */
+.ev-again{position:absolute; inset:0; z-index:12; display:flex; align-items:center;
+  justify-content:center; background:rgba(40,34,22,.55); backdrop-filter:blur(2px);}
+.ev-again[hidden]{display:none !important;}
+.ev-again-card{background:#fffdf6; border:1px solid rgba(120,100,60,.36); border-radius:16px;
+  padding:1.1rem 1.5rem 1.2rem; text-align:center; max-width:26rem;
+  box-shadow:0 18px 50px rgba(40,30,10,.3);}
+.ev-again-eyebrow{font-size:.6rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase;
+  color:#8a6a2f;}
+.ev-again-title{font-family:'Merriweather',serif; font-weight:900; color:#3b3222;
+  font-size:clamp(1.2rem,2.4vw,1.7rem); margin:.2rem 0 .3rem;}
+.ev-again-sub{font-size:clamp(.72rem,1.14vw,.86rem); color:#7a7260; line-height:1.4;}
+.ev-again-clock{font-family:'Merriweather',serif; font-weight:900; color:#8a6a2f;
+  font-variant-numeric:tabular-nums; font-size:clamp(1.4rem,3vw,2.1rem); line-height:1.1; margin:.35rem 0 .5rem;}
+.ev-again-btns{display:flex; gap:.5rem; justify-content:center; flex-wrap:wrap;}
+.ev-again-btns .cg-btn[disabled]{opacity:.45; cursor:default;}
+.ev-again-tally{margin-top:.55rem; font-size:clamp(.66rem,1.02vw,.78rem); color:#8a8069;}
 .ev-slide .cg-phase{color:#8a8069;}
 .ev-bandbar{display:flex; align-items:center; gap:.35rem; margin-bottom:.3rem;}
 .ev-bandbar[hidden]{display:none !important;}
@@ -920,8 +950,23 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
       <button class="cg-btn" type="button" data-step hidden>Next generation &#9654;</button>
       <button class="cg-btn go" type="button" data-split hidden>Drop the barrier &#9654;</button>
       <button class="cg-btn ghost" type="button" data-skip hidden>Skip ahead &#9654;</button>
+      <button class="cg-btn go" type="button" data-again hidden>Play again?</button>
       <button class="cg-btn ghost" type="button" data-reset>Reset</button>
       <span class="cg-hoststatus" data-hoststatus></span>
+    </div>
+
+    <div class="ev-again" data-againbox hidden>
+      <div class="ev-again-card">
+        <div class="ev-again-eyebrow">The instructor is asking</div>
+        <div class="ev-again-title">Play again?</div>
+        <div class="ev-again-sub">A new world will be drawn and you will build a new organism.</div>
+        <div class="ev-again-clock"><span data-againclock>30</span>s</div>
+        <div class="ev-again-btns">
+          <button class="cg-btn go big" type="button" data-againyes>Yes, play again</button>
+          <button class="cg-btn ghost" type="button" data-againno>No, we are done</button>
+        </div>
+        <div class="ev-again-tally" data-againtally></div>
+      </div>
     </div>
 
     <div class="ev-reveal" data-reveal hidden>
@@ -1040,9 +1085,9 @@ var SPECIES=[
  {k:'thornback', n:'Thornback', tag:'spiny grazer',
   foods:['bristlegrass','stonemoss','thornfruit'],
   innate:{pred:0.16, food:-0.08}, blurb:'Armoured and slow. Hard to eat, hard to feed.'},
- {k:'glimmerfin', n:'Glimmerfin', tag:'amphibious swimmer',
-  foods:['reedshrimp','siltalgae','driftworm'],
-  innate:{wet:0.22, arid:-0.26}, blurb:'Thrives where it is wet. Strands where it is not.'},
+ {k:'fernstalker', n:'Fernstalker', tag:'long-legged browser',
+  foods:['fernshoot','dewpod','marshcress'],
+  innate:{wet:0.22, arid:-0.26}, blurb:'Browses the damp shade. Finds nothing on dry ground.'},
  {k:'duskwing', n:'Duskwing', tag:'gliding forager',
   foods:['nightbloom','wingseed','huskbeetle'],
   innate:{pred:0.20, cold:-0.16}, blurb:'Escapes almost anything. Loses heat doing it.'},
@@ -1056,7 +1101,7 @@ var SPECIES=[
 var SPBY={}; SPECIES.forEach(function(s){ SPBY[s.k]=s; });
 var ALLFOOD=[]; SPECIES.forEach(function(s){ ALLFOOD=ALLFOOD.concat(s.foods); });
 var FOODNAME={bristlegrass:'Bristlegrass',stonemoss:'Stonemoss',thornfruit:'Thornfruit',
-  reedshrimp:'Reed shrimp',siltalgae:'Silt algae',driftworm:'Driftworm',
+  fernshoot:'Fern shoots',dewpod:'Dewpods',marshcress:'Marsh cress',
   nightbloom:'Nightbloom nectar',wingseed:'Wingseed',huskbeetle:'Husk beetle',
   taproot:'Taproot',grubmass:'Grubmass',seedcache:'Seed cache',
   clifflichen:'Cliff lichen',sporecap:'Sporecap',chalksnail:'Chalk snail'};
@@ -1287,14 +1332,18 @@ function seedFromSnap(snap, dz){
 /* Budding has to be judged against a lineage's fair share of the world, not an
    absolute head-count: with a fixed threshold one split left both halves too
    small to ever split again, so almost nobody got a tree. */
-var SPLIT_P=0.34, MAXVAR=6;
+/* The tree is only worth drawing if there is something in it, so a lineage
+   throws off new branches readily and can carry a lot of them at once. Ten
+   generations then produce a real pedigree — colours drifting apart, some
+   dying out, one or two taking over — instead of two or three twigs. */
+var SPLIT_P=0.42, MAXVAR=12;
 var REFUGE=3.2, REFUGE_FIT=0.45;
 function runSim(st, e, gens, noDrift){
   var keys=Object.keys(st);
   if(!keys.length) return [];
   var CAP=capFor(keys.length);
   var opt=optimum(e), H2=0.34, hist=[], sp=shockP(e);
-  var SPLIT_MIN=Math.max(7, 0.30*CAP/keys.length);
+  var SPLIT_MIN=Math.max(4, 0.16*CAP/keys.length);
   for(var g=1;g<=gens;g++){
     var shock = CG.rnd(GID+':'+gid()+':w'+e.w+':shock:'+g) < sp;
     var standing=0;
@@ -1490,17 +1539,30 @@ function critter(spk,hue,pat,sat,lit){
       +'<path d="M17 45q5-1 8 2" fill="none" stroke="'+deep+'" stroke-width="1.6" stroke-linecap="round"/>'
       +eye(21,49,2.3)
       +'<path d="M28 40q5-5 9-1" fill="'+dark+'" stroke="'+ink+'" stroke-width="1.5" stroke-linejoin="round"/>';
-  } else if(spk==='glimmerfin'){
-    shape='M16 45c0-12 14-20 31-20s31 8 31 20-14 20-31 20S16 57 16 45z';
-    art='<path d="M43 26l7-14 8 14z" fill="'+pale+'" stroke="'+deep+'" stroke-width="1.7" stroke-linejoin="round"/>'
-      +'<path d="M50 13v12M46 18l8 0" stroke="'+deep+'" stroke-width="1.1" opacity=".7"/>';
-    post='<path d="M78 45l19-15q-5 15 0 30z" fill="'+dark+'" stroke="'+ink+'" stroke-width="1.7" stroke-linejoin="round"/>'
-      +'<path d="M80 45l14-10M80 48l14 8" stroke="'+deep+'" stroke-width="1.2" opacity=".65"/>'
-      +'<path d="M36 62l-6 11 16-6zM60 62l6 11-16-6z" fill="'+pale+'" stroke="'+deep+'" stroke-width="1.4" stroke-linejoin="round"/>'
-      +'<path d="M27 33q-5 12 0 24" fill="none" stroke="'+deep+'" stroke-width="1.6" opacity=".6"/>'
-      +'<path d="M34 36q3 9 0 18M41 34q3 11 0 22" fill="none" stroke="'+deep+'" stroke-width="1.1" opacity=".35"/>'
-      +eye(24,41,2.6)
-      +'<path d="M17 50q6 3 11 1" fill="none" stroke="'+deep+'" stroke-width="1.5" stroke-linecap="round"/>';
+  } else if(spk==='fernstalker'){
+    /* Tall and light: a browser built to reach, with the whole leg, neck and
+       tail drawn behind the body so the silhouette hides every join. */
+    shape='M34 47C34 37 43 31 57 31c14 0 22 6 23 15c1 10-8 16-23 16C43 62 34 57 34 47z';
+    art='<g stroke="'+dark+'" stroke-linecap="round" stroke-linejoin="round" fill="none">'
+      +'<path d="M45 56l-5 12l3 11" stroke-width="4.6"/><path d="M72 56l5 12l-3 11" stroke-width="4.6"/></g>'
+      +'<g stroke="url(#gu'+id+')" stroke-linecap="round" fill="none">'
+      +'<path d="M40 54l-4 13" stroke-width="7"/><path d="M36 67l4 12" stroke-width="4.6"/>'
+      +'<path d="M77 54l5 13" stroke-width="7"/><path d="M82 67l-3 12" stroke-width="4.6"/></g>'
+      /* neck: wide at the chest, tapering into the skull */
+      +'<path d="M44 41C38 35 31 27 27 19l9-5c4 8 10 15 16 20z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="1.9" stroke-linejoin="round"/>'
+      /* head: a narrow browsing wedge with a soft muzzle */
+      +'<path d="M30 20c-7-5-16-4-19 2c-3 6 2 11 10 11c7 0 13-4 13-8c0-2-1-4-4-5z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="2" stroke-linejoin="round"/>'
+      /* ears sit ON the skull, short and splayed — long parallel ones read as a leaf */
+      +'<path d="M26 16c-2-5-1-8 2-10c0 4 1 7 3 9z" fill="'+pale+'" stroke="'+deep+'" stroke-width="1.4" stroke-linejoin="round"/>'
+      +'<path d="M30 16c2-4 6-6 10-5c-4 2-6 5-6 8z" fill="'+dark+'" stroke="'+deep+'" stroke-width="1.3" stroke-linejoin="round"/>';
+    post='<g stroke="'+ink+'" stroke-width="2.3" stroke-linecap="round">'
+      +'<path d="M39 79h6M75 79h6"/></g>'
+      +'<path d="M80 44c6-3 10-8 10-15" fill="none" stroke="'+dark+'" stroke-width="3.4" stroke-linecap="round"/>'
+      +'<path d="M90 29c3 2 4 6 2 9" fill="none" stroke="'+pale+'" stroke-width="3" stroke-linecap="round"/>'
+      +'<ellipse cx="10.5" cy="24" rx="3" ry="2.4" fill="'+deep+'"/>'
+      +'<path d="M14 29q6 2 11-1" fill="none" stroke="'+deep+'" stroke-width="1.4" stroke-linecap="round"/>'
+      +eye(21,23,2.5)
+      +'<path d="M44 40q13-4 24 1" fill="none" stroke="'+deep+'" stroke-width="1.3" opacity=".28"/>';
   } else if(spk==='duskwing'){
     shape='M38 45c0-9 5-15 12-15s12 6 12 15-5 16-12 16-12-7-12-16z';
     art='';
@@ -1543,32 +1605,44 @@ function critter(spk,hue,pat,sat,lit){
       +'<g stroke="'+deep+'" stroke-width="1.1" opacity=".3" stroke-linecap="round">'
       +'<path d="M42 33l3-4M52 30l3-4M62 30l3-4M72 33l3-4M81 39l4-3"/></g>';
   } else {
-    /* Same rule: the haunch is part of the body OUTLINE rather than an ellipse
-       laid over it, and the limbs, neck and tail all sit behind, so nothing
-       floats free of the animal. */
-    shape='M33 47C35 34 49 28 63 30c11 2 18 7 21 14c3 7 3 13 0 17c-4 5-14 7-28 5C40 63 32 57 33 47z';
-    art='<path d="M80 48c11-3 17-11 16-20" fill="none" stroke="'+dark+'" stroke-width="8" stroke-linecap="round"/>'
-      +'<path d="M88 40c6-4 9-10 8-16" fill="none" stroke="'+dark+'" stroke-width="4.6" stroke-linecap="round"/>'
-      +'<g stroke="'+dark+'" stroke-linecap="round" stroke-linejoin="round" fill="none">'
-      +'<path d="M54 55l-4 10l4 11" stroke-width="6"/><path d="M72 55l5 10l-3 11" stroke-width="6"/></g>'
+    /* The Craglin is the cliff animal, so it has to READ as one: a deep chest
+       and high withers falling away to a lower rump, a short thick neck rather
+       than a stick, horns that grow out of the skull instead of hovering over
+       it, and short legs with a real bend at the hock. Everything that joins
+       the body is still drawn behind it, so no seam shows. */
+    shape='M28 50C28 41 36 34 49 33c12-1 22 2 28 7c5 4 7 9 6 14c-1 8-11 13-24 13C43 67 29 60 28 50z';
+    art=
+      /* far legs first, in the shaded colour, so the near pair reads in front */
+      '<g stroke="'+dark+'" stroke-linecap="round" stroke-linejoin="round" fill="none">'
+      +'<path d="M42 60l-4 8l3 9" stroke-width="5.4"/><path d="M70 60l4 8l-2 9" stroke-width="5.4"/></g>'
       +'<g stroke="url(#gu'+id+')" stroke-linecap="round" fill="none">'
-      +'<path d="M45 54l-5 12" stroke-width="10"/><path d="M40 66l5 11" stroke-width="6"/>'
-      +'<path d="M78 53l6 12" stroke-width="10"/><path d="M84 65l-4 12" stroke-width="6"/></g>'
-      +'<path d="M44 42c-7-8-13-17-15-24l12-5c3 8 11 19 16 25z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="1.9" stroke-linejoin="round"/>'
-      +'<path d="M32 20c-8-8-20-7-25 0c-3 7 5 13 15 12c8-1 13-6 10-12z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="2"/>';
-    post='<circle cx="40" cy="66" r="2.6" fill="'+deep+'" opacity=".85"/>'
-      +'<circle cx="84" cy="65" r="2.6" fill="'+deep+'" opacity=".85"/>'
-      +'<g stroke="'+ink+'" stroke-width="2.5" stroke-linecap="round">'
-      +'<path d="M41 78h9M76 78h9"/><path d="M42 77l-3 4M50 77l3 4M77 77l-3 4M85 77l3 4"/></g>'
-      +'<g stroke="'+dark+'" stroke-width="2.1" stroke-linecap="round" opacity=".8">'
-      +'<path d="M50 77h7M70 77h7"/></g>'
-      +'<ellipse cx="7.6" cy="21.5" rx="3.2" ry="2.6" fill="'+deep+'"/>'
-      +'<path d="M11 27q7 2 12-2" fill="none" stroke="'+deep+'" stroke-width="1.5" stroke-linecap="round"/>'
-      +eye(19,21,2.6)
-      +'<path d="M25 12c-1-7 3-12 10-13c-5 5-6 10-5 16z" fill="'+pale+'" stroke="'+deep+'" stroke-width="1.5" stroke-linejoin="round"/>'
-      +'<path d="M31 13c1-6 6-10 12-10c-6 4-8 8-8 13z" fill="'+dark+'" stroke="'+deep+'" stroke-width="1.4" stroke-linejoin="round"/>'
-      +'<path d="M30 17q6-3 9 2" fill="'+dark+'" stroke="'+ink+'" stroke-width="1.4" stroke-linejoin="round"/>'
-      +'<path d="M44 42q13-4 24 1" fill="none" stroke="'+deep+'" stroke-width="1.3" opacity=".3"/>';
+      +'<path d="M37 57l-3 9" stroke-width="9"/><path d="M34 66l3 11" stroke-width="5.6"/>'
+      +'<path d="M78 56l4 10" stroke-width="9"/><path d="M82 66l-3 11" stroke-width="5.6"/></g>'
+      /* neck: broad where it leaves the chest, narrowing into the jaw */
+      /* a short, thick neck — the head of a climber sits close to its shoulder */
+      +'<path d="M46 40C41 36 37 31 34 25l9-4c2 6 6 11 10 14z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="2" stroke-linejoin="round"/>'
+      /* skull: a blunt wedge with a squared muzzle, not a ball */
+      +'<path d="M37 28c-4-5-12-6-17-3c-4 2-4 7 0 9c4 2 10 1 14-1c3-2 4-4 3-5z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="2" stroke-linejoin="round"/>'
+      /* Backswept spikes. Curved crescents closed into a ring and read as a
+         handle; a straight tapering triangle reads as horn immediately. */
+      +'<path d="M28 21l15-10l-7 14z" fill="'+dark+'" stroke="'+ink+'" stroke-width="1.5" stroke-linejoin="round"/>'
+      +'<path d="M33 19l15-9l-8 13z" fill="'+pale+'" stroke="'+deep+'" stroke-width="1.4" stroke-linejoin="round"/>';
+    post=
+      /* hooves: short and blunt, planted on the ground line */
+      '<g stroke="'+ink+'" stroke-width="3" stroke-linecap="round">'
+      +'<path d="M36 78h5M76 78h5"/></g>'
+      +'<g stroke="'+ink+'" stroke-width="2.4" stroke-linecap="round" opacity=".8">'
+      +'<path d="M40 77h4M71 77h4"/></g>'
+      /* a short tuft of a tail, held against the rump */
+      +'<path d="M86 48c6-1 9 3 8 8" fill="none" stroke="'+dark+'" stroke-width="5" stroke-linecap="round"/>'
+      +'<path d="M93 54c2 3 1 6-1 8" fill="none" stroke="'+deep+'" stroke-width="3.4" stroke-linecap="round"/>'
+      /* muzzle, nostril, eye */
+      +'<ellipse cx="17" cy="31" rx="3" ry="2.4" fill="'+deep+'"/>'
+      +'<path d="M20 35q7 2 11-2" fill="none" stroke="'+deep+'" stroke-width="1.5" stroke-linecap="round"/>'
+      +eye(27,29,2.6)
+      /* the line of the shoulder, which is what says "climber" */
+      +'<path d="M45 43q12-5 23 0" fill="none" stroke="'+deep+'" stroke-width="1.3" opacity=".3"/>'
+      +'<path d="M51 37q10-4 19 0" fill="none" stroke="'+pale+'" stroke-width="1.4" opacity=".35"/>';
   }
   d+='<clipPath id="c'+id+'"><path d="'+shape+'"/></clipPath></defs>';
   var s=d+art;
@@ -1662,11 +1736,9 @@ function drawHidden(svg, ph, force){
 }
 
 /* ══ the stage: substrate, texture and weather come straight from the world ══ */
-function drawScene(svg, e, snap, mine, W){
-  if(!e){ svg.innerHTML=''; return; }
-  W=W||1000;
-  svg.setAttribute('preserveAspectRatio','xMidYMid slice');
-  svg.setAttribute('viewBox','0 0 '+W+' 560');
+/* the backdrop: sky, ground, substrate texture and weather — everything that
+   depends on the world but not on the generation, so it is built once. */
+function sceneBackdrop(e, W){
   var sky = e.temp==='hot' ? ['#f6e2c0','#efc98f'] : e.temp==='cold' ? ['#dbe7f0','#b9cddd'] : ['#e7f0e6','#cfe0cd'];
   var g0=hsl(e.hue,34,62), g1=hsl(e.hue,30,46), g2=hsl(e.hue,28,38);
   var s='<defs><filter id="evr" x="-4%" y="-4%" width="108%" height="108%">'
@@ -1718,48 +1790,126 @@ function drawScene(svg, e, snap, mine, W){
   if(e.temp==='cold'){ for(i=0;i<5;i++){ var mx=i*(W*0.22);
     s+='<path d="M'+mx+' 250 l70 -74 l64 74z" fill="#cfd9e2" opacity=".8"/>'; } }
   s+='</g>';
-  /* the living population, sampled so the stage stays readable at 350 players.
-     Animals are collected first and drawn far-to-near so nearer ones overlap
-     correctly, each with a contact shadow, and distant ones are washed toward
-     the sky color — cheap atmospheric perspective that turns a flat scatter
-     into a scene with depth. */
-  if(snap){
-    var ks=Object.keys(snap.lines).filter(function(k){ return snap.lines[k].alive && snap.lines[k].n>0; });
-    ks.sort(function(a,b){ return snap.lines[b].n-snap.lines[a].n; });
-    var tot=0; ks.forEach(function(k){ tot+=snap.lines[k].n; });
-    var SLOTS=Math.min(54,Math.max(10,ks.length*2)), placed=0, cast=[];
-    ks.forEach(function(k){
-      var L=snap.lines[k];
-      var share=tot>0?L.n/tot:0, cnt=Math.max(k===ks[0]?1:0, Math.round(share*SLOTS));
-      for(var j=0;j<cnt&&placed<SLOTS;j++,placed++){
-        var sd='pos'+e.w+':'+k+':'+j;
-        cast.push({k:k, L:L, x:W*0.06+CG.rnd(sd+'x')*(W*0.88), y:296+CG.rnd(sd+'y')*228,
-                   d:CG.rnd(sd+'d'), flip:CG.rnd(sd+'f')<0.42});
-      }
-    });
-    cast.sort(function(a,b){ return a.y-b.y; });          /* painter's order */
-    cast.forEach(function(c,idx){
-      var depth=(c.y-296)/228;                             /* 0 far … 1 near */
-      var sc=(0.40+depth*0.42)*(c.k===mine?1.18:1);
-      var sat=30+depth*18, lit=54-depth*11;                /* haze the distance */
-      s+='<g transform="translate('+c.x.toFixed(0)+','+c.y.toFixed(0)+') scale('+sc.toFixed(2)+')'
-        +(c.flip?' scale(-1,1)':'')+'">'
-        +'<ellipse class="ev-shadow" cx="50" cy="74" rx="'+(34+depth*10).toFixed(0)+'" ry="'+(6+depth*3).toFixed(0)+'"/>'
-        +(c.k===mine?'<ellipse class="ev-mine-ring" cx="50" cy="72" rx="48" ry="11"/>':'')
-        +'<g class="ev-unit" style="animation-delay:'+(c.d*2.6).toFixed(2)+'s;'
-        +'animation-duration:'+(2.2+c.d*1.5).toFixed(2)+'s">'
-        +critter(c.L.sp,Math.round(c.L.hue),c.L.pat,sat,lit)+'</g></g>';
-    });
-    if(!placed) s+='<text x="'+(W/2)+'" y="420" text-anchor="middle" class="ev-empty">Nothing survived here.</text>';
-  }
-  /* a foreground band drawn LAST, so the nearest animals are partly behind it */
+  /* the foreground band is part of the backdrop: it is drawn last so the
+     nearest animals sit partly behind it. */
+  s+='<g data-cast></g>';
   s+='<g filter="url(#evr)" opacity=".92">';
   for(i=0;i<16;i++){
     var fx=CG.rnd('fg'+e.w+i)*(W+30)-15, fh=26+CG.rnd('fh'+e.w+i)*30;
     s+='<path d="M'+fx.toFixed(0)+' 566 q 7 -'+fh.toFixed(0)+' 15 -2" fill="none" stroke="'+g2+'" stroke-width="'+(5+(i%3)*2)+'" stroke-linecap="round" opacity=".75"/>';
   }
   s+='</g>';
-  svg.innerHTML=s;
+  return s;
+}
+
+/* Who is standing where. A slot's position is seeded from the lineage and the
+   slot index but NOT from the generation, so an animal that is still alive next
+   generation is still standing in the same place — which is what lets the cast
+   be updated in place instead of redrawn. */
+function buildCast(e, snap, mine, W){
+  var cast=[];
+  if(!snap) return cast;
+  var ks=Object.keys(snap.lines).filter(function(k){ return snap.lines[k].alive && snap.lines[k].n>0; });
+  ks.sort(function(a,b){ return snap.lines[b].n-snap.lines[a].n; });
+  var tot=0; ks.forEach(function(k){ tot+=snap.lines[k].n; });
+  var SLOTS=Math.min(54,Math.max(10,ks.length*2)), placed=0;
+  ks.forEach(function(k){
+    var L=snap.lines[k];
+    var share=tot>0?L.n/tot:0, cnt=Math.max(k===ks[0]?1:0, Math.round(share*SLOTS));
+    for(var j=0;j<cnt&&placed<SLOTS;j++,placed++){
+      var sd='pos'+e.w+':'+k+':'+j;
+      cast.push({id:k+'|'+j, k:k, L:L, x:W*0.06+CG.rnd(sd+'x')*(W*0.88),
+                 y:296+CG.rnd(sd+'y')*228, d:CG.rnd(sd+'d'), flip:CG.rnd(sd+'f')<0.42});
+    }
+  });
+  cast.sort(function(a,b){ return a.y-b.y; });          /* painter's order */
+  cast.forEach(function(c){
+    var depth=(c.y-296)/228;                             /* 0 far … 1 near */
+    c.sc=(0.40+depth*0.42)*(c.k===mine?1.18:1);
+    c.sat=30+depth*18; c.lit=54-depth*11;                /* haze the distance */
+    c.depth=depth; c.mine=(c.k===mine);
+  });
+  return cast;
+}
+
+/* ══ the stage ══════════════════════════════════════════════════════════════
+   Rebuilding the whole scene each generation threw away every animal and made
+   a new one, which restarted all the idle animations at once and read as a
+   stutter. The backdrop is now built once per world and the cast is diffed
+   against it: an animal that survives keeps its own element and simply changes
+   colour where it stands, one that appears fades in, one that is eaten fades
+   out. That is also the thing the slide is trying to show — the same animals,
+   being sorted — so it is worth the extra machinery.                       ══ */
+var EVNS='http://www.w3.org/2000/svg';
+function drawScene(svg, e, snap, mine, W){
+  if(!e){ svg.innerHTML=''; svg.__ev=null; return; }
+  W=W||1000;
+  var wkey=[e.w,e.hue,e.tex,e.temp,e.rain,W,mine].join('|');
+  var st=svg.__ev;
+  if(!st || st.wkey!==wkey){
+    svg.setAttribute('preserveAspectRatio','xMidYMid slice');
+    svg.setAttribute('viewBox','0 0 '+W+' 560');
+    svg.innerHTML=sceneBackdrop(e,W);
+    st=svg.__ev={wkey:wkey, units:{}};
+  }
+  var castG=svg.querySelector('[data-cast]');
+  if(!castG) return;
+  var cast=buildCast(e,snap,mine,W), seen={}, structural=false;
+
+  cast.forEach(function(c){
+    seen[c.id]=1;
+    var tf='translate('+c.x.toFixed(0)+','+c.y.toFixed(0)+') scale('+c.sc.toFixed(2)+')'
+           +(c.flip?' scale(-1,1)':'');
+    var sig=[Math.round(c.L.hue), c.L.sp, c.L.pat, Math.round(c.sat), Math.round(c.lit)].join(',');
+    var u=st.units[c.id];
+    if(!u){
+      structural=true;
+      u=document.createElementNS(EVNS,'g');
+      u.setAttribute('class','ev-cell');
+      u.setAttribute('transform',tf);
+      u.innerHTML='<ellipse class="ev-shadow" cx="50" cy="74" rx="'+(34+c.depth*10).toFixed(0)
+        +'" ry="'+(6+c.depth*3).toFixed(0)+'"/>'
+        +(c.mine?'<ellipse class="ev-mine-ring" cx="50" cy="72" rx="48" ry="11"/>':'')
+        +'<g class="ev-unit" style="animation-delay:'+(c.d*2.6).toFixed(2)+'s;'
+        +'animation-duration:'+(2.2+c.d*1.5).toFixed(2)+'s">'
+        +critter(c.L.sp,Math.round(c.L.hue),c.L.pat,c.sat,c.lit)+'</g>';
+      castG.appendChild(u);
+      st.units[c.id]=u; u.__sig=sig;
+      /* let the element land before the class that fades it in */
+      requestAnimationFrame(function(){ u.classList.add('in'); });
+    } else {
+      if(u.getAttribute('transform')!==tf) u.setAttribute('transform',tf);
+      if(u.__sig!==sig){
+        u.__sig=sig;
+        var inner=u.querySelector('.ev-unit');
+        if(inner) inner.innerHTML=critter(c.L.sp,Math.round(c.L.hue),c.L.pat,c.sat,c.lit);
+      }
+      u.classList.remove('out');
+    }
+  });
+
+  Object.keys(st.units).forEach(function(id){
+    if(seen[id]) return;
+    structural=true;
+    var u=st.units[id]; delete st.units[id];
+    u.classList.add('out');
+    setTimeout(function(){ if(u.parentNode) u.parentNode.removeChild(u); }, 700);
+  });
+
+  /* far-to-near order only has to be restored when the cast actually changed */
+  if(structural) cast.forEach(function(c){
+    var u=st.units[c.id]; if(u && u.parentNode===castG) castG.appendChild(u);
+  });
+
+  var empty=svg.querySelector('[data-empty]');
+  if(!cast.length && !empty){
+    empty=document.createElementNS(EVNS,'text');
+    empty.setAttribute('x',W/2); empty.setAttribute('y',420);
+    empty.setAttribute('text-anchor','middle');
+    empty.setAttribute('class','ev-empty'); empty.setAttribute('data-empty','');
+    empty.textContent='Nothing survived here.';
+    svg.appendChild(empty);
+  } else if(cast.length && empty){ empty.parentNode.removeChild(empty); }
 }
 
 /* ══ live state ══ */
@@ -2351,7 +2501,7 @@ function famLayout(fam, W, H){
   fam.order.forEach(function(k){ var N=fam.nodes[k];
     births[N.row]=1; lastRow=Math.max(lastRow, N.endRow); });
   var rows=[]; for(var r=1;r<=lastRow;r++) rows.push(r);
-  var PADT=34, PADB=42, avail=H-PADT-PADB;
+  var PADT=34, PADB=58, avail=H-PADT-PADB;
   var steps=[0];
   for(var i=1;i<rows.length;i++) steps.push(births[rows[i]] ? 1 : 0.44);
   var tot=steps.reduce(function(a,b){ return a+b; },0);
@@ -2378,6 +2528,10 @@ function famLayout(fam, W, H){
     var N=fam.nodes[k];
     N.x=PADX + colW*(xs[k]+0.5);
     N.y=rowY[N.row];
+    /* a disc big enough to read, scaled by how many the branch carried at its
+       peak, and never wider than its own column */
+    N.R = (N.par===null && !N.side) ? Math.round(52*sc)
+        : clamp(7+Math.sqrt(Math.max(1,N.peak))*1.5, 7, Math.min(26, colW*0.42));
   });
   return {kids:kids, roots:roots, rows:rows, rowY:rowY, colW:colW, sc:sc, gap:gap, unit:unit};
 }
@@ -2417,34 +2571,55 @@ function drawFamily(svg, W, H){
         +C.y.toFixed(1)+' H'+(C.x-RAD).toFixed(1)+'"/>';
     });
   });
-  /* nodes */
+  /* Nodes. The founder is drawn as the animal the student built; every
+     descendant is a disc in its OWN colour, sized by how many there are. That
+     is what the tree is for — watching colour drift apart down the branches,
+     and seeing which shades die out and which take the population — and it is
+     the only way a dozen branches fit on one screen. Clicking any of them
+     still opens its full characteristics. */
   fam.order.forEach(function(k){
-    var N=fam.nodes[k], dead=!!N.died, sel=(famSel===k);
-    var label = N.par===null && !N.side ? 'your organism'
-              : (N.side? 'side '+N.side : 'variant '+N.id);
-    var R=Math.round(52*L.sc);
+    var N=fam.nodes[k], dead=!!N.died, sel=(famSel===k), root=(N.par===null && !N.side);
     var lf=Math.max(11, Math.round(19*L.sc)), tf=Math.max(10.5, Math.round(17*L.sc));
-    s+='<g class="fm-node'+(dead?' dead':'')+(sel?' sel':'')+'" data-fnode="'+k+'" tabindex="0" role="button">'
-      +'<circle class="fm-halo" cx="'+N.x.toFixed(1)+'" cy="'+N.y.toFixed(1)+'" r="'+R+'"/>'
-      +'<g transform="translate('+(N.x-50*L.sc).toFixed(1)+','+(N.y-45*L.sc).toFixed(1)+') scale('+L.sc.toFixed(2)+')">'
-      + critter(N.sp, Math.round(N.hue), N.pat, dead?12:46, dead?62:44) +'</g>';
-    if(dead) s+='<path class="fm-x" d="M'+(N.x+R*0.44).toFixed(1)+' '+(N.y-R*0.62).toFixed(1)
-      +' l'+(R*0.36).toFixed(1)+' '+(R*0.36).toFixed(1)+' M'+(N.x+R*0.80).toFixed(1)+' '+(N.y-R*0.62).toFixed(1)
-      +' l-'+(R*0.36).toFixed(1)+' '+(R*0.36).toFixed(1)+'"/>';
-    s+='<text class="fm-lab" style="font-size:'+lf.toFixed(1)+'px" x="'+N.x.toFixed(1)+'" y="'
-      +(N.y+R+15).toFixed(1)+'" text-anchor="middle">'+label+'</text></g>';
+    var R=N.R;
+    s+='<g class="fm-node'+(dead?' dead':'')+(sel?' sel':'')+'" data-fnode="'+k+'" tabindex="0" role="button">';
+    if(root){
+      s+='<circle class="fm-halo" cx="'+N.x.toFixed(1)+'" cy="'+N.y.toFixed(1)+'" r="'+R.toFixed(1)+'"/>'
+        +'<g transform="translate('+(N.x-50*L.sc).toFixed(1)+','+(N.y-45*L.sc).toFixed(1)+') scale('+L.sc.toFixed(2)+')">'
+        + critter(N.sp, Math.round(N.hue), N.pat, dead?12:46, dead?62:44) +'</g>'
+        +'<text class="fm-lab" style="font-size:'+lf.toFixed(1)+'px" x="'+N.x.toFixed(1)+'" y="'
+        +(N.y+R+15).toFixed(1)+'" text-anchor="middle">your organism</text>';
+    } else {
+      s+='<circle class="fm-dot'+(dead?' dead':'')+'" cx="'+N.x.toFixed(1)+'" cy="'+N.y.toFixed(1)
+        +'" r="'+R.toFixed(1)+'" fill="'+(dead?'#efeae1':hsl(Math.round(N.hue),CRIT_SAT,CRIT_LIT))+'"/>';
+      if(sel) s+='<circle class="fm-ring" cx="'+N.x.toFixed(1)+'" cy="'+N.y.toFixed(1)
+        +'" r="'+(R+5).toFixed(1)+'"/>';
+      if(N.side) s+='<text class="fm-sidetag" x="'+N.x.toFixed(1)+'" y="'+(N.y+3.5).toFixed(1)
+        +'" text-anchor="middle">'+N.side+'</text>';
+    }
+    s+='</g>';
     /* what became of the line is written at the far end of its lifeline, where
-       there is room, rather than crowded under the animal */
+       there is room, rather than crowded under the node */
     var yEnd2=L.rowY[N.endRow];
     if(yEnd2!==undefined){
+      /* every living branch ends on the same row, so a label set beside the tip
+         ran into its neighbours. The bare count, centred under the tip, fits a
+         column; a branch that died needs no number at all, because where its
+         lifeline stops already says when. */
       if(dead) s+='<path class="fm-x" d="M'+(N.x-6).toFixed(1)+' '+(yEnd2-6).toFixed(1)
         +' l12 12 M'+(N.x+6).toFixed(1)+' '+(yEnd2-6).toFixed(1)+' l-12 12"/>';
-      else s+='<circle class="fm-tip" cx="'+N.x.toFixed(1)+'" cy="'+yEnd2.toFixed(1)+'" r="4"/>';
-      s+='<text class="fm-sub" style="font-size:'+tf.toFixed(1)+'px" x="'+(N.x+11).toFixed(1)
-        +'" y="'+(yEnd2+4).toFixed(1)+'">'+(dead? 'died gen '+N.died : num(N.n)+' alive')+'</text>';
+      else s+='<circle class="fm-tip" cx="'+N.x.toFixed(1)+'" cy="'+yEnd2.toFixed(1)+'" r="4"/>'
+        +'<text class="fm-sub" style="font-size:'+tf.toFixed(1)+'px" x="'+N.x.toFixed(1)
+        +'" y="'+(yEnd2+16).toFixed(1)+'" text-anchor="middle">'+num(N.n)+'</text>';
     }
   });
-  s+='<text class="fm-hint" x="'+(W/2)+'" y="'+(H-10)+'" text-anchor="middle">Tap any organism to read its characteristics</text>';
+  /* the colour the world is asking for, so drift toward it is legible */
+  var eg=world(0);
+  s+='<g class="fm-key" transform="translate('+(W-186)+',18)">'
+    +'<rect class="fm-keybox" x="0" y="0" width="170" height="26" rx="7"/>'
+    +'<circle cx="17" cy="13" r="7.5" fill="'+hsl(eg.hue,CRIT_SAT,CRIT_LIT)+'" stroke="rgba(0,0,0,.25)"/>'
+    +'<text class="fm-keylab" x="31" y="17">the colour of the ground</text></g>';
+  s+='<text class="fm-hint" x="'+(W/2)+'" y="'+(H-8)+'" text-anchor="middle">'
+    +'Tap any branch to read its characteristics &middot; numbers are how many were alive at the end</text>';
   svg.innerHTML=s;
   return true;
 }
@@ -2838,6 +3013,8 @@ function tick(){
   if(timed&&dl){ clockEl.textContent=CG.clock(left); clockEl.classList.toggle('low',left<30000);
                  phaseEl.textContent=PN[ph]||''; }
   if(HOST&&dl&&left<=0) advance();
+  renderAgain();
+  if(HOST && againUntil() && !againOpen()) againClose();
 }
 setInterval(tick,250);
 function mins(){ return parseInt(q('[data-buildmin]').value,10)||5; }
@@ -2845,17 +3022,21 @@ function setPhase(p,secs,extra){
   var o=extra||{}; o.phase=p; o.deadline=secs?(Date.now()+secs*1000):null;
   backend.mergeDoc('polls',GID,o);
 }
+/* long enough that the room can watch a colour take over rather than just see
+   that it has. The second run is a little quicker — they know the shape of it
+   by then. */
+var GENSEC=5.4, GENSPLIT=4.4;
 function advance(){
   var ph=phase();
   if(ph==='design') setPhase('reveal', revealMs()/1000);
-  else if(ph==='reveal') setPhase('run',3.4,{genIdx:1});
+  else if(ph==='reveal') setPhase('run',GENSEC,{genIdx:1});
   else if(ph==='run'){
-    if(genIdx()<gens()) setPhase('run',3.4,{genIdx:genIdx()+1});
+    if(genIdx()<gens()) setPhase('run',GENSEC,{genIdx:genIdx()+1});
     else setPhase('discuss',null);
   }
   else if(ph==='discuss') setPhase('final',null);
   else if(ph==='split'){
-    if(splitIdx()<gens()) setPhase('split',3.4,{splitIdx:splitIdx()+1});
+    if(splitIdx()<gens()) setPhase('split',GENSPLIT,{splitIdx:splitIdx()+1});
     else setPhase('final',null);
   }
 }
@@ -2922,6 +3103,7 @@ function render(){
     q('[data-step]').hidden = ph!=='run';
     q('[data-skip]').hidden = !(ph==='design'||ph==='discuss');
     q('[data-split]').hidden = ph!=='discuss';
+    q('[data-again]').hidden = !(ph==='final') || againOpen();
     q('[data-step]').hidden = !(ph==='run'||ph==='split');
     st.textContent='';
     hs.textContent = ph==='idle' ? 'Open the lobby once the room has the deck.'
@@ -2946,6 +3128,8 @@ function render(){
 }
 
 /* ══ events ══ */
+q('[data-againyes]').addEventListener('click',function(){ againVote(true); });
+q('[data-againno]').addEventListener('click',function(){ againVote(false); });
 q('[data-join]').addEventListener('click',function(){
   if(!backend||joined()) return;
   var o={players:{}}; o.players[PK]={t:Date.now()};
@@ -3017,6 +3201,52 @@ q('[data-design]').addEventListener('input',function(ev){
   }
 });
 
+/* ══ PLAY AGAIN ════════════════════════════════════════════════════════════
+   The room decides, not the instructor: the host opens a thirty-second ballot,
+   every screen shows it and votes once, and if more say yes than no the whole
+   thing resets to the design phase with a NEW world — so the same class gets to
+   find out whether what they learned the first time actually helps.
+   The deadline lives in the shared doc, so every clock agrees without anybody
+   having to broadcast a countdown.                                        ══ */
+function againUntil(){ return state.againUntil||0; }
+function againOpen(){ return againUntil()>Date.now(); }
+function againVotes(){ return state.again||{}; }
+function againTally(){
+  var v=againVotes(), y=0, n=0;
+  Object.keys(v).forEach(function(k){ if(v[k]) y++; else n++; });
+  return {yes:y, no:n};
+}
+function renderAgain(){
+  var box=q('[data-againbox]'), open=againOpen() && !HOST;
+  box.hidden=!open;
+  if(!open) return;
+  q('[data-againclock]').textContent=Math.max(0,Math.ceil((againUntil()-Date.now())/1000));
+  var mine=againVotes()[PK], t=againTally();
+  q('[data-againtally]').textContent = (mine===undefined)
+    ? (t.yes+t.no)+' of the class have answered.'
+    : 'You said '+(mine?'yes':'no')+'. '+t.yes+' yes, '+t.no+' no so far.';
+  box.querySelector('[data-againyes]').disabled = mine!==undefined;
+  box.querySelector('[data-againno]').disabled  = mine!==undefined;
+}
+function againVote(yes){
+  if(!backend || HOST || !againOpen() || againVotes()[PK]!==undefined) return;
+  var o={again:{}}; o.again[PK]=yes?1:0;
+  backend.mergeDocShard('polls',GID,o);
+}
+/* only the host closes the ballot, so the decision is taken once */
+function againClose(){
+  var t=againTally();
+  if(t.yes>t.no){
+    /* a new world, a blank design sheet, the same room */
+    backend.setDoc('polls',GID,{phase:'design', genIdx:0, splitIdx:0,
+      players:state.players||{}, designs:{}, gameId:Date.now()%100000,
+      gens:parseInt(q('[data-gens]').value,10)||10,
+      deadline:Date.now()+mins()*60*1000, againUntil:0, again:{}});
+  } else {
+    backend.mergeDoc('polls',GID,{againUntil:0, again:{}});
+  }
+}
+
 function wireHost(){
   var bar=q('[data-hostbar]'); bar.hidden=false; root.classList.add('cg-host');
   bar.querySelector('[data-open]').addEventListener('click',function(){
@@ -3032,6 +3262,10 @@ function wireHost(){
     setPhase('split',3.4,{splitIdx:1});
   });
   bar.querySelector('[data-skip]').addEventListener('click',advance);
+  bar.querySelector('[data-again]').addEventListener('click',function(){
+    if(againOpen()) return;
+    backend.mergeDoc('polls',GID,{againUntil:Date.now()+30000, again:{}});
+  });
   bar.querySelector('[data-reset]').addEventListener('click',function(){
     if(confirm('Reset the game for everyone?')) backend.setDoc('polls',GID,{phase:'idle'});
   });
@@ -3059,7 +3293,7 @@ var FREEZE = DEMOQ.has('freeze') ? parseInt(DEMOQ.get('freeze'),10) : -1;
 var DSEED = DEMOQ.has('seed') ? parseInt(DEMOQ.get('seed'),10) : 0;
 function demoRun(){
   var N=28, tid=null, step=0;
-  var SPK=['thornback','glimmerfin','duskwing','burrowim','craglin'];
+  var SPK=['thornback','fernstalker','duskwing','burrowim','craglin'];
   var KEYS=['heat','cold','dry','evade','forage'];
   function mkDesign(i){
     var sp=SPK[i%5], f=SPBY[sp].foods, t={heat:0,cold:0,dry:0,evade:0,forage:0}, left=PTS;
@@ -3129,12 +3363,12 @@ function demoRun(){
     if(s){ full.push(s); return; }
     if(full.length && full[full.length-1][2].indexOf('The run begins')>-1){
       for(var g=2; g<=10; g++) (function(gg){
-        full.push([1900, function(){ doc({genIdx:gg}); },
+        full.push([3100, function(){ doc({genIdx:gg}); },
           'Generation '+gg+' of 10. Watch the colors: a mix persists for several generations before one takes over.']);
       })(g);
     } else {
       for(var k=2; k<=10; k++) (function(kk){
-        full.push([1500, function(){ doc({splitIdx:kk}); },
+        full.push([2500, function(){ doc({splitIdx:kk}); },
           'Generation '+kk+' since the barrier. The two halves are drifting apart.']);
       })(k);
     }
