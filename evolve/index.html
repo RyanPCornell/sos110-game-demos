@@ -566,7 +566,6 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   cursor:pointer; background:#fdfbf5; border:1.5px solid rgba(120,100,60,.28); border-radius:7px;
   padding:.2rem .18rem; color:#4a4436;}
 .ev-pat.on,.ev-food.on{background:var(--accent); border-color:var(--accent); color:#fff;}
-.ev-diet{display:flex; gap:.22rem;}
 .ev-hint{font-size:clamp(.56rem,.88vw,.67rem); color:#8a8069; line-height:1.32; margin-top:.24rem;}
 .ev-warn{font-size:clamp(.6rem,.95vw,.72rem); color:#A4373A; text-align:center; margin-top:.2rem;}
 .ev-trow{display:flex; align-items:center; gap:.28rem; margin-bottom:.16rem;}
@@ -707,10 +706,10 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .fm-node.dead .fm-lab{fill:#9a8f78;}
 .fm-sub{font-family:'Inter',sans-serif; font-size:11px; fill:#8a8069;}
 .fm-hint{font-family:'Inter',sans-serif; font-size:12px; fill:#a09781;}
-.fm-life{stroke:#c3b79b; stroke-width:2.4; fill:none; stroke-linecap:round;}
+.fm-life{stroke:#d8cdb4; stroke-width:1.6; fill:none; stroke-linecap:round;}
 .fm-life.dead{stroke:#d8c9c7; stroke-dasharray:5 5;}
 .fm-tip{fill:#a89a7c;}
-.fm-dot{stroke:rgba(30,24,12,.42); stroke-width:1.6; cursor:pointer;}
+.fm-dot{stroke:rgba(30,24,12,.34); stroke-width:1.1; cursor:pointer;}
 .fm-dot.dead{stroke:#cbbfae; stroke-dasharray:3 3;}
 .fm-node:hover .fm-dot{stroke:var(--accent); stroke-width:2.6;}
 .fm-ring{fill:none; stroke:var(--accent); stroke-width:2.6;}
@@ -949,7 +948,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     </g>
   </g>
 </svg>
-        <p class="cg-sub">Every student designs one organism — species, color, diet, tolerances, and how it raises its young — before anyone knows what the world looks like. Then a random ecosystem is drawn and the class population runs for 8–12 generations.</p>
+        <p class="cg-sub">Every student designs one organism — species, color, pattern, tolerances, and how it raises its young — before anyone knows what the world looks like. Then a random ecosystem is drawn and the class population runs for 8–12 generations.</p>
       </div>
       <div class="cg-clockwrap" data-clockwrap hidden>
         <div class="cg-phase" data-phasename></div>
@@ -1137,42 +1136,31 @@ function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
 
-/* ══ the five species. Each has its own menu of foods, so the diet choice is
+/* ══ the five species. Each carries its own built-in advantage and its own
    genuinely a species choice, and its own innate leanings, so no species is
    simply better — each is pre-adapted to a world it may not get. ══ */
 var SPECIES=[
  {k:'thornback', n:'Thornback', tag:'spiny grazer',
-  foods:['bristlegrass','stonemoss','thornfruit'],
-  innate:{pred:0.16, food:-0.08}, blurb:'Armoured and slow. Hard to eat, hard to feed.'},
- {k:'fernstalker', n:'Fernstalker', tag:'long-legged browser',
-  foods:['fernshoot','dewpod','marshcress'],
-  innate:{wet:0.22, arid:-0.26}, blurb:'Browses the damp shade. Finds nothing on dry ground.'},
- {k:'duskwing', n:'Duskwing', tag:'gliding forager',
-  foods:['nightbloom','wingseed','huskbeetle'],
+  innate:{pred:0.16}, blurb:'Armoured and slow. Very hard to eat.'},
+ {k:'marshkite', n:'Marshkite', tag:'wetland soarer',
+  innate:{wet:0.22, arid:-0.26}, blurb:'Rides the damp air over wetland. Grounded when it dries out.'},
+ {k:'duskwing', n:'Duskwing', tag:'night glider',
   innate:{pred:0.20, cold:-0.16}, blurb:'Escapes almost anything. Loses heat doing it.'},
  {k:'burrowim', n:'Burrowim', tag:'digging omnivore',
-  foods:['taproot','grubmass','seedcache'],
   innate:{hot:0.18, arid:0.16, pred:-0.06}, blurb:'Sits out the heat underground.'},
  {k:'craglin', n:'Craglin', tag:'rock climber',
-  foods:['clifflichen','sporecap','chalksnail'],
   innate:{cold:0.18, pred:0.08, wet:-0.18}, blurb:'Built for cold stone. Rots in the wet.'}
 ];
 var SPBY={}; SPECIES.forEach(function(s){ SPBY[s.k]=s; });
-var ALLFOOD=[]; SPECIES.forEach(function(s){ ALLFOOD=ALLFOOD.concat(s.foods); });
-var FOODNAME={bristlegrass:'Bristlegrass',stonemoss:'Stonemoss',thornfruit:'Thornfruit',
-  fernshoot:'Fern shoots',dewpod:'Dewpods',marshcress:'Marsh cress',
-  nightbloom:'Nightbloom nectar',wingseed:'Wingseed',huskbeetle:'Husk beetle',
-  taproot:'Taproot',grubmass:'Grubmass',seedcache:'Seed cache',
-  clifflichen:'Cliff lichen',sporecap:'Sporecap',chalksnail:'Chalk snail'};
-
 var TRAITS=[
  {k:'heat', n:'Heat tolerance'},
  {k:'cold', n:'Cold tolerance'},
  {k:'dry',  n:'Drought tolerance'},
- {k:'evade',n:'Predator evasion'},
- {k:'forage',n:'Foraging skill'}
+ {k:'evade',n:'Predator evasion'}
 ];
-var PTS=12, TMAX=5;
+/* Four traits at five points each with ten to spend keeps the squeeze the
+   five-trait budget had: nobody can be good at everything. */
+var PTS=10, TMAX=5;
 /* Only the HUE is stored on a design, so a swatch that carried its own
    saturation and lightness lied: the grey chip became a red animal. These are
    ten well-spread hues, and the chip is drawn at exactly the saturation and
@@ -1204,29 +1192,23 @@ function baseWorld(){
   var e={w:0, hue:Math.floor(CG.rnd(sd+':hue')*360), tex:TEX[CG.pick(sd+':tex',3)],
          temp:TEMP[w3(':t')], rain:RAIN[w3(':r')],
          pred:PRED[w3(':p')], stab:STAB[w3(':s')]};
-  e.food={};
-  ALLFOOD.forEach(function(f){
-    var u=CG.rnd(sd+':f:'+f);
-    e.food[f]= u<0.30?0:(u<0.62?0.5:1);
-  });
   e.name=(e.temp==='hot'?'Hot':(e.temp==='cold'?'Cold':'Mild'))+', '+e.rain;
   return e;
 }
 /* A barrier cuts an existing range in two. It does not invent two new worlds, so
    SIDE A keeps the original conditions exactly and only its luck runs separately;
    SIDE B is the same world with a handful of things different — a different
-   ground color, two of its five conditions nudged one step, and some of the food
-   changed. Enough for the two halves to be pulled apart, not so much that the
-   comparison stops meaning anything. */
+   ground color and two of its five conditions nudged one step. Enough for the
+   two halves to be pulled apart, not so much that the comparison stops meaning
+   anything. */
 function stepAxis(list, cur, u){
   var i=list.indexOf(cur), d=(u<0.5?-1:1);
   var n=i+d; if(n<0) n=1; if(n>=list.length) n=list.length-2;
   return list[Math.max(0,Math.min(list.length-1,n))];
 }
 function worldDiff(){
-  var b=baseWorld(), sd=GID+':'+gid()+':wB', c={w:2, food:{}};
+  var b=baseWorld(), sd=GID+':'+gid()+':wB', c={w:2};
   ['hue','tex','temp','rain','pred','stab'].forEach(function(k){ c[k]=b[k]; });
-  ALLFOOD.forEach(function(f){ c.food[f]=b.food[f]; });
   var changed=[];
   /* the ground color always differs — it is what camouflage is measured against */
   var swing=58+CG.rnd(sd+':hmag')*96;
@@ -1247,16 +1229,6 @@ function worldDiff(){
       changed.push({temp:'temperature',rain:'rainfall',pred:'predators',stab:'climate'}[key]);
     }
   });
-  /* and roughly a fifth of the food supply is different */
-  var fch=0;
-  ALLFOOD.forEach(function(f){
-    if(CG.rnd(sd+':fd:'+f)<0.22){
-      var u=CG.rnd(sd+':fv:'+f);
-      var nv=u<0.34?0:(u<0.67?0.5:1);
-      if(nv!==c.food[f]){ c.food[f]=nv; fch++; }
-    }
-  });
-  if(fch) changed.push(fch+' of the foods');
   c.name=(c.temp==='hot'?'Hot':(c.temp==='cold'?'Cold':'Mild'))+', '+c.rain;
   c.changed=changed;
   return c;
@@ -1274,8 +1246,7 @@ function optimum(e){
   return {heat: e.temp==='hot'?5:(e.temp==='temperate'?2:0),
           cold: e.temp==='cold'?5:(e.temp==='temperate'?2:0),
           dry:  e.rain==='arid'?5:(e.rain==='wet'?0:2),
-          evade:e.pred==='high'?5:(e.pred==='moderate'?3:1),
-          forage:3};
+          evade:e.pred==='high'?5:(e.pred==='moderate'?3:1)};
 }
 function shockP(e){ return e.stab==='stable'?0.10:(e.stab==='variable'?0.32:0.55); }
 
@@ -1292,14 +1263,11 @@ function fitness(d,e){
   var water= e.rain==='arid'? (t.dry||0)/TMAX + (inn.arid||0)
            : e.rain==='wet' ? 1-0.55*((t.dry||0)/TMAX) + (inn.wet||0)
            : 0.74;
-  var av=0, n=(d.diet||[]).length||1;
-  (d.diet||[]).forEach(function(f){ av+= (e.food[f]!==undefined?e.food[f]:0); });
-  var food=(av/n)*(0.55+0.45*((t.forage||0)/TMAX)) + (inn.food||0);
   var pred = e.pred==='low' ? 0.86
            : e.pred==='moderate' ? 0.34+0.66*((t.evade||0)/TMAX)
            : 0.10+0.90*((t.evade||0)/TMAX);
   pred += (inn.pred||0);
-  var parts=[[camo,1.40],[temp,1.0],[water,0.9],[food,1.25],[pred,1.0]];
+  var parts=[[camo,1.40],[temp,1.0],[water,0.9],[pred,1.0]];
   var s=0, wsum=0;
   parts.forEach(function(p){ s+=clamp(p[0],0,1.2)*p[1]; wsum+=p[1]; });
   return clamp(s/wsum,0.05,1);
@@ -1313,12 +1281,9 @@ function fitParts(d,e){
            : e.temp==='cold'? (t.cold||0)/TMAX+(inn.cold||0) : 0.74;
   var water= e.rain==='arid'? (t.dry||0)/TMAX+(inn.arid||0)
            : e.rain==='wet' ? 1-0.55*((t.dry||0)/TMAX)+(inn.wet||0) : 0.74;
-  var av=0,n=(d.diet||[]).length||1;
-  (d.diet||[]).forEach(function(f){ av+=(e.food[f]!==undefined?e.food[f]:0); });
-  var food=(av/n)*(0.55+0.45*((t.forage||0)/TMAX))+(inn.food||0);
   var pred = e.pred==='low'?0.86:(e.pred==='moderate'?0.34+0.66*((t.evade||0)/TMAX)
            :0.10+0.90*((t.evade||0)/TMAX))+(inn.pred||0);
-  return [['Camouflage',camo],['Temperature',temp],['Water',water],['Food',food],['Predators',pred]];
+  return [['Camouflage',camo],['Temperature',temp],['Water',water],['Predators',pred]];
 }
 /* life history: one slider, two consequences that pull opposite ways */
 /* Life history was a flat tax on the "few young" end: it needed near-perfect
@@ -1357,9 +1322,9 @@ function seedFromDesigns(dz){
   var st={};
   Object.keys(dz).forEach(function(k){
     var d=dz[k];
-    st[k]={sp:d.sp, pat:d.pat, diet:d.diet, lh:d.lh, nextId:1,
+    st[k]={sp:d.sp, pat:d.pat, lh:d.lh, nextId:1,
            vars:[{id:0, par:-1, n:26, born:0, died:0, hue:d.hue,
-                  t:{heat:d.t.heat,cold:d.t.cold,dry:d.t.dry,evade:d.t.evade,forage:d.t.forage}}]};
+                  t:{heat:d.t.heat,cold:d.t.cold,dry:d.t.dry,evade:d.t.evade}}]};
   });
   return st;
 }
@@ -1376,10 +1341,10 @@ function seedFromSnap(snap, dz){
     var L=snap.lines[k], d=dz[k]||{};
     var live=(L.vars||[]).filter(function(v){ return !v.died; });
     if(!live.length) return;
-    st[k]={sp:L.sp, pat:L.pat, diet:d.diet||[], lh:L.lh, nextId:(L.nextId||live.length)+1,
+    st[k]={sp:L.sp, pat:L.pat, lh:L.lh, nextId:(L.nextId||live.length)+1,
       vars: live.map(function(v){
         return {id:v.id, par:-1, n:Math.max(2.5,v.n*scale), born:0, died:0, hue:v.hue,
-                t:{heat:v.t.heat,cold:v.t.cold,dry:v.t.dry,evade:v.t.evade,forage:v.t.forage}};
+                t:{heat:v.t.heat,cold:v.t.cold,dry:v.t.dry,evade:v.t.evade}};
       })};
   });
   return st;
@@ -1412,7 +1377,7 @@ function runSim(st, e, gens, noDrift){
       var L=st[k];
       L.vars.forEach(function(v){
         if(v.died) return;
-        var f=fitness({sp:L.sp,hue:v.hue,pat:L.pat,diet:L.diet,t:v.t}, e);
+        var f=fitness({sp:L.sp,hue:v.hue,pat:L.pat,t:v.t}, e);
         v.f=f;
         var g1=v.n*(0.66+0.78*f)*provision(L.lh)*(1+(1-dens)*(intrinsic(L.lh)-1));
         if(shock) g1*=(0.42+0.20*f)*(0.86+0.028*L.lh);
@@ -1494,11 +1459,11 @@ function runSim(st, e, gens, noDrift){
       if(alive) TRAITS.forEach(function(tr){ tm[tr.k]/=n; });
       snap.lines[k]={n:n, alive:alive, sp:L.sp, pat:L.pat, lh:L.lh, nextId:L.nextId,
         hue: alive? ((Math.atan2(sy,sx)*180/Math.PI)+360)%360 : 0,
-        t: alive? tm : {heat:0,cold:0,dry:0,evade:0,forage:0},
+        t: alive? tm : {heat:0,cold:0,dry:0,evade:0},
         died: alive?0:lastDied, cause: alive?null:cause, fitAtDeath: alive?0:fad,
         vars: L.vars.map(function(v){
           return {id:v.id, par:v.par, n:v.died?0:v.n, born:v.born, died:v.died, hue:v.hue,
-                  t:{heat:v.t.heat,cold:v.t.cold,dry:v.t.dry,evade:v.t.evade,forage:v.t.forage}};
+                  t:{heat:v.t.heat,cold:v.t.cold,dry:v.t.dry,evade:v.t.evade}};
         })};
       snap.tot+=n; if(alive) snap.alive++;
     });
@@ -1511,7 +1476,7 @@ function simulate(dz, e, gens){ return runSim(seedFromDesigns(dz), e, gens); }
 /* ══ how far apart the two isolated halves have walked ══ */
 function popMean(snap){
   if(!snap) return null;
-  var t={heat:0,cold:0,dry:0,evade:0,forage:0}, sx=0, sy=0, tot=0;
+  var t={heat:0,cold:0,dry:0,evade:0}, sx=0, sy=0, tot=0;
   Object.keys(snap.lines).forEach(function(k){
     var L=snap.lines[k]; if(!L.alive||L.n<=0) return;
     tot+=L.n;
@@ -1598,30 +1563,30 @@ function critter(spk,hue,pat,sat,lit){
       +'<path d="M17 45q5-1 8 2" fill="none" stroke="'+deep+'" stroke-width="1.6" stroke-linecap="round"/>'
       +eye(21,49,2.3)
       +'<path d="M28 40q5-5 9-1" fill="'+dark+'" stroke="'+ink+'" stroke-width="1.5" stroke-linejoin="round"/>';
-  } else if(spk==='fernstalker'){
-    /* Tall and light: a browser built to reach, with the whole leg, neck and
-       tail drawn behind the body so the silhouette hides every join. */
-    shape='M34 47C34 37 43 31 57 31c14 0 22 6 23 15c1 10-8 16-23 16C43 62 34 57 34 47z';
-    art='<g stroke="'+dark+'" stroke-linecap="round" stroke-linejoin="round" fill="none">'
-      +'<path d="M45 56l-5 12l3 11" stroke-width="4.6"/><path d="M72 56l5 12l-3 11" stroke-width="4.6"/></g>'
-      +'<g stroke="url(#gu'+id+')" stroke-linecap="round" fill="none">'
-      +'<path d="M40 54l-4 13" stroke-width="7"/><path d="M36 67l4 12" stroke-width="4.6"/>'
-      +'<path d="M77 54l5 13" stroke-width="7"/><path d="M82 67l-3 12" stroke-width="4.6"/></g>'
-      /* neck: wide at the chest, tapering into the skull */
-      +'<path d="M44 41C38 35 31 27 27 19l9-5c4 8 10 15 16 20z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="1.9" stroke-linejoin="round"/>'
-      /* head: a narrow browsing wedge with a soft muzzle */
-      +'<path d="M30 20c-7-5-16-4-19 2c-3 6 2 11 10 11c7 0 13-4 13-8c0-2-1-4-4-5z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="2" stroke-linejoin="round"/>'
-      /* ears sit ON the skull, short and splayed — long parallel ones read as a leaf */
-      +'<path d="M26 16c-2-5-1-8 2-10c0 4 1 7 3 9z" fill="'+pale+'" stroke="'+deep+'" stroke-width="1.4" stroke-linejoin="round"/>'
-      +'<path d="M30 16c2-4 6-6 10-5c-4 2-6 5-6 8z" fill="'+dark+'" stroke="'+deep+'" stroke-width="1.3" stroke-linejoin="round"/>';
-    post='<g stroke="'+ink+'" stroke-width="2.3" stroke-linecap="round">'
-      +'<path d="M39 79h6M75 79h6"/></g>'
-      +'<path d="M80 44c6-3 10-8 10-15" fill="none" stroke="'+dark+'" stroke-width="3.4" stroke-linecap="round"/>'
-      +'<path d="M90 29c3 2 4 6 2 9" fill="none" stroke="'+pale+'" stroke-width="3" stroke-linecap="round"/>'
-      +'<ellipse cx="10.5" cy="24" rx="3" ry="2.4" fill="'+deep+'"/>'
-      +'<path d="M14 29q6 2 11-1" fill="none" stroke="'+deep+'" stroke-width="1.4" stroke-linecap="round"/>'
-      +eye(21,23,2.5)
-      +'<path d="M44 40q13-4 24 1" fill="none" stroke="'+deep+'" stroke-width="1.3" opacity=".28"/>';
+  } else if(spk==='marshkite'){
+    /* Seen from the side and soaring, so it cannot be mistaken for the Duskwing,
+       which is a front-on flutterer. Long swept wings, a slim body, a forked
+       tail — the silhouette of a bird that hangs on the wind rather than beats
+       through it. Wings and tail sit behind the body as usual. */
+    shape='M30 44C30 36 39 31 52 31c14 0 24 5 25 12c1 8-8 13-24 13C40 56 30 52 30 44z';
+    art=
+      /* far wing, shaded, swept back and up */
+      '<path d="M50 36C40 24 26 15 9 12c8 10 14 17 17 25c2 6 6 10 12 12z" fill="'+dark+'" stroke="'+ink+'" stroke-width="1.7" stroke-linejoin="round"/>'
+      /* near wing, catching the light */
+      +'<path class="ev-wing" d="M56 37C50 22 40 11 24 5c5 12 8 21 8 30c0 7 4 12 11 14z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="1.9" stroke-linejoin="round"/>'
+      +'<path class="ev-wing" d="M31 12c2 8 4 15 4 22M39 11c2 8 3 15 3 21" fill="none" stroke="'+deep+'" stroke-width="1.2" opacity=".5"/>'
+      /* forked tail */
+      +'<path d="M76 45c8 1 15 4 22 9l-9 2l7 6c-8 0-16-3-22-8z" fill="'+dark+'" stroke="'+ink+'" stroke-width="1.7" stroke-linejoin="round"/>'
+      /* head and hooked beak, carried low and forward */
+      +'<path d="M34 40c-6-1-11 1-13 5c-2 4 1 8 7 8c5 0 9-2 11-5z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="1.9" stroke-linejoin="round"/>'
+      +'<path d="M21 45c-4 0-7 1-9 3c3 1 5 2 7 4c2-1 3-3 2-7z" fill="'+deep+'" stroke="'+ink+'" stroke-width="1.5" stroke-linejoin="round"/>';
+    post=
+      /* tucked feet, the only thing that says it is an animal and not a glider */
+      '<g stroke="'+deep+'" stroke-width="2.6" stroke-linecap="round" fill="none">'
+      +'<path d="M55 55l4 6M64 55l3 6"/></g>'
+      +eye(26,45,2.4)
+      +'<path d="M36 42q12-3 22 1" fill="none" stroke="'+deep+'" stroke-width="1.3" opacity=".3"/>'
+      +'<path d="M42 49q12 3 24 0" fill="none" stroke="'+pale+'" stroke-width="1.6" opacity=".4"/>';
   } else if(spk==='duskwing'){
     shape='M38 45c0-9 5-15 12-15s12 6 12 15-5 16-12 16-12-7-12-16z';
     art='';
@@ -1664,44 +1629,28 @@ function critter(spk,hue,pat,sat,lit){
       +'<g stroke="'+deep+'" stroke-width="1.1" opacity=".3" stroke-linecap="round">'
       +'<path d="M42 33l3-4M52 30l3-4M62 30l3-4M72 33l3-4M81 39l4-3"/></g>';
   } else {
-    /* The Craglin is the cliff animal, so it has to READ as one: a deep chest
-       and high withers falling away to a lower rump, a short thick neck rather
-       than a stick, horns that grow out of the skull instead of hovering over
-       it, and short legs with a real bend at the hock. Everything that joins
-       the body is still drawn behind it, so no seam shows. */
+    /* The Craglin, kept deliberately plain. Every extra flourish it has had —
+       a second horn colour, a tufted tail, highlight lines along the shoulder —
+       made it read as a toy rather than an animal, so it is now just the parts
+       a goat actually has: a deep chest falling to a lower rump, a short neck,
+       a wedge head, one pair of horns, four legs with a bend. Everything that
+       joins the body is still drawn behind it, so no seam shows. */
     shape='M28 50C28 41 36 34 49 33c12-1 22 2 28 7c5 4 7 9 6 14c-1 8-11 13-24 13C43 67 29 60 28 50z';
     art=
-      /* far legs first, in the shaded colour, so the near pair reads in front */
       '<g stroke="'+dark+'" stroke-linecap="round" stroke-linejoin="round" fill="none">'
-      +'<path d="M42 60l-4 8l3 9" stroke-width="5.4"/><path d="M70 60l4 8l-2 9" stroke-width="5.4"/></g>'
-      +'<g stroke="url(#gu'+id+')" stroke-linecap="round" fill="none">'
-      +'<path d="M37 57l-3 9" stroke-width="9"/><path d="M34 66l3 11" stroke-width="5.6"/>'
-      +'<path d="M78 56l4 10" stroke-width="9"/><path d="M82 66l-3 11" stroke-width="5.6"/></g>'
-      /* neck: broad where it leaves the chest, narrowing into the jaw */
-      /* a short, thick neck — the head of a climber sits close to its shoulder */
-      +'<path d="M46 40C41 36 37 31 34 25l9-4c2 6 6 11 10 14z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="2" stroke-linejoin="round"/>'
-      /* skull: a blunt wedge with a squared muzzle, not a ball */
+      +'<path d="M43 60l-4 8l3 9" stroke-width="5.2"/><path d="M69 60l4 8l-2 9" stroke-width="5.2"/></g>'
+      +'<g stroke="url(#gu'+id+')" stroke-linecap="round" stroke-linejoin="round" fill="none">'
+      +'<path d="M38 57l-3 9l3 11" stroke-width="7"/><path d="M78 57l4 9l-3 11" stroke-width="7"/></g>'
+      +'<path d="M46 40C41 36 37 31 34 25l10-5c2 6 6 11 10 14z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="2" stroke-linejoin="round"/>'
       +'<path d="M37 28c-4-5-12-6-17-3c-4 2-4 7 0 9c4 2 10 1 14-1c3-2 4-4 3-5z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="2" stroke-linejoin="round"/>'
-      /* Backswept spikes. Curved crescents closed into a ring and read as a
-         handle; a straight tapering triangle reads as horn immediately. */
-      +'<path d="M28 21l15-10l-7 14z" fill="'+dark+'" stroke="'+ink+'" stroke-width="1.5" stroke-linejoin="round"/>'
-      +'<path d="M33 19l15-9l-8 13z" fill="'+pale+'" stroke="'+deep+'" stroke-width="1.4" stroke-linejoin="round"/>';
+      +'<path d="M29 21l16-10l-8 14z" fill="'+dark+'" stroke="'+ink+'" stroke-width="1.6" stroke-linejoin="round"/>';
     post=
-      /* hooves: short and blunt, planted on the ground line */
       '<g stroke="'+ink+'" stroke-width="3" stroke-linecap="round">'
-      +'<path d="M36 78h5M76 78h5"/></g>'
-      +'<g stroke="'+ink+'" stroke-width="2.4" stroke-linecap="round" opacity=".8">'
-      +'<path d="M40 77h4M71 77h4"/></g>'
-      /* a short tuft of a tail, held against the rump */
-      +'<path d="M86 48c6-1 9 3 8 8" fill="none" stroke="'+dark+'" stroke-width="5" stroke-linecap="round"/>'
-      +'<path d="M93 54c2 3 1 6-1 8" fill="none" stroke="'+deep+'" stroke-width="3.4" stroke-linecap="round"/>'
-      /* muzzle, nostril, eye */
+      +'<path d="M35 78h5M77 78h5"/></g>'
+      +'<path d="M85 49c6-1 9 3 8 9" fill="none" stroke="'+dark+'" stroke-width="4.6" stroke-linecap="round"/>'
       +'<ellipse cx="17" cy="31" rx="3" ry="2.4" fill="'+deep+'"/>'
       +'<path d="M20 35q7 2 11-2" fill="none" stroke="'+deep+'" stroke-width="1.5" stroke-linecap="round"/>'
-      +eye(27,29,2.6)
-      /* the line of the shoulder, which is what says "climber" */
-      +'<path d="M45 43q12-5 23 0" fill="none" stroke="'+deep+'" stroke-width="1.3" opacity=".3"/>'
-      +'<path d="M51 37q10-4 19 0" fill="none" stroke="'+pale+'" stroke-width="1.4" opacity=".35"/>';
+      +eye(27,29,2.6);
   }
   d+='<clipPath id="c'+id+'"><path d="'+shape+'"/></clipPath></defs>';
   var s=d+art;
@@ -2005,8 +1954,8 @@ function snapND(w,i){ var h=history(w,true); if(!h.length) return null; return h
 function snapAt(w,i){ var h=history(w); if(!h.length) return null; return h[clamp(i,1,h.length)-1]; }
 
 function blank(){
-  return {sp:'thornback', hue:PALETTE[0], pat:'solid', diet:[SPECIES[0].foods[0]],
-          t:{heat:2,cold:2,dry:2,evade:3,forage:3}, lh:5};
+  return {sp:'thornback', hue:PALETTE[0], pat:'solid',
+          t:{heat:2,cold:2,dry:3,evade:3}, lh:5};
 }
 function spent(d){ var s=0; TRAITS.forEach(function(t){ s+=d.t[t.k]; }); return s; }
 
@@ -2043,14 +1992,7 @@ function renderDesign(force){
   });
   h+='</div><div class="ev-hint">Predators hunt by sight. You do not yet know what the ground looks like.</div></div>';
 
-  h+='<div class="ev-dsec"><div class="ev-dlbl">3 &middot; Diet &mdash; choose two</div><div class="ev-diet">';
-  sp.foods.forEach(function(f){
-    h+='<button class="ev-food'+(d.diet.indexOf(f)>-1?' on':'')+'" type="button" data-food="'+f+'">'
-      +FOODNAME[f]+'</button>';
-  });
-  h+='</div><div class="ev-hint">Only this species eats these. Some may not grow where you land.</div></div>';
-
-  h+='<div class="ev-dsec"><div class="ev-dlbl">4 &middot; Traits <span class="ev-pts'+(left<0?' bad':'')+'">'
+  h+='<div class="ev-dsec"><div class="ev-dlbl">3 &middot; Traits <span class="ev-pts'+(left<0?' bad':'')+'">'
     +left+' point'+(left===1?'':'s')+' left</span></div>';
   TRAITS.forEach(function(t){
     h+='<div class="ev-trow"><span class="ev-tn">'+t.n+'</span><div class="ev-pips">';
@@ -2060,17 +2002,16 @@ function renderDesign(force){
   });
   h+='</div>';
 
-  h+='<div class="ev-dsec"><div class="ev-dlbl">5 &middot; Life history</div>'
+  h+='<div class="ev-dsec"><div class="ev-dlbl">4 &middot; Life history</div>'
     +'<input class="ev-lh" type="range" min="0" max="10" value="'+d.lh+'" data-lh>'
     +'<div class="ev-lhends"><span>Many young,<br>few survive</span><span>Few young,<br>most survive</span></div>'
     +'<div class="ev-lhread" data-lhread>Rebound in an empty world <b>'+intrinsic(d.lh).toFixed(2)+'&times;</b>'
     +' &middot; Holding a full one <b>'+compAbility(d.lh).toFixed(2)+'</b></div>'
     +'<div class="ev-hint">Many young refill a world that keeps getting knocked down. Few, well-fed young win a world that is already full. Neither is better until you see the climate.</div></div>';
 
-  h+='<button class="cg-btn go big ev-lock" type="button" data-lock'+(left!==0||d.diet.length!==2?' disabled':'')+'>'
+  h+='<button class="cg-btn go big ev-lock" type="button" data-lock'+(left!==0?' disabled':'')+'>'
     +(myDesign()?'Update my organism':'Lock in my organism')+'</button>';
   if(left!==0) h+='<div class="ev-warn">Spend exactly '+PTS+' points.</div>';
-  else if(d.diet.length!==2) h+='<div class="ev-warn">Choose exactly two foods.</div>';
   box.innerHTML=h;
 }
 
@@ -2140,7 +2081,8 @@ function renderMine(force){
       +'<span class="ev-pv">selection</span><span class="ev-pv">actual</span></div>';
     var chance=0;
     TRAITS.forEach(function(t){
-      var a=d.t[t.k], b=L.t[t.k], sel=LN?LN.t[t.k]:b;
+      /* a trait that is missing or non-numeric must not take the render down */
+      var a=+d.t[t.k]||0, b=+L.t[t.k]||0, sel=LN?(+LN.t[t.k]||0):b;
       chance+=Math.abs(b-sel);
       h+='<div class="ev-prow"><span class="ev-pn">'+t.n+'</span>'
         +'<span class="ev-pv">'+a.toFixed(0)+'</span>'
@@ -2162,8 +2104,7 @@ function renderMine(force){
     /* the old version was five unlabelled bars, which told a student nothing
        about what the bar meant or why it was where it was. Each row now says
        what this world is doing to them and, in plain words, why. */
-    var fp=fitParts({sp:d.sp,hue:L.hue,pat:d.pat,diet:d.diet,t:L.t}, e);
-    var grown=(d.diet||[]).filter(function(f){ return (e.food[f]||0)>0; }).length;
+    var fp=fitParts({sp:d.sp,hue:L.hue,pat:d.pat,t:L.t}, e);
     var why={
       Camouflage: hueDist(L.hue,e.hue)<28 ? 'You match the ground here' : 'You stand out against the ground',
       Temperature: e.temp==='hot' ? (L.t.heat>=3?'Built for this heat':'Not built for this heat')
@@ -2172,8 +2113,6 @@ function renderMine(force){
       Water: e.rain==='arid' ? (L.t.dry>=3?'Holds water well enough for this':'Too thirsty for this dry world')
            : e.rain==='wet' ? 'Wet ground — drought proofing is wasted here'
            : 'Rainfall is no trouble either way',
-      Food: grown===2 ? 'Both of your foods grow here'
-          : grown===1 ? 'Only one of your two foods grows here' : 'Neither of your foods grows here',
       Predators: e.pred==='low' ? 'Few predators to worry about'
                : (L.t.evade>=3?'Quick enough to get away here':'Slow, and this world hunts')
     };
@@ -2316,8 +2255,6 @@ function hueName(h){
 }
 function revealRows(){
   var e=world(0);
-  var grown=ALLFOOD.filter(function(f){ return e.food[f]>0; }).length;
-  var counts=[]; for(var i=4;i<=13;i++) counts.push(i+' of '+ALLFOOD.length);
   return [
     {lab:'Ground color',  val:hueName(e.hue), hue:e.hue,
      pool:[15,38,52,70,100,150,180,200,240,280,320,350].map(function(h){ return hueName(h); }),
@@ -2326,8 +2263,7 @@ function revealRows(){
     {lab:'Temperature',   val:e.temp,  pool:TEMP},
     {lab:'Rainfall',      val:e.rain,  pool:RAIN},
     {lab:'Predators',     val:e.pred,  pool:PRED},
-    {lab:'Climate',       val:e.stab,  pool:STAB},
-    {lab:'Foods growing', val:grown+' of '+ALLFOOD.length, pool:counts}
+    {lab:'Climate',       val:e.stab,  pool:STAB}
   ];
 }
 var rvRAF=null, rvSig='';
@@ -2515,13 +2451,17 @@ function famBuild(){
         var key=side+':'+v.id, N=nodes[key];
         if(!N){
           N=nodes[key]={key:key, side:side, id:v.id, born:v.born, died:0, n:0,
-                        hue:v.hue, pat:d.pat, sp:d.sp, t:{}, peak:0,
+                        hue:v.hue, pat:d.pat, sp:d.sp, t:{}, peak:0, hist:{},
                         par: v.par>=0 ? side+':'+v.par : (side? ':'+v.id : null)};
           order.push(key);
         }
         if(v.died) N.died=v.died;
         else { N.n=v.n; N.hue=v.hue; N.peak=Math.max(N.peak,v.n);
-               TRAITS.forEach(function(tr){ N.t[tr.k]=v.t[tr.k]; }); }
+               TRAITS.forEach(function(tr){ N.t[tr.k]=v.t[tr.k]; });
+               /* one entry per generation this branch was alive: the tree draws
+                  a mark for every one of them, which is how a student watches
+                  their colour being handed on and pulled about */
+               N.hist[g]={n:v.n, hue:v.hue}; }
       });
     }
   }
@@ -2562,7 +2502,11 @@ function famLayout(fam, W, H){
   var rows=[]; for(var r=1;r<=lastRow;r++) rows.push(r);
   var PADT=34, PADB=58, avail=H-PADT-PADB;
   var steps=[0];
-  for(var i=1;i<rows.length;i++) steps.push(births[rows[i]] ? 1 : 0.44);
+  for(var i=1;i<rows.length;i++){
+    /* the first step has to clear the founder, which is a drawn animal rather
+       than a disc, so it gets more room than a row of discs needs */
+    steps.push(i===1 ? 1.9 : (births[rows[i]] ? 1 : 0.44));
+  }
   var tot=steps.reduce(function(a,b){ return a+b; },0);
   var unit=Math.min(126, tot ? avail/tot : avail);
   var top=PADT + Math.max(0,(avail-unit*tot))/2;
@@ -2592,7 +2536,9 @@ function famLayout(fam, W, H){
     N.R = (N.par===null && !N.side) ? Math.round(52*sc)
         : clamp(7+Math.sqrt(Math.max(1,N.peak))*1.5, 7, Math.min(26, colW*0.42));
   });
-  return {kids:kids, roots:roots, rows:rows, rowY:rowY, colW:colW, sc:sc, gap:gap, unit:unit};
+  var maxR=Math.min(15, unit*0.40, colW*0.40);
+  return {kids:kids, roots:roots, rows:rows, rowY:rowY, colW:colW, sc:sc, gap:gap,
+          unit:unit, maxR:maxR};
 }
 function drawFamily(svg, W, H){
   var fam=famBuild();
@@ -2630,45 +2576,45 @@ function drawFamily(svg, W, H){
         +C.y.toFixed(1)+' H'+(C.x-RAD).toFixed(1)+'"/>';
     });
   });
-  /* Nodes. The founder is drawn as the animal the student built; every
-     descendant is a disc in its OWN colour, sized by how many there are. That
-     is what the tree is for — watching colour drift apart down the branches,
-     and seeing which shades die out and which take the population — and it is
-     the only way a dozen branches fit on one screen. Clicking any of them
-     still opens its full characteristics. */
+  /* Nodes. Every branch gets a mark in EVERY generation it was alive, one disc
+     per generation coloured by what that branch's colour actually was then and
+     sized by how many of them there were. Read a column downwards and you are
+     watching one line hand its colour on and be pulled about by drift; read the
+     board across and the branches that match the ground are the ones getting
+     fatter while the rest thin out and stop. The founder keeps the animal the
+     student built so they can find themselves. Any branch is still clickable
+     for its full characteristics. */
   fam.order.forEach(function(k){
     var N=fam.nodes[k], dead=!!N.died, sel=(famSel===k), root=(N.par===null && !N.side);
+    var off=N.side? G : 0;
     var lf=Math.max(11, Math.round(19*L.sc)), tf=Math.max(10.5, Math.round(17*L.sc));
-    var R=N.R;
     s+='<g class="fm-node'+(dead?' dead':'')+(sel?' sel':'')+'" data-fnode="'+k+'" tabindex="0" role="button">';
-    if(root){
-      s+='<circle class="fm-halo" cx="'+N.x.toFixed(1)+'" cy="'+N.y.toFixed(1)+'" r="'+R.toFixed(1)+'"/>'
-        +'<g transform="translate('+(N.x-50*L.sc).toFixed(1)+','+(N.y-45*L.sc).toFixed(1)+') scale('+L.sc.toFixed(2)+')">'
-        + critter(N.sp, Math.round(N.hue), N.pat, dead?12:46, dead?62:44) +'</g>'
-        +'<text class="fm-lab" style="font-size:'+lf.toFixed(1)+'px" x="'+N.x.toFixed(1)+'" y="'
-        +(N.y+R+15).toFixed(1)+'" text-anchor="middle">your organism</text>';
-    } else {
-      s+='<circle class="fm-dot'+(dead?' dead':'')+'" cx="'+N.x.toFixed(1)+'" cy="'+N.y.toFixed(1)
-        +'" r="'+R.toFixed(1)+'" fill="'+(dead?'#efeae1':hsl(Math.round(N.hue),CRIT_SAT,CRIT_LIT))+'"/>';
-      if(sel) s+='<circle class="fm-ring" cx="'+N.x.toFixed(1)+'" cy="'+N.y.toFixed(1)
-        +'" r="'+(R+5).toFixed(1)+'"/>';
-      if(N.side) s+='<text class="fm-sidetag" x="'+N.x.toFixed(1)+'" y="'+(N.y+3.5).toFixed(1)
-        +'" text-anchor="middle">'+N.side+'</text>';
-    }
+    var gens_=Object.keys(N.hist).map(Number).sort(function(a,b){ return a-b; });
+    gens_.forEach(function(g){
+      var y=L.rowY[off+g]; if(y===undefined) return;
+      var st=N.hist[g];
+      if(root && g===N.row){
+        s+='<circle class="fm-halo" cx="'+N.x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+N.R.toFixed(1)+'"/>'
+          +'<g transform="translate('+(N.x-50*L.sc).toFixed(1)+','+(y-45*L.sc).toFixed(1)+') scale('+L.sc.toFixed(2)+')">'
+          + critter(N.sp, Math.round(st.hue), N.pat, 46, 44) +'</g>';
+        return;
+      }
+      var r=clamp(3.6+Math.sqrt(Math.max(1,st.n))*1.15, 3.6, L.maxR);
+      s+='<circle class="fm-dot" cx="'+N.x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r.toFixed(1)
+        +'" fill="'+hsl(Math.round(st.hue),CRIT_SAT,CRIT_LIT)+'"/>';
+    });
+    if(sel) s+='<circle class="fm-ring" cx="'+N.x.toFixed(1)+'" cy="'
+      +(L.rowY[off+(gens_[gens_.length-1]||N.row)]||N.y).toFixed(1)+'" r="'+(L.maxR+5).toFixed(1)+'"/>';
+    if(root) s+='<text class="fm-lab" style="font-size:'+lf.toFixed(1)+'px" x="'+N.x.toFixed(1)+'" y="'
+      +(N.y+N.R+15).toFixed(1)+'" text-anchor="middle">your organism</text>';
     s+='</g>';
-    /* what became of the line is written at the far end of its lifeline, where
-       there is room, rather than crowded under the node */
+    /* where the line ended: a cross if it died, its final count if it held on */
     var yEnd2=L.rowY[N.endRow];
     if(yEnd2!==undefined){
-      /* every living branch ends on the same row, so a label set beside the tip
-         ran into its neighbours. The bare count, centred under the tip, fits a
-         column; a branch that died needs no number at all, because where its
-         lifeline stops already says when. */
       if(dead) s+='<path class="fm-x" d="M'+(N.x-6).toFixed(1)+' '+(yEnd2-6).toFixed(1)
         +' l12 12 M'+(N.x+6).toFixed(1)+' '+(yEnd2-6).toFixed(1)+' l-12 12"/>';
-      else s+='<circle class="fm-tip" cx="'+N.x.toFixed(1)+'" cy="'+yEnd2.toFixed(1)+'" r="4"/>'
-        +'<text class="fm-sub" style="font-size:'+tf.toFixed(1)+'px" x="'+N.x.toFixed(1)
-        +'" y="'+(yEnd2+16).toFixed(1)+'" text-anchor="middle">'+num(N.n)+'</text>';
+      else s+='<text class="fm-sub" style="font-size:'+tf.toFixed(1)+'px" x="'+N.x.toFixed(1)
+        +'" y="'+(yEnd2+18).toFixed(1)+'" text-anchor="middle">'+num(N.n)+'</text>';
     }
   });
   /* the colour the world is asking for, so drift toward it is legible */
@@ -2985,13 +2931,10 @@ function renderFinal(box){
   if(!fL){ box.innerHTML='<div class="ev-blk">'+bhead('','Nothing to summarize')+'</div>'; return; }
   var m1=meanTraits(f1), mL=meanTraits(fL), mv=biggestMover(e,m1,mL);
   var lived=fL.alive, started=nDesigns();
-  var grown=ALLFOOD.filter(function(f){ return e.food[f]>0; }).length;
-
   h+=svSummaryHtml();
   h+='<div class="ev-blk">'+bhead('','The world you drew')
     +'<div class="ev-sumline">A <b>'+e.temp+'</b>, <b>'+e.rain+'</b> world on '+TEXNAME[e.tex]
-    +', <b>'+e.pred+'</b> predators, a <b>'+e.stab+'</b> climate, <b>'+grown+'</b> of '
-    +ALLFOOD.length+' foods growing.</div>'
+    +', <b>'+e.pred+'</b> predators and a <b>'+e.stab+'</b> climate.</div>'
     +'<div class="ev-hint">None of this was known during the design phase.</div></div>';
 
   h+='<div class="ev-blk">'+bhead('I','Response to selection')
@@ -3055,12 +2998,10 @@ function renderEcoBar(){
   }
   var e=world(0);
   function chip(l,v){ return '<span class="ev-chip"><b>'+l+'</b><span>'+v+'</span></span>'; }
-  var grown=ALLFOOD.filter(function(f){ return e.food[f]>0; }).length;
   bar.innerHTML='<span class="ev-econame">The world you drew</span>'
     +chip('Ground','<i class="ev-dot" style="background:'+hsl(e.hue,30,46)+'"></i>'+TEXNAME[e.tex])
     +chip('Temperature',e.temp)+chip('Rainfall',e.rain)
-    +chip('Predators',e.pred)+chip('Climate',e.stab)
-    +chip('Foods',grown+' of '+ALLFOOD.length);
+    +chip('Predators',e.pred)+chip('Climate',e.stab);
 }
 
 /* ══ phase clock ══ */
@@ -3164,7 +3105,7 @@ function render(){
     q('[data-skip]').hidden = !(ph==='design'||ph==='discuss');
     q('[data-split]').hidden = ph!=='discuss';
     q('[data-again]').hidden = !(ph==='final') || againOpen();
-    q('[data-survey]').hidden = !(ph==='discuss'||ph==='final') || svOpen();
+    q('[data-survey]').hidden = ph!=='final' || svOpen();
     q('[data-surveyclose]').hidden = !svOpen();
     q('[data-step]').hidden = !(ph==='run'||ph==='split');
     st.textContent='';
@@ -3176,6 +3117,10 @@ function render(){
       : ph==='discuss' ? 'Paused. Drop the barrier to split this population between two new worlds.'
       : ph==='split' ? ('Isolated — generation '+splitIdx()+' of '+gens()+' on both sides.')
       : 'Run complete.';
+    /* the survey shows on the STUDENTS' screens, so without this the button
+       looks broken from the front of the room */
+    if(svOpen()) hs.textContent='Survey is open on every student screen — '
+      +svSummary().n+' answered so far. Nothing from it is shown here.';
   } else {
     st.textContent = ph==='idle' ? 'Waiting for the instructor.'
       : ph==='lobby' ? (joined()?'You are in. Design opens shortly.':'Tap to join.')
@@ -3234,19 +3179,15 @@ q('[data-scenes]').addEventListener('keydown',function(ev){
 q('[data-design]').addEventListener('click',function(ev){
   var b=ev.target.closest('button'); if(!b||!myD) return;
   var d=myD;
-  if(b.dataset.sp){ if(d.sp!==b.dataset.sp){ d.sp=b.dataset.sp; d.diet=[]; } }
+  if(b.dataset.sp){ d.sp=b.dataset.sp; }
   else if(b.dataset.hue!==undefined) d.hue=parseInt(b.dataset.hue,10);
   else if(b.dataset.pat) d.pat=b.dataset.pat;
-  else if(b.dataset.food){
-    var f=b.dataset.food, i=d.diet.indexOf(f);
-    if(i>-1) d.diet.splice(i,1); else if(d.diet.length<2) d.diet.push(f);
-  }
   else if(b.dataset.inc){ if(spent(d)<PTS && d.t[b.dataset.inc]<TMAX) d.t[b.dataset.inc]++; }
   else if(b.dataset.dec){ if(d.t[b.dataset.dec]>0) d.t[b.dataset.dec]--; }
   else if(b.hasAttribute('data-lock')){
-    if(spent(d)!==PTS||d.diet.length!==2) return;
-    var o={designs:{}}; o.designs[PK]={sp:d.sp,hue:d.hue,pat:d.pat,diet:d.diet.slice(),
-      t:{heat:d.t.heat,cold:d.t.cold,dry:d.t.dry,evade:d.t.evade,forage:d.t.forage},lh:d.lh};
+    if(spent(d)!==PTS) return;
+    var o={designs:{}}; o.designs[PK]={sp:d.sp,hue:d.hue,pat:d.pat,
+      t:{heat:d.t.heat,cold:d.t.cold,dry:d.t.dry,evade:d.t.evade},lh:d.lh};
     backend.mergeDocShard('polls',GID,o);
     return;
   } else return;
@@ -3371,12 +3312,17 @@ function svSubmit(ev){
 }
 function svSummaryHtml(){
   /* Nothing but the count, and only on the instructor's copy. Every answer,
-     percentage and comment goes to the inbox instead of the wall. */
+     percentage and comment goes to the inbox instead of the wall.
+     It appears as soon as the survey OPENS rather than on the first answer,
+     so pressing the button visibly does something from the front of the room. */
   var d=svSummary();
-  if(!HOST || !d.n) return '';
-  return '<div class="ev-blk sv-sum">'+bhead('','Survey')
+  if(!HOST || (!d.n && !svOpen())) return '';
+  return '<div class="ev-blk sv-sum">'+bhead('', svOpen()? 'Survey — open' : 'Survey')
     +statRow('Answers in', d.n, d.n===1?'response':'responses')
-    +'<button class="cg-btn go sv-mail" type="button" data-surveymail>Email me the results</button>'
+    +(svOpen()? '<div class="ev-hint">It is on every student screen now. '
+      +'Press <b>Close survey</b> in the bar above when you are done.</div>' : '')
+    +'<button class="cg-btn go sv-mail" type="button" data-surveymail'+(d.n?'':' disabled')+'>'
+    +'Email me the results</button>'
     +'<div class="ev-hint" data-surveymailmsg>Nothing from the survey is shown on this screen. '
     +'The answers and any comments go to your inbox.</div></div>';
 }
@@ -3467,17 +3413,25 @@ var FREEZE = DEMOQ.has('freeze') ? parseInt(DEMOQ.get('freeze'),10) : -1;
 var DSEED = DEMOQ.has('seed') ? parseInt(DEMOQ.get('seed'),10) : 0;
 function demoRun(){
   var N=28, tid=null, step=0;
-  var SPK=['thornback','fernstalker','duskwing','burrowim','craglin'];
-  var KEYS=['heat','cold','dry','evade','forage'];
+  var SPK=['thornback','marshkite','duskwing','burrowim','craglin'];
+  var KEYS=['heat','cold','dry','evade'];
   function mkDesign(i){
-    var sp=SPK[i%5], f=SPBY[sp].foods, t={heat:0,cold:0,dry:0,evade:0,forage:0}, left=PTS;
-    [(i*3)%5,(i*7)%5,(i*11)%5,(i*13)%5,(i*17)%5].forEach(function(oi,j){
-      var k=KEYS[oi], g=Math.max(0,Math.min(Math.min(TMAX-t[k], j<2?(2+(i+j)%3):left),left));
+    /* Every index here is taken modulo KEYS.length rather than a hard-coded 5.
+       When the trait list shrank, the old fixed 5 indexed past the end, wrote
+       NaN into a key called "undefined", and the local backend's JSON round
+       trip turned that into null — which then threw inside the read-out and
+       took the whole slide's render down with it. */
+    var sp=SPK[i%SPK.length], t={heat:0,cold:0,dry:0,evade:0}, left=PTS, j, k, g;
+    for(j=0;j<KEYS.length;j++){
+      k=KEYS[(i+j)%KEYS.length];
+      g=Math.max(0, Math.min(TMAX-t[k], left, (j===KEYS.length-1)?left:(i*(j+2))%(TMAX+1)));
       t[k]+=g; left-=g;
-    });
-    for(var p=0;p<5&&left>0;p++){ var k2=KEYS[p], g2=Math.min(TMAX-t[k2],left); t[k2]+=g2; left-=g2; }
+    }
+    for(j=0;j<KEYS.length && left>0;j++){
+      k=KEYS[j]; g=Math.min(TMAX-t[k], left); t[k]+=g; left-=g;
+    }
     return {sp:sp, hue:PALETTE[(i*3)%PALETTE.length], pat:['solid','mottled','banded'][i%3],
-            diet:[f[i%3], f[(i+1)%3]], t:t, lh:(i*7)%11};
+            t:t, lh:(i*7)%11};
   }
   /* the caption strip that makes the recording legible on its own */
   var bar=document.createElement('div');
@@ -3505,7 +3459,7 @@ function demoRun(){
         doc({players:pl});
       }, N+' students tap Join — you are one of them. Nobody is told anything about the world yet.'],
     [2600, function(){ doc({phase:'design', deadline:Date.now()+9000}); },
-        'Design opens. Each student builds one organism: species, color, diet, five trait points, and how it raises its young.'],
+        'Design opens. Each student builds one organism: species, colour, pattern, four trait points, and how it raises its young.'],
     [1500, function(){ var d={}; for(var i=0;i<9;i++) d['d'+i]=mkDesign(i); doc({designs:d}); },
         'Designs start landing. The projected copy fills with specimens as they lock in.'],
     [2200, function(){ var d={}; for(var i=9;i<20;i++) d['d'+i]=mkDesign(i); doc({designs:d}); },
