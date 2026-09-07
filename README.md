@@ -7,7 +7,7 @@ Both games are normally played by a whole lecture hall at once, with every
 student on their own phone and the instructor driving the phases from a
 projected copy of the deck. That makes them almost impossible to show to one
 person. So each game has a **self-running demo**: open it and a full class
-joins, plays and finishes in about a minute on the one screen, with a caption
+joins, plays and finishes in a minute or two on the one screen, with a caption
 strip explaining each beat.
 
 Nothing is faked. The simulated students' choices go through exactly the same
