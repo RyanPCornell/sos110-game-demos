@@ -3339,6 +3339,7 @@ function svSubmit(ev){
   o.survey[PK]={h:h, e:e, f:fr, c:(q('[data-surveycomment]').value||'').slice(0,600)};
   backend.mergeDocShard('polls',GID,o);
 }
+var svMsg='';
 function svSummaryHtml(){
   /* Nothing but the count, and only on the instructor's copy. Every answer,
      percentage and comment goes to the inbox instead of the wall.
@@ -3349,11 +3350,12 @@ function svSummaryHtml(){
   return '<div class="ev-blk sv-sum">'+bhead('', svOpen()? 'Survey — open' : 'Survey')
     +statRow('Answers in', d.n, d.n===1?'response':'responses')
     +(svOpen()? '<div class="ev-hint">It is on every student screen now. '
-      +'Press <b>Close survey</b> in the bar above when you are done.</div>' : '')
+      +'Emailing the results closes it; <b>Close survey</b> above ends it without sending.</div>' : '')
     +'<button class="cg-btn go sv-mail" type="button" data-surveymail'+(d.n?'':' disabled')+'>'
     +'Email me the results</button>'
-    +'<div class="ev-hint" data-surveymailmsg>Nothing from the survey is shown on this screen. '
-    +'The answers and any comments go to your inbox.</div></div>';
+    +'<div class="ev-hint" data-surveymailmsg>'
+    +(svMsg || 'Nothing from the survey is shown on this screen. '
+              +'The answers and any comments go to your inbox.')+'</div></div>';
 }
 function svText(){
   var d=svSummary(), L=[];
@@ -3371,23 +3373,34 @@ function svText(){
   d.comments.forEach(function(c){ L.push('  - '+c); });
   return L.join('\n');
 }
+/* closing the survey re-renders the read-out, which would throw away a message
+   written straight into the DOM — so it is held in state and drawn from there */
+function svSay(t){
+  svMsg=t;
+  var el=q('[data-surveymailmsg]'); if(el) el.textContent=t;
+}
 function svMail(){
-  var msg=q('[data-surveymailmsg]'), body=svText();
+  /* Snapshot what is being sent BEFORE closing, so the email is exactly the
+     tally that was on screen when the button was pressed and a late answer
+     cannot be silently left out of it. Then shut the survey off every student
+     screen: pressing this is the instructor saying they are done with it. */
+  var summary=svSummary(), body=svText();
+  if(svOpen()) backend.mergeDoc('polls',GID,{surveyOpen:0});
   var url=(window.SURVEY_MAIL_URL||'').trim();
   if(!url){
     /* nothing configured: hand the instructor the text rather than lose it */
     try{ navigator.clipboard.writeText(body); }catch(e){}
     window.open('mailto:?subject='+encodeURIComponent('SOS 110 — Evolve exit survey')
       +'&body='+encodeURIComponent(body.slice(0,1500)), '_blank');
-    if(msg) msg.textContent='No survey mailer is set up yet, so the full summary was copied to your clipboard and a draft was opened.';
+    svSay('Survey closed. No mailer is set up yet, so the full summary was copied to your clipboard and a draft was opened.');
     return;
   }
-  if(msg) msg.textContent='Sending…';
+  svSay('Survey closed. Sending…');
   fetch(url, {method:'POST', mode:'no-cors',
     headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({kind:'evolve-survey', gameId:gid(), summary:svSummary(), text:body})})
-    .then(function(){ if(msg) msg.textContent='Sent. It should arrive in a minute.'; })
-    .catch(function(){ if(msg) msg.textContent='Could not reach the mailer — the summary is on screen and in your clipboard.'; });
+    body:JSON.stringify({kind:'evolve-survey', gameId:gid(), summary:summary, text:body})})
+    .then(function(){ svSay('Survey closed and the results sent. They should arrive in a minute.'); })
+    .catch(function(){ svSay('Survey closed, but the mailer could not be reached — the summary is in your clipboard.'); });
 }
 
 function wireHost(){
@@ -3406,6 +3419,7 @@ function wireHost(){
   });
   bar.querySelector('[data-skip]').addEventListener('click',advance);
   bar.querySelector('[data-survey]').addEventListener('click',function(){
+    svMsg='';
     backend.mergeDoc('polls',GID,{surveyOpen:1, survey:{}});
   });
   bar.querySelector('[data-surveyclose]').addEventListener('click',function(){
