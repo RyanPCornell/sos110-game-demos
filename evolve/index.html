@@ -505,6 +505,20 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .ev-scene{flex:1 1 0; width:100%; min-height:0; display:block;}
 .ev-scenelbl{font-weight:800; font-size:clamp(.66rem,1.02vw,.78rem); letter-spacing:.05em;
   text-transform:uppercase; color:#fff; background:var(--accent); padding:.16rem .55rem;}
+/* the generation counter, set over the stage like a plate number */
+.ev-scenewrap{position:relative;}
+.ev-genbadge{position:absolute; top:.55rem; right:.65rem; z-index:4; pointer-events:none;
+  display:flex; flex-direction:column; align-items:flex-end; line-height:1;
+  background:rgba(255,253,246,.9); border:1px solid rgba(120,100,60,.34);
+  border-radius:10px; padding:.3rem .6rem .34rem; backdrop-filter:blur(2px);
+  box-shadow:0 3px 12px rgba(60,48,20,.14);}
+.ev-genbadge[hidden]{display:none !important;}
+.ev-genlbl{font-family:'Inter',sans-serif; font-size:clamp(.5rem,.82vw,.6rem); font-weight:800;
+  letter-spacing:.17em; text-transform:uppercase; color:var(--accent);}
+.ev-gennum{font-family:'Merriweather',serif; font-weight:900; color:#3b3222;
+  font-variant-numeric:tabular-nums; font-size:clamp(1.5rem,3.4vw,2.4rem); margin:.04rem 0 .02rem;}
+.ev-genof{font-family:'Inter',sans-serif; font-size:clamp(.52rem,.86vw,.64rem);
+  font-weight:600; letter-spacing:.06em; color:#8a8069;}
 .ev-empty{font:700 26px 'Inter',sans-serif; fill:rgba(30,45,38,.5);}
 /* the stage should breathe: a slow bob, offset per animal so the population
    never moves in lockstep, plus a contact shadow that grounds each one */
@@ -1058,6 +1072,11 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
         <div class="ev-scenes" data-scenes>
           <div class="ev-scenewrap" data-scenewrap-a>
             <div class="ev-scenelbl" data-scenelbl-a hidden></div>
+            <div class="ev-genbadge" data-genbadge hidden>
+              <span class="ev-genlbl" data-genlbl>Generation</span>
+              <span class="ev-gennum" data-gennum>1</span>
+              <span class="ev-genof" data-genof>of 10</span>
+            </div>
             <svg class="ev-scene" data-scene-a viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid slice"
                  role="img" aria-label="The ecosystem and the organisms living in it"></svg>
           </div>
@@ -1148,8 +1167,8 @@ var SPECIES=[
   innate:{pred:0.20, cold:-0.16}, blurb:'Escapes almost anything. Loses heat doing it.'},
  {k:'burrowim', n:'Burrowim', tag:'digging omnivore',
   innate:{hot:0.18, arid:0.16, pred:-0.06}, blurb:'Sits out the heat underground.'},
- {k:'craglin', n:'Craglin', tag:'rock climber',
-  innate:{cold:0.18, pred:0.08, wet:-0.18}, blurb:'Built for cold stone. Rots in the wet.'}
+ {k:'stonecoil', n:'Stonecoil', tag:'rock serpent',
+  innate:{cold:0.18, pred:0.08, wet:-0.18}, blurb:'Slides through cold dry rock. Waterlogged ground kills it.'}
 ];
 var SPBY={}; SPECIES.forEach(function(s){ SPBY[s.k]=s; });
 var TRAITS=[
@@ -1629,28 +1648,27 @@ function critter(spk,hue,pat,sat,lit){
       +'<g stroke="'+deep+'" stroke-width="1.1" opacity=".3" stroke-linecap="round">'
       +'<path d="M42 33l3-4M52 30l3-4M62 30l3-4M72 33l3-4M81 39l4-3"/></g>';
   } else {
-    /* The Craglin, kept deliberately plain. Every extra flourish it has had —
-       a second horn colour, a tufted tail, highlight lines along the shoulder —
-       made it read as a toy rather than an animal, so it is now just the parts
-       a goat actually has: a deep chest falling to a lower rump, a short neck,
-       a wedge head, one pair of horns, four legs with a bend. Everything that
-       joins the body is still drawn behind it, so no seam shows. */
-    shape='M28 50C28 41 36 34 49 33c12-1 22 2 28 7c5 4 7 9 6 14c-1 8-11 13-24 13C43 67 29 60 28 50z';
-    art=
-      '<g stroke="'+dark+'" stroke-linecap="round" stroke-linejoin="round" fill="none">'
-      +'<path d="M43 60l-4 8l3 9" stroke-width="5.2"/><path d="M69 60l4 8l-2 9" stroke-width="5.2"/></g>'
-      +'<g stroke="url(#gu'+id+')" stroke-linecap="round" stroke-linejoin="round" fill="none">'
-      +'<path d="M38 57l-3 9l3 11" stroke-width="7"/><path d="M78 57l4 9l-3 11" stroke-width="7"/></g>'
-      +'<path d="M46 40C41 36 37 31 34 25l10-5c2 6 6 11 10 14z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="2" stroke-linejoin="round"/>'
-      +'<path d="M37 28c-4-5-12-6-17-3c-4 2-4 7 0 9c4 2 10 1 14-1c3-2 4-4 3-5z" fill="url(#gu'+id+')" stroke="'+ink+'" stroke-width="2" stroke-linejoin="round"/>'
-      +'<path d="M29 21l16-10l-8 14z" fill="'+dark+'" stroke="'+ink+'" stroke-width="1.6" stroke-linejoin="round"/>';
+    /* A serpent, because the fifth slot kept coming out as another awkward
+       quadruped. A snake is one tapering curve — no legs, no neck, no horns to
+       get wrong — so it is both the simplest thing on the board and the one
+       silhouette that cannot be confused with any of the other four. The body
+       IS the outline, which means the belly light and the pattern clip to it
+       for free. */
+    shape='M15 39C23 29 35 27 47 33C59 39 63 49 75 49C85 49 91 41 97 33'
+         +'C91 40 88 56 75 56C61 56 56 45 45 40C35 36 26 42 18 52'
+         +'C8 50 7 42 15 39Z';
+    art='';
     post=
-      '<g stroke="'+ink+'" stroke-width="3" stroke-linecap="round">'
-      +'<path d="M35 78h5M77 78h5"/></g>'
-      +'<path d="M85 49c6-1 9 3 8 9" fill="none" stroke="'+dark+'" stroke-width="4.6" stroke-linecap="round"/>'
-      +'<ellipse cx="17" cy="31" rx="3" ry="2.4" fill="'+deep+'"/>'
-      +'<path d="M20 35q7 2 11-2" fill="none" stroke="'+deep+'" stroke-width="1.5" stroke-linecap="round"/>'
-      +eye(27,29,2.6);
+      /* the flick of a tongue, which is the whole tell */
+      '<path d="M11 45c-4 1-7 1-10 0" fill="none" stroke="'+deep+'" stroke-width="1.6" stroke-linecap="round"/>'
+      +'<path d="M4 44l-4-2M4 46l-4 2" fill="none" stroke="'+deep+'" stroke-width="1.4" stroke-linecap="round"/>'
+      +eye(17,40,2.4)
+      /* a pale belly line following the coil, which is what gives it length */
+      +'<path d="M18 46C25 38 35 36 46 42C58 48 62 54 75 53" fill="none" stroke="'+pale+'"'
+      +' stroke-width="2.4" stroke-linecap="round" opacity=".45"/>'
+      /* scale ticks along the back, faint enough to read as texture */
+      +'<g stroke="'+deep+'" stroke-width="1.1" opacity=".28" stroke-linecap="round">'
+      +'<path d="M28 31l-2-3M38 30l-1-3M48 34l1-3M58 39l2-3M68 45l2-3M80 47l1-3"/></g>';
   }
   d+='<clipPath id="c'+id+'"><path d="'+shape+'"/></clipPath></defs>';
   var s=d+art;
@@ -3078,6 +3096,17 @@ function render(){
     if(e) drawScene(q('[data-scene-a]'), e, snapAt(0,genIdx()||gens()), PK, 1000);
     else drawHidden(q('[data-scene-a]'), ph);
   }
+  /* The generation count used to live only under the stage and in the side
+     panel, which is not where anybody is looking while the animals are moving.
+     It now sits in the top corner of the stage itself. */
+  var gb=q('[data-genbadge]'), running=(ph==='run'||ph==='split');
+  gb.hidden=!running;
+  if(running){
+    var gnow = ph==='split' ? (splitIdx()||1) : (genIdx()||1);
+    q('[data-genlbl]').textContent = ph==='split' ? 'Since the barrier' : 'Generation';
+    q('[data-gennum]').textContent = gnow;
+    q('[data-genof]').textContent  = 'of '+gens();
+  }
   var cap=q('[data-caption]');
   if(ph==='run'){ var s=snapAt(0,genIdx()||1);
     cap.textContent = s ? ('Generation '+(genIdx()||1)+' — '+num(s.tot)+' individuals, '
@@ -3413,7 +3442,7 @@ var FREEZE = DEMOQ.has('freeze') ? parseInt(DEMOQ.get('freeze'),10) : -1;
 var DSEED = DEMOQ.has('seed') ? parseInt(DEMOQ.get('seed'),10) : 0;
 function demoRun(){
   var N=28, tid=null, step=0;
-  var SPK=['thornback','marshkite','duskwing','burrowim','craglin'];
+  var SPK=['thornback','marshkite','duskwing','burrowim','stonecoil'];
   var KEYS=['heat','cold','dry','evade'];
   function mkDesign(i){
     /* Every index here is taken modulo KEYS.length rather than a hard-coded 5.
