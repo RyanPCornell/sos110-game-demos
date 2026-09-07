@@ -807,12 +807,8 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   font-size:clamp(.94rem,1.7vw,1.2rem); text-align:center;}
 .ev-sv-done .ev-again-tally{text-align:center;}
 .ev-blk.sv-sum{border-left:3px solid var(--accent);}
-.sv-comments{display:flex; flex-direction:column; gap:.2rem; margin-top:.4rem;
-  max-height:9rem; overflow:auto;}
-.sv-comments b{display:block; color:#7a7260; text-transform:uppercase; letter-spacing:.05em;
-  font-size:.92em; margin-bottom:.1rem;}
-.sv-comments span{color:#5e5340; font-style:italic;}
-.cg-btn.sv-mail{margin-top:.5rem;}
+.sv-acts{display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.55rem;}
+.sv-acts .cg-btn{flex:1 1 auto;}
 .ev-slide .cg-phase{color:#8a8069;}
 .ev-bandbar{display:flex; align-items:center; gap:.35rem; margin-bottom:.3rem;}
 .ev-bandbar[hidden]{display:none !important;}
@@ -3198,7 +3194,10 @@ function render(){
 q('[data-surveyform]').addEventListener('submit', svSubmit);
 /* the mail button is written into the read-out each render, so listen upward */
 q('[data-readout]').addEventListener('click',function(ev){
-  if(ev.target.closest && ev.target.closest('[data-surveymail]')) svMail();
+  if(!ev.target.closest) return;
+  if(ev.target.closest('[data-surveymail]')) svMail();
+  else if(ev.target.closest('[data-surveyshow]') && HOST)
+    backend.mergeDoc('polls',GID,{surveyShow: svShown()?0:1});
 });
 q('[data-againyes]').addEventListener('click',function(){ againVote(true); });
 q('[data-againno]').addEventListener('click',function(){ againVote(false); });
@@ -3328,7 +3327,13 @@ function againClose(){
    three hundred students. That is the opposite of the attendance roll call,
    and it is why a plain Apps Script endpoint is safe here: a single execution
    mailing a single message cannot hit the concurrency ceiling that forced roll
-   call off Apps Script and onto Google Forms.                             ══ */
+   call off Apps Script and onto Google Forms.
+
+   ⚠️ THE HOST COPY IS THE PROJECTOR. There is no private instructor screen, so
+   nothing here is "host only" in the sense of unseen — it is the opposite.
+   Written comments therefore never render anywhere: they go in the email and
+   nowhere else. The tallies stay hidden behind a deliberate button too, so the
+   room sees its own numbers only when the instructor decides to show them. ══ */
 var SVFREQ=['Never do games like this','Do games like this on occasion',
             'Do games like this every chapter'];
 function svOpen(){ return !!state.surveyOpen; }
@@ -3368,23 +3373,33 @@ function svSubmit(ev){
   o.survey[PK]={h:h, e:e, f:fr, c:(q('[data-surveycomment]').value||'').slice(0,600)};
   backend.mergeDocShard('polls',GID,o);
 }
+function svShown(){ return !!state.surveyShow; }
 function svSummaryHtml(){
   var d=svSummary();
   if(!d.n) return '';
-  var h='<div class="ev-blk sv-sum">'+bhead('','Survey — '+d.n+' answer'+(d.n===1?'':'s'))
-    +statRow('Helped explain the concepts', svPct(d.helpYes,d.helpNo),
-             d.helpYes+' yes / '+d.helpNo+' no')
-    +statRow('Enjoyed the game', svPct(d.funYes,d.funNo),
-             d.funYes+' yes / '+d.funNo+' no');
-  SVFREQ.forEach(function(lab,i){ h+=statRow(lab, d.freq[i], ''); });
-  if(HOST && d.comments.length){
-    h+='<div class="ev-hint sv-comments"><b>Comments</b>'
-      + d.comments.slice(0,40).map(function(c){ return '<span>“'+esc(c)+'”</span>'; }).join('')
-      + (d.comments.length>40? '<span>… and '+(d.comments.length-40)+' more (all of them are in the email)</span>':'')
+  var h='<div class="ev-blk sv-sum">'+bhead('','Survey');
+  if(svShown()){
+    h+=statRow('Helped explain the concepts', svPct(d.helpYes,d.helpNo),
+               d.helpYes+' yes / '+d.helpNo+' no')
+      +statRow('Enjoyed the game', svPct(d.funYes,d.funNo),
+               d.funYes+' yes / '+d.funNo+' no');
+    SVFREQ.forEach(function(lab,i){ h+=statRow(lab, d.freq[i], ''); });
+  } else {
+    h+=statRow('Answers in', d.n, d.n===1?'response':'responses');
+  }
+  if(HOST){
+    /* This screen is the projector, so both of these are deliberate acts: one
+       puts the room's own numbers up, the other sends the written comments —
+       which never appear on screen — to the instructor's inbox. */
+    h+='<div class="sv-acts">'
+      +'<button class="cg-btn" type="button" data-surveyshow>'
+      +(svShown()?'Hide the results':'Show the class the results')+'</button>'
+      +'<button class="cg-btn go" type="button" data-surveymail>Email me the summary</button></div>'
+      +'<div class="ev-hint" data-surveymailmsg>'
+      +(d.comments.length? d.comments.length+' written comment'+(d.comments.length===1?'':'s')
+        +' — these are never shown on screen; they are in the email.' : '')
       +'</div>';
   }
-  if(HOST) h+='<button class="cg-btn go sv-mail" type="button" data-surveymail>Email me the summary</button>'
-    +'<span class="ev-hint" data-surveymailmsg></span>';
   return h+'</div>';
 }
 function svText(){
@@ -3438,7 +3453,7 @@ function wireHost(){
   });
   bar.querySelector('[data-skip]').addEventListener('click',advance);
   bar.querySelector('[data-survey]').addEventListener('click',function(){
-    backend.mergeDoc('polls',GID,{surveyOpen:1, survey:{}});
+    backend.mergeDoc('polls',GID,{surveyOpen:1, survey:{}, surveyShow:0});
   });
   bar.querySelector('[data-surveyclose]').addEventListener('click',function(){
     backend.mergeDoc('polls',GID,{surveyOpen:0});
