@@ -2209,12 +2209,12 @@ function drawBands(svg, W, H){
   }
   var rows=pre.length + (split? A.length+1 : 0);
   if(!rows){ svg.innerHTML=''; return false; }
-  var PADL=74, PADR=26, PADT=44, PADB=40, GAPB=split?26:0;
+  var PADL=74, PADR=26, PADT=62, PADB=40, GAPB=split?26:0;
   var trackW=W-PADL-PADR;
   var avail=H-PADT-PADB-GAPB;
   var rowH=avail/rows, barH=Math.max(6, rowH*0.74);
   var s='<rect width="'+W+'" height="'+H+'" fill="#fbf8f0"/>';
-  s+='<text class="bd-title" x="'+PADL+'" y="26">'
+  s+='<text class="bd-title" x="'+PADL+'" y="22">'
     +(bandMode==='color' ? 'Color of the living population, generation by generation'
                          : 'Heat tolerance of the living population, generation by generation')+'</text>';
   function drawCol(list, x0, w, yTop, tag){
@@ -2242,8 +2242,8 @@ function drawBands(svg, W, H){
   /* where the ground colour sits, so the room can see the population walk to it */
   if(bandMode==='color'){
     var e=world(0), gx=PADL+((e.hue%360)/360)*trackW;
-    s+='<path class="bd-mark" d="M'+gx.toFixed(1)+' '+(PADT-14)+' v'+(rowH*pre.length+4).toFixed(1)+'"/>'
-      +'<text class="bd-marklab" x="'+gx.toFixed(1)+'" y="'+(PADT-18)+'" text-anchor="middle">ground color</text>';
+    s+='<path class="bd-mark" d="M'+gx.toFixed(1)+' '+(PADT-8)+' v'+(rowH*pre.length+8).toFixed(1)+'"/>'
+      +'<text class="bd-marklab" x="'+gx.toFixed(1)+'" y="'+(PADT-15)+'" text-anchor="middle">ground color</text>';
   }
   if(split){
     var yB=PADT+rowH*pre.length+GAPB*0.45;
