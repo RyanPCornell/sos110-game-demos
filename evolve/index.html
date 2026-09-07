@@ -582,6 +582,10 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .ev-pat.on,.ev-food.on{background:var(--accent); border-color:var(--accent); color:#fff;}
 .ev-hint{font-size:clamp(.56rem,.88vw,.67rem); color:#8a8069; line-height:1.32; margin-top:.24rem;}
 .ev-warn{font-size:clamp(.6rem,.95vw,.72rem); color:#A4373A; text-align:center; margin-top:.2rem;}
+.ev-founding{font-size:clamp(.66rem,1.02vw,.78rem); line-height:1.4; color:#5e5340;
+  background:rgba(184,160,100,.14); border-left:3px solid var(--accent);
+  border-radius:0 8px 8px 0; padding:.4rem .55rem; margin:.1rem 0;}
+.ev-founding b{font-family:'Merriweather',serif; color:#3b3222;}
 .ev-trow{display:flex; align-items:center; gap:.28rem; margin-bottom:.16rem;}
 .ev-tn{flex:1 1 auto; font-size:clamp(.62rem,.97vw,.74rem); color:#4a4436;}
 .ev-pips{display:flex; gap:2px; flex:none;}
@@ -842,6 +846,9 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .bd-barrier{stroke:#A4373A; stroke-width:2.6; stroke-dasharray:9 6;}
 .bd-barlab{font-family:'Inter',sans-serif; font-size:13px; font-weight:700; fill:#A4373A;}
 .bd-leg{font-family:'Inter',sans-serif; font-size:12.5px; fill:#8a8069;}
+.bd-count{font-family:'Merriweather',serif; font-size:13px; font-weight:900; fill:#3b3222;
+  font-variant-numeric:tabular-nums;}
+.mb-cell{stroke:rgba(30,24,12,.22); stroke-width:.6;}
 /* the draw, dressed as a specimen card rather than a game show: parchment,
    hairline rules, small-caps labels, and a restrained gold flash when a value
    lands. The riffle stays — it is the part that makes the room look up. */
@@ -962,7 +969,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     </g>
   </g>
 </svg>
-        <p class="cg-sub">Every student designs one organism — species, color, pattern, tolerances, and how it raises its young — before anyone knows what the world looks like. Then a random ecosystem is drawn and the class population runs for 8–12 generations.</p>
+        <p class="cg-sub">Every student founds a population of 26 — species, color, pattern, tolerances, and how it raises its young — before anyone knows what the world looks like. Then a random ecosystem is drawn and the class population runs for 8–12 generations.</p>
       </div>
       <div class="cg-clockwrap" data-clockwrap hidden>
         <div class="cg-phase" data-phasename></div>
@@ -1067,7 +1074,10 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
         <div class="ev-bandbar" data-bandbar hidden>
           <span class="ev-bandlbl">Show</span>
           <button class="ev-bandbtn on" type="button" data-band="color">Color</button>
-          <button class="ev-bandbtn" type="button" data-band="heat">Heat tolerance</button>
+          <button class="ev-bandbtn" type="button" data-band="heat">Heat</button>
+          <button class="ev-bandbtn" type="button" data-band="cold">Cold</button>
+          <button class="ev-bandbtn" type="button" data-band="dry">Drought</button>
+          <button class="ev-bandbtn" type="button" data-band="evade">Evasion</button>
         </div>
         <div class="ev-scenes" data-scenes>
           <div class="ev-scenewrap" data-scenewrap-a>
@@ -1095,7 +1105,9 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 
     </div>
 
-    <p class="ev-disc"><b>About the model:</b> a teaching simulation, not a genome. Each
+    <p class="ev-disc"><b>About the model:</b> a teaching simulation, not a genome. Every design enters the
+      world as a founding population of 26 identical individuals &mdash; a single organism gives
+      selection and drift nothing to act on. Each
       lineage carries mean trait values that respond to selection by the
       <em>breeder&#8217;s equation</em> &mdash; the change per generation is heritability times the
       selection differential &mdash; under a fixed point budget, so every gain is paid for
@@ -1337,12 +1349,16 @@ var DRIFT_T=1.05, DRIFT_H=26;
    takes over near the end. */
 var SEL_STEP=0.24, HUE_STEP=0.085;
 
+/* A student does not design an animal, they found a POPULATION: this many
+   identical individuals. One organism could neither be selected on nor drift,
+   so the number matters and the slide says it out loud. */
+var FOUNDERS=26;
 function seedFromDesigns(dz){
   var st={};
   Object.keys(dz).forEach(function(k){
     var d=dz[k];
     st[k]={sp:d.sp, pat:d.pat, lh:d.lh, nextId:1,
-           vars:[{id:0, par:-1, n:26, born:0, died:0, hue:d.hue,
+           vars:[{id:0, par:-1, n:FOUNDERS, born:0, died:0, hue:d.hue,
                   t:{heat:d.t.heat,cold:d.t.cold,dry:d.t.dry,evade:d.t.evade}}]};
   });
   return st;
@@ -2010,6 +2026,10 @@ function renderDesign(force){
   });
   h+='</div><div class="ev-hint">Predators hunt by sight. You do not yet know what the ground looks like.</div></div>';
 
+  h+='<div class="ev-founding">You are not designing one animal. You are founding a '
+    +'population of <b>'+FOUNDERS+'</b>, all identical to start &mdash; a single organism '
+    +'could not be selected on, and could not drift.</div>';
+
   h+='<div class="ev-dsec"><div class="ev-dlbl">3 &middot; Traits <span class="ev-pts'+(left<0?' bad':'')+'">'
     +left+' point'+(left===1?'':'s')+' left</span></div>';
   TRAITS.forEach(function(t){
@@ -2089,7 +2109,9 @@ function renderMine(force){
       +'<div class="ev-blk"><div class="ev-bh">Your variants</div>'
       +'<div class="ev-big">'+famLiveCount()+'</div>'
       +'<div class="ev-sub">branches alive right now</div>'
-      +'<div class="ev-hint">Your founder buds new variants as it grows. They drift apart, and the ones this world cannot keep die off. The full family tree appears when the round ends.</div></div>';
+      +'<div class="ev-hint">Your '+FOUNDERS+' founders are one population, not one animal. As it grows it buds '
+      +'off variants that drift apart, and the ones this world cannot keep die off. '
+      +'The whole picture of your population appears when the round ends.</div></div>';
   }
   /* the trait passport: what you chose vs what selection left */
   if(L){
@@ -2340,6 +2362,24 @@ function startReveal(){
    isolated halves continue underneath as their own columns.              ══ */
 var bandMode='color';
 var HEATC=['#4a7fb5','#7fb2cb','#cfc08a','#d99457','#b4472f'];
+/* the same five views on both charts: the class one on the projector and the
+   student's own lineage on their phone, so the two read the same way */
+var BANDCATS=[{k:'color',n:'Color'},{k:'heat',n:'Heat'},{k:'cold',n:'Cold'},
+              {k:'dry',n:'Drought'},{k:'evade',n:'Evasion'}];
+function bandBin(v){
+  return bandMode==='color' ? Math.floor(((v.hue%360)/360)*12)%12
+       : Math.min(4, Math.max(0, Math.floor(v.t[bandMode]||0)));
+}
+function bandCatName(){
+  for(var i=0;i<BANDCATS.length;i++) if(BANDCATS[i].k===bandMode) return BANDCATS[i].n;
+  return 'Color';
+}
+/* the trait's real name, so nothing ends up reading "evasion tolerance" */
+function bandFullName(){
+  if(bandMode==='color') return 'color';
+  for(var i=0;i<TRAITS.length;i++) if(TRAITS[i].k===bandMode) return TRAITS[i].n.toLowerCase();
+  return bandMode;
+}
 function bandSlices(snap){
   if(!snap) return null;
   var bins, n=0;
@@ -2349,9 +2389,7 @@ function bandSlices(snap){
     var L=snap.lines[k];
     (L.vars||[]).forEach(function(v){
       if(v.died||v.n<=0) return;
-      var i;
-      if(bandMode==='color') i=Math.floor(((v.hue%360)/360)*12)%12;
-      else i=Math.min(4, Math.max(0, Math.floor(v.t.heat)));
+      var i=bandBin(v);
       bins[i]+=v.n; n+=v.n;
     });
   });
@@ -2359,6 +2397,88 @@ function bandSlices(snap){
 }
 function bandColor(i){
   return bandMode==='color' ? hsl(i*30+15, CRIT_SAT, CRIT_LIT) : HEATC[i];
+}
+/* ══ THE STUDENT'S OWN POPULATION ══════════════════════════════════════════
+   A student does not design one animal: they found a population of 26 that all
+   start identical. So the honest picture of what happens to them is the same
+   picture the room gets, drawn for their lineage alone — one bar per
+   generation, and the bar made of BLOCKS, one per organism. The bar grows and
+   shrinks because the population does, and the mix of colours inside it is the
+   mix of animals actually alive that generation.
+
+   At 26 founders growing into the hundreds, one block per organism stops being
+   legible somewhere around a hundred blocks, so past that each block stands
+   for a fixed number and the chart says so rather than quietly rescaling. ══ */
+function mineRow(snap){
+  var L=snap?snap.lines[PK]:null;
+  if(!L||!L.vars) return null;
+  var out=[], n=0;
+  L.vars.forEach(function(v){
+    if(v.died||v.n<=0) return;
+    out.push({bin:bandBin(v), n:v.n}); n+=v.n;
+  });
+  out.sort(function(a,b){ return a.bin-b.bin; });
+  return n>0 ? {parts:out, tot:n} : {parts:[], tot:0};
+}
+function drawMineBands(svg, W, H){
+  var G=gens(), rows=[];
+  for(var g=1;g<=G;g++) rows.push({g:g, r:mineRow(snapAt(0,g))});
+  if(!rows.some(function(x){ return x.r; })) return false;
+  svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+
+  var PADL=74, PADR=26, PADT=62, PADB=52;
+  var trackW=W-PADL-PADR, rowH=(H-PADT-PADB)/rows.length;
+  var barH=Math.max(7, rowH*0.66);
+  var peak=1; rows.forEach(function(x){ if(x.r) peak=Math.max(peak,x.r.tot); });
+  /* how many animals one block stands for, and how wide a block is */
+  var per=Math.max(1, Math.ceil(peak/100));
+  var cells=Math.ceil(peak/per), cw=Math.min(14, trackW/Math.max(1,cells));
+  var bw=Math.max(1.5, cw-1.6);
+
+  var s='<rect width="'+W+'" height="'+H+'" fill="#fbf8f0"/>';
+  s+='<text class="bd-title" x="'+PADL+'" y="22">Your population, generation by generation</text>'
+    +'<text class="bd-marklab" x="'+PADL+'" y="44">every block is '
+    +(per===1?'one organism':per+' organisms')+' &middot; sorted by '+bandFullName()+'</text>';
+
+  rows.forEach(function(x,i){
+    var y=PADT+rowH*i;
+    s+='<text class="bd-gen" x="'+(PADL-8)+'" y="'+(y+barH*0.76).toFixed(1)+'" text-anchor="end">'+x.g+'</text>';
+    if(!x.r || !x.r.tot){
+      s+='<rect class="bd-empty" x="'+PADL+'" y="'+y.toFixed(1)+'" width="'+trackW+'" height="'+barH.toFixed(1)+'" rx="2"/>'
+        +'<text class="bd-leg" x="'+(PADL+8)+'" y="'+(y+barH*0.76).toFixed(1)+'">gone</text>';
+      return;
+    }
+    var col=0;
+    x.r.parts.forEach(function(pt){
+      var k=Math.round(pt.n/per);
+      for(var j=0;j<k && col<cells;j++,col++){
+        s+='<rect class="mb-cell" x="'+(PADL+col*cw).toFixed(1)+'" y="'+y.toFixed(1)
+          +'" width="'+bw.toFixed(1)+'" height="'+barH.toFixed(1)+'" rx="1.6" fill="'+bandColor(pt.bin)+'"/>';
+      }
+    });
+    s+='<text class="bd-count" x="'+(PADL+col*cw+8).toFixed(1)+'" y="'+(y+barH*0.76).toFixed(1)+'">'
+      +num(x.r.tot)+'</text>';
+  });
+
+  /* what the world is asking for, so the drift has something to drift toward */
+  if(bandMode==='color'){
+    var e=world(0), gx=PADL+((e.hue%360)/360)*trackW;
+    s+='<path class="bd-mark" d="M'+gx.toFixed(1)+' '+(PADT-10)+' v'+(rowH*rows.length+6).toFixed(1)+'"/>';
+  }
+  s+='<text class="bd-leg" x="'+PADL+'" y="'+(H-14)+'">Each bar is your whole living population that generation. '
+    +'It grows when they breed and shortens when they are eaten.</text>';
+  s+='<text class="fm-rowlab" x="'+(PADL-8)+'" y="'+(PADT-16)+'" text-anchor="end">gen</text>';
+  svg.innerHTML=s;
+  return true;
+}
+function bandCaption(){
+  var mine=(!HOST && myDesign());
+  var whose=mine? 'your population' : 'the whole class';
+  return bandMode==='color'
+    ? 'Every bar is one generation of '+whose+'. Watch the color mix narrow toward the ground.'
+    : 'Every bar is one generation of '+whose+', sorted by '+bandFullName()
+      +'. Watch which band the world keeps.';
 }
 function drawBands(svg, W, H){
   svg.setAttribute('preserveAspectRatio','xMidYMid meet');
@@ -2378,8 +2498,8 @@ function drawBands(svg, W, H){
   var rowH=avail/rows, barH=Math.max(6, rowH*0.74);
   var s='<rect width="'+W+'" height="'+H+'" fill="#fbf8f0"/>';
   s+='<text class="bd-title" x="'+PADL+'" y="22">'
-    +(bandMode==='color' ? 'Color of the living population, generation by generation'
-                         : 'Heat tolerance of the living population, generation by generation')+'</text>';
+    +(bandMode==='color' ? 'Color' : bandFullName().charAt(0).toUpperCase()+bandFullName().slice(1))
+    +' of the living population, generation by generation</text>';
   function drawCol(list, x0, w, yTop, tag){
     var out='';
     list.forEach(function(r,i){
@@ -2440,7 +2560,13 @@ function drawBands(svg, W, H){
   return true;
 }
 
-/* ══ THE FAMILY TREE ═══════════════════════════════════════════════════════
+/* ⚠️ SUPERSEDED, KEPT FOR REFERENCE. The student's screen now shows their own
+   founding population as a block chart (drawMineBands) — the same view the room
+   gets, which is the honest one because they founded a population rather than an
+   animal. Nothing calls drawFamily any more, so famSel is never set and famCard
+   never renders. Delete the whole block if it is still unused next term.
+
+   ══ THE FAMILY TREE ═══════════════════════════════════════════════════════
    One tree per student, read top to bottom like a pedigree: the organism they
    built sits at the root, every variant it threw off hangs beneath it at the
    generation it was born, and a line that died out ends there. Rows are
@@ -3066,7 +3192,7 @@ function render(){
   q('[data-joinbox]').hidden = HOST || joined() || !(ph==='lobby'||ph==='design');
   renderEcoBar(); renderDesign(); renderMine(); renderReadout(); renderSurvey();
   var bb=q('[data-bandbar]');
-  bb.hidden = !((ph==='discuss'||ph==='final') && (HOST || !myDesign()));
+  bb.hidden = !(ph==='discuss'||ph==='final');
   if(ph==='reveal') startReveal(); else q('[data-reveal]').hidden=true;
   root.classList.toggle('designing', ph==='design');
   var two = (ph==='split');
@@ -3087,8 +3213,11 @@ function render(){
             && drawSplitFig(q('[data-scene-a]'),1000,560)){
     /* a tree carried through the barrier forks everywhere at once and stops
        being readable, so after the barrier the student gets the split itself */
-  } else if((ph==='discuss'||ph==='final') && !HOST && myDesign() && drawFamily(q('[data-scene-a]'),1000,560)){
-    /* the end of a round is exactly when a student wants their own family tree */
+  } else if((ph==='discuss'||ph==='final') && !HOST && myDesign()
+            && drawMineBands(q('[data-scene-a]'),1000,560)){
+    /* the same chart the room is looking at, drawn for this student's own
+       founding population — which is the honest picture, because they founded
+       a population rather than an animal */
   } else if((ph==='discuss'||ph==='final') && (HOST || !myDesign()) && drawBands(q('[data-scene-a]'),1000,560)){
     /* the projected copy gets the whole class instead: one bar per generation */
   } else {
@@ -3111,19 +3240,12 @@ function render(){
   if(ph==='run'){ var s=snapAt(0,genIdx()||1);
     cap.textContent = s ? ('Generation '+(genIdx()||1)+' — '+num(s.tot)+' individuals, '
       +s.alive+' lineages still going'+(s.shock?' — a hard year':'')) : ''; }
-  else if(ph==='discuss') cap.textContent = (!HOST && myDesign())
-    ? 'Your family tree: the organism you built, and everything descended from it.'
-    : (bandMode==='color'
-        ? 'Every bar is one generation. The color mix narrows as the badly matched are eaten.'
-        : 'Every bar is one generation, sliced by heat tolerance. Watch which band the world keeps.');
+  else if(ph==='discuss') cap.textContent = bandCaption();
   else if(ph==='split'){ var sd=divergence(popMean(snapAt(1,splitIdx()||1)),popMean(snapAt(2,splitIdx()||1)));
     cap.textContent='Generation '+(splitIdx()||1)+' since the barrier — '+(sd?sd.name.toLowerCase():'measuring'); }
-  else if(ph==='final') cap.textContent = (!HOST && myDesign())
-    ? (didSplit()? 'Same founders, no gene flow, two worlds. Each ribbon is coloured by that half of the class, generation by generation.'
-                 : 'Your family tree: the organism you built, and everything descended from it.')
-    : (bandMode==='color'
-        ? 'Every bar is one generation. The color mix narrows as the badly matched are eaten.'
-        : 'Every bar is one generation, sliced by heat tolerance. Watch which band the world keeps.');
+  else if(ph==='final') cap.textContent = (!HOST && myDesign() && didSplit())
+    ? 'Same founders, no gene flow, two worlds. Each ribbon is coloured by that half of the class, generation by generation.'
+    : bandCaption();
   else cap.textContent='';
 
   var st=q('[data-status]');
@@ -3183,10 +3305,9 @@ q('[data-bandbar]').addEventListener('click',function(ev){
   Array.prototype.forEach.call(this.querySelectorAll('[data-band]'),function(x){
     x.classList.toggle('on', x.getAttribute('data-band')===bandMode);
   });
-  drawBands(q('[data-scene-a]'), 1000, 560);
-  q('[data-caption]').textContent = bandMode==='color'
-    ? 'Every bar is one generation. The color mix narrows as the badly matched are eaten.'
-    : 'Every bar is one generation, sliced by heat tolerance. Watch which band the world keeps.';
+  if(!HOST && myDesign()) drawMineBands(q('[data-scene-a]'), 1000, 560);
+  else drawBands(q('[data-scene-a]'), 1000, 560);
+  q('[data-caption]').textContent = bandCaption();
 });
 
 /* pick an organism out of the family tree to read it */
