@@ -1095,8 +1095,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
           <span class="ev-bandlbl">Show</span>
           <button class="ev-bandbtn" type="button" data-band="split" hidden>The split</button>
           <button class="ev-bandbtn on" type="button" data-band="color">Color</button>
-          <button class="ev-bandbtn" type="button" data-band="heat">Heat</button>
-          <button class="ev-bandbtn" type="button" data-band="cold">Cold</button>
+          <button class="ev-bandbtn" type="button" data-band="temp">Temperature</button>
           <button class="ev-bandbtn" type="button" data-band="dry">Drought</button>
           <button class="ev-bandbtn" type="button" data-band="evade">Evasion</button>
           <span class="ev-scopewrap" data-scopewrap hidden>
@@ -2457,10 +2456,23 @@ var bandMode='color';
 var HEATC=['#4a7fb5','#7fb2cb','#cfc08a','#d99457','#b4472f'];
 /* the same five views on both charts: the class one on the projector and the
    student's own lineage on their phone, so the two read the same way */
-var BANDCATS=[{k:'color',n:'Color'},{k:'heat',n:'Heat'},{k:'cold',n:'Cold'},
+/* Heat and cold are one axis, not two. optimum() already treats them that way —
+   a hot world wants heat 5 / cold 0, a cold world the reverse, a temperate one
+   the middle — so charting them separately made a student read half the story
+   twice, in a blue-to-red ramp that meant nothing on either tab. One
+   Temperature tab plots the LEANING, heat minus cold, and the ramp finally
+   says something: blue is built for cold, red is built for heat.
+
+   The two traits stay separate in the model, because spending nothing on
+   temperature and putting it all into evasion is a real strategy, and a single
+   axis would take that away. */
+var BANDCATS=[{k:'color',n:'Color'},{k:'temp',n:'Temperature'},
               {k:'dry',n:'Drought'},{k:'evade',n:'Evasion'}];
+function tempLean(t){ return (t.heat||0)-(t.cold||0); }         /* -5 … +5 */
+function tempBin(lean){ return Math.min(4, Math.max(0, Math.round((lean+5)/10*4))); }
 function bandBin(v){
   return bandMode==='color' ? Math.floor(((v.hue%360)/360)*12)%12
+       : bandMode==='temp'  ? tempBin(tempLean(v.t))
        : Math.min(4, Math.max(0, Math.floor(v.t[bandMode]||0)));
 }
 function bandCatName(){
@@ -2470,9 +2482,12 @@ function bandCatName(){
 /* the trait's real name, so nothing ends up reading "evasion tolerance" */
 function bandFullName(){
   if(bandMode==='color') return 'color';
+  if(bandMode==='temp') return 'temperature, cold-built to heat-built';
   for(var i=0;i<TRAITS.length;i++) if(TRAITS[i].k===bandMode) return TRAITS[i].n.toLowerCase();
   return bandMode;
 }
+/* where this world's thermal optimum sits on that spectrum */
+function tempOptBin(e){ var o=optimum(e); return tempBin(o.heat-o.cold); }
 function bandSlices(snap){
   if(!snap) return null;
   var bins, n=0;
@@ -2486,6 +2501,14 @@ function bandSlices(snap){
       bins[i]+=v.n; n+=v.n;
     });
   });
+  return n>0 ? {bins:bins, tot:n} : null;
+}
+/* the class as it was entered, before a single generation ran */
+function foundingSlices(){
+  var ds=designs(), ks=Object.keys(ds);
+  if(!ks.length) return null;
+  var bins=new Array(bandMode==='color'?12:5).fill(0), n=0;
+  ks.forEach(function(k){ bins[designBin(ds[k])]+=FOUNDERS; n+=FOUNDERS; });
   return n>0 ? {bins:bins, tot:n} : null;
 }
 function bandColor(i){
@@ -2520,13 +2543,11 @@ function bandColor(i){
    and trait bins are one point, so a spread much under those shows a single
    block colour and the mix disappears again.
 
-   Generation one is the exception and is drawn with NO spread at all, because
-   generation one IS the student's input: 26 founders exactly as they were set.
-   The variation appears as the population breeds, which is both the honest
-   order of events and what makes the chart legible — the first bar is your
-   answer, and every bar after it is what happened to your answer. */
+   The founding row carries no spread at all, because it IS the input: 26 of
+   them, exactly as they were set. Variation appears from generation one, which
+   is the first round of breeding. */
 var PHENO_HUE=24, PHENO_T=1.0;
-function phenoScale(g){ return g<=1 ? 0 : (g===2 ? 0.6 : 1); }
+function phenoScale(g){ return g<=0 ? 0 : (g===1 ? 0.6 : 1); }
 function phenoJitter(seed){
   return (CG.rnd(seed+'a') + CG.rnd(seed+'b') - 1);   /* triangular, -1..1 */
 }
@@ -2535,6 +2556,12 @@ function phenoBin(v, g, j){
   if(bandMode==='color'){
     var h=(v.hue + phenoJitter(seed)*PHENO_HUE*k + 360)%360;
     return Math.floor((h/360)*12)%12;
+  }
+  if(bandMode==='temp'){
+    /* The leaning is a difference of two traits, so it carries both spreads —
+       but its bins are 2.5 units wide against 1 for a plain trait, so the
+       spread has to be scaled to the bin or the tab shows one flat colour. */
+    return tempBin(tempLean(v.t) + phenoJitter(seed)*PHENO_T*2.4*k);
   }
   var t=(v.t[bandMode]||0) + phenoJitter(seed)*PHENO_T*k;
   return Math.min(4, Math.max(0, Math.floor(t)));
@@ -2569,6 +2596,38 @@ function scopeVars(snap){
   });
   return found? out : null;
 }
+/* ⚠️ snapAt(w,1) is the state AFTER generation one has run: the population has
+   already grown and been culled once. The founders themselves are not in the
+   history at all, so the chart has to build that row from the designs — which
+   is also the only way it can be exactly what the students entered. */
+function foundingKeys(){
+  var d=myDesign(); if(!d) return null;
+  var ds=designs();
+  return (mineScope==='species')
+    ? Object.keys(ds).filter(function(k){ return ds[k] && ds[k].sp===d.sp; })
+    : (ds[PK] ? [PK] : null);
+}
+function designBin(dd){
+  return bandMode==='color' ? Math.floor(((dd.hue%360)/360)*12)%12
+       : bandMode==='temp'  ? tempBin(tempLean(dd.t))
+       : Math.min(4, Math.max(0, Math.floor(dd.t[bandMode]||0)));
+}
+function foundingTotal(){
+  var ks=foundingKeys();
+  return ks? ks.length*FOUNDERS : null;
+}
+function foundingRow(per){
+  var ks=foundingKeys(); if(!ks||!ks.length) return null;
+  var ds=designs(), blocks=[], n=0;
+  ks.forEach(function(k){
+    var bin=designBin(ds[k]);
+    n+=FOUNDERS;
+    var c=Math.max(1, Math.round(FOUNDERS/per));
+    for(var j=0;j<c;j++) blocks.push(bin);
+  });
+  blocks.sort(function(a,b){ return a-b; });
+  return {blocks:blocks, tot:n};
+}
 function mineTotal(snap){
   var vs=scopeVars(snap);
   if(!vs) return null;
@@ -2594,8 +2653,10 @@ function drawMineBands(svg, W, H){
   var G=gens(), split=didSplit(), upto=split?(splitIdx()||G):0;
   var secs = split
     ? [{lab:'Side A', w:1, upto:upto}, {lab:'Side B', w:2, upto:upto}]
-    : [{lab:'', w:0, upto:G}];
+    : [{lab:'', w:0, upto:G, founders:true}];
   var peak=1, any=false, g, i;
+  var ft=foundingTotal();
+  if(!split && ft){ any=true; peak=Math.max(peak, ft); }
   secs.forEach(function(sec){
     for(g=1;g<=sec.upto;g++){
       var t=mineTotal(snapAt(sec.w,g));
@@ -2608,6 +2669,7 @@ function drawMineBands(svg, W, H){
   var nRows=0;
   secs.forEach(function(sec){
     sec.rows=[];
+    if(sec.founders) sec.rows.push({g:'start', r:foundingRow(per)});
     for(g=1;g<=sec.upto;g++) sec.rows.push({g:g, r:mineRow(snapAt(sec.w,g), g, per)});
     nRows+=sec.rows.length;
   });
@@ -2656,9 +2718,11 @@ function drawMineBands(svg, W, H){
     });
   });
 
-  if(bandMode==='color'){
+  if(bandMode==='color'||bandMode==='temp'){
     secs.forEach(function(sec,si){
-      var e=world(sec.w), gx=PADL+((e.hue%360)/360)*trackW;
+      var e=world(sec.w);
+      var frac = bandMode==='color' ? (e.hue%360)/360 : (tempOptBin(e)+0.5)/5;
+      var gx=PADL+frac*trackW;
       var y0=PADT+HEAD*(si+1)+rowH*sec.rows.length*si;
       s+='<path class="bd-mark" d="M'+gx.toFixed(1)+' '+(y0-6).toFixed(1)+' v'
         +(rowH*sec.rows.length+4).toFixed(1)+'"/>';
@@ -2702,7 +2766,10 @@ function drawBands(svg, W, H){
   svg.setAttribute('preserveAspectRatio','xMidYMid meet');
   svg.setAttribute('viewBox','0 0 '+W+' '+H);
   var G=gens(), split=didSplit();
-  var pre=[]; for(var g=1;g<=G;g++) pre.push({g:g, s:bandSlices(snapAt(0,g))});
+  /* same off-by-one as the student's chart: snapAt(0,1) is already post
+     selection, so the founders have to come from the designs themselves */
+  var pre=[{g:'start', s:foundingSlices()}];
+  for(var g=1;g<=G;g++) pre.push({g:g, s:bandSlices(snapAt(0,g))});
   var A=[], B=[];
   if(split){
     var upto=splitIdx()||G;
@@ -2716,7 +2783,7 @@ function drawBands(svg, W, H){
   var rowH=avail/rows, barH=Math.max(6, rowH*0.74);
   var s='<rect width="'+W+'" height="'+H+'" fill="#fbf8f0"/>';
   s+='<text class="bd-title" x="'+PADL+'" y="22">'
-    +(bandMode==='color' ? 'Color' : bandFullName().charAt(0).toUpperCase()+bandFullName().slice(1))
+    +(bandMode==='color' ? 'Color' : bandCatName())
     +' of the living population, generation by generation</text>';
   function drawCol(list, x0, w, yTop, tag){
     var out='';
@@ -2763,13 +2830,16 @@ function drawBands(svg, W, H){
     }
   }
   /* legend */
-  if(bandMode==='heat'){
+  if(bandMode!=='color'){
     var lw=48, lx=PADL, ly=H-24;
-    ['0–1','1–2','2–3','3–4','4–5'].forEach(function(lab,i){
+    var labs = bandMode==='temp' ? ['','','','',''] : ['0–1','1–2','2–3','3–4','4–5'];
+    labs.forEach(function(lab,i){
       s+='<rect x="'+(lx+i*(lw+8))+'" y="'+(ly-11)+'" width="14" height="11" fill="'+HEATC[i]+'" rx="2"/>'
         +'<text class="bd-leg" x="'+(lx+i*(lw+8)+19)+'" y="'+ly+'">'+lab+'</text>';
     });
-    s+='<text class="bd-leg" x="'+(lx+5*(lw+8)+10)+'" y="'+ly+'">cold-tolerant &rarr; heat-tolerant</text>';
+    s+='<text class="bd-leg" x="'+(lx+5*(lw+8)+10)+'" y="'+ly+'">'
+      +(bandMode==='temp' ? 'built for cold &rarr; built for heat &middot; the dashed line is what this world wants'
+                          : 'less '+bandFullName()+' &rarr; more')+'</text>';
   } else {
     s+='<text class="bd-leg" x="'+PADL+'" y="'+(H-14)+'">Each bar is the whole living population, sliced by color. '
       +'Watch the mix narrow toward the ground.</text>';
@@ -2820,7 +2890,7 @@ function drawSpeciesSplit(svg, W, H){
   svg.setAttribute('viewBox','0 0 '+W+' '+H);
   var eA=world(1), eB=world(2);
   var PADT=96, PADB=44, rowH=(H-PADT-PADB)/rows.length;
-  var xA=330, xB=470, xBar=560, barW=W-xBar-186;
+  var xA=330, xB=470, xBar=560, barW=W-xBar-258;
 
   var s='<rect width="'+W+'" height="'+H+'" fill="#fbf8f0"/>';
   s+='<text class="bd-title" x="46" y="34">What the barrier did to each species</text>'
@@ -2853,19 +2923,21 @@ function drawSpeciesSplit(svg, W, H){
         + critter(r.sp.k, Math.round(m.hue), 'solid', CRIT_SAT, CRIT_LIT) +'</g>';
     });
     var D=r.D;
-    var verdict = r.judged===0 ? 'all lost a side'
-                : r.two===0 ? 'none split'
-                : r.two+' of '+r.judged+' split';
+    /* "1 of 2 split" was doing too much work in three words. Say what split
+       means and what the denominator is. */
+    var verdict = r.judged===0 ? 'every one lost a side'
+                : r.two===0 ? 'none became two species'
+                : r.two+' of '+r.judged+' became two species';
     s+='<rect class="ss-track" x="'+xBar+'" y="'+(cy-7).toFixed(1)+'" width="'+barW+'" height="14" rx="7"/>'
       +'<rect class="ss-fill" x="'+xBar+'" y="'+(cy-7).toFixed(1)+'" width="'
       +Math.max(4,barW*Math.min(1,D)).toFixed(1)+'" height="14" rx="7"/>'
       +'<text class="ss-verdict'+(r.two&&r.two===r.judged?' two':'')+'" x="'+(xBar+barW+12)+'" y="'+(cy+5).toFixed(1)+'">'
       +verdict+'</text>';
     if(r.lost) s+='<text class="ss-sub" x="'+(xBar+barW+12)+'" y="'+(cy+19).toFixed(1)+'">'
-      +r.lost+' lost a side entirely</text>';
+      +'the other '+r.lost+' lost a side entirely</text>';
   });
-  s+='<text class="bd-leg" x="46" y="'+(H-14)+'">The bar is how far the two halves moved apart on average. '
-    +'&#8220;Split&#8221; means a player&#8217;s two halves would no longer interbreed.</text>';
+  s+='<text class="bd-leg" x="46" y="'+(H-14)+'">The bar is how far that species&#8217; two halves moved apart on '
+    +'average. A population &#8220;becomes two species&#8221; when its halves would no longer interbreed if reunited.</text>';
   svg.innerHTML=s;
   return true;
 }
