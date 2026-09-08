@@ -1125,7 +1125,9 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 
     <p class="ev-disc"><b>About the model:</b> a teaching simulation, not a genome. Every design enters the
       world as 26 founders exactly as they were set; variation appears as they breed, because
-      selection can only act on variation that is there. Each
+      selection can only act on variation that is there. Populations of the same species sharing a
+      world interbreed each generation, which is what holds a species together &mdash; and what the
+      barrier takes away. Each
       lineage carries mean trait values that respond to selection by the
       <em>breeder&#8217;s equation</em> &mdash; the change per generation is heritability times the
       selection differential &mdash; under a fixed point budget, so every gain is paid for
@@ -1414,6 +1416,29 @@ function seedFromSnap(snap, dz){
    generations then produce a real pedigree — colours drifting apart, some
    dying out, one or two taking over — instead of two or three twigs. */
 var SPLIT_P=0.42, MAXVAR=12;
+/* ══ GENE FLOW ═════════════════════════════════════════════════════════════
+   Conspecifics sharing a range interbreed. Every population of a species in
+   the same world is therefore pulled toward their common mean each generation.
+
+   This is the thing that makes a species one species, and — more to the point
+   for 4.3 — it is what the barrier REMOVES. Without it the barrier's caption,
+   "no gene flow below this line", was cutting something that was never there:
+   the halves drifted apart on their own and isolation got the credit. With it,
+   populations visibly cohere while they can mix and come apart when they
+   cannot, which is the actual mechanism of allopatric speciation.
+
+   The rate is a teaching choice, not a measured constant. At 0.18 a population
+   keeps about 55% of its own distinctiveness after three generations and about
+   14% after ten: recognisably yours early on, unmistakably part of its species
+   by the end.
+
+   ?gf=<rate> overrides it, which is worth having in front of a class: run the
+   same seed at gf=0 and the halves drift apart on their own, then at the
+   default and they only come apart once the barrier cuts the flow. */
+var GENEFLOW=(function(){
+  var v=new URLSearchParams(location.search).get('gf');
+  return v===null ? 0.18 : Math.max(0, Math.min(1, parseFloat(v)||0));
+})();
 var REFUGE=3.2, REFUGE_FIT=0.45;
 function runSim(st, e, gens, noDrift){
   var keys=Object.keys(st);
@@ -1496,6 +1521,44 @@ function runSim(st, e, gens, noDrift){
       });
       if(born.length) L.vars=L.vars.concat(born);
     });
+    /* ── gene flow: everyone of a species in this world mixes ──
+       Confined to one world by construction, because each side of the barrier
+       is a separate run — so dropping the barrier cuts the flow between the
+       halves without any special case. */
+    if(GENEFLOW>0){
+      var pool={};
+      keys.forEach(function(k){
+        var L=st[k], P=pool[L.sp];
+        if(!P){ P=pool[L.sp]={n:0, sx:0, sy:0, t:{}};
+                TRAITS.forEach(function(tr){ P.t[tr.k]=0; }); }
+        L.vars.forEach(function(v){
+          if(v.died||v.n<=0) return;
+          P.n+=v.n;
+          TRAITS.forEach(function(tr){ P.t[tr.k]+=v.t[tr.k]*v.n; });
+          var r=v.hue*Math.PI/180; P.sx+=Math.cos(r)*v.n; P.sy+=Math.sin(r)*v.n;
+        });
+      });
+      Object.keys(pool).forEach(function(spk){
+        var P=pool[spk]; if(!P.n) return;
+        TRAITS.forEach(function(tr){ P.t[tr.k]/=P.n; });
+        P.hue=((Math.atan2(P.sy,P.sx)*180/Math.PI)+360)%360;
+      });
+      keys.forEach(function(k){
+        var L=st[k], P=pool[L.sp];
+        if(!P||!P.n) return;
+        L.vars.forEach(function(v){
+          if(v.died||v.n<=0) return;
+          var sum=0;
+          TRAITS.forEach(function(tr){
+            v.t[tr.k]+=(P.t[tr.k]-v.t[tr.k])*GENEFLOW; sum+=v.t[tr.k]; });
+          /* the point budget is a hard constraint, so hold it after mixing */
+          var sc=sum>0?PTS/sum:1;
+          TRAITS.forEach(function(tr){ v.t[tr.k]=clamp(v.t[tr.k]*sc,0,TMAX); });
+          var dhg=((P.hue-v.hue+540)%360)-180;
+          v.hue=(v.hue+dhg*GENEFLOW+360)%360;
+        });
+      });
+    }
     /* aggregates keep every existing read-out working; `vars` carries the branch
        history the per-player tree is drawn from */
     var snap={g:g, shock:shock, tot:0, lines:{}, alive:0};
@@ -2129,7 +2192,8 @@ function renderMine(force){
       +'<div class="ev-sub">branches alive right now</div>'
       +'<div class="ev-hint">Your '+FOUNDERS+' founders are one population, not one animal. As it grows it buds '
       +'off variants that drift apart, and the ones this world cannot keep die off. '
-      +'The whole picture of your population appears when the round ends.</div></div>';
+      +'You also interbreed with every other '+SPBY[d.sp].n+' in this world, which is what keeps '
+      +'you all one species. The whole picture appears when the round ends.</div></div>';
   }
   /* the trait passport: what you chose vs what selection left */
   if(L){
@@ -2710,8 +2774,8 @@ function drawSpeciesSplit(svg, W, H){
 
   var s='<rect width="'+W+'" height="'+H+'" fill="#fbf8f0"/>';
   s+='<text class="bd-title" x="46" y="34">What the barrier did to each species</text>'
-    +'<text class="bd-marklab" x="46" y="58">Each player&#8217;s population is judged on its own &mdash; '
-    +'they compete for the same ground but never interbreed.</text>'
+    +'<text class="bd-marklab" x="46" y="58">Everyone who picked a species interbreeds with the rest '
+    +'of it, so each side of the barrier holds one gene pool per species.</text>'
     +'<text class="sp-hd" x="'+xA+'" y="'+(PADT-16)+'" text-anchor="middle">side A</text>'
     +'<text class="sp-hd" x="'+xB+'" y="'+(PADT-16)+'" text-anchor="middle">side B</text>'
     +'<text class="sp-hd" x="'+xBar+'" y="'+(PADT-16)+'">how far the halves moved</text>';
