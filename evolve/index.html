@@ -2674,13 +2674,29 @@ function drawBands(svg, W, H){
    pooled, on side A and on side B, and how far the two halves have moved. The
    two animals are drawn in the colours those halves actually reached. ══ */
 function speciesSplitRows(){
-  var G=gens(), i=splitIdx()||G, ds=designs(), counts={};
-  Object.keys(ds).forEach(function(k){ counts[ds[k].sp]=(counts[ds[k].sp]||0)+1; });
+  /* ⚠️ Two students who both picked Stonecoil never interbreed: nothing in the
+     model moves individuals or traits between lineages, so a "species" here is
+     a body plan, not a reproductive unit. Pooling everyone who picked one and
+     asking whether THAT would interbreed was therefore asking a question the
+     model does not answer.
+
+     So each player's own population is judged on its own — which is the verdict
+     that means something — and the row reports how many of them came apart. */
+  var G=gens(), i=splitIdx()||G, ds=designs();
+  var sa=snapAt(1,i), sb=snapAt(2,i);
   return SPECIES.map(function(sp){
-    var who={sp:sp.k};
-    var A=meanOf(snapAt(1,i), who), B=meanOf(snapAt(2,i), who);
-    return {sp:sp, n:counts[sp.k]||0, A:A, B:B,
-            dv:(counts[sp.k] ? divergence(A,B) : null)};
+    var members=Object.keys(ds).filter(function(k){ return ds[k].sp===sp.k; });
+    var two=0, lost=0, judged=0, Dsum=0;
+    members.forEach(function(k){
+      var A=lineMean(sa,k), B=lineMean(sb,k);
+      if(!A||!B){ lost++; return; }
+      var dv=divergence(A,B);
+      judged++; Dsum+=dv.D;
+      if(dv.D>=0.45) two++;
+    });
+    return {sp:sp, n:members.length, two:two, lost:lost, judged:judged,
+            D:(judged? Dsum/judged : 0),
+            A:speciesMean(sa,sp.k), B:speciesMean(sb,sp.k)};
   }).filter(function(r){ return r.n>0; });
 }
 function drawSpeciesSplit(svg, W, H){
@@ -2694,10 +2710,11 @@ function drawSpeciesSplit(svg, W, H){
 
   var s='<rect width="'+W+'" height="'+H+'" fill="#fbf8f0"/>';
   s+='<text class="bd-title" x="46" y="34">What the barrier did to each species</text>'
-    +'<text class="bd-marklab" x="46" y="58">The same two worlds for all of them. They did not all come apart.</text>'
+    +'<text class="bd-marklab" x="46" y="58">Each player&#8217;s population is judged on its own &mdash; '
+    +'they compete for the same ground but never interbreed.</text>'
     +'<text class="sp-hd" x="'+xA+'" y="'+(PADT-16)+'" text-anchor="middle">side A</text>'
     +'<text class="sp-hd" x="'+xB+'" y="'+(PADT-16)+'" text-anchor="middle">side B</text>'
-    +'<text class="sp-hd" x="'+xBar+'" y="'+(PADT-16)+'">how far apart</text>';
+    +'<text class="sp-hd" x="'+xBar+'" y="'+(PADT-16)+'">how far the halves moved</text>';
 
   /* the verdict thresholds, so a row's position on the bar means something */
   [0.15,0.30,0.45].forEach(function(v){
@@ -2721,15 +2738,20 @@ function drawSpeciesSplit(svg, W, H){
       s+='<g transform="translate('+(cx-50*sc).toFixed(1)+','+(cy-45*sc-4).toFixed(1)+') scale('+sc+')">'
         + critter(r.sp.k, Math.round(m.hue), 'solid', CRIT_SAT, CRIT_LIT) +'</g>';
     });
-    var D=r.dv? r.dv.D : 0;
+    var D=r.D;
+    var verdict = r.judged===0 ? 'all lost a side'
+                : r.two===0 ? 'none split'
+                : r.two+' of '+r.judged+' split';
     s+='<rect class="ss-track" x="'+xBar+'" y="'+(cy-7).toFixed(1)+'" width="'+barW+'" height="14" rx="7"/>'
       +'<rect class="ss-fill" x="'+xBar+'" y="'+(cy-7).toFixed(1)+'" width="'
       +Math.max(4,barW*Math.min(1,D)).toFixed(1)+'" height="14" rx="7"/>'
-      +'<text class="ss-verdict'+(D>=0.45?' two':'')+'" x="'+(xBar+barW+12)+'" y="'+(cy+5).toFixed(1)+'">'
-      +(r.dv? r.dv.name : '—')+'</text>';
+      +'<text class="ss-verdict'+(r.two&&r.two===r.judged?' two':'')+'" x="'+(xBar+barW+12)+'" y="'+(cy+5).toFixed(1)+'">'
+      +verdict+'</text>';
+    if(r.lost) s+='<text class="ss-sub" x="'+(xBar+barW+12)+'" y="'+(cy+19).toFixed(1)+'">'
+      +r.lost+' lost a side entirely</text>';
   });
-  s+='<text class="bd-leg" x="46" y="'+(H-14)+'">Further right means the two halves match less on the traits that '
-    +'decide who survives and who finds a mate.</text>';
+  s+='<text class="bd-leg" x="46" y="'+(H-14)+'">The bar is how far the two halves moved apart on average. '
+    +'&#8220;Split&#8221; means a player&#8217;s two halves would no longer interbreed.</text>';
   svg.innerHTML=s;
   return true;
 }
