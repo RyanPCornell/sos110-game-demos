@@ -833,7 +833,10 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .ev-blk.sv-sum{border-left:3px solid var(--accent);}
 .cg-btn.sv-mail{margin-top:.55rem; width:100%;}
 .ev-slide .cg-phase{color:#8a8069;}
-.ev-bandbar{display:flex; align-items:center; gap:.35rem; margin-bottom:.3rem;}
+.ev-bandbar{display:flex; align-items:center; gap:.35rem; margin-bottom:.3rem; flex-wrap:wrap;}
+.ev-scopewrap{display:flex; align-items:center; gap:.35rem; margin-left:.6rem;
+  padding-left:.7rem; border-left:1px solid rgba(120,100,60,.3);}
+.ev-scopewrap[hidden]{display:none !important;}
 .ev-bandbar[hidden]{display:none !important;}
 .ev-bandlbl{font-size:clamp(.58rem,.92vw,.68rem); font-weight:700; text-transform:uppercase;
   letter-spacing:.09em; color:#8a8069; margin-right:.15rem;}
@@ -1096,6 +1099,11 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
           <button class="ev-bandbtn" type="button" data-band="cold">Cold</button>
           <button class="ev-bandbtn" type="button" data-band="dry">Drought</button>
           <button class="ev-bandbtn" type="button" data-band="evade">Evasion</button>
+          <span class="ev-scopewrap" data-scopewrap hidden>
+            <span class="ev-bandlbl">Of</span>
+            <button class="ev-bandbtn on" type="button" data-scope="mine">My population</button>
+            <button class="ev-bandbtn" type="button" data-scope="species">My whole species</button>
+          </span>
         </div>
         <div class="ev-scenes" data-scenes>
           <div class="ev-scenewrap" data-scenewrap-a>
@@ -2192,8 +2200,8 @@ function renderMine(force){
       +'<div class="ev-sub">branches alive right now</div>'
       +'<div class="ev-hint">Your '+FOUNDERS+' founders are one population, not one animal. As it grows it buds '
       +'off variants that drift apart, and the ones this world cannot keep die off. '
-      +'You also interbreed with every other '+SPBY[d.sp].n+' in this world, which is what keeps '
-      +'you all one species. The whole picture appears when the round ends.</div></div>';
+      +'The organism you created also interbreeds with every other '+SPBY[d.sp].n+' in this world, '
+      +'which is what keeps you all one species. The whole picture appears when the round ends.</div></div>';
   }
   /* the trait passport: what you chose vs what selection left */
   if(L){
@@ -2531,24 +2539,52 @@ function phenoBin(v, g, j){
   var t=(v.t[bandMode]||0) + phenoJitter(seed)*PHENO_T*k;
   return Math.min(4, Math.max(0, Math.floor(t)));
 }
+/* Two things a student wants to see once it is over: what happened to the
+   population they founded, and what happened to the species it belongs to —
+   which, now that conspecifics interbreed, is a different and larger story.
+   One toggle switches every summary view between them. */
+var mineScope='mine';
+function scopeWho(){
+  var d=myDesign();
+  return (mineScope==='species' && d) ? {sp:d.sp} : PK;
+}
+function scopeName(){
+  var d=myDesign();
+  return (mineScope==='species' && d) ? SPBY[d.sp].n : 'your population';
+}
+/* the live variants in scope, each tagged with the lineage it came from so a
+   phenotype seed cannot collide between two students' variant ids */
+function scopeVars(snap){
+  var d=myDesign();
+  if(!snap||!d) return null;
+  var out=[], ds=designs();
+  var keys = (mineScope==='species')
+    ? Object.keys(snap.lines).filter(function(k){ return ds[k] && ds[k].sp===d.sp; })
+    : [PK];
+  var found=false;
+  keys.forEach(function(k){
+    var L=snap.lines[k]; if(!L||!L.vars) return;
+    found=true;
+    L.vars.forEach(function(v){ if(!v.died&&v.n>0) out.push({k:k, v:v}); });
+  });
+  return found? out : null;
+}
 function mineTotal(snap){
-  var L=snap?snap.lines[PK]:null;
-  if(!L||!L.vars) return null;
-  var n=0;
-  L.vars.forEach(function(v){ if(!v.died && v.n>0) n+=v.n; });
+  var vs=scopeVars(snap);
+  if(!vs) return null;
+  var n=0; vs.forEach(function(x){ n+=x.v.n; });
   return n;
 }
 function mineRow(snap, g, per){
-  var L=snap?snap.lines[PK]:null;
-  if(!L||!L.vars) return null;
+  var vs=scopeVars(snap);
+  if(!vs) return null;
   var blocks=[], n=0;
-  L.vars.forEach(function(v){
-    if(v.died||v.n<=0) return;
-    n+=v.n;
-    var k=Math.max(1, Math.round(v.n/per));
-    for(var j=0;j<k;j++) blocks.push(phenoBin(v,g,j));
+  vs.forEach(function(x){
+    n+=x.v.n;
+    var k=Math.max(1, Math.round(x.v.n/per));
+    for(var j=0;j<k;j++) blocks.push(phenoBin(x.v, g, x.k+':'+j));
   });
-  blocks.sort(function(x,y){ return x-y; });
+  blocks.sort(function(a,b){ return a-b; });
   return {blocks:blocks, tot:n};
 }
 function drawMineBands(svg, W, H){
@@ -2578,16 +2614,19 @@ function drawMineBands(svg, W, H){
 
   svg.setAttribute('preserveAspectRatio','xMidYMid meet');
   svg.setAttribute('viewBox','0 0 '+W+' '+H);
-  var PADL=74, PADR=26, PADT=62, PADB=52, HEAD=split?20:0;
-  var trackW=W-PADL-PADR;
+  /* the count is written after the bar, so the track has to stop short of the
+     edge or a full-width bar pushes its own number off the panel */
+  var PADL=74, PADR=26, PADT=62, PADB=52, HEAD=split?20:0, COUNTW=72;
+  var trackW=W-PADL-PADR-COUNTW;
   var rowH=(H-PADT-PADB-HEAD*secs.length)/nRows;
   var barH=Math.max(6, rowH*0.66);
   var cells=Math.ceil(peak/per), cw=Math.min(14, trackW/Math.max(1,cells));
   var bw=Math.max(1.5, cw-1.6);
 
   var s='<rect width="'+W+'" height="'+H+'" fill="#fbf8f0"/>';
+  var whoLab=(mineScope==='species')? 'Every '+scopeName()+' in the class' : 'Your population';
   s+='<text class="bd-title" x="'+PADL+'" y="22">'
-    +(split? 'Your population on each side of the barrier' : 'Your population, generation by generation')+'</text>'
+    +whoLab+(split? ' on each side of the barrier' : ', generation by generation')+'</text>'
     +'<text class="bd-marklab" x="'+PADL+'" y="44">every block is '
     +(per===1?'one organism':per+' organisms')+' &middot; sorted by '+bandFullName()+'</text>';
 
@@ -2633,12 +2672,23 @@ function drawMineBands(svg, W, H){
   svg.innerHTML=s;
   return true;
 }
+function redrawSummary(){
+  if(bandMode==='split'){
+    if(!HOST && myDesign()) drawSplitFig(q('[data-scene-a]'),1000,560,scopeWho());
+    else drawSpeciesSplit(q('[data-scene-a]'),1000,560);
+  }
+  else if(!HOST && myDesign()) drawMineBands(q('[data-scene-a]'), 1000, 560);
+  else drawBands(q('[data-scene-a]'), 1000, 560);
+  q('[data-caption]').textContent = bandCaption();
+}
 function bandCaption(){
   var mine=(!HOST && myDesign());
   if(bandMode==='split') return mine
-    ? 'Your own population, split in two. Each ribbon is coloured by that half of it, generation by generation.'
+    ? (mineScope==='species'
+        ? 'Every '+scopeName()+' in the class, split in two. Each ribbon is coloured by that half of the species.'
+        : 'Your own population, split in two. Each ribbon is coloured by that half of it, generation by generation.')
     : 'One barrier, five founding stocks. Some came apart; some barely moved.';
-  var whose=mine? 'your population' : 'the whole class';
+  var whose=mine? scopeName() : 'the whole class';
   if(mine && didSplit()) return bandMode==='color'
     ? 'The same founders on both sides of the barrier. Each half is matching a different ground now.'
     : 'The same founders on both sides of the barrier, sorted by '+bandFullName()
@@ -3100,8 +3150,13 @@ function drawSplitFig(svg, W, H, who){
   var s='<rect width="'+W+'" height="'+H+'" fill="#fbf8f0"/>';
 
   /* ── the founder ── */
+  /* who is null for the class, a lineage key for one player, or {sp} for a
+     whole species — and the heading has to say which */
+  var whoLab = who==null ? 'One population'
+             : (typeof who==='object' ? 'Every '+SPBY[who.sp].n+' in the class'
+                                      : 'Your population');
   s+='<text class="sp-cap" x="'+(W/2)+'" y="34" text-anchor="middle">'
-    +(who? 'Your population at generation ' : 'One population at generation ')+G+'</text>'
+    +whoLab+' at generation '+G+'</text>'
     +'<g transform="translate('+(W/2-50*0.66)+','+(88-45*0.66)+') scale(0.66)">'
     + critter(sp, Math.round(f.hue), pat, CRIT_SAT, CRIT_LIT)+'</g>'
     +'<text class="sp-sub" x="'+(W/2)+'" y="138" text-anchor="middle">'+num(f.n)+' individuals, one gene pool</text>';
@@ -3496,6 +3551,12 @@ function render(){
   Array.prototype.forEach.call(bb.querySelectorAll('[data-band]'),function(x){
     x.classList.toggle('on', x.getAttribute('data-band')===bandMode);
   });
+  /* the scope only exists for someone who has a population of their own */
+  var sw=q('[data-scopewrap]');
+  sw.hidden = HOST || !myDesign() || bb.hidden;
+  Array.prototype.forEach.call(sw.querySelectorAll('[data-scope]'),function(x){
+    x.classList.toggle('on', x.getAttribute('data-scope')===mineScope);
+  });
   if(ph==='reveal') startReveal(); else q('[data-reveal]').hidden=true;
   root.classList.toggle('designing', ph==='design');
   var two = (ph==='split');
@@ -3513,7 +3574,7 @@ function render(){
     drawScene(q('[data-scene-a]'), world(1), snapAt(1,i2), PK, 520);
     drawScene(q('[data-scene-b]'), world(2), snapAt(2,i2), PK, 520);
   } else if(ph==='final' && didSplit() && bandMode==='split' && !HOST && myDesign()
-            && drawSplitFig(q('[data-scene-a]'),1000,560,PK)){
+            && drawSplitFig(q('[data-scene-a]'),1000,560,scopeWho())){
     /* a tree carried through the barrier forks everywhere at once and stops
        being readable, so after the barrier the student gets the split itself */
   } else if((ph==='discuss'||ph==='final') && !HOST && myDesign()
@@ -3605,19 +3666,23 @@ q('[data-join]').addEventListener('click',function(){
   backend.mergeDocShard('polls',GID,o);
 });
 q('[data-bandbar]').addEventListener('click',function(ev){
-  var b=ev.target.closest? ev.target.closest('[data-band]') : null;
+  if(!ev.target.closest) return;
+  var sc=ev.target.closest('[data-scope]');
+  if(sc){
+    mineScope=sc.getAttribute('data-scope');
+    Array.prototype.forEach.call(this.querySelectorAll('[data-scope]'),function(x){
+      x.classList.toggle('on', x.getAttribute('data-scope')===mineScope);
+    });
+    redrawSummary();
+    return;
+  }
+  var b=ev.target.closest('[data-band]');
   if(!b) return;
   bandMode=b.getAttribute('data-band');
   Array.prototype.forEach.call(this.querySelectorAll('[data-band]'),function(x){
     x.classList.toggle('on', x.getAttribute('data-band')===bandMode);
   });
-  if(bandMode==='split'){
-    if(!HOST && myDesign()) drawSplitFig(q('[data-scene-a]'),1000,560,PK);
-    else drawSpeciesSplit(q('[data-scene-a]'),1000,560);
-  }
-  else if(!HOST && myDesign()) drawMineBands(q('[data-scene-a]'), 1000, 560);
-  else drawBands(q('[data-scene-a]'), 1000, 560);
-  q('[data-caption]').textContent = bandCaption();
+  redrawSummary();
 });
 
 /* pick an organism out of the family tree to read it */
