@@ -2908,7 +2908,7 @@ function renderReadout(){
   var e=world(0), i=genIdx()||1, snap=snapAt(0,i), h='';
   if(!snap){ box.innerHTML='<div class="ev-blk"><div class="ev-bh">No organisms</div></div>'; return; }
   var opt=optimum(e);
-  h+='<div class="ev-blk gen"><div class="ev-bh">Generation '+i+' of '+gens()+'</div>'
+  h+='<div class="ev-blk gen"><div class="ev-bh">The living population</div>'
     +'<div class="ev-genrow"><div><div class="ev-big">'+num(snap.tot)+'</div><div class="ev-sub">individuals</div></div>'
     +'<div><div class="ev-big">'+num(snap.alive)+'</div><div class="ev-sub">lineages alive of '+num(nDesigns())+'</div></div></div>'
     +(snap.shock?'<div class="ev-shock">A hard year &mdash; adults died regardless of how well adapted they were.</div>':'')
@@ -2997,7 +2997,7 @@ function renderSplitReadout(box){
   var i=splitIdx()||gens();
   var eA=world(1), eB=world(2), sA=snapAt(1,i), sB=snapAt(2,i);
   var mA=popMean(sA), mB=popMean(sB), dv=divergence(mA,mB);
-  var h='<div class="ev-blk gen"><div class="ev-bh">Generation '+i+' of '+gens()+' since the barrier</div>'
+  var h='<div class="ev-blk gen"><div class="ev-bh">The two halves</div>'
     +'<div class="ev-genrow"><div><div class="ev-big">'+(sA?num(sA.tot):0)+'</div><div class="ev-sub">side A</div></div>'
     +'<div><div class="ev-big">'+(sB?num(sB.tot):0)+'</div><div class="ev-sub">side B</div></div></div></div>';
   if(dv){
@@ -3238,11 +3238,13 @@ function render(){
   }
   var cap=q('[data-caption]');
   if(ph==='run'){ var s=snapAt(0,genIdx()||1);
-    cap.textContent = s ? ('Generation '+(genIdx()||1)+' — '+num(s.tot)+' individuals, '
-      +s.alive+' lineages still going'+(s.shock?' — a hard year':'')) : ''; }
+    /* the generation is on the badge in the corner of the stage now, so this
+       says only what the badge cannot */
+    cap.textContent = s ? (num(s.tot)+' individuals, '+s.alive+' lineages still going'
+      +(s.shock?' — a hard year':'')) : ''; }
   else if(ph==='discuss') cap.textContent = bandCaption();
   else if(ph==='split'){ var sd=divergence(popMean(snapAt(1,splitIdx()||1)),popMean(snapAt(2,splitIdx()||1)));
-    cap.textContent='Generation '+(splitIdx()||1)+' since the barrier — '+(sd?sd.name.toLowerCase():'measuring'); }
+    cap.textContent = sd ? sd.name : 'Measuring how far the two halves have moved apart'; }
   else if(ph==='final') cap.textContent = (!HOST && myDesign() && didSplit())
     ? 'Same founders, no gene flow, two worlds. Each ribbon is coloured by that half of the class, generation by generation.'
     : bandCaption();
