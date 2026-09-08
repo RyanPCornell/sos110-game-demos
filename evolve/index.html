@@ -519,6 +519,13 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   font-variant-numeric:tabular-nums; font-size:clamp(1.5rem,3.4vw,2.4rem); margin:.04rem 0 .02rem;}
 .ev-genof{font-family:'Inter',sans-serif; font-size:clamp(.52rem,.86vw,.64rem);
   font-weight:600; letter-spacing:.06em; color:#8a8069;}
+/* after the barrier each panel carries a side label across its top, and the
+   badge sat on it. The badge is the label's next sibling, so it can simply
+   step below whenever that label is showing — and shrink a little, because by
+   then it is sharing a half-width panel. */
+.ev-scenelbl:not([hidden]) + .ev-genbadge{ top:2.05rem; padding:.24rem .52rem .28rem; }
+.ev-scenelbl:not([hidden]) + .ev-genbadge .ev-gennum{ font-size:clamp(1.1rem,2.3vw,1.65rem); }
+.ev-scenelbl:not([hidden]) + .ev-genbadge .ev-genlbl{ font-size:clamp(.46rem,.74vw,.55rem); }
 .ev-empty{font:700 26px 'Inter',sans-serif; fill:rgba(30,45,38,.5);}
 /* the stage should breathe: a slow bob, offset per animal so the population
    never moves in lockstep, plus a contact shadow that grounds each one */
