@@ -849,6 +849,16 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .bd-count{font-family:'Merriweather',serif; font-size:13px; font-weight:900; fill:#3b3222;
   font-variant-numeric:tabular-nums;}
 .mb-cell{stroke:rgba(30,24,12,.22); stroke-width:.6;}
+/* the five-species comparison */
+.ss-name{font-family:'Merriweather',serif; font-size:19px; font-weight:900; fill:#3b3222;}
+.ss-sub{font-family:'Inter',sans-serif; font-size:12px; fill:#8a8069;}
+.ss-gone{font-family:'Inter',sans-serif; font-size:13px; font-style:italic; fill:#a89a86;}
+.ss-rule{stroke:rgba(120,100,60,.17); stroke-width:1; fill:none;}
+.ss-tick{stroke:rgba(120,100,60,.3); stroke-width:1; stroke-dasharray:3 4; fill:none;}
+.ss-track{fill:#ece5d6;}
+.ss-fill{fill:var(--accent); opacity:.85;}
+.ss-verdict{font-family:'Inter',sans-serif; font-size:14px; font-weight:700; fill:#5e5340;}
+.ss-verdict.two{fill:var(--accent); font-weight:800;}
 /* the draw, dressed as a specimen card rather than a game show: parchment,
    hairline rules, small-caps labels, and a restrained gold flash when a value
    lands. The riffle stays — it is the part that makes the room look up. */
@@ -2596,6 +2606,76 @@ function drawBands(svg, W, H){
   return true;
 }
 
+/* ══ WHAT THE BARRIER DID TO EACH SPECIES ══════════════════════════════════
+   The same barrier, the same two worlds, five founding stocks — and they do
+   not all come apart. Some end up unable to interbreed and some barely move,
+   which is the whole point of 4.3 and is invisible if the room is shown one
+   class-wide verdict.
+
+   Each row is one of the five species: everyone in the class who picked it,
+   pooled, on side A and on side B, and how far the two halves have moved. The
+   two animals are drawn in the colours those halves actually reached. ══ */
+function speciesSplitRows(){
+  var G=gens(), i=splitIdx()||G, ds=designs(), counts={};
+  Object.keys(ds).forEach(function(k){ counts[ds[k].sp]=(counts[ds[k].sp]||0)+1; });
+  return SPECIES.map(function(sp){
+    var who={sp:sp.k};
+    var A=meanOf(snapAt(1,i), who), B=meanOf(snapAt(2,i), who);
+    return {sp:sp, n:counts[sp.k]||0, A:A, B:B,
+            dv:(counts[sp.k] ? divergence(A,B) : null)};
+  }).filter(function(r){ return r.n>0; });
+}
+function drawSpeciesSplit(svg, W, H){
+  var rows=speciesSplitRows();
+  if(!rows.length) return false;
+  svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  var eA=world(1), eB=world(2);
+  var PADT=96, PADB=44, rowH=(H-PADT-PADB)/rows.length;
+  var xA=330, xB=470, xBar=560, barW=W-xBar-186;
+
+  var s='<rect width="'+W+'" height="'+H+'" fill="#fbf8f0"/>';
+  s+='<text class="bd-title" x="46" y="34">What the barrier did to each species</text>'
+    +'<text class="bd-marklab" x="46" y="58">The same two worlds for all of them. They did not all come apart.</text>'
+    +'<text class="sp-hd" x="'+xA+'" y="'+(PADT-16)+'" text-anchor="middle">side A</text>'
+    +'<text class="sp-hd" x="'+xB+'" y="'+(PADT-16)+'" text-anchor="middle">side B</text>'
+    +'<text class="sp-hd" x="'+xBar+'" y="'+(PADT-16)+'">how far apart</text>';
+
+  /* the verdict thresholds, so a row's position on the bar means something */
+  [0.15,0.30,0.45].forEach(function(v){
+    var x=xBar+barW*v;
+    s+='<path class="ss-tick" d="M'+x.toFixed(0)+' '+(PADT-8)+' V'+(PADT+rowH*rows.length-4).toFixed(0)+'"/>';
+  });
+
+  rows.forEach(function(r,i){
+    var y=PADT+rowH*i, cy=y+rowH*0.46, sc=0.42;
+    s+='<path class="ss-rule" d="M46 '+(y+rowH-2).toFixed(1)+' H'+(W-46)+'"/>';
+    s+='<text class="ss-name" x="46" y="'+(cy-2).toFixed(1)+'">'+r.sp.n+'</text>'
+      +'<text class="ss-sub" x="46" y="'+(cy+16).toFixed(1)+'">'+r.n+' player'+(r.n===1?'':'s')+'</text>';
+    [[r.A,xA,eA],[r.B,xB,eB]].forEach(function(o){
+      var m=o[0], cx=o[1];
+      s+='<ellipse class="sp-ground" cx="'+cx+'" cy="'+(cy+20).toFixed(1)+'" rx="42" ry="8" fill="'
+        +hsl(o[2].hue,30,46)+'"/>';
+      if(!m){
+        s+='<text class="ss-gone" x="'+cx+'" y="'+(cy+4).toFixed(1)+'" text-anchor="middle">gone</text>';
+        return;
+      }
+      s+='<g transform="translate('+(cx-50*sc).toFixed(1)+','+(cy-45*sc-4).toFixed(1)+') scale('+sc+')">'
+        + critter(r.sp.k, Math.round(m.hue), 'solid', CRIT_SAT, CRIT_LIT) +'</g>';
+    });
+    var D=r.dv? r.dv.D : 0;
+    s+='<rect class="ss-track" x="'+xBar+'" y="'+(cy-7).toFixed(1)+'" width="'+barW+'" height="14" rx="7"/>'
+      +'<rect class="ss-fill" x="'+xBar+'" y="'+(cy-7).toFixed(1)+'" width="'
+      +Math.max(4,barW*Math.min(1,D)).toFixed(1)+'" height="14" rx="7"/>'
+      +'<text class="ss-verdict'+(D>=0.45?' two':'')+'" x="'+(xBar+barW+12)+'" y="'+(cy+5).toFixed(1)+'">'
+      +(r.dv? r.dv.name : '—')+'</text>';
+  });
+  s+='<text class="bd-leg" x="46" y="'+(H-14)+'">Further right means the two halves match less on the traits that '
+    +'decide who survives and who finds a mate.</text>';
+  svg.innerHTML=s;
+  return true;
+}
+
 /* ⚠️ SUPERSEDED, KEPT FOR REFERENCE. The student's screen now shows their own
    founding population as a block chart (drawMineBands) — the same view the room
    gets, which is the honest one because they founded a population rather than an
@@ -2827,26 +2907,57 @@ function modalSpecies(){
   Object.keys(cnt).forEach(function(k){ if(cnt[k]>bn){ bn=cnt[k]; sp=k; } });
   return sp;
 }
-function sideTrack(w, upto){
+/* Speciation is something that happens to a POPULATION, and every student has
+   one of their own — so the picture on a student's phone should be their
+   lineage splitting, not the class average, which is the same on all 300
+   screens and therefore tells nobody anything about their own animal. */
+function lineMean(snap, k){
+  var L=snap?snap.lines[k]:null;
+  if(!L||!L.alive||L.n<=0) return null;
+  return {t:L.t, hue:L.hue, n:L.n};
+}
+/* and the same for everyone who picked one species, which is what lets the
+   room see the barrier split some species and leave others alone */
+function speciesMean(snap, spk){
+  if(!snap) return null;
+  var ds=designs(), t={}, sx=0, sy=0, tot=0;
+  TRAITS.forEach(function(tr){ t[tr.k]=0; });
+  Object.keys(snap.lines).forEach(function(k){
+    if(!ds[k] || ds[k].sp!==spk) return;
+    var L=snap.lines[k]; if(!L.alive||L.n<=0) return;
+    tot+=L.n;
+    TRAITS.forEach(function(tr){ t[tr.k]+=L.t[tr.k]*L.n; });
+    var r=L.hue*Math.PI/180; sx+=Math.cos(r)*L.n; sy+=Math.sin(r)*L.n;
+  });
+  if(!tot) return null;
+  TRAITS.forEach(function(tr){ t[tr.k]/=tot; });
+  return {t:t, hue:((Math.atan2(sy,sx)*180/Math.PI)+360)%360, n:tot};
+}
+function meanOf(snap, who){
+  return who==null ? popMean(snap)
+       : (typeof who==='object' ? speciesMean(snap, who.sp) : lineMean(snap, who));
+}
+function sideTrack(w, upto, who){
   var hues=[], last=null, gone=0;
   for(var g=1; g<=upto; g++){
-    var m=popMean(snapAt(w,g));
+    var m=meanOf(snapAt(w,g), who);
     if(m){ hues.push(m.hue); last={g:g, m:m}; }
     else if(!gone && last){ gone=g; }
   }
   return {hues:hues, last:last, gone:gone};
 }
-function drawSplitFig(svg, W, H){
+function drawSplitFig(svg, W, H, who){
   var G=gens(), upto=splitIdx()||G;
-  var f=popMean(snapAt(0,G));
+  var f=meanOf(snapAt(0,G), who);
   if(!f) return false;
   var d=myDesign(), sp=(d&&d.sp)||modalSpecies(), pat=(d&&d.pat)||'solid';
-  var TA=sideTrack(1,upto), TB=sideTrack(2,upto);
+  var TA=sideTrack(1,upto,who), TB=sideTrack(2,upto,who);
   var UIDL=(++UID);
   var s='<rect width="'+W+'" height="'+H+'" fill="#fbf8f0"/>';
 
   /* ── the founder ── */
-  s+='<text class="sp-cap" x="'+(W/2)+'" y="34" text-anchor="middle">One population at generation '+G+'</text>'
+  s+='<text class="sp-cap" x="'+(W/2)+'" y="34" text-anchor="middle">'
+    +(who? 'Your population at generation ' : 'One population at generation ')+G+'</text>'
     +'<g transform="translate('+(W/2-50*0.66)+','+(88-45*0.66)+') scale(0.66)">'
     + critter(sp, Math.round(f.hue), pat, CRIT_SAT, CRIT_LIT)+'</g>'
     +'<text class="sp-sub" x="'+(W/2)+'" y="138" text-anchor="middle">'+num(f.n)+' individuals, one gene pool</text>';
@@ -2903,8 +3014,11 @@ function drawSplitFig(svg, W, H){
   });
 
   /* ── the two traits that came apart the most ── */
-  var mA=TA.last?TA.last.m:null, mB=TB.last?TB.last.m:null;
-  if(mA&&mB&&RA.live&&RB.live){
+  /* a side that died out has a last-known mean, but comparing against it says
+     "two species" about a population that no longer exists. The verdict has to
+     see nothing there, which is what makes it read "one side was lost". */
+  var mA=(RA.live&&TA.last)?TA.last.m:null, mB=(RB.live&&TB.last)?TB.last.m:null;
+  if(mA&&mB){
     var diffs=TRAITS.map(function(tr){
       return {n:tr.n, a:mA.t[tr.k], b:mB.t[tr.k], d:Math.abs(mA.t[tr.k]-mB.t[tr.k])};
     }).sort(function(x,y){ return y.d-x.d; }).slice(0,2);
@@ -3228,7 +3342,8 @@ function render(){
   q('[data-joinbox]').hidden = HOST || joined() || !(ph==='lobby'||ph==='design');
   renderEcoBar(); renderDesign(); renderMine(); renderReadout(); renderSurvey();
   var bb=q('[data-bandbar]');
-  bb.hidden = !(ph==='discuss'||ph==='final');
+  bb.hidden = !(ph==='discuss'||ph==='final')
+    || (ph==='final' && didSplit() && (HOST || !myDesign()));
   if(ph==='reveal') startReveal(); else q('[data-reveal]').hidden=true;
   root.classList.toggle('designing', ph==='design');
   var two = (ph==='split');
@@ -3246,7 +3361,7 @@ function render(){
     drawScene(q('[data-scene-a]'), world(1), snapAt(1,i2), PK, 520);
     drawScene(q('[data-scene-b]'), world(2), snapAt(2,i2), PK, 520);
   } else if(ph==='final' && didSplit() && !HOST && myDesign()
-            && drawSplitFig(q('[data-scene-a]'),1000,560)){
+            && drawSplitFig(q('[data-scene-a]'),1000,560,PK)){
     /* a tree carried through the barrier forks everywhere at once and stops
        being readable, so after the barrier the student gets the split itself */
   } else if((ph==='discuss'||ph==='final') && !HOST && myDesign()
@@ -3254,6 +3369,9 @@ function render(){
     /* the same chart the room is looking at, drawn for this student's own
        founding population — which is the honest picture, because they founded
        a population rather than an animal */
+  } else if(ph==='final' && didSplit() && (HOST || !myDesign())
+            && drawSpeciesSplit(q('[data-scene-a]'),1000,560)){
+    /* the room's closing view: the same barrier across all five stocks */
   } else if((ph==='discuss'||ph==='final') && (HOST || !myDesign()) && drawBands(q('[data-scene-a]'),1000,560)){
     /* the projected copy gets the whole class instead: one bar per generation */
   } else {
@@ -3281,8 +3399,10 @@ function render(){
   else if(ph==='discuss') cap.textContent = bandCaption();
   else if(ph==='split'){ var sd=divergence(popMean(snapAt(1,splitIdx()||1)),popMean(snapAt(2,splitIdx()||1)));
     cap.textContent = sd ? sd.name : 'Measuring how far the two halves have moved apart'; }
-  else if(ph==='final') cap.textContent = (!HOST && myDesign() && didSplit())
-    ? 'Same founders, no gene flow, two worlds. Each ribbon is coloured by that half of the class, generation by generation.'
+  else if(ph==='final') cap.textContent = didSplit()
+    ? ((!HOST && myDesign())
+        ? 'Your own population, split in two. Each ribbon is coloured by that half of it, generation by generation.'
+        : 'One barrier, five founding stocks. Some came apart; some barely moved.')
     : bandCaption();
   else cap.textContent='';
 
