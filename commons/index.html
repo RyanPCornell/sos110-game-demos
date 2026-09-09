@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tragedy of the Commons — self-running demo</title>
+<title>Tragedy of the Commons Simulation — self-running demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -669,7 +669,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   <div class="cm-root">
     <div class="cm-head">
       <div class="eyebrow">Tragedy of the Commons</div>
-      <h2 class="heading">Playing the Commons: Can We Keep It Alive?</h2>
+      <h2 class="heading">Tragedy of the Commons Simulation</h2>
       <div class="cm-sub">A class of 25 shares one fishery. Each round every student secretly chooses a harvest. Stay under the sustainable share and everyone sells at full price; overshoot and everyone's payout falls; pass capacity and the round pays nothing.</div>
     </div>
     <div class="cm-body">
@@ -2169,10 +2169,14 @@ show(start);
         [5200, ()=>{ const b=bar.querySelector('[data-cmreplay]'); if(b) b.hidden=false; },
          'Nobody cheated. Every individual choice was the rational one — that is what makes it a tragedy.']
       ];
+      /* one dial for the whole walkthrough: the beats are all "watch this
+         happen", so they slow together and the captions get read */
+      const PACE=1.35;
       function play(){
         if(step>=script.length) return;
         const s=script[step++];
-        tid=setTimeout(function(){ txt.textContent=s[2]; try{ s[1](); }catch(e){} play(); }, s[0]);
+        tid=setTimeout(function(){ txt.textContent=s[2]; try{ s[1](); }catch(e){} play(); },
+                       Math.round(s[0]*PACE));
       }
       const FR=CMQ.has('freeze') ? parseInt(CMQ.get('freeze'),10) : -1;
       if(FR>=0){
