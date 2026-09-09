@@ -14,8 +14,8 @@
              color:var(--gold); margin-bottom:.5rem; }
   h1{ font-family:Georgia,'Merriweather',serif; font-weight:900; margin:0 0 .6rem;
        font-size:clamp(1.6rem,4.4vw,2.5rem); line-height:1.15; letter-spacing:-.01em; }
-  .lede{ margin:0 auto; max-width:60ch; color:var(--muted); line-height:1.55;
-          font-size:clamp(.9rem,1.5vw,1rem); }
+  .lede{ margin:0 auto; max-width:46ch; color:var(--muted); line-height:1.5;
+          font-size:clamp(.86rem,1.4vw,.95rem); }
   .rule{ width:min(320px,60%); height:0; margin:1.4rem auto 0;
           border-top:1px solid var(--line); }
   .grid{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.1rem,3vw,2.2rem); }
@@ -32,7 +32,7 @@
   .name{ font-family:Georgia,'Merriweather',serif; font-weight:900;
           font-size:clamp(1.05rem,2.1vw,1.35rem); margin:1rem 0 .35rem; line-height:1.25; }
   .card:hover .name{ color:var(--gold); }
-  .blurb{ color:var(--muted); line-height:1.5; font-size:clamp(.82rem,1.3vw,.92rem); margin:0; }
+  .blurb{ color:var(--muted); line-height:1.45; font-size:clamp(.82rem,1.3vw,.92rem); margin:0; }
   .go{ margin-top:.7rem; font-size:.8rem; font-weight:700; color:var(--gold);
         letter-spacing:.02em; }
   .go::after{ content:" \2192"; }
@@ -44,11 +44,7 @@
   <header>
     <div class="eyebrow">SOS 110 &middot; Sustainable World</div>
     <h1>Live Class Game Demos</h1>
-    <p class="lede">Both of these are played by a whole lecture hall at once, on
-      everyone&rsquo;s own phone. Each demo below runs the real game start to
-      finish on this one screen &mdash; a full class joins, plays, and the result
-      is whatever the model actually produces &mdash; so you can watch it without
-      needing a room full of people.</p>
+    <p class="lede">Normally played by a whole lecture hall. Each one plays itself here.</p>
     <div class="rule"></div>
   </header>
 
@@ -56,17 +52,17 @@
     <a class="card" href="commons/">
       <img class="shot" src="img/commons.png" alt="A frame from the Tragedy of the Commons Demo" width="1600" height="900">
       <div class="name">Tragedy of the Commons Demo</div>
-      <p class="blurb">A shared fishery, four rounds, and a class that has to decide how much to take without knowing what anyone else chose.</p>
+      <p class="blurb">25 fishers, one lake, four rounds.</p>
       <div class="go">Play the demo</div>
     </a>
     <a class="card" href="evolve/">
       <img class="shot" src="img/evolve.png" alt="A frame from the Evolve: Build an Organism Demo" width="1600" height="900">
       <div class="name">Evolve: Build an Organism Demo</div>
-      <p class="blurb">Everyone designs one animal blind, then a random world is drawn and selection edits the class population for ten generations.</p>
+      <p class="blurb">29 populations, one random world, ten generations.</p>
       <div class="go">Play the demo</div>
     </a>
   </div>
 
-  <footer>Each demo runs at the pace the real game does, and replays on demand.<br>
-    Nothing here connects to a live class session.</footer>
+  <footer>Runs at the real game&rsquo;s pace and replays on demand.
+    Nothing here touches a live class session.</footer>
 </div>

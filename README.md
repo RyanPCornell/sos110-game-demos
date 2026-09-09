@@ -16,8 +16,8 @@ produces — including the runs where it does not go well.
 
 | | |
 |---|---|
-| **[Tragedy of the Commons](commons/)** | A shared fishery, four rounds. Every student secretly chooses a harvest; the class total decides whether everyone sells at full price, everyone's payout falls, or the round pays nothing. |
-| **[Evolve: Build an Organism](evolve/)** | Everyone designs one animal before anyone knows what the world looks like. Then a random ecosystem is drawn and the class population runs for ten generations — and a barrier splits it in two. |
+| **[Tragedy of the Commons](commons/)** | 25 fishers, one lake, four rounds. Every student secretly chooses a harvest; the class total decides whether everyone sells at full price, everyone's payout falls, or the round pays nothing. |
+| **[Evolve: Build an Organism](evolve/)** | 29 populations, one random world, ten generations. Everyone founds a population of 26 before anyone knows what the world looks like; then a barrier splits the class in two and the halves are compared, species by species. |
 
 These pages never connect to a live class session: the whole game runs in the
 browser that opened it.
