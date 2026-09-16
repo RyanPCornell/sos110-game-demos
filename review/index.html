@@ -1,0 +1,363 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Module 1 &amp; 2 Review Game — self-running demo</title>
+<style>
+  :root{ --ink:#3b3222; --muted:#6f6a58; --line:rgba(120,100,60,.26); --gold:#8a6a2f; }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{ margin:0; background:linear-gradient(158deg,#faf7f0,#eee7d8); color:var(--ink);
+        font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+        display:flex; flex-direction:column; }
+  header{ padding:clamp(.7rem,2vh,1.1rem) clamp(1rem,3vw,2rem) 0; text-align:center; flex:none; }
+  .eyebrow{ font-size:.68rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); }
+  h1{ font-family:Georgia,'Merriweather',serif; font-weight:900; margin:.25rem 0 0;
+      font-size:clamp(1.1rem,2.6vw,1.7rem); }
+  .back{ position:absolute; left:clamp(.8rem,2vw,1.4rem); top:clamp(.8rem,2vh,1.2rem);
+         font-size:.78rem; font-weight:700; color:var(--gold); text-decoration:none; }
+  .back:hover{ text-decoration:underline; }
+  .stage{ flex:1; min-height:0; display:grid; grid-template-columns:1fr minmax(260px,30%);
+          gap:clamp(.6rem,1.6vw,1.2rem); padding:clamp(.6rem,1.6vh,1rem) clamp(1rem,3vw,2rem); }
+  .pane{ display:flex; flex-direction:column; min-width:0; min-height:0; }
+  .plabel{ font-size:.66rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+           color:var(--gold); margin-bottom:.35rem; text-align:center; flex:none; }
+  .screen{ flex:1; min-height:0; border:1px solid var(--line); border-radius:12px; overflow:hidden;
+           background:#fffdf6; box-shadow:0 10px 30px rgba(60,48,20,.13); }
+  .phone .screen{ border-radius:22px; border-width:6px; border-color:#3b3222; box-shadow:0 12px 26px rgba(60,48,20,.28); }
+  iframe{ width:100%; height:100%; border:0; display:block; background:#fdfbf5; }
+  .bar{ flex:none; display:flex; align-items:center; gap:.75rem; padding:.55rem clamp(1rem,3vw,2rem) .9rem; }
+  .tag{ flex:none; font-size:.62rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+        color:#fffdf6; background:var(--gold); border-radius:999px; padding:.2rem .6rem; }
+  .cap{ flex:1; font-size:clamp(.8rem,1.3vw,.98rem); line-height:1.4; color:var(--ink); }
+  .replay{ flex:none; font:inherit; font-weight:700; font-size:.8rem; cursor:pointer; color:var(--gold);
+           background:#fffdf6; border:1px solid var(--line); border-radius:8px; padding:.35rem .9rem; }
+  .replay:hover{ border-color:var(--gold); }
+  .replay[hidden]{ display:none; }
+  @media (max-width:900px){
+    .stage{ grid-template-columns:1fr; grid-template-rows:1fr 1fr; }
+  }
+</style>
+
+<a class="back" href="../">&larr; All demos</a>
+<header>
+  <div class="eyebrow">SOS 110 &middot; Sustainable World</div>
+  <h1>Module 1 &amp; 2 Review Game</h1>
+</header>
+
+<div class="stage">
+  <div class="pane"><div class="plabel">On the projector</div>
+    <div class="screen"><iframe id="host" title="The projected host screen"></iframe></div></div>
+  <div class="pane phone"><div class="plabel">On a student&rsquo;s phone</div>
+    <div class="screen"><iframe id="phone" title="A student's phone"></iframe></div></div>
+</div>
+
+<div class="bar">
+  <span class="tag">Demo</span>
+  <span class="cap" id="cap">Loading the game&hellip;</span>
+  <button class="replay" id="replay" type="button" hidden>Replay</button>
+</div>
+
+<script>
+(function(){
+  var ID = 'ch5-review-demo';
+  var Q = new URLSearchParams(location.search);
+  var FREEZE = Q.has('freeze') ? parseInt(Q.get('freeze'), 10) : -1;
+  var cap = document.getElementById('cap'), replay = document.getElementById('replay');
+  var hostF = document.getElementById('host'), phoneF = document.getElementById('phone');
+
+  var wait = function(ms){ return new Promise(function(r){ setTimeout(r, FREEZE >= 0 ? Math.min(ms, 40) : ms); }); };
+  function until(fn, ms){
+    ms = ms || 6000;
+    return new Promise(function(res){
+      var t0 = Date.now();
+      (function poll(){
+        var v; try { v = fn(); } catch(e) { v = null; }
+        if (v) return res(v);
+        if (Date.now() - t0 > ms) return res(null);
+        setTimeout(poll, 40);
+      })();
+    });
+  }
+  var say = function(t){ cap.textContent = t; };
+
+  // the two frames are the real slide: one opened as the host, one as a student
+  function boot(){
+    // a fresh player id each run, so replays do not inherit an old game
+    try { localStorage.setItem('rg-pid:' + ID, 'demo' + Math.random().toString(36).slice(2, 7)); } catch(e) {}
+    hostF.src = 'game.html?demo=1&host=1#1';
+    phoneF.src = 'game.html?demo=1#1';
+  }
+
+  function live(f){ return f.contentWindow && f.contentWindow.__deckLive; }
+  function doc(f){ return f.contentDocument; }
+  function q(f, sel){ return doc(f) ? doc(f).querySelector(sel) : null; }
+  function all(f, sel){ return doc(f) ? [].slice.call(doc(f).querySelectorAll(sel)) : []; }
+  function byText(f, sel, text){
+    return all(f, sel).filter(function(e){ return e.textContent.trim() === text; })[0] || null;
+  }
+  function click(el){ if (el) el.click(); return !!el; }
+  function tap(el){                                   // pointer press (the reaction pad listens for it)
+    if (!el) return false;
+    el.dispatchEvent(new (phoneF.contentWindow.PointerEvent || phoneF.contentWindow.Event)('pointerdown', {bubbles:true}));
+    return true;
+  }
+
+  // the bots write through the real backend; locally that is one shared document
+  var B = null, GAME = 0;
+  function push(o){ B.mergeDocShard('polls', ID, o); }
+  function state(){ return window.__rgDemoDoc || {}; }
+
+  var NAMES = ['Maya','Diego','Priya','Sam','Aisha','Noah','Leo','Ivy','Jonas','Hana','Ruth','Omar',
+               'Ana','Ben','Kira','Tomás','Zoe','Eli','Nia','Wren','Cruz','Isla','Rafa','June'];
+  function bots(){ return NAMES.map(function(n, i){ return 'b' + i; }); }
+
+  function botsJoin(){
+    var o = {};
+    bots().forEach(function(k, i){ o[k] = {g: GAME, mode: 'named', name: NAMES[i], t: Date.now() + i, ans: {}}; });
+    push({players: o});
+  }
+  // most of the class gets it right; a few do not. Deterministic, so every run matches.
+  function botsAnswer(pos, correct, rightShare){
+    var o = {}, opts = 4;
+    bots().forEach(function(k, i){
+      var right = ((i * 7) % 10) < rightShare * 10;
+      var a = {}; a[pos] = right ? correct : (correct + 1 + (i % (opts - 1))) % opts;
+      o[k] = {g: GAME, ans: a};
+    });
+    push({players: o});
+  }
+  function botsGame(pos, max){
+    var o = {};
+    bots().forEach(function(k, i){
+      var pts = Math.max(0, Math.min(max, max - (i % (max + 1))));
+      var rec = {g: GAME, gp: {}, gd: {}}; rec.gp[pos] = pts; rec.gd[pos] = 1;
+      o[k] = rec;
+    });
+    push({players: o});
+  }
+  function botsBreak(pos, base, spread){
+    var o = {};
+    bots().forEach(function(k, i){
+      var rec = {g: GAME, gp: {}, gd: {}, gt: {}};
+      rec.gp[pos] = 1; rec.gd[pos] = 1; rec.gt[pos] = Math.round(base + ((i * 37) % spread));
+      o[k] = rec;
+    });
+    push({players: o});
+  }
+  function botsFeel(mix){
+    var o = {};
+    bots().forEach(function(k, i){ o[k] = {g: GAME, f: mix[i % mix.length], t: Date.now()}; });
+    push({feel: o});
+  }
+
+  // the Word Puzzle answer is lightly scrambled in the shared doc; the same
+  // two lines the game uses unscramble it, so "you" can type the real word
+  function rnd(s){
+    var h = 2166136261;
+    for (var i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    h ^= h >>> 15; h = Math.imul(h, 2246822507); h ^= h >>> 13; h ^= h >>> 16;
+    return (h >>> 0) / 4294967296;
+  }
+  function wordAt(pos){
+    var gm = (state().games || {})[pos];
+    if (!gm || gm.type !== 'w' || !gm.wx) return '';
+    return gm.wx.map(function(n, i){
+      return String.fromCharCode(n ^ (1 + Math.floor(rnd(ID + ':' + GAME + ':' + pos + ':' + i) * 200)));
+    }).join('');
+  }
+  async function typeWord(word){
+    for (var i = 0; i < word.length; i++){
+      click(byText(phoneF, '.rg-key', word[i]));
+      await wait(90);
+    }
+    click(byText(phoneF, '.rg-key', 'Enter'));
+  }
+
+  function slotOf(type){
+    var g = state().games || {};
+    return Object.keys(g).map(Number).sort(function(a, b){ return a - b; })
+            .filter(function(p){ return g[p].type === type; })[0];
+  }
+  function jump(pos, extra){
+    var u = {idx: pos, revealed: false, revealEnds: 0};
+    if ((state().games || {})[pos]) u.gameEnds = Date.now() + 120000;
+    for (var k in (extra || {})) u[k] = extra[k];
+    B.mergeDoc('polls', ID, u);
+  }
+
+  // ── the walkthrough ──────────────────────────────────────────────────────
+  function script(){
+    return [
+      [900, async function(){
+        B.setDoc('polls', ID, {gameId: GAME, phase: 'idle'}, {resetAll: true});
+      }, 'The instructor opens the review game on the projector. Students join on their phones.'],
+
+      [1600, async function(){
+        click(byText(hostF, '.rg-cbtn[data-cnt]', '10'));
+        await wait(200);
+        click(q(hostF, '[data-act=start]'));
+        await until(function(){ return state().phase === 'lobby'; });
+        GAME = state().gameId;
+      }, 'Ten questions, and a sixty-second lobby opens.'],
+
+      [1500, async function(){
+        botsJoin();
+        click(q(phoneF, '[data-mode=named]'));
+        await wait(400);
+        var inp = q(phoneF, '[data-nf-in]');
+        if (inp){ inp.value = 'You'; q(phoneF, '[data-nf]').requestSubmit(); }
+      }, 'Twenty-four classmates join, and so do you. Anyone can play anonymously instead.'],
+
+      [1800, async function(){
+        click(q(hostF, '[data-act=begin]'));
+        await until(function(){ return state().phase === 'question'; });
+      }, 'The instructor starts. Everyone sees the same question at the same moment.'],
+
+      [2200, async function(){
+        var d = state(), pos = d.idx, bank = JSON.parse(q(phoneF, '[data-rg-bank]').textContent);
+        var correct = bank[d.order[pos]].answer;
+        botsAnswer(pos, correct, 0.7);
+        await wait(500);
+        click(q(phoneF, '.rg-opt[data-opt="' + correct + '"]'));
+      }, 'Everyone answers on their own phone. Nothing on the projector hints at who is right.'],
+
+      [2000, async function(){
+        botsFeel([0, 1, 1, 0, 3, 1, 2, 1, 0, 4]);
+        click(byText(phoneF, '.rg-fbtn', 'Having Fun'));
+      }, 'The buttons under the question let students say how it is going. The projector shows the class mood.'],
+
+      [2400, async function(){
+        click(q(hostF, '[data-act=reveal]'));
+      }, 'Only now does the answer appear, and the scores move. Nobody learns who missed it.'],
+
+      [2600, async function(){
+        var bank = JSON.parse(q(phoneF, '[data-rg-bank]').textContent);
+        var pic = bank.findIndex(function(b){ return b.img; });
+        var d = state(), pos = d.idx + 1;
+        var order = (d.order || []).slice();
+        if (pic >= 0 && !(d.games || {})[pos]) order[pos] = pic;
+        B.mergeDoc('polls', ID, {order: order});
+        click(q(hostF, '[data-act=next]'));
+        await until(function(){ return state().idx === pos; });
+        await wait(600);
+        botsAnswer(pos, bank[order[pos]].answer, 0.55);
+        await wait(400);
+        click(q(phoneF, '.rg-opt[data-opt="' + bank[order[pos]].answer + '"]'));
+      }, 'Some questions carry a picture, and a few are pure fun: The Office, Pokémon, a family photo.'],
+
+      [2400, async function(){
+        click(q(hostF, '[data-act=reveal]'));
+      }, 'Ten multiple-choice questions run this way, at whatever pace the instructor sets.'],
+
+      [2200, async function(){
+        var pos = slotOf('w');
+        jump(pos);
+        await until(function(){ return q(phoneF, '.rg-wboard'); });
+      }, 'Every few questions a game breaks things up. This one is a Word Puzzle from the chapters.'],
+
+      [2600, async function(){
+        await typeWord('PLANT');
+        await wait(700);
+        botsGame(state().idx, 3);
+      }, 'Six tries, two minutes, and a clue for anyone who needs a way in.'],
+
+      [2600, async function(){
+        var w = wordAt(state().idx);
+        if (w) await typeWord(w);
+      }, 'Solve it early and it is worth more. The class counter fills as people finish.'],
+
+      [2600, async function(){
+        click(q(hostF, '[data-act=reveal]'));
+      }, 'At the reveal the word is defined, so the game doubles as a vocabulary check.'],
+
+      [2400, async function(){
+        var pos = slotOf('c');
+        jump(pos);
+        await until(function(){ return q(phoneF, '.rg-ctile'); });
+      }, 'Another break is Connections: sixteen terms, four hidden groups, drawn from Chapters 1 to 5.'],
+
+      [2800, async function(){
+        var d = state(), pos = d.idx;
+        var conns = JSON.parse(q(phoneF, '[data-rg-conns]').textContent);
+        var group = conns[d.games[pos].ci].groups[0].words;
+        for (var i = 0; i < group.length; i++){
+          click(byText(phoneF, '.rg-ctile', group[i]));
+          await wait(180);
+        }
+        click(q(phoneF, '[data-act=csub]'));
+        botsGame(pos, 4);
+      }, 'One point per group, with four mistakes allowed and a nudge when you are one away.'],
+
+      [2600, async function(){
+        click(q(hostF, '[data-act=reveal]'));
+      }, 'The reveal names each connection, which is the part worth talking about as a class.'],
+
+      [2200, async function(){
+        var pos = slotOf('r') !== undefined ? slotOf('r') : slotOf('k');
+        jump(pos);
+        await until(function(){ return q(phoneF, '[data-rt]') || q(phoneF, '[data-act=sk]'); });
+      }, 'Then a pure break: no course content, just a breather between questions.'],
+
+      [3000, async function(){
+        var pos = state().idx;
+        if (q(phoneF, '[data-rt]')){
+          for (var i = 0; i < 3; i++){
+            tap(q(phoneF, '[data-rt]'));
+            await until(function(){ var p = q(phoneF, '[data-rt]'); return p && p.className.indexOf('go') > -1; }, 5000);
+            await wait(220 + i * 40);
+            tap(q(phoneF, '[data-rt]'));
+            await wait(400);
+          }
+          botsBreak(pos, 240, 180);
+        } else {
+          click(q(phoneF, '[data-act=sk]'));
+          await wait(FREEZE >= 0 ? 60 : 9700);
+          click(q(phoneF, '[data-act=sk]'));
+          botsBreak(pos, 9400, 1400);
+        }
+      }, 'Reaction Tap: wait for green, then tap. Everyone who plays scores, and the quickest tenth get a bonus.'],
+
+      [2600, async function(){
+        click(q(hostF, '[data-act=reveal]'));
+      }, 'The class result goes up without naming anyone. Stop the Clock works the same way.'],
+
+      [2600, async function(){
+        B.mergeDoc('polls', ID, {phase: 'ended', revealed: true});
+        await until(function(){ return q(hostF, '.rg-final-t'); });
+      }, 'At the end: the top five, what the class got right together, and the moods they picked.'],
+
+      [3000, function(){
+        say('On a student’s own screen: their score, their fastest answer, their longest streak. ' +
+            'A place is shown only to the students who made the leaderboard.');
+      }, 'On a student’s own screen: their score, their fastest answer, their longest streak. ' +
+         'A place is shown only to the students who made the leaderboard.']
+    ];
+  }
+
+  async function play(){
+    var beats = script();
+    for (var i = 0; i < beats.length; i++){
+      if (FREEZE >= 0 && i > FREEZE) break;
+      say(beats[i][2]);
+      try { await beats[i][1](); } catch(e) { /* a beat that cannot find its button just moves on */ }
+      await wait(beats[i][0]);
+    }
+    if (FREEZE < 0) replay.hidden = false;
+  }
+
+  replay.addEventListener('click', function(){ replay.hidden = true; start(); });
+
+  async function start(){
+    boot();
+    var L = await until(function(){ return live(hostF) && live(phoneF) && live(hostF).backend; }, 15000);
+    if (!L){ say('The demo could not start in this browser.'); return; }
+    B = live(hostF).backend;
+    B.subscribeDoc('polls', ID, function(d){ window.__rgDemoDoc = d || {}; });
+    GAME = Date.now() % 100000;
+    await until(function(){ return q(hostF, '[data-act=start]') || q(hostF, '.rg-setup'); }, 8000);
+    await play();
+  }
+
+  start();
+})();
+</script>
