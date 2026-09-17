@@ -732,7 +732,22 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .rg-feelkey{flex:1; min-width:0; display:flex; flex-direction:column; gap:.18rem; font-size:clamp(.72rem,1.1vw,.86rem); color:var(--ink2);}
 .rg-feelkey span{display:flex; align-items:center; gap:.4rem;}
 .rg-feelkey i{width:.72rem; height:.72rem; border-radius:3px; background:var(--sc); flex:none;}
-.rg-feelkey b{margin-left:auto; font-family:'Merriweather',Georgia,serif; color:var(--ink); font-variant-numeric:tabular-nums;}.rg-setup .rg-ico.cards{width:clamp(72px,12vh,110px); height:auto; color:var(--ink); margin-bottom:0;}
+.rg-feelkey b{margin-left:auto; font-family:'Merriweather',Georgia,serif; color:var(--ink); font-variant-numeric:tabular-nums;}
+/* rooms: one small leaderboard per team on the projector */
+.rg-rooms{display:flex; flex-direction:column; gap:.55rem;}
+.rg-rcol{border-top:1px solid var(--hair2); padding-top:.3rem;}
+.rg-rcol:first-child{border-top:none; padding-top:0;}
+.rg-rrow{display:flex; align-items:center; gap:.5rem; padding:.16rem 0;
+  font-family:'Inter',sans-serif; font-size:clamp(.78rem,1.25vw,.95rem); color:var(--ink);}
+.rg-rr{flex:none; width:1.2em; text-align:center; color:var(--ink3); font-family:'Merriweather',Georgia,serif; font-weight:900;}
+.rg-rn{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.rg-rs{flex:none; font-family:'Merriweather',Georgia,serif; font-weight:900; color:var(--ink); font-variant-numeric:tabular-nums;}
+.rg-champs{margin-top:.5rem; text-align:center;}
+.rg-champrow{display:flex; flex-wrap:wrap; gap:.4rem .9rem; justify-content:center; margin-top:.2rem;}
+.rg-champ{display:inline-flex; align-items:baseline; gap:.35rem; font-family:'Inter',sans-serif;
+  font-size:clamp(.78rem,1.25vw,.94rem); color:var(--ink2);}
+.rg-champ i{font-style:normal; font-weight:800; color:#8a6a2f;}
+.rg-champ b{font-family:'Merriweather',Georgia,serif; color:var(--ink);}.rg-setup .rg-ico.cards{width:clamp(72px,12vh,110px); height:auto; color:var(--ink); margin-bottom:0;}
 .rg-setup .rg-tag{margin-top:.15rem;}
 .rg-cbtn.rg-pbtn{font-family:'Inter',sans-serif; font-weight:700; font-size:clamp(.82rem,1.35vw,.98rem); padding:.5rem 1.1rem;}
 .rg-setup .rg-cap{max-width:52ch; line-height:1.45;}
@@ -814,7 +829,14 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   var NAV=['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' ','PageUp','PageDown','Home','End'];
   SEC.addEventListener('keydown', function(e){ if(NAV.indexOf(e.key)>-1) e.stopPropagation(); });
 
-  var backend=null, HOST=false, state={}, pickCount=COUNTS[0], pickPace='manual', ticker=null;
+  var backend=null, HOST=false, state={}, pickCount=COUNTS[0], pickPace='manual', pickRooms=1, ticker=null;
+  // ── rooms ────────────────────────────────────────────────────────────────
+  // A big lecture can be split into rooms, each with its own leaderboard. The
+  // point is not only the smaller board: each room is a SEPARATE document, so a
+  // student's phone only ever hears its own room. One room keeps everything in
+  // the main doc, exactly as a small class always has.
+  var ROOM_NAMES=['Otters','Condors','Bison','Kelp','Pines'];
+  var roomData={}, roomSubs={};
   // "timed" pacing: every multiple-choice question gets Q_MS; the games keep their own clocks
   var Q_MS=20000;
   var lastLobbyKey=null, nameFormOpen=false, confettiGame=null;
@@ -837,7 +859,32 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     setTimeout(function(){ if(wrap.parentNode) wrap.parentNode.removeChild(wrap); }, 3800);
   }
 
-  function players(){ return state.players||{}; }
+  function roomCount(){ return Math.max(1, Math.min(ROOM_NAMES.length, state.rooms||1)); }
+  function roomOf(pkey){ var n=roomCount(); return n<2 ? 0 : Math.floor(rnd('rm:'+gid()+':'+pkey)*n) % n; }
+  function myRoom(){ return roomOf(PK); }
+  function roomName(r){ return ROOM_NAMES[r] || ('Room '+(r+1)); }
+  function roomIdFor(r){ return GID+'__r'+r; }
+  function writeId(){ return roomCount()<2 ? GID : roomIdFor(myRoom()); }
+  // the host listens to every room; a student listens only to their own
+  function syncRooms(){
+    if(!backend) return;
+    var n=roomCount(), want=[], keep={};
+    if(n>1) want = HOST ? range(n) : [myRoom()];
+    want.forEach(function(r){
+      var id=roomIdFor(r); keep[id]=1;
+      if(!roomSubs[id]) roomSubs[id]=backend.subscribeDoc('polls', id, function(d){ roomData[id]=d||{}; render(); }) || function(){};
+    });
+    for(var id in roomSubs){ if(!keep[id]){ try{ roomSubs[id](); }catch(e){} delete roomSubs[id]; delete roomData[id]; } }
+  }
+  // one room: the map sits in the main doc. Several: merge whatever rooms this
+  // browser subscribes to (player ids are unique, so the maps never collide).
+  function fromRooms(key){
+    if(roomCount()<2) return state[key]||{};
+    var out={};
+    for(var id in roomData){ var m=roomData[id] && roomData[id][key]; for(var k in m||{}) out[k]=m[k]; }
+    return out;
+  }
+  function players(){ return fromRooms('players'); }
   function gid(){ return state.gameId||0; }
   function phase(){ return state.phase||'idle'; }
   function myPlayer(){ var p=players()[PK]; return (p && p.g===gid()) ? p : null; }
@@ -930,6 +977,28 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     return n>50 ? 10 : 5;
   }
   function ordinal(n){ var s=['th','st','nd','rd'], v=n%100; return n+(s[(v-20)%10]||s[v]||s[0]); }
+  function boardIn(r){ return board().filter(function(k){ return roomOf(k)===r; }); }
+  // with rooms, the projector shows every room's leaders side by side
+  function roomStripHTML(){
+    var n=roomCount();
+    return '<div class="rg-rooms">'+range(n).map(function(r){
+      var rows=boardIn(r).slice(0,3).map(function(k,i){
+        return '<div class="rg-rrow"><span class="rg-rr">'+(i+1)+'</span>'
+          + '<span class="rg-rn">'+esc(nameOf(k))+'</span><span class="rg-rs">'+scoreOf(k)+'</span></div>';
+      }).join('') || '<div class="rg-empty">No one yet.</div>';
+      return '<div class="rg-rcol"><div class="rg-board-t">'+esc(roomName(r))+'</div>'+rows+'</div>';
+    }).join('')+'</div>';
+  }
+  function hostBoardHTML(){ return roomCount()>1 ? roomStripHTML() : boardHTML(board(), topN(), 'Top '+topN()); }
+  function championsHTML(){
+    var n=roomCount(); if(n<2) return '';
+    return '<div class="rg-champs"><div class="rg-board-t">Room champions</div><div class="rg-champrow">'
+      + range(n).map(function(r){
+          var k=boardIn(r)[0];
+          return '<span class="rg-champ"><i>'+esc(roomName(r))+'</i>'
+            + (k ? esc(nameOf(k))+' <b>'+scoreOf(k)+'</b>' : '—')+'</span>';
+        }).join('')+'</div></div>';
+  }
   function board(){
     var g=gid(), ps=players(), arr=[];
     for(var k in ps){ if(ps[k] && ps[k].g===g && (ps[k].mode==='named'||ps[k].mode==='anon')) arr.push(k); }
@@ -967,7 +1036,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   var SVFREQ=['Never again','Every Module','Right before each Midterm'];
   var svMsg='';
   function svOpen(){ return !!state.surveyOpen; }
-  function svAll(){ var g=gid(), v=state.survey||{}, o={}; for(var k in v){ if(v[k]&&v[k].g===g) o[k]=v[k]; } return o; }
+  function svAll(){ var g=gid(), v=fromRooms('survey'), o={}; for(var k in v){ if(v[k]&&v[k].g===g) o[k]=v[k]; } return o; }
   function svMine(){ return svAll()[PK]||null; }
   function svSummary(){
     var v=svAll(), ks=Object.keys(v), out={n:ks.length, yes:0, no:0, gamesYes:0, gamesNo:0, freq:[0,0,0], comments:[]};
@@ -1002,7 +1071,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     if(b===null||l===null||f===null) return;
     var ta=form.querySelector('[data-sv-comment]');
     var o={survey:{}}; o.survey[PK]={g:gid(), b:b, l:l, f:f, c:((ta&&ta.value)||'').slice(0,600)};
-    backend.mergeDocShard('polls', GID, o);
+    backend.mergeDocShard('polls', writeId(), o);
   }
   function svMail(){
     // snapshot before closing, so the email is exactly the tally on screen
@@ -1127,7 +1196,11 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
       else if(types[si]==='r' || types[si]==='k'){ games[q]={type:types[si]}; }
       else { var cIdx=cBag[ci++ % cBag.length]; games[q]={type:'c', ci:cIdx, tiles:shuffleArr(connWords(CONNS[cIdx]))}; }
     }
-    backend.setDoc('polls', GID, {gameId:g, phase:'lobby', count:cnt, order:order, games:games, idx:0, revealed:false, pace:pickPace, lobbyEnds:Date.now()+60000});
+    // every room doc is cleared, not just the ones this game will use, so a
+    // 5-room game never leaves players behind for the next 3-room one
+    for(var rr=0; rr<ROOM_NAMES.length; rr++) backend.setDoc('polls', roomIdFor(rr), {}, {resetAll:true});
+    backend.setDoc('polls', GID, {gameId:g, phase:'lobby', count:cnt, order:order, games:games, idx:0,
+                                  revealed:false, pace:pickPace, rooms:pickRooms, lobbyEnds:Date.now()+60000});
   }
   // guards: a button press and the auto-timer must never double-reveal or skip a slot
   var advFrom=null, revFor=null;
@@ -1174,7 +1247,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     if(mode!=='watch'){
       var rec={g:gid(), mode:mode, t:Date.now(), ans:{}};
       if(mode==='named') rec.name=(name||'Anonymous').slice(0,24);
-      var o={}; o[PK]=rec; backend.mergeDocShard('polls', GID, {players:o});
+      var o={}; o[PK]=rec; backend.mergeDocShard('polls', writeId(), {players:o});
     }
     render();
   }
@@ -1185,7 +1258,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     // answer speed stays on this device — it only feeds the student's own finish screen
     var seen=parseInt(ls('rg-seen:'+GID+':'+gid()+':'+pos),10);
     if(seen>0) ls('rg-ms:'+GID+':'+gid()+':'+pos, String(Date.now()-seen));
-    if(scored()){ var a={}; a[pos]=i; var o={}; o[PK]={g:gid(), ans:a}; backend.mergeDocShard('polls', GID, {players:o}); }
+    if(scored()){ var a={}; a[pos]=i; var o={}; o[PK]={g:gid(), ans:a}; backend.mergeDocShard('polls', writeId(), {players:o}); }
     render();
   }
 
@@ -1209,7 +1282,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     var rec={g:gid(), gp:{}}; rec.gp[pos]=pts; if(done){ rec.gd={}; rec.gd[pos]=1; }
     if(ms!=null){ rec.gt={}; rec.gt[pos]=Math.round(ms); }   // quick-break time (for the class results)
     if(groups){ rec.gs={}; rec.gs[pos]=groups.slice(); }   // which Connections groups (for "most spotted")
-    var o={}; o[PK]=rec; backend.mergeDocShard('polls', GID, {players:o});
+    var o={}; o[PK]=rec; backend.mergeDocShard('polls', writeId(), {players:o});
   }
   function gmBump(pos){ gmSave(pos); gmVer++; render(); }
 
@@ -1393,10 +1466,14 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   function breakBonus(pos){
     if(bonusCache.st!==state) bonusCache={st:state, m:{}};   // recomputed once per shared-state update
     if(bonusCache.m[pos]) return bonusCache.m[pos];
-    var gm=gameAt(pos), g=gid(), ps=players(), arr=[], set={};
+    var gm=gameAt(pos), g=gid(), ps=players(), byRoom={}, set={};
     for(var k in ps){ var p=ps[k]; if(!p||p.g!==g||!(p.mode==='named'||p.mode==='anon')) continue;
-      if(p.gt && p.gt[pos]>0) arr.push([k, gm.type==='k' ? Math.abs(p.gt[pos]-SK_TARGET) : p.gt[pos]]); }
-    if(arr.length){
+      if(!(p.gt && p.gt[pos]>0)) continue;
+      var r=roomOf(k); (byRoom[r]=byRoom[r]||[]).push([k, gm.type==='k' ? Math.abs(p.gt[pos]-SK_TARGET) : p.gt[pos]]);
+    }
+    // the bonus is per room, so each team has its own quickest tenth
+    for(var r2 in byRoom){
+      var arr=byRoom[r2];
       arr.sort(function(a,b){ return a[1]-b[1]; });
       var cut=arr[Math.max(1, Math.ceil(arr.length*BONUS_SHARE))-1][1];
       arr.forEach(function(e){ if(e[1]<=cut) set[e[0]]=1; });
@@ -1512,7 +1589,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   var FEELS=[['awesome','Awesome!','#52796F'], ['fun','Having Fun','#BC8A2E'], ['ugh','Ugh.','#A4373A'],
              ['bored','Bored.','#6D597A'], ['what','What!?','#2f6690']];
   function feelAll(){
-    var g=gid(), v=state.feel||{}, o={};
+    var g=gid(), v=fromRooms('feel'), o={};
     for(var k in v){ if(v[k] && v[k].g===g && v[k].f>=0 && v[k].f<FEELS.length) o[k]=v[k].f; }
     return o;
   }
@@ -1524,7 +1601,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     if(HOST || !backend || phase()!=='question') return;
     ls('rg-feel:'+GID+':'+gid(), String(i));
     var o={}; o[PK]={g:gid(), f:i, t:Date.now()};
-    backend.mergeDocShard('polls', GID, {feel:o});
+    backend.mergeDocShard('polls', writeId(), {feel:o});
     paintFeel();
   }
   // the row lives outside the question stage, so re-renders never reset it
@@ -1686,7 +1763,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     var pos=state.idx, s=HOST?null:gmState(pos);
     var key=[gid(),pos,state.revealed?1:0,HOST?'h':'s',gmVer,(!HOST&&gmLocked(pos,s))?'L':'',scored()?1:0].join(':');
     if(key!==gmLastKey){ gmLastKey=key; el.question.innerHTML=gameHTML(pos); fromTick=false; }
-    if(!fromTick && HOST){ var bd=el.question.querySelector('[data-gm-board]'); if(bd) bd.innerHTML=boardHTML(board(),topN(),'Top '+topN())+feelPieHTML(); }
+    if(!fromTick && HOST){ var bd=el.question.querySelector('[data-gm-board]'); if(bd) bd.innerHTML=hostBoardHTML()+feelPieHTML(); }
     tickGame();
   }
 
@@ -1708,6 +1785,11 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
           + '<div class="rg-tag">Pacing</div>'
           + '<div class="rg-countpick">'+[['manual','Manual'],['timed','20-second timer']].map(function(p){
                 return '<button class="rg-cbtn rg-pbtn'+(p[0]===pickPace?' on':'')+'" data-pace="'+p[0]+'">'+p[1]+'</button>'; }).join('')+'</div>'
+          + '<div class="rg-tag">Rooms</div>'
+          + '<div class="rg-countpick">'+[1,3,5].map(function(n){
+                return '<button class="rg-cbtn'+(n===pickRooms?' on':'')+'" data-rooms="'+n+'">'+n+'</button>'; }).join('')+'</div>'
+          + '<div class="rg-cap">'+(pickRooms<2 ? 'One leaderboard for the whole class.'
+                : pickRooms+' leaderboards, one per team. Best for very large sections.')+'</div>'
           + '<button class="rg-btn" data-act="start">Start game '+ICONS.arrow()+'</button></div>';
       } else {
         el.idle.innerHTML = '<div class="rg-wait">'+ICONS.hourglass()+'<div class="rg-big">Get ready!</div><div class="rg-muted">Waiting for your instructor to start the review game…</div></div>';
@@ -1733,6 +1815,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
             +'<button class="rg-btn ghost" data-act="begin">Start now '+ICONS.arrow()+'</button></div>';
         } else if(myModeLocal()){
           var who = myModeLocal()==='watch' ? 'You’re playing along <em>without a score</em>.' : 'You’re in as <em>'+esc(nameOf(PK))+'</em>.';
+          if(roomCount()>1) who += ' You’re on team <em>'+esc(roomName(myRoom()))+'</em>.';
           el.lobby.innerHTML='<div class="rg-lobby-wrap">'+timer+'<div class="rg-joined">'+who+'</div><div class="rg-muted rg-center">Sit tight — the first question is coming up.</div></div>';
         } else if(nameFormOpen){
           el.lobby.innerHTML='<div class="rg-lobby-wrap">'+timer+'<form class="rg-nameform" data-nf><input class="rg-name" data-nf-in maxlength="24" placeholder="Type your name…" autocomplete="off"><button class="rg-btn" type="submit">Join '+ICONS.arrow()+'</button></form><button class="rg-btn ghost" data-act="backmodes">← other options</button></div>';
@@ -1793,7 +1876,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
                  : '<div class="rg-opts">'+optsHTML+'</div>')
         + hostCtl
         + '</div>'
-        + '<div class="rg-qside"'+(HOST?'':' hidden')+'>'+boardHTML(board(),topN(),'Top '+topN())+(HOST ? feelPieHTML() : '')+'</div></div>';
+        + '<div class="rg-qside"'+(HOST?'':' hidden')+'>'+hostBoardHTML()+(HOST ? feelPieHTML() : '')+'</div></div>';
       return;
     }
     // ── ENDED ──
@@ -1816,7 +1899,10 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
       if(surveyActive && SEC.querySelector('[data-sv-form]')) return;
       var body = surveyActive
         ? (yours + svStudentHTML())
-        : (yours + (HOST ? '' : myFunHTML()) + boardHTML(lb, topN(), 'Top '+topN()+' — Final') + (HOST ? classFunHTML() : svStudentHTML()));
+        : (yours + (HOST ? '' : myFunHTML())
+           + (HOST ? boardHTML(lb, roomCount()>1 ? 10 : topN(), roomCount()>1 ? 'Overall Top 10' : 'Top '+topN()+' — Final') + championsHTML()
+                   : boardHTML(lb, topN(), roomCount()>1 ? roomName(myRoom())+' — Final' : 'Top '+topN()+' — Final'))
+           + (HOST ? classFunHTML() : svStudentHTML()));
       el.ended.innerHTML = '<div class="rg-final"><div class="rg-final-h">'+ICONS.laurel('')+ICONS.trophy('rg-trophy')+ICONS.laurel('r')+'</div>'
         + '<div class="rg-final-t">Final Results</div>'
         + body
@@ -1829,8 +1915,9 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 
   // ── event delegation ──
   SEC.addEventListener('click', function(e){
-    var t=e.target.closest('[data-act],[data-cnt],[data-pace],[data-mode],[data-opt],[data-wk],[data-ct],[data-feel]'); if(!t) return;
+    var t=e.target.closest('[data-act],[data-cnt],[data-pace],[data-rooms],[data-mode],[data-opt],[data-wk],[data-ct],[data-feel]'); if(!t) return;
     if(t.dataset.feel!==undefined){ setFeel(parseInt(t.dataset.feel,10)); return; }
+    if(t.dataset.rooms!==undefined){ pickRooms=parseInt(t.dataset.rooms,10); render(); return; }
     if(t.dataset.pace!==undefined){ pickPace=t.dataset.pace; render(); return; }
     if(t.dataset.wk!==undefined){ wKey(t.dataset.wk); return; }
     if(t.dataset.ct!==undefined){ cToggle(parseInt(t.dataset.ct,10)); return; }
@@ -1870,7 +1957,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   window.__deckLiveReady.then(function(live){
     backend=live.backend; HOST=live.HOST;
     if(HOST) SEC.classList.add('host');
-    backend.subscribeDoc('polls', GID, function(d){ state=d||{}; render(); });
+    backend.subscribeDoc('polls', GID, function(d){ state=d||{}; syncRooms(); render(); });
     // host drives the lobby clock; everyone re-renders the countdown each second
     ticker=setInterval(function(){
       if(phase()==='lobby'){
@@ -1935,6 +2022,12 @@ function stageItems(s){ return Array.prototype.slice.call(s.querySelectorAll('.s
 function stageShown(s){ return stageItems(s).filter(function(e){ return e.classList.contains('shown'); }).length; }
 function setStage(s, n){ stageItems(s).forEach(function(e, i){ e.classList.toggle('shown', i < n); }); }
 
+function hydrate(i){
+  if(i < 0 || i >= slides.length) return;
+  slides[i].querySelectorAll('img[data-src]').forEach(function(im){
+    im.src = im.getAttribute('data-src'); im.removeAttribute('data-src');
+  });
+}
 function show(i, back){
   i = Math.max(0, Math.min(slides.length-1, i));
   slides[cur].classList.remove('active');
@@ -1943,6 +2036,10 @@ function show(i, back){
   s.classList.add('active');
   const f = s.querySelector('iframe[data-src]');
   if(f && !f.src){ f.src = f.getAttribute('data-src'); }
+  // photos arrive with their slide, plus the neighbours so paging stays instant.
+  // Every slide is stacked at inset:0, so loading="lazy" alone would still fetch
+  // the whole deck's images on load — 23 MB on a phone, for one slide.
+  hydrate(cur); hydrate(cur+1); hydrate(cur-1);
   // arriving forward starts a staged slide covered; stepping back into one
   // shows everything, so you don't have to click through it again
   const st = stageItems(s);

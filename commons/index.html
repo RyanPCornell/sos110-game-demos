@@ -804,6 +804,12 @@ function stageItems(s){ return Array.prototype.slice.call(s.querySelectorAll('.s
 function stageShown(s){ return stageItems(s).filter(function(e){ return e.classList.contains('shown'); }).length; }
 function setStage(s, n){ stageItems(s).forEach(function(e, i){ e.classList.toggle('shown', i < n); }); }
 
+function hydrate(i){
+  if(i < 0 || i >= slides.length) return;
+  slides[i].querySelectorAll('img[data-src]').forEach(function(im){
+    im.src = im.getAttribute('data-src'); im.removeAttribute('data-src');
+  });
+}
 function show(i, back){
   i = Math.max(0, Math.min(slides.length-1, i));
   slides[cur].classList.remove('active');
@@ -812,6 +818,10 @@ function show(i, back){
   s.classList.add('active');
   const f = s.querySelector('iframe[data-src]');
   if(f && !f.src){ f.src = f.getAttribute('data-src'); }
+  // photos arrive with their slide, plus the neighbours so paging stays instant.
+  // Every slide is stacked at inset:0, so loading="lazy" alone would still fetch
+  // the whole deck's images on load — 23 MB on a phone, for one slide.
+  hydrate(cur); hydrate(cur+1); hydrate(cur-1);
   // arriving forward starts a staged slide covered; stepping back into one
   // shows everything, so you don't have to click through it again
   const st = stageItems(s);
