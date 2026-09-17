@@ -747,7 +747,35 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .rg-champ{display:inline-flex; align-items:baseline; gap:.35rem; font-family:'Inter',sans-serif;
   font-size:clamp(.78rem,1.25vw,.94rem); color:var(--ink2);}
 .rg-champ i{font-style:normal; font-weight:800; color:#8a6a2f;}
-.rg-champ b{font-family:'Merriweather',Georgia,serif; color:var(--ink);}.rg-setup .rg-ico.cards{width:clamp(72px,12vh,110px); height:auto; color:var(--ink); margin-bottom:0;}
+.rg-champ b{font-family:'Merriweather',Georgia,serif; color:var(--ink);}
+/* quick poll: a pop-up over the game on every screen */
+.rg-setup-act{display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center;}
+.rg-pollwrap{position:absolute; inset:0; z-index:30; display:flex; align-items:center; justify-content:center;
+  background:rgba(59,50,34,.3); padding:1rem;}
+.rg-pollwrap[hidden]{display:none;}
+.rg-pollcard{width:min(520px,94%); max-height:92%; overflow:auto; display:flex; flex-direction:column; gap:.55rem;
+  background:#fffdf6; border:1px solid rgba(120,100,60,.3); border-radius:14px; box-shadow:0 18px 44px rgba(60,48,20,.22);
+  padding:clamp(1rem,2.4vh,1.5rem) clamp(1.1rem,2.6vw,1.7rem);}
+.rg-ptop{display:flex; align-items:center; justify-content:space-between; gap:.6rem;}
+.rg-pq{font-family:'Merriweather',Georgia,serif; font-weight:800; color:#3b3222; line-height:1.3;
+  font-size:clamp(.98rem,1.9vw,1.2rem); margin-top:.35rem;}
+.rg-popts{display:flex; gap:.5rem;}
+.rg-pbtn2{flex:1; font:inherit; font-weight:800; font-size:clamp(.95rem,1.8vw,1.1rem); padding:.7rem .5rem; cursor:pointer;
+  background:#fdfbf5; color:#3b3222; border:1px solid rgba(120,100,60,.34); border-radius:10px; touch-action:manipulation;}
+.rg-pbtn2:hover{border-color:#8a6a2f;}
+.rg-pbtn2.on{background:#8a6a2f; border-color:#8a6a2f; color:#fff;}
+.rg-ptimer{font-family:'Merriweather',Georgia,serif; font-weight:900; color:#3b3222; text-align:center; line-height:1;
+  font-size:clamp(2.2rem,6vh,3.2rem); font-variant-numeric:tabular-nums;}
+.rg-ptimer.sm{font-size:1.5rem;}
+.rg-pbarrow{display:grid; grid-template-columns:2.8rem 1fr 5.4rem; align-items:center; gap:.6rem;
+  font-family:'Inter',sans-serif; color:#3b3222;}
+.rg-pl{font-weight:800;}
+.rg-ptrack{height:.85rem; background:rgba(120,100,60,.14); border-radius:6px; overflow:hidden;}
+.rg-ptrack i{display:block; height:100%; background:#8a6a2f; border-radius:6px;}
+.rg-pv{text-align:right; font-family:'Merriweather',Georgia,serif; font-weight:900; font-variant-numeric:tabular-nums;}
+.rg-pv em{font-style:normal; font-family:'Inter',sans-serif; font-weight:600; color:#8a8069; font-size:.82em; margin-left:.35rem;}
+.rg-pfoot{display:flex; align-items:center; justify-content:space-between; gap:.6rem; margin-top:.4rem;
+  color:#5e5340; font-size:.9rem;}.rg-setup .rg-ico.cards{width:clamp(72px,12vh,110px); height:auto; color:var(--ink); margin-bottom:0;}
 .rg-setup .rg-tag{margin-top:.15rem;}
 .rg-cbtn.rg-pbtn{font-family:'Inter',sans-serif; font-weight:700; font-size:clamp(.82rem,1.35vw,.98rem); padding:.5rem 1.1rem;}
 .rg-setup .rg-cap{max-width:52ch; line-height:1.45;}
@@ -1767,9 +1795,93 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     tickGame();
   }
 
+  // ── quick poll: "play again?" and "how many questions?" ─────────────────
+  // The host's start screen pushes a 30-second poll to every student. Answers go
+  // to their own doc that ONLY the host listens to, so 300 taps never fan out to
+  // 300 phones. The projector shows results only after the clock runs out.
+  var POLL_MS=30000, pollResp={}, pollEl=null, pollKey=null;
+  function pollOn(){ var p=state.poll; return !!(p && p.id && !p.closed); }
+  function pollLeft(){ return Math.max(0, ((state.poll||{}).ends||0)-Date.now()); }
+  function pollMine(){ try{ return JSON.parse(ls('rg-poll:'+GID+':'+(state.poll||{}).id)||'{}'); }catch(e){ return {}; } }
+  function pollStart(){
+    var id=Date.now();
+    backend.setDoc('polls', GID+'__poll', {}, {resetAll:true});
+    backend.mergeDoc('polls', GID, {poll:{id:id, ends:id+POLL_MS, closed:0}});
+  }
+  function pollClose(){ backend.mergeDoc('polls', GID, {poll:{closed:1}}); }
+  function pollAnswer(field, val){
+    if(HOST || !backend || !pollOn() || pollLeft()<=0) return;
+    var mine=pollMine(); mine[field]=val;
+    ls('rg-poll:'+GID+':'+state.poll.id, JSON.stringify(mine));
+    var o={r:{}}; o.r[PK]={p:state.poll.id, again:(mine.again==null ? -1 : mine.again), n:(mine.n||0)};
+    backend.mergeDocShard('polls', GID+'__poll', o);
+    pollKey=null; paintPoll();
+  }
+  function pollTally(){
+    var id=(state.poll||{}).id, t={n:0, yes:0, no:0, q:{10:0, 15:0, 20:0}};
+    for(var k in pollResp){ var r=pollResp[k]; if(!r || r.p!==id) continue;
+      t.n++; if(r.again===1) t.yes++; else if(r.again===0) t.no++;
+      if(t.q[r.n]!=null) t.q[r.n]++; }
+    return t;
+  }
+  function pollBar(label, count, total){
+    var pct = total ? Math.round(count/total*100) : 0;
+    return '<div class="rg-pbarrow"><span class="rg-pl">'+label+'</span>'
+      + '<span class="rg-ptrack"><i style="width:'+pct+'%"></i></span>'
+      + '<span class="rg-pv">'+count+'<em>'+pct+'%</em></span></div>';
+  }
+  function paintPoll(){
+    if(!pollEl){
+      var root=SEC.querySelector('.rg-root'); if(!root) return;
+      pollEl=document.createElement('div'); pollEl.className='rg-pollwrap'; pollEl.hidden=true; root.appendChild(pollEl);
+    }
+    if(!pollOn()){ pollEl.hidden=true; pollKey=null; return; }
+    var done=pollLeft()<=0, secsLeft=Math.ceil(pollLeft()/1000), html, key;
+    if(HOST){
+      key='h:'+state.poll.id+':'+(done ? 'done' : 'run');
+      if(done){
+        var t=pollTally(), ans=t.yes+t.no, qn=t.q[10]+t.q[15]+t.q[20];
+        key+=':'+[t.n,t.yes,t.no,t.q[10],t.q[15],t.q[20]].join(':');
+        html='<div class="rg-pollcard"><div class="rg-tag">Poll results</div>'
+          + '<div class="rg-pq">Play the Review game again?</div>'+pollBar('Yes',t.yes,ans)+pollBar('No',t.no,ans)
+          + '<div class="rg-pq">How many questions?</div>'+pollBar('10',t.q[10],qn)+pollBar('15',t.q[15],qn)+pollBar('20',t.q[20],qn)
+          + '<div class="rg-pfoot"><span>'+t.n+' response'+(t.n===1 ? '' : 's')+'</span>'
+          + '<button class="rg-btn" data-act="pollclose">Close</button></div></div>';
+      } else {
+        html='<div class="rg-pollcard"><div class="rg-tag">Poll running</div>'
+          + '<div class="rg-ptimer" data-poll-timer>'+secsLeft+'</div>'
+          + '<div class="rg-muted rg-center">Students are answering on their phones. The results appear when time is up.</div>'
+          + '<div class="rg-pfoot"><span>Responses so far: <b data-poll-n>'+pollTally().n+'</b></span>'
+          + '<button class="rg-btn ghost" data-act="pollclose">Cancel</button></div></div>';
+      }
+    } else {
+      var mine=pollMine();
+      key='s:'+state.poll.id+':'+(done ? 'done' : 'run')+':'+mine.again+':'+mine.n;
+      if(done){
+        html='<div class="rg-pollcard"><div class="rg-tag">Quick poll</div><div class="rg-big rg-center">Thanks!</div>'
+          + '<div class="rg-muted rg-center">Time is up. Your instructor has the results.</div></div>';
+      } else {
+        var btn=function(field, val, label){
+          return '<button type="button" class="rg-pbtn2'+(mine[field]===val ? ' on' : '')+'" data-pa="'+field+':'+val+'">'+label+'</button>'; };
+        html='<div class="rg-pollcard"><div class="rg-ptop"><span class="rg-tag">Quick poll</span>'
+          + '<span class="rg-ptimer sm" data-poll-timer>'+secsLeft+'</span></div>'
+          + '<div class="rg-pq">Would you like to play the Review game again?</div>'
+          + '<div class="rg-popts">'+btn('again',1,'Yes')+btn('again',0,'No')+'</div>'
+          + '<div class="rg-pq">How many questions do you want to play?</div>'
+          + '<div class="rg-popts">'+btn('n',10,'10')+btn('n',15,'15')+btn('n',20,'20')+'</div>'
+          + '<div class="rg-muted rg-center">Tap to answer. You can change your answer until time is up.</div></div>';
+      }
+    }
+    if(key!==pollKey){ pollKey=key; pollEl.innerHTML=html; }
+    pollEl.hidden=false;
+    var te=pollEl.querySelector('[data-poll-timer]'); if(te) te.textContent=secsLeft;
+    var ne=pollEl.querySelector('[data-poll-n]'); if(ne) ne.textContent=pollTally().n;
+  }
+
   function render(){
     var ph=phase();
     paintFeel();
+    paintPoll();
     SEC.classList.toggle('rg-inplay', ph==='question');
     if(ph!=='lobby'){ lastLobbyKey=null; nameFormOpen=false; }
     if(ph!=='question') gmLastKey=null;
@@ -1790,7 +1902,8 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
                 return '<button class="rg-cbtn'+(n===pickRooms?' on':'')+'" data-rooms="'+n+'">'+n+'</button>'; }).join('')+'</div>'
           + '<div class="rg-cap">'+(pickRooms<2 ? 'One leaderboard for the whole class.'
                 : pickRooms+' leaderboards, one per team. Best for very large sections.')+'</div>'
-          + '<button class="rg-btn" data-act="start">Start game '+ICONS.arrow()+'</button></div>';
+          + '<div class="rg-setup-act"><button class="rg-btn ghost" data-act="pollstart">Poll</button>'
+          + '<button class="rg-btn" data-act="start">Start game '+ICONS.arrow()+'</button></div></div>';
       } else {
         el.idle.innerHTML = '<div class="rg-wait">'+ICONS.hourglass()+'<div class="rg-big">Get ready!</div><div class="rg-muted">Waiting for your instructor to start the review game…</div></div>';
       }
@@ -1915,7 +2028,10 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 
   // ── event delegation ──
   SEC.addEventListener('click', function(e){
-    var t=e.target.closest('[data-act],[data-cnt],[data-pace],[data-rooms],[data-mode],[data-opt],[data-wk],[data-ct],[data-feel]'); if(!t) return;
+    var t=e.target.closest('[data-act],[data-cnt],[data-pace],[data-rooms],[data-mode],[data-opt],[data-wk],[data-ct],[data-feel],[data-pa]'); if(!t) return;
+    if(t.dataset.pa!==undefined){ var pa=t.dataset.pa.split(':'); pollAnswer(pa[0], parseInt(pa[1],10)); return; }
+    if(t.dataset.act==='pollstart'){ pollStart(); return; }
+    if(t.dataset.act==='pollclose'){ pollClose(); return; }
     if(t.dataset.feel!==undefined){ setFeel(parseInt(t.dataset.feel,10)); return; }
     if(t.dataset.rooms!==undefined){ pickRooms=parseInt(t.dataset.rooms,10); render(); return; }
     if(t.dataset.pace!==undefined){ pickPace=t.dataset.pace; render(); return; }
@@ -1958,8 +2074,11 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     backend=live.backend; HOST=live.HOST;
     if(HOST) SEC.classList.add('host');
     backend.subscribeDoc('polls', GID, function(d){ state=d||{}; syncRooms(); render(); });
+    // only the host listens to poll answers
+    if(HOST) backend.subscribeDoc('polls', GID+'__poll', function(d){ pollResp=(d && d.r) || {}; paintPoll(); });
     // host drives the lobby clock; everyone re-renders the countdown each second
     ticker=setInterval(function(){
+      if(pollOn()) paintPoll();          // the poll's 30-second clock, on every screen
       if(phase()==='lobby'){
         if(HOST && state.lobbyEnds && Date.now()>=state.lobbyEnds){ beginQuestions(); }
         else render();
