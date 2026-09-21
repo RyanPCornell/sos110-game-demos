@@ -1292,7 +1292,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 
   // ── mini-games: each student plays locally (progress survives a refresh);
   //    points (gp) and a done flag (gd) for that slot go to their shard ──
-  var gmMem={}, gmVer=0, gmLastKey=null;
+  var gmMem={}, gmVer=0, gmLastKey=null, qLastKey=null;
   function gmLSKey(pos){ return 'rg-g:'+GID+':'+gid()+':'+pos; }
   function gmState(pos){
     var k=gmLSKey(pos); if(gmMem[k]) return gmMem[k];
@@ -1884,7 +1884,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     paintPoll();
     SEC.classList.toggle('rg-inplay', ph==='question');
     if(ph!=='lobby'){ lastLobbyKey=null; nameFormOpen=false; }
-    if(ph!=='question') gmLastKey=null;
+    if(ph!=='question'){ gmLastKey=null; qLastKey=null; }
     // ── IDLE ──
     if(ph==='idle'){
       show('idle');
@@ -1949,7 +1949,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     }
     // ── QUESTION ──
     if(ph==='question'){
-      if(isGame(state.idx)){ renderGameSlot(false); return; }
+      if(isGame(state.idx)){ qLastKey=null; renderGameSlot(false); return; }
       gmLastKey=null;
       show('question');
       var pos=state.idx, b=BANK[state.order[pos]], my=HOST?null:myAnswer(pos), rev=!!state.revealed, cor=correctOf(pos);
@@ -1979,7 +1979,12 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
       } else {
         hostCtl = '<div class="rg-qfoot">'+studentHint+'</div>';
       }
-      el.question.innerHTML =
+      // Rebuild only when the view really changes. Every mood tap and late answer
+      // from 60 phones used to redraw this question, which replayed the reveal
+      // animation (the correct answer looked like it was being clicked over and
+      // over) and swapped the Next button out from under the instructor's cursor.
+      var qKey=[gid(), pos, rev?1:0, my, HOST?'h':'s', scored()?1:0, timed()?1:0, state.count].join(':');
+      var qHTML =
         '<div class="rg-qgrid"><div class="rg-qmain">'
         + '<div class="rg-qtop"><span class="rg-prog">Question '+(pos+1)+' of '+state.count+'</span>'
         + (timed() ? '<span class="rg-gm-right"><span class="rg-gm-timer" data-q-timer>'+(rev?'':fmtClock(qLeft()))+'</span>'+scoreLine+'</span>' : scoreLine)+'</div>'
@@ -1990,6 +1995,11 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
         + hostCtl
         + '</div>'
         + '<div class="rg-qside"'+(HOST?'':' hidden')+'>'+hostBoardHTML()+(HOST ? feelPieHTML() : '')+'</div></div>';
+      if(qKey!==qLastKey){ qLastKey=qKey; el.question.innerHTML=qHTML; }
+      else if(HOST){                       // scores and mood keep updating in place
+        var side=el.question.querySelector('.rg-qside');
+        if(side) side.innerHTML=hostBoardHTML()+feelPieHTML();
+      }
       return;
     }
     // ── ENDED ──
