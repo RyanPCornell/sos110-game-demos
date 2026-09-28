@@ -588,6 +588,10 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   padding:.2rem .18rem; color:#4a4436;}
 .ev-pat.on,.ev-food.on{background:var(--accent); border-color:var(--accent); color:#fff;}
 .ev-hint{font-size:clamp(.56rem,.88vw,.67rem); color:#8a8069; line-height:1.32; margin-top:.24rem;}
+.ev-hint.dim{font-style:italic; opacity:.85;}
+.ev-assume{margin:.25rem 0 0; padding-left:1rem; list-style:disc;
+  font-size:clamp(.55rem,.86vw,.66rem); color:#6f6653; line-height:1.36;}
+.ev-assume li{margin-bottom:.28rem;}
 .ev-warn{font-size:clamp(.6rem,.95vw,.72rem); color:#A4373A; text-align:center; margin-top:.2rem;}
 .ev-founding{font-size:clamp(.66rem,1.02vw,.78rem); line-height:1.4; color:#5e5340;
   background:rgba(184,160,100,.14); border-left:3px solid var(--accent);
@@ -4089,7 +4093,7 @@ window.__deckLiveReady.then(function(live){
 
 <div class="menu" id="menu">
   <button class="menu-close" onclick="toggleMenu(false)" aria-label="Close menu">&times;</button>
-  <h3>Nation demo &mdash; Jump to a slide</h3>
+  <h3>Nation demo &middot; Jump to a slide</h3>
   <div class="menu-grid"><button class="menu-item" data-go="0"><span class="menu-num">1</span>Nation demo</button></div>
 </div>
 
@@ -4265,6 +4269,7 @@ show(start);
       bump(coll,id,k,delta){ merge(coll,id,{counts:{[k]:{__inc:(delta===undefined?1:delta)}}}); },
       reset(coll,id){ const d=read(coll,id); d.counts={}; write(coll,id,d); emit(coll,id); },
       subscribeDoc(coll,id,cb){ return on(coll,id, ()=>cb(read(coll,id))); },
+      subscribeMain(coll,id,cb){ return on(coll,id, ()=>cb(read(coll,id))); },
       setDoc(coll,id,obj){ write(coll,id, applyInc({},obj)); emit(coll,id); },
       mergeDoc:merge,
       mergeDocShard:merge,
@@ -4302,6 +4307,8 @@ show(start);
         bump(coll,id,key,delta){ return fsMod.setDoc(ref(coll,shardName(id,myShard)), {counts:{[key]:fsMod.increment(delta===undefined?1:delta)}}, {merge:true}); },
         reset(coll,id){ return resetAll(coll,id,{counts:{}}); },
         subscribeDoc:multiSub,
+        // main doc only (no shards): for players who never need the other players' writes
+        subscribeMain(coll,id,cb){ return fsMod.onSnapshot(ref(coll,id), s=>cb(s.data()||{})); },
         setDoc:resetAll,
         mergeDoc(coll,id,obj){ return fsMod.setDoc(ref(coll,id), obj, {merge:true}); },
         mergeDocShard(coll,id,obj){ return fsMod.setDoc(ref(coll,shardName(id,myShard)), obj, {merge:true}); },

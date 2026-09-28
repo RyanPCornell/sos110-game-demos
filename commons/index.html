@@ -780,7 +780,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 
 <div class="menu" id="menu">
   <button class="menu-close" onclick="toggleMenu(false)" aria-label="Close menu">&times;</button>
-  <h3>Commons demo &mdash; Jump to a slide</h3>
+  <h3>Commons demo &middot; Jump to a slide</h3>
   <div class="menu-grid"><button class="menu-item" data-go="0"><span class="menu-num">1</span>Commons demo</button></div>
 </div>
 
@@ -956,6 +956,7 @@ show(start);
       bump(coll,id,k,delta){ merge(coll,id,{counts:{[k]:{__inc:(delta===undefined?1:delta)}}}); },
       reset(coll,id){ const d=read(coll,id); d.counts={}; write(coll,id,d); emit(coll,id); },
       subscribeDoc(coll,id,cb){ return on(coll,id, ()=>cb(read(coll,id))); },
+      subscribeMain(coll,id,cb){ return on(coll,id, ()=>cb(read(coll,id))); },
       setDoc(coll,id,obj){ write(coll,id, applyInc({},obj)); emit(coll,id); },
       mergeDoc:merge,
       mergeDocShard:merge,
@@ -993,6 +994,8 @@ show(start);
         bump(coll,id,key,delta){ return fsMod.setDoc(ref(coll,shardName(id,myShard)), {counts:{[key]:fsMod.increment(delta===undefined?1:delta)}}, {merge:true}); },
         reset(coll,id){ return resetAll(coll,id,{counts:{}}); },
         subscribeDoc:multiSub,
+        // main doc only (no shards): for players who never need the other players' writes
+        subscribeMain(coll,id,cb){ return fsMod.onSnapshot(ref(coll,id), s=>cb(s.data()||{})); },
         setDoc:resetAll,
         mergeDoc(coll,id,obj){ return fsMod.setDoc(ref(coll,id), obj, {merge:true}); },
         mergeDocShard(coll,id,obj){ return fsMod.setDoc(ref(coll,shardName(id,myShard)), obj, {merge:true}); },
