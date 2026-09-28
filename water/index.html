@@ -1876,11 +1876,18 @@ var AQT={fossil:{n:'Fossil water', m:0.2, d:'barely recharges'},
          renew:{n:'Renewable', m:1, d:'recharges slowly'},
          fast:{n:'Fast-recharging', m:1.7, d:'refills in wet years'}};
 
-var NM_A=['Saguaro','Ocotillo','Copper','Coyote','Mesquite','Cholla','Agave','Juniper','Sandstone',
-  'Yucca','Javelina','Roadrunner','Turquoise','Canyon','Sunrise','Red Rock','Palo Verde','Desert Willow',
-  'Mirage','Quail','Ironwood','Sage','Dust Devil','Thunderbird'];
-var NM_B=['Springs','Flats','Mesa','Bend','Wells','Junction','Heights','Crossing','Gulch','Ridge','Butte','Wash','Vista','Valley'];
+/* city names: desert plants, animals, and landforms only (27 x 18 = 486 combinations) */
+var NM_A=['Saguaro','Ocotillo','Copper','Mesquite','Cholla','Agave','Juniper','Sandstone','Yucca',
+  'Javelina','Roadrunner','Turquoise','Canyon','Sunrise','Red Rock','Palo Verde','Desert Willow','Mirage',
+  'Quail','Ironwood','Sage','Cottonwood','Sycamore','Pinyon','Canyon Wren','Brittlebush','Hummingbird'];
+var NM_B=['Springs','Flats','Mesa','Bend','Wells','Junction','Heights','Crossing','Gulch','Ridge','Butte','Wash',
+  'Vista','Valley','Hollow','Arroyo','Terrace','Point'];
 function cityName(seed){ return NM_A[CG.pick(seed+':a',NM_A.length)]+' '+NM_B[CG.pick(seed+':b',NM_B.length)]; }
+/* a name no classmate has locked in yet, so two cities never share one on the charts */
+function takenNames(){ var t={}, D=state.designs||{}; Object.keys(D).forEach(function(k){ if(k!==PK && D[k] && D[k].nm) t[String(D[k].nm)]=1; }); return t; }
+function freeName(nr){ var t=takenNames(), n=nr||0, nm='';
+  for(var tries=0; tries<80; tries++, n++){ nm=cityName(PK+':'+gid()+':'+n); if(!t[nm]) break; }
+  return {nm:nm, nr:n}; }
 
 /* ══ shared state ══ */
 var backend=null, HOST=false, state={}, PK=CG.pid(GID), myD=null;
@@ -3353,7 +3360,7 @@ function startReveal(){ if(rvRAF===null){ rvSig=''; drawReveal(); } }
 /* ══ THE DESIGNER: 1 · a policy agenda (three cards), 2 · the city planner (a pop-up
    grid: zone each square, set a growth preference, read the 30-year forecast) ══ */
 function myCore(){ return coreFor(coreSeed(PK)); }
-function freshDesign(){ return {nm:cityName(PK+':'+gid()+':0'), nr:0, pol:[], z:withCore(blankGrid(), myCore()), g:1, k:PK, b:''}; }
+function freshDesign(){ var f=freeName(0); return {nm:f.nm, nr:f.nr, pol:[], z:withCore(blankGrid(), myCore()), g:1, k:PK, b:''}; }
 function editable(d){ return {nm:d.nm, nr:d.nr||0, pol:polList(d).slice(), z:withCore(d.z, myCore()), g:d.g, k:PK, b:d.b||''}; }
 function preview(d){ var o=editable(d); return derive(o); }
 function lockable(d){ return !!cleanOne(packDesign(d), PK); }
@@ -4474,6 +4481,8 @@ function render(){
 /* ══ events ══ */
 function lockIn(){
   if(!backend||!myD||!lockable(myD)) return;
+  /* someone locked in the same name first: take the next free one */
+  if(takenNames()[myD.nm]){ var f=freeName((myD.nr||0)+1); myD.nr=f.nr; myD.nm=f.nm; renderDesign(true); }
   var o={designs:{}}; o.designs[PK]=packDesign(cleanOne(packDesign(myD),PK));
   backend.mergeDocShard('polls',GID,o);
 }
@@ -4490,7 +4499,7 @@ q('[data-design]').addEventListener('click',function(ev){
     /* the planner pops up the first time the budget can buy nothing more */
     var rest=BUDGET-polCost(d), more=POL.some(function(p){ return d.pol.indexOf(p.k)<0 && p.cost<=rest+1e-9; });
     if(!more && !plannerAuto){ plannerAuto=true; plannerOpen=true; plMode='build'; } }
-  else if(b.hasAttribute('data-rename')){ d.nr=(d.nr||0)+1; d.nm=cityName(PK+':'+gid()+':'+d.nr); }
+  else if(b.hasAttribute('data-rename')){ var f=freeName((d.nr||0)+1); d.nr=f.nr; d.nm=f.nm; }
   else if(b.hasAttribute('data-plan')){ plannerOpen=true; plannerAuto=true; if(!bList(d).length && !zonedN(d.z, myCore())) plMode='build'; }
   else if(b.hasAttribute('data-lock')){ lockIn(); return; }
   else return;
@@ -4714,7 +4723,13 @@ function demoRun(){
       if(cost+BCOST[want[w]]<=BUILD_BUDGET){ bl.push(i); cost+=BCOST[want[w]]; } break; } }
     return bl.join(','); }
   function mk(i){ var core=coreFor(coreSeed('d'+i)), z=demoZ(MIX[i%5],'dz'+i, core);
-    return {nm:cityName('demo'+i), pol:POLS[i%8].join(','), z:z, g:(i*3+Math.floor(i/8))%4, b:demoB(z, core, 'db'+i)}; }
+    return {nm:demoName(i), pol:POLS[i%8].join(','), z:z, g:(i*3+Math.floor(i/8))%4, b:demoB(z, core, 'db'+i)}; }
+  /* demo cities never share a name either */
+  var demoNames={};
+  function demoName(i){ if(demoNames[i]) return demoNames[i]; var taken={}, n=0, nm;
+    Object.keys(demoNames).forEach(function(k){ taken[demoNames[k]]=1; });
+    do { nm=cityName('demo'+i+(n? ':'+n : '')); n++; } while(taken[nm] && n<60);
+    return (demoNames[i]=nm); }
   /* the hypothetical class answers each concept check, mostly right */
   function classAnswers(kind, y){
     var t=simulate(kind).ev[y]; if(!t) return;
