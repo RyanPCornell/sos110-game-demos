@@ -1906,18 +1906,23 @@ function freeName(nr){ var t=takenNames(), n=nr||0, nm='';
 var backend=null, HOST=false, state={}, PK=CG.pid(GID), myD=null;
 function phase(){ return state.phase||'idle'; }
 function players(){ return state.players||{}; }
-function designs(){ return state.designs||{}; }
+/* once planning ends the host freezes the class into state.roster, in the same write that
+   starts the reveal: a plan that lands late cannot change a run already under way */
+function rosterReady(){ return !!state.roster && String(state.rosterGid)===gid(); }
+function designs(){ return (rosterReady() && ['idle','lobby','design'].indexOf(phase())<0)? state.roster : (state.designs||{}); }
+function packRoster(){ var raw=state.designs||{}, o={};
+  Object.keys(raw).forEach(function(k){ var c=cleanOne(raw[k], k); if(c) o[k]=packDesign(c); }); return o; }
 function gid(){ return String(state.gameId||0); }
 function yr(){ return state.yr||0; }
 function myr(){ return state.myr||0; }
 function megaDone(){ return !!state.megaDone; }
-function joined(){ return !HOST && players()[PK]!==undefined; }
+function joined(){ return !HOST && (players()[PK]!==undefined || (rosterReady() && state.roster[PK]!==undefined)); }
 function myDesign(){ return cleanDesigns()[PK]||null; }
 function nDesigns(){ return Object.keys(cleanDesigns()).length; }
 function polList(d){ return (d && d.pol)? d.pol : []; }
 function hasPol(d,k){ return polList(d).indexOf(k)>-1; }
 /* can this screen open that city's map? its owner always; nobody else if it is private */
-function viewable(k){ var d=cleanDesigns()[k]; return k===PK || !(d && d.pv); }
+function viewable(k){ var d=cleanDesigns()[k]; return (k===PK && !HOST) || !(d && d.pv); }
 /* what a city's policies do to one square's output and water (the same factors cityRun uses) */
 function outMult(d,ch){ var Z=ZONES[ch], t=hasPol(d,'train')?1.15:1; if(!Z) return 1;
   if(Z.kind==='ag') return hasPol(d,'farmx')?1.4:1;
@@ -2011,7 +2016,10 @@ function cleanDesigns(){
   var o={}; Object.keys(raw).forEach(function(k){ var c=cleanOne(raw[k], k); if(c) o[k]=c; });
   /* a student can keep their city private: everyone else (the host included) sees only
      "Private city N", and its map cannot be opened */
-  var npv=0; Object.keys(o).sort().forEach(function(k){ if(o[k].pv && k!==PK){ npv++; o[k].nm='Private city '+npv; } });
+  var npv=0; Object.keys(o).sort().forEach(function(k){ if(o[k].pv && (HOST || k!==PK)){ npv++; o[k].nm='Private city '+npv; } });
+  /* in a big class two students can land on the same name at once: number the repeats */
+  var seen={}; Object.keys(o).sort().forEach(function(k){ var nm=o[k].nm; if(o[k].pv && (HOST || k!==PK)) return;
+    seen[nm]=(seen[nm]||0)+1; if(seen[nm]>1) o[k].nm=nm+' '+seen[nm]; });
   cleanSig=sig; cleanVal=o; return o;
 }
 function growthRate(d){ return GROW[d.g].permits; }
@@ -2826,7 +2834,7 @@ function drawBoard(svg){
       if(th>50) h.push('<text x="'+(cx+tw/2)+'" y="'+(cy+th/2+4)+'" text-anchor="middle" class="wt-tsub">planning…</text>');
     } else {
       h.push('<rect x="'+(cx+4)+'" y="'+(cy+4)+'" width="'+(tw-8)+'" height="'+(th-8)+'" rx="8" fill="#fffaf0" stroke="#bda77c" stroke-width="1.4"/>');
-      if(d.pv && k!==PK){
+      if(d.pv && (HOST || k!==PK)){
         /* a private city: locked in, but its map and choices stay off the shared screen */
         var ls=Math.min(1.6, th/70, tw/70), lx=cx+tw/2, ly=cy+th/2-(th>70? 8 : 0);
         h.push('<g transform="translate('+lx.toFixed(1)+','+ly.toFixed(1)+') scale('+ls.toFixed(2)+')" opacity=".75">'
@@ -3211,10 +3219,20 @@ function evIcon(t, x, y, r){
 function evYear(sim, t){ for(var y=1;y<=YEARS;y++) if(sim.ev[y]===t) return y; return 0; }
 function qKey(kind, y){ return (kind==='mega'?'m':'n')+y; }
 function quizAll(){ return state.quiz||{}; }
-function quizMine(){ var q=quizAll()[PK]; return (q && typeof q==='object')? q : {}; }
+/* a student's own answers, votes, and survey live on their device as well: after planning
+   their screen listens only to the main game record, not to everyone else's writes */
+function mineKey(){ return 'wt-mine:'+GID+':'+gid(); }
+function mineGet(){ try{ return JSON.parse(localStorage.getItem(mineKey())||'{}')||{}; }catch(e){ return {}; } }
+function mineSet(f, v){ try{ var m=mineGet(); m[f]=v; localStorage.setItem(mineKey(), JSON.stringify(m)); }catch(e){} }
+function quizMine(){ var q=quizAll()[PK], out={}, loc=mineGet().quiz||{};
+  Object.keys(loc).forEach(function(k){ out[k]=loc[k]; });
+  if(q && typeof q==='object') Object.keys(q).forEach(function(k){ out[k]=q[k]; });
+  return out; }
 function quizAnswer(key, i){
   if(!backend || HOST || quizMine()[key]!==undefined) return;
+  var loc=mineGet().quiz||{}; loc[key]=i; mineSet('quiz', loc);
   var o={quiz:{}}; o.quiz[PK]={}; o.quiz[PK][key]=i; backend.mergeDocShard('polls',GID,o);
+  render();
 }
 /* every concept check that has come up so far, oldest first */
 function quizList(){
@@ -4051,7 +4069,7 @@ function finalHtml(){
     +statRow('Aquifers run dry', dry+' <i>/</i> '+n)
     +statRow('People', (P1>=P0?'+':'')+Math.round((P1/P0-1)*100)+'%', 'since year 0')
     +(sM? statRow('Megadrought, average', (avgRel(sM,ks)*30).toFixed(1), 'was '+(avgRel(sN,ks)*30).toFixed(1)) : ''));
-  var rb=robustness();
+  var rb=(HOST||DEMO)? robustness() : ((state.rob && String(state.rob.g)===gid())? state.rob : null);
   if(rb) more+=blk(bhead('','If the dice had rolled differently')
     +statRow('Class years with enough', rb.lo.toFixed(1)+'–'+rb.hi.toFixed(1), 'median '+rb.med.toFixed(1))
     +'<div class="ev-hint dim">The same plans, re-run '+rb.k+' times with the weather, the order along the river, and the basin&rsquo;s aquifer dealt again. One draw can flatter or punish a plan; this is the spread from luck alone. Compare plans by their typical result, not one run.</div>');
@@ -4220,11 +4238,11 @@ function classSvg(sim, y, who, W, H){
   /* the dots and their trails */
   h.push('<circle cx="'+X(100)+'" cy="'+Y(1)+'" r="7" fill="#fff" stroke="#3b3222" stroke-width="1.4"/>');
   obs.push([X(100)-8, Y(1)-8, X(100)+8, Y(1)+8]);
-  var mine=null;
+  var mine=null, trails=pts.length<=60;          /* past 60 cities the trails become a tangle: dots only */
   pts.forEach(function(p){ if(p.k===who){ mine=p; return; }
     var col=GCOL[p.g], px=X(p.p.E), py=Y(p.p.A);
-    h.push('<path d="M'+X(100)+','+Y(1)+(y>10? ' L'+X(p.p10.E)+','+Y(p.p10.A) : '')+' L'+px+','+py+'" fill="none" stroke="'+col+'" stroke-width="1.3" opacity=".32"/>');
-    if(y>10){ h.push('<circle cx="'+X(p.p10.E)+'" cy="'+Y(p.p10.A)+'" r="3" fill="'+col+'" opacity=".45"/>'); obs.push([X(p.p10.E)-3, Y(p.p10.A)-3, X(p.p10.E)+3, Y(p.p10.A)+3]); }
+    if(trails) h.push('<path d="M'+X(100)+','+Y(1)+(y>10? ' L'+X(p.p10.E)+','+Y(p.p10.A) : '')+' L'+px+','+py+'" fill="none" stroke="'+col+'" stroke-width="1.3" opacity=".32"/>');
+    if(y>10 && trails){ h.push('<circle cx="'+X(p.p10.E)+'" cy="'+Y(p.p10.A)+'" r="3" fill="'+col+'" opacity=".45"/>'); obs.push([X(p.p10.E)-3, Y(p.p10.A)-3, X(p.p10.E)+3, Y(p.p10.A)+3]); }
     h.push('<g class="wt-dot'+(p.c.d.pv?' pv':'')+'"'+(p.c.d.pv? '' : ' data-opencity="'+p.k+'"')+'><title>'+esc(p.nm)+' · '+GROW[p.g].n+' · aquifer '+Math.round(p.p.A*100)+'%</title>'
       +'<circle cx="'+px+'" cy="'+py+'" r="8" fill="'+col+'" stroke="#fff" stroke-width="1.6"/></g>');
     obs.push([px-9, py-9, px+9, py+9]); });
@@ -4531,9 +4549,10 @@ function tick(){
   var dl=state.deadline, left=dl? dl-Date.now() : null, ph=phase();
   clockWrap.hidden=!(ph==='design' && dl);
   if(ph==='design' && dl){ clockEl.textContent=CG.clock(left); clockEl.classList.toggle('low', left<30000); }
-  if(HOST && dl && left<=0 && !state.paused) advance();
+  if(HOST && dl && left<=(ph==='design'? -3000 : 0) && !state.paused) advance();
+  if(HOST) hostPublish();
   /* a finished plan is not lost because the student never pressed lock */
-  if(!HOST && ph==='design' && dl && left<1800 && myD && lockable(myD)){
+  if(!HOST && ph==='design' && dl && left<4000 && myD && lockable(myD)){
     var s=JSON.stringify(packDesign(cleanOne(packDesign(myD),PK)));
     if(s!==JSON.stringify(myDesign()&&packDesign(myDesign())) && autoLocked!==s){ autoLocked=s; lockIn(); }
   }
@@ -4541,6 +4560,21 @@ function tick(){
   if(HOST && againUntil() && !againOpen()) againClose();
 }
 setInterval(tick,250);
+/* the host's screen does the counting for the class and publishes small totals to the main
+   record, which is all a student listens to once planning is over */
+var pubAt={ag:0, rob:''};
+function hostPublish(){
+  if(!backend) return;
+  var ph=phase();
+  if(['idle','lobby','design'].indexOf(ph)<0 && !rosterReady() && Object.keys(state.designs||{}).length){
+    backend.mergeDoc('polls',GID,{roster:packRoster(), rosterGid:gid()}); return; }
+  if(againOpen()){ var t=againTally(), cur=state.agT||{};
+    if((cur.yes!==t.yes || cur.no!==t.no || cur.u!==againUntil()) && Date.now()-pubAt.ag>1500){
+      pubAt.ag=Date.now(); backend.mergeDoc('polls',GID,{agT:{yes:t.yes, no:t.no, u:againUntil()}}); } }
+  if((ph==='discuss'||ph==='final') && nDesigns() && pubAt.rob!==gid() && !(state.rob && String(state.rob.g)===gid())){
+    pubAt.rob=gid();
+    setTimeout(function(){ var rb=robustness(); if(rb) backend.mergeDoc('polls',GID,{rob:{g:gid(), lo:rb.lo, hi:rb.hi, med:rb.med, k:rb.k}}); }, 50); }
+}
 function mins(){ return parseFloat(q('[data-buildmin]').value)||7; }
 function setPhase(p,secs,extra){
   var o=extra||{}; o.phase=p; o.deadline=secs? (Date.now()+secs*1000) : null; o.paused=0;
@@ -4548,7 +4582,7 @@ function setPhase(p,secs,extra){
 }
 function advance(){
   var ph=phase();
-  if(ph==='design'){ plannerOpen=false; setPhase('reveal', rvMs('normal')/1000); }
+  if(ph==='design'){ plannerOpen=false; setPhase('reveal', rvMs('normal')/1000, {roster:packRoster(), rosterGid:gid()}); }
   else if(ph==='reveal') setPhase('run', yearSec('normal',1), {yr:1});
   else if(ph==='run'){ if(yr()<YEARS) setPhase('run', yearSec('normal',yr()+1), {yr:yr()+1}); else setPhase('discuss', null); }
   else if(ph==='megareveal') setPhase('mega', yearSec('mega',1), {myr:1});
@@ -4719,20 +4753,27 @@ q('[data-surveyform]').addEventListener('submit', svSubmit);
 function againUntil(){ return state.againUntil||0; }
 function againOpen(){ return againUntil()>Date.now(); }
 function againVotes(){ return state.again||{}; }
-function againTally(){ var v=againVotes(), y=0, n=0; Object.keys(v).forEach(function(k){ if(v[k]) y++; else n++; }); return {yes:y,no:n}; }
+function againMine(){ var v=againVotes()[PK]; if(v!==undefined) return v;
+  var m=mineGet().again; return (m && m.u===againUntil())? m.v : undefined; }
+/* the host counts the votes; students read the count the host publishes */
+function againTally(){
+  if(!HOST && !DEMO){ var t=state.agT; return (t && t.u===againUntil())? {yes:t.yes||0, no:t.no||0} : {yes:0, no:0}; }
+  var v=againVotes(), y=0, n=0; Object.keys(v).forEach(function(k){ if(v[k]) y++; else n++; }); return {yes:y,no:n}; }
 function renderAgain(){
   var box=q('[data-againbox]'), open=againOpen() && !HOST;
   box.hidden=!open; if(!open) return;
   q('[data-againclock]').textContent=Math.max(0,Math.ceil((againUntil()-Date.now())/1000));
-  var mine=againVotes()[PK], t=againTally();
+  var mine=againMine(), t=againTally();
   q('[data-againtally]').textContent = mine===undefined? (t.yes+t.no)+' of the class have answered.'
     : 'You said '+(mine?'yes':'no')+'. '+t.yes+' yes, '+t.no+' no so far.';
   box.querySelector('[data-againyes]').disabled = mine!==undefined;
   box.querySelector('[data-againno]').disabled = mine!==undefined;
 }
 function againVote(yes){
-  if(!backend || HOST || !againOpen() || againVotes()[PK]!==undefined) return;
+  if(!backend || HOST || !againOpen() || againMine()!==undefined) return;
+  mineSet('again', {u:againUntil(), v:yes?1:0});
   var o={again:{}}; o.again[PK]=yes?1:0; backend.mergeDocShard('polls',GID,o);
+  renderAgain();
 }
 function againClose(){
   var t=againTally();
@@ -4746,7 +4787,7 @@ function againClose(){
 var SVQ=[['fun','How fun was the game?'],['learn','How much did it help you learn the concepts from this chapter?']];
 function svOpen(){ return !!state.surveyOpen; }
 function svAll(){ return state.survey||{}; }
-function svMine(){ return svAll()[PK]||null; }
+function svMine(){ var m=mineGet().sv; return svAll()[PK] || ((m && m.id===state.svId)? m.r : null); }
 function svSummary(){
   var v=svAll(), ks=Object.keys(v), out={n:ks.length, comments:[]};
   SVQ.forEach(function(qq){ out[qq[0]]={dist:[0,0,0,0,0], n:0, sum:0}; });
@@ -4773,7 +4814,9 @@ function svSubmit(ev){
   var fun=pick('wt-fun'), learn=pick('wt-learn');
   if(fun===null||learn===null) return;
   var o={survey:{}}; o.survey[PK]={fun:fun, learn:learn, c:(q('[data-surveycomment]').value||'').slice(0,600)};
+  mineSet('sv', {id:state.svId, r:o.survey[PK]});
   backend.mergeDocShard('polls',GID,o);
+  renderSurvey();
 }
 var svMsg='';
 function svSummaryHtml(){
@@ -4834,10 +4877,11 @@ function wireHost(){
     var ph=phase();
     if(ph==='run') setPhase('discuss', null, {yr:YEARS});
     else if(ph==='mega') setPhase('final', null, {myr:YEARS, megaDone:1});
+    else if(ph==='design'){ if(!(state.deadline && state.deadline-Date.now()<4000)) backend.mergeDoc('polls',GID,{deadline:Date.now()+3900, paused:0}); }
     else advance();
   });
   bar.querySelector('[data-mega]').addEventListener('click',function(){ setPhase('megareveal', rvMs('mega')/1000, {myr:0}); });
-  bar.querySelector('[data-survey]').addEventListener('click',function(){ svMsg=''; backend.mergeDoc('polls',GID,{surveyOpen:1, survey:{}}); });
+  bar.querySelector('[data-survey]').addEventListener('click',function(){ svMsg=''; backend.mergeDoc('polls',GID,{surveyOpen:1, survey:{}, svId:Date.now()}); });
   bar.querySelector('[data-surveyclose]').addEventListener('click',function(){ backend.mergeDoc('polls',GID,{surveyOpen:0}); });
   bar.querySelector('[data-again]').addEventListener('click',function(){
     if(!againOpen()) backend.mergeDoc('polls',GID,{againUntil:Date.now()+30000, again:{}});
@@ -4983,12 +5027,29 @@ window.__deckLiveReady.then(function(live){
   if(HOST) wireHost();
   /* a walkthrough never shows the last run's leftovers while it starts up */
   if(DEMO) backend.setDoc('polls',GID,{phase:'idle'});
-  backend.subscribeDoc('polls',GID,function(d){
-    var was=gid(); state=d||{};
+  /* Students hear every write while the class is joining and planning (they need the
+     other plans for names and the forecast). Once the host freezes the class, a student
+     listens only to the main record: 9 documents' worth of everyone's quiz answers, votes,
+     and survey replies no longer reach 250 screens. The host always hears everything. */
+  var unsub=null, subMode='', keepPlayers={};
+  function wantMode(){ return (!HOST && !DEMO && rosterReady() && ['idle','lobby','design'].indexOf(phase())<0)? 'main' : 'full'; }
+  function onSnap(mode, d){
+    if(mode!==subMode) return;
+    d=d||{};
+    if(mode==='full') keepPlayers=d.players||{};
+    else { var pl={}, k; for(k in keepPlayers) pl[k]=keepPlayers[k]; for(k in (d.players||{})) pl[k]=d.players[k]; d.players=pl; }
+    var was=gid(); state=d;
     if(gid()!==was){ myD=null; boardSeen={}; simCache={}; plannerAuto=false; plannerOpen=false; }
     if(phase()!=='design' && !DEMO) myD=null;
     render();
-  });
+    var m=wantMode(); if(m!==subMode) listen(m);
+  }
+  function listen(m){
+    if(unsub){ try{ unsub(); }catch(e){} }
+    subMode=m;
+    unsub=(m==='main'? backend.subscribeMain : backend.subscribeDoc).call(backend, 'polls', GID, function(d){ onSnap(m, d); });
+  }
+  listen('full');
   render();
   if(DEMO) setTimeout(demoRun, 400);
 });
