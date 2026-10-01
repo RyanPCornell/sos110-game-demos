@@ -3565,7 +3565,7 @@ var plSig='';
 function renderPlanner(force){
   var box=q('[data-planner]'), show=plannerOpen && !HOST && joined() && phase()==='design' && myD;
   box.hidden=!show; if(!show){ plSig=''; return; }
-  if(plMode==='build' && BCOST[brush]==null) brush='h';
+  if(plMode==='build' && BCOST[brush]==null && brush!=='w') brush='h';
   var sig=myD.nm+'|'+myD.pol.join()+'|'+myD.g+'|'+brush+'|'+plMode+'|'+JSON.stringify(myDesign()&&packDesign(myDesign()));
   if(!force && sig===plSig){ return; }
   plSig=sig;
