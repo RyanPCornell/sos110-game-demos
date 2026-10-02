@@ -1934,9 +1934,12 @@ var AQT={fossil:{n:'Fossil water', m:0.2, d:'barely recharges'},
 var NM_A=['Saguaro','Ocotillo','Copper','Mesquite','Cholla','Agave','Juniper','Sandstone','Yucca',
   'Javelina','Roadrunner','Turquoise','Canyon','Sunrise','Red Rock','Palo Verde','Desert Willow','Mirage',
   'Quail','Ironwood','Sage','Cottonwood','Sycamore','Pinyon','Canyon Wren','Brittlebush','Hummingbird'];
-var NM_B=['Springs','Flats','Mesa','Bend','Wells','Junction','Heights','Crossing','Gulch','Ridge','Butte','Wash',
+var NM_B=['Springs','Flats','Mesa','Bend','Wells','Junction','Heights','Crossing','Gulch','Ridge','Overlook','Wash',
   'Vista','Valley','Hollow','Arroyo','Terrace','Point'];
-function cityName(seed){ return NM_A[CG.pick(seed+':a',NM_A.length)]+' '+NM_B[CG.pick(seed+':b',NM_B.length)]; }
+/* pairings that read badly are skipped (Yucca Flat was the Nevada nuclear test site) */
+var NM_AVOID={'Yucca Flats':1};
+function cityName(seed){ var a=CG.pick(seed+':a',NM_A.length), b=CG.pick(seed+':b',NM_B.length), nm=NM_A[a]+' '+NM_B[b];
+  return NM_AVOID[nm]? NM_A[a]+' '+NM_B[(b+1)%NM_B.length] : nm; }
 /* a name no classmate has locked in yet, so two cities never share one on the charts */
 function takenNames(){ var t={}, D=state.designs||{}; Object.keys(D).forEach(function(k){ if(k!==PK && D[k] && D[k].nm) t[String(D[k].nm)]=1; }); return t; }
 function freeName(nr){ var t=takenNames(), n=nr||0, nm='';
@@ -5404,13 +5407,18 @@ function show(i, back){
   counter.textContent = (cur+1)+' / '+slides.length;
   location.hash = 'slide-'+(cur+1);
 }
+// A bespoke slide may claim a clicker press by defining s.__deckNext / s.__deckPrev
+// and returning true (e.g. a host-run game that reveals and advances on the clicker).
+// Slides without them are unaffected.
 function next(){
   const s = slides[cur], n = stageItems(s).length;
+  if(typeof s.__deckNext === 'function' && s.__deckNext()) return;
   if(n){ const k = stageShown(s); if(k < n){ setStage(s, k + 1); return; } }
   show(cur+1);
 }
 function prev(){
   const s = slides[cur];
+  if(typeof s.__deckPrev === 'function' && s.__deckPrev()) return;
   if(stageItems(s).length){ const k = stageShown(s); if(k > 0){ setStage(s, k - 1); return; } }
   show(cur-1, true);
 }
