@@ -1505,7 +1505,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .wt-ob-i{font-size:clamp(.58rem,.88vw,.68rem); color:#1f4f44; font-weight:700; line-height:1.35; margin-top:.15rem;}
 .wt-ob-i span{display:inline-block; font-size:.78em; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:#fff;
   background:#2f7d6b; border-radius:999px; padding:0 .4rem; margin-right:.3rem; vertical-align:1px;}
-.wt-cv-key .k-eu{background:#6f9a3a;}
+.wt-cv-key .k-eu{background:#8ed43a;}
 .wt-cv-mapcol .wt-bud{margin-top:.2rem;}
 
 .wt-polgrp{grid-column:1 / -1; font-size:clamp(.5rem,.76vw,.6rem); font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#a09781; margin:.15rem 0 .02rem;}
@@ -1738,7 +1738,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
       Mayer et al. (2007), <em>J. Environ. Quality 36</em>: riparian buffers remove nitrogen, more consistently when wide.
       ADWR (2023): Phoenix AMA model found 4.86 million acre-feet of unmet groundwater demand over 100 years, halting new groundwater-based subdivisions.
       Williams, Cook &amp; Smerdon (2022), <em>Nature Climate Change 12</em>: the southwestern megadrought.
-      City of Phoenix Council, TSMC development agreement (Nov. 18, 2020).</div><div class="wt-ptab"><div class="wt-ptab-h">Parameters and where they come from. <b>Measured</b>: taken from a source. <b>Derived</b>: computed from sourced figures. <b>Assumed</b>: set for teaching.</div><table><thead><tr><th>Parameter</th><th>Value</th><th>Status</th><th>Basis</th></tr></thead><tbody><tr><td>Houses: water per square</td><td>188 AF/yr (480 homes)</td><td class="st d">Derived</td><td>Multi-City Water Use Study: about 350 gal/day per single-family home, 57% outdoors</td></tr><tr><td>Apartments: water per square</td><td>652 AF/yr (3,200 units)</td><td class="st d">Derived</td><td>Water Research Foundation: 182 gal/day per Phoenix multifamily unit</td></tr><tr><td>Shops &amp; offices, industry: water</td><td>150 and 640 AF/yr</td><td class="st a">Assumed</td><td>Teaching values scaled to typical commercial and industrial use</td></tr><tr><td>Alfalfa, vegetables, orchards</td><td>864, 624, 720 AF/yr (160 acres)</td><td class="st d">Derived</td><td>Univ. of Arizona (2023), Table C1: 5.4, about 3.9, about 4.5 AF per acre</td></tr><tr><td>Dairy</td><td>235 AF/yr (2,000 cows)</td><td class="st d">Derived</td><td>ADWR allotment: 105 gal per cow per day</td></tr><tr><td>Green park turf</td><td>368 AF/yr</td><td class="st d">Derived</td><td>ADWR turf allotment 4.6 AF/acre on half the square</td></tr><tr><td>Farm output</td><td>$0.4M to $12M per square</td><td class="st d">Derived</td><td>USDA NASS Arizona prices and yields (2022)</td></tr><tr><td>Construction income, output per job</td><td>NAHB per-home values; $120,000 per job</td><td class="st d">Derived</td><td>NAHB (2015); BEA/BLS Phoenix metro (2022)</td></tr><tr><td>Residential price elasticity</td><td>&minus;0.41</td><td class="st m">Measured</td><td>Dalhuisen et al. (2003) meta-analysis</td></tr><tr><td>Pumping cost</td><td>about $0.20 per AF per foot of lift</td><td class="st d">Derived</td><td>Hanson (UC ANR) energy per lift, at about $0.10/kWh</td></tr><tr><td>Incidental recharge</td><td>25% of farm water, 4% of city water</td><td class="st m">Measured</td><td>ADWR Phoenix AMA groundwater model (2024)</td></tr><tr><td>River: normal flow and each city&rsquo;s share</td><td>5,500 AF per city</td><td class="st a">Assumed</td><td>Every city holds an equal share, set so a normal year exactly covers the class; dry years cut every city</td></tr><tr><td>Wet and dry years</td><td>4-state Markov chain, 58% to 128% of normal</td><td class="st a">Assumed</td><td>Stylized; clustered like real river flows</td></tr><tr><td>Megadrought</td><td>22 years near 52% of normal</td><td class="st a">Assumed</td><td>Shaped on Williams, Cook &amp; Smerdon (2022), not a reconstruction</td></tr><tr><td>Aquifer</td><td>60,000 AF usable; 1,800 AF/yr recharge; fossil &times;0.2, fast &times;1.7</td><td class="st a">Assumed</td><td>Teaching values</td></tr><tr><td>Subsidence</td><td>below 20% of the aquifer; capacity drops to 70%</td><td class="st a">Assumed</td><td>Direction from USGS subsidence studies; sizes assumed</td></tr><tr><td>Confidence, moving away, sprawl, drilling</td><td>rates in the code</td><td class="st a">Assumed</td><td>Stylized behavioral rules, not estimated</td></tr><tr><td>Eutrophication</td><td>algae past about three riverbank farms&rsquo; runoff (two with a dairy); buffer law traps 65%</td><td class="st a">Assumed</td><td>Direction from Mayer et al. (2007); sizes assumed</td></tr><tr><td>Policy effects</td><td>conservation &minus;30% outdoor, &minus;10% indoor; recycling 3,000 AF; permits &times;1.8; tax &times;1.2; chip plant &times;2 output, &times;1.6 water; farm exports &times;1.4 farm output, &times;1.2 farm water; job training &times;1.15 job output</td><td class="st a">Assumed</td><td>Teaching values in plausible ranges</td></tr><tr><td>Chip plant cost</td><td>$9M a year</td><td class="st a">Assumed</td><td>Scaled down for a small city from Phoenix&rsquo;s $205M TSMC infrastructure package (2020), which annualizes to about $13M a year</td></tr><tr><td>Policy budget</td><td>$10M a year per city</td><td class="st a">Assumed</td><td>Set so a city can afford a few policies, not all of them</td></tr><tr><td>Build-now budget</td><td>$500M, up to 6 squares, standing from year 0</td><td class="st a">Assumed</td><td>Set so a student can build a handful of squares before zoning</td></tr><tr><td>Cost to build a square</td><td>houses $138M, apartments $374M, shops $77M, industry $120M; farms and parks $3M to $14M</td><td class="st d">Derived</td><td>Homes and businesses: the construction values above (NAHB); farms and parks assumed</td></tr><tr><td>Other policy costs</td><td>$1.5M to $5M a year</td><td class="st a">Assumed</td><td>Rough annualized capital and program costs</td></tr><tr><td>Sustainability score</td><td>40% renewable share, 35% aquifer left, 25% recent reliability</td><td class="st a">Assumed</td><td>A teaching index</td></tr></tbody></table></div></div></details></div>
+      City of Phoenix Council, TSMC development agreement (Nov. 18, 2020).</div><div class="wt-ptab"><div class="wt-ptab-h">Parameters and where they come from. <b>Measured</b>: taken from a source. <b>Derived</b>: computed from sourced figures. <b>Assumed</b>: set for teaching.</div><table><thead><tr><th>Parameter</th><th>Value</th><th>Status</th><th>Basis</th></tr></thead><tbody><tr><td>Houses: water per square</td><td>188 AF/yr (480 homes)</td><td class="st d">Derived</td><td>Multi-City Water Use Study: about 350 gal/day per single-family home, 57% outdoors</td></tr><tr><td>Apartments: water per square</td><td>652 AF/yr (3,200 units)</td><td class="st d">Derived</td><td>Water Research Foundation: 182 gal/day per Phoenix multifamily unit</td></tr><tr><td>Shops &amp; offices, industry: water</td><td>150 and 640 AF/yr</td><td class="st a">Assumed</td><td>Teaching values scaled to typical commercial and industrial use</td></tr><tr><td>Alfalfa, vegetables, orchards</td><td>864, 624, 720 AF/yr (160 acres)</td><td class="st d">Derived</td><td>Univ. of Arizona (2023), Table C1: 5.4, about 3.9, about 4.5 AF per acre</td></tr><tr><td>Dairy</td><td>235 AF/yr (2,000 cows)</td><td class="st d">Derived</td><td>ADWR allotment: 105 gal per cow per day</td></tr><tr><td>Green park turf</td><td>368 AF/yr</td><td class="st d">Derived</td><td>ADWR turf allotment 4.6 AF/acre on half the square</td></tr><tr><td>Farm output</td><td>$0.4M to $12M per square</td><td class="st d">Derived</td><td>USDA NASS Arizona prices and yields (2022)</td></tr><tr><td>Construction income, output per job</td><td>NAHB per-home values; $120,000 per job</td><td class="st d">Derived</td><td>NAHB (2015); BEA/BLS Phoenix metro (2022)</td></tr><tr><td>Residential price elasticity</td><td>&minus;0.41</td><td class="st m">Measured</td><td>Dalhuisen et al. (2003) meta-analysis</td></tr><tr><td>Pumping cost</td><td>about $0.20 per AF per foot of lift</td><td class="st d">Derived</td><td>Hanson (UC ANR) energy per lift, at about $0.10/kWh</td></tr><tr><td>Incidental recharge</td><td>25% of farm water, 4% of city water</td><td class="st m">Measured</td><td>ADWR Phoenix AMA groundwater model (2024)</td></tr><tr><td>River: normal flow and each city&rsquo;s share</td><td>5,500 AF per city</td><td class="st a">Assumed</td><td>Every city holds an equal share, set so a normal year exactly covers the class; dry years cut every city</td></tr><tr><td>Wet and dry years</td><td>4-state Markov chain, 58% to 128% of normal</td><td class="st a">Assumed</td><td>Stylized; clustered like real river flows</td></tr><tr><td>Megadrought</td><td>22 years near 52% of normal</td><td class="st a">Assumed</td><td>Shaped on Williams, Cook &amp; Smerdon (2022), not a reconstruction</td></tr><tr><td>Aquifer</td><td>60,000 AF usable; 1,800 AF/yr recharge; fossil &times;0.2, fast &times;1.7</td><td class="st a">Assumed</td><td>Teaching values</td></tr><tr><td>Subsidence</td><td>below 20% of the aquifer; capacity drops to 70%</td><td class="st a">Assumed</td><td>Direction from USGS subsidence studies; sizes assumed</td></tr><tr><td>Confidence, moving away, sprawl, drilling</td><td>rates in the code; while taps run, a falling aquifer drives away 35% as many people as it deters investment; Managed and Steady cities pause building below 85% and 65% of the aquifer and set water rules below 80% (outdoor watering and farmland cut up to 40% Managed, 25% Steady) while the wells outpace recharge</td><td class="st a">Assumed</td><td>Stylized behavioral rules, not estimated</td></tr><tr><td>Eutrophication</td><td>algae past about three riverbank farms&rsquo; runoff (two with a dairy); a farm two squares from the river sends 50%, three squares 25%, farther 12%; a buffer square beside a farm traps 45% of its runoff (two squares away, 25%); a buffer-lined riverbank traps up to 60% more; buffer law traps 50%</td><td class="st a">Assumed</td><td>Direction from Mayer et al. (2007); sizes assumed</td></tr><tr><td>Policy effects</td><td>conservation &minus;30% outdoor, &minus;10% indoor; recycling 3,000 AF; permits &times;1.8; tax &times;1.2; chip plant &times;2 output, &times;1.6 water; farm exports &times;1.4 farm output, &times;1.2 farm water; job training &times;1.15 job output</td><td class="st a">Assumed</td><td>Teaching values in plausible ranges</td></tr><tr><td>Chip plant cost</td><td>$9M a year</td><td class="st a">Assumed</td><td>Scaled down for a small city from Phoenix&rsquo;s $205M TSMC infrastructure package (2020), which annualizes to about $13M a year</td></tr><tr><td>Policy budget</td><td>$10M a year per city</td><td class="st a">Assumed</td><td>Set so a city can afford a few policies, not all of them</td></tr><tr><td>Build-now budget</td><td>$500M, up to 6 squares, standing from year 0</td><td class="st a">Assumed</td><td>Set so a student can build a handful of squares before zoning</td></tr><tr><td>Cost to build a square</td><td>houses $138M, apartments $374M, shops $77M, industry $120M; farms and parks $3M to $14M</td><td class="st d">Derived</td><td>Homes and businesses: the construction values above (NAHB); farms and parks assumed</td></tr><tr><td>Other policy costs</td><td>$1.5M to $5M a year</td><td class="st a">Assumed</td><td>Rough annualized capital and program costs</td></tr><tr><td>Sustainability score</td><td>40% renewable share, 35% aquifer left, 25% recent reliability</td><td class="st a">Assumed</td><td>A teaching index</td></tr></tbody></table></div></div></details></div>
   </div>
   <div class="footer"></div>
   <script>(function(){
@@ -1824,9 +1824,10 @@ var SHARE=5500;                 /* a normal river flow carries this much per cit
 var A0=60000;                   /* usable groundwater under each city */
 var NATR=1800;                  /* natural recharge into a renewable aquifer, a normal year */
 var OK=0.95;
-/* eutrophication: river nutrients settle near 14x the riverbank farms' runoff each year. Algae
-   start above EUT_T and count as a eutrophic year past EUT_LINE, so one riverbank farm (even a
-   dairy) or two ordinary farms stay clear; about three farms' worth, or two with a dairy, turn it green */
+/* eutrophication: river nutrients settle near 14x the farm runoff that reaches the river each year
+   (see NUTRIENT RUNOFF below). Algae start above EUT_T and count as a eutrophic year past EUT_LINE,
+   so one riverbank farm (even a dairy) or two ordinary ones stay clear; about three riverbank farms'
+   worth, or two plus a few more a couple of squares back, turn it green */
 var EUT_T=26, EUT_W=12, EUT_LINE=EUT_T+0.35*EUT_W;
 
 /* ══ THE POLICY AGENDA: five water policies and five economic ones ══ */
@@ -1869,6 +1870,33 @@ var NEAR={};                                   /* squares that touch the river *
 for(var ti=0; ti<NT; ti++){ if(ISRIV[ti]) continue;
   var tr=Math.floor(ti/COLS), tc=ti%COLS;
   if((tc>0&&ISRIV[ti-1])||(tc<COLS-1&&ISRIV[ti+1])||(tr>0&&ISRIV[ti-COLS])||(tr<ROWS-1&&ISRIV[ti+COLS])) NEAR[ti]=1; }
+/* ══ NUTRIENT RUNOFF: every farm sends fertilizer and manure downhill toward the river. How much
+   arrives falls off with distance (riverbank 100%, two squares out 50%, three 25%, farther 12%),
+   and dry desert soil holds back a quarter of even that. Riparian buffers trap it: each buffer square
+   beside a farm traps 45% of that farm's runoff (two squares away, 25%); a riverbank lined with
+   buffers or natural land traps up to 60% of what is left; and a buffer law traps 50%. ══ */
+var RDIST=[], RIN=[];                          /* squares from the river, and the river square the runoff enters */
+(function(){ var q=RIVER.slice(); for(var i=0;i<NT;i++){ RDIST[i]=ISRIV[i]? 0 : 99; RIN[i]=ISRIV[i]? i : -1; }
+  while(q.length){ var a=q.shift(), r=Math.floor(a/COLS), c=a%COLS;
+    [[r-1,c],[r+1,c],[r,c-1],[r,c+1]].forEach(function(p){ if(p[0]<0||p[0]>=ROWS||p[1]<0||p[1]>=COLS) return; var b=p[0]*COLS+p[1];
+      if(RDIST[b]>RDIST[a]+1){ RDIST[b]=RDIST[a]+1; RIN[b]=RIN[a]; q.push(b); } }); } })();
+var RUNW=[0,1,0.5,0.25,0.12], RUNK=0.75, LAWP=0.5, NEARN=Object.keys(NEAR).length;
+function runW(i){ return RUNW[Math.min(4,RDIST[i])]; }
+/* the share of the riverbank lined with buffers (natural land and desert parks count partly) */
+function bankShare(z){ var s=0; for(var i in NEAR){ var ch=z.charAt(+i); s+= ch==='w'? 1 : ch==='n'? 0.6 : ch==='x'||ch==='p'? 0.3 : 0; } return s/NEARN; }
+function bufList(z){ var o=[]; for(var i=0;i<NT;i++) if(z.charAt(i)==='w') o.push(i); return o; }
+/* the share of farm i's runoff that gets past the buffers beside it */
+function farmPass(i, bl){ var p=1, r=Math.floor(i/COLS), c=i%COLS;
+  bl.forEach(function(j){ var g=Math.max(Math.abs(Math.floor(j/COLS)-r), Math.abs(j%COLS-c)); if(g===1) p*=0.55; else if(g===2) p*=0.75; }); return p; }
+/* the nutrient load reaching the river this year: gross (before any trapping), net, and per river square */
+function nutLoad(z, B, F, law){
+  var bl=bufList(z), bank=1-0.6*bankShare(z), lawP=law? LAWP : 1, gross=0, net=0, farms=0, bank1=0, byR={};
+  for(var i=0;i<NT;i++){ var Z=ZONES[z.charAt(i)]; if(!Z || !Z.run) continue;
+    var a=(B? B[i] : 1)*(1-(F? F[i] : 0)); if(a<=0) continue;
+    var g=Z.run*a*runW(i)*RUNK, n=g*farmPass(i, bl)*bank*lawP;
+    gross+=g; net+=n; byR[RIN[i]]=(byR[RIN[i]]||0)+n; if(RDIST[i]<=3){ farms++; if(RDIST[i]===1) bank1++; } }
+  return {gross:gross, net:net, farms:farms, bank:bank1, byR:byR, trap:gross>0? 1-net/gross : 0};
+}
 /* per square, fully built and fully occupied (sources in the model notes):
    pop, jobs  thousands of people and jobs
    gdp        local economic output, $ millions a year
@@ -1896,8 +1924,8 @@ var ZGROUPS=[['Homes & business',['h','a','c','i']],['Agriculture',['f','v','o',
    extra well capacity drilled a year to keep up, how short of water it keeps building through,
    and how much it builds on speculation when homes sit empty */
 var GROW=[
- {n:'Managed', d:'Build slowly and only on zoned land.', permits:0.6, spr:0,   drill:0,    tol:OK,   spec:0},
- {n:'Steady',  d:'Grow at a moderate pace, on zoned land only.', permits:0.95,  spr:0,   drill:500,  tol:OK,   spec:0.1},
+ {n:'Managed', d:'Build slowly, only on zoned land. City Hall guards the aquifer early with water rules and building pauses.', permits:0.6, spr:0,   drill:0,    tol:OK,   spec:0},
+ {n:'Steady',  d:'Grow at a moderate pace, on zoned land only. City Hall steps in once the aquifer is down by a third.', permits:0.95,  spr:0,   drill:500,  tol:OK,   spec:0.1},
  {n:'Fast',    d:'Chase growth: jobs and homes first, even through a dry spell, spilling onto unused land.', permits:1.2, spr:0.35, drill:1000, tol:0.9, spec:0.35},
  {n:'Boom',    d:'Build as fast as possible, annex desert for subdivisions, and keep building through shortages.', permits:2.0, spr:1.4, drill:1500, tol:0.85, spec:0.6}
 ];
@@ -2048,7 +2076,8 @@ function derive(d){
     imp+=ZONES[ch].imp;
     if(NEAR[i]){ var Zr=ZONES[ch]; if(Zr.run) nf+=Zr.run; else if(ch==='i') nf+=0.6; if(ch==='w') nb+=1; else if(ch==='n') nb+=0.6; else if(ch==='p'||ch==='x'||ch==='.') nb+=0.4; } }
   d.core=core; d.start=null; d.start=startOf(d); d.s=levels(d.pol); d.aws=d.pol.indexOf('aws')>-1; d.ty=cityType(z);
-  d.nearF=nf; d.nearB=nb; d.imp=imp/Math.max(1,bld); d.zoned=zonedN(z, core);
+  var nl=nutLoad(z, null, null, d.pol.indexOf('buf')>-1);
+  d.nearF=nf; d.nearB=nb; d.nG=nl.gross; d.nTrap=nl.trap; d.imp=imp/Math.max(1,bld); d.zoned=zonedN(z, core);
   return d;
 }
 /* the stored form: small, and nothing derived */
@@ -2104,7 +2133,7 @@ function tierName(f){
 var EVT={
  bloom:{n:'Algal bloom shuts river intakes', tag:'Eutrophication', ic:'bloom', col:'#5f8a3a',
    what:'Fertilizer runoff loads the river with nitrogen and phosphorus. Algae explode, die, and decay, and the oxygen crashes. Treatment plants close their river intakes.',
-   rule:'Farms on the riverbank make it worse. A buffer law and riverside wetlands trap the runoff.',
+   rule:'Farms near the river make it worse, riverbank farms most. A buffer law and buffers beside the farms trap the runoff.',
    q:'What turned the river green?',
    a:['Excess nitrogen and phosphorus from fertilizer runoff','Too much groundwater pumping','Water vapor from transpiration'], ok:0,
    why:'Eutrophication: nutrients from nonpoint-source runoff fuel algae, and their decay uses up the oxygen. Vegetated buffer zones trap that runoff before it reaches the water.'},
@@ -2166,6 +2195,14 @@ function aqType(rz){ var r=CG.rnd(gid()+':aq'+(rz? ':r'+rz : '')); return r<0.3?
    The river is shared: if the class claims more than a normal flow carries, every
    delivery is cut, and downstream cities are cut more. ══ */
 var MOVE={res:1.5, job:1.8, ind:2.6};
+/* Managed and Steady city halls guard the aquifer. Once it falls below RXA and the wells outpace
+   recharge, they set water rules: outdoor watering cut and some farmland fallowed (paid, as Arizona
+   cities do), up to this share by growth pace. New building pauses below PAUSEA (Managed 85%,
+   Steady 65%) while the wells outpace recharge. */
+var RXG=[0.4, 0.25, 0, 0], RXA=0.8, PAUSEA=[0.85, 0.65];
+/* while the taps still run, a falling aquifer only partly drives people away (this share of the
+   outlook); building and investment feel all of it */
+var OSOFT=0.35;
 function cityRun(d, E){
   var s=d.s, G=GROW[d.g], z=d.z.split(''), core=startOf(d), B=[], O=[], F=[], i, y;
   var pPerm=hasPol(d,'perm'), pTax=hasPol(d,'tax'), pTech=hasPol(d,'tech');
@@ -2182,7 +2219,7 @@ function cityRun(d, E){
   }
   var m=AQT[E.aq].m, perv=1-d.imp, bufF=Math.min(1,(s.buf?0.65:0)+0.16*d.nearB);
   var c={k:E.k, d:d, x:E.x, rank:E.rank, aq:E.aq, A:A0, Amax:A0, sub:0, prod:1, S:STOREC*(s.store?0.5:0), extra:0,
-         yrs:[], sprawl:[], annexU:0, annexO:0, sprAcc:0, rchIn:0, cool:0, conf:0.92, rate:1, nut:0};
+         yrs:[], sprawl:[], annexU:0, annexO:0, sprAcc:0, rchIn:0, cool:0, conf:0.92, confO:0.92, rx:0, rate:1, nut:0};
   /* build order: zoned squares closest to the existing town go first */
   var town=[]; for(i=0;i<NT;i++) if(core[i]) town.push(i);
   function nearTown(a){ var best=99; town.forEach(function(t){ best=Math.min(best, gridDist(a,t)); }); return best; }
@@ -2220,11 +2257,11 @@ function cityRun(d, E){
       full+=inP+outP;
       if(Z.kind==='ag'){ ag+=inP+outP; continue; }
       if(z[i]==='i'){ ind+=(inP+outP)*wI; continue; }
-      var px=Z.kind==='park'? 1 : priceX, ui=inP*(s.cons?0.9:1)*px, uo=outP*(s.cons?0.7:1)*px;
+      var px=Z.kind==='park'? 1 : priceX, ui=inP*(s.cons?0.9:1)*px, uo=outP*(s.cons?0.7:1)*px*(1-c.rx);
       mIn+=ui; mOut+=uo; hot+=Z.w*use*Z.out*heat*hx*(s.cons?0.7:1);
       if(Z.kind==='res') uH+=ui+uo; else if(Z.kind==='park') uP+=ui+uo; else uC+=ui+uo;
     }
-    if(c.annexU){ var Za=ZONES.h, ua=c.annexU*c.annexO, ai=Za.w*ua*(1-Za.out)*(s.cons?0.9:1)*priceX, ao=Za.w*ua*Za.out*heat*(1+hx)*(s.cons?0.7:1)*priceX;
+    if(c.annexU){ var Za=ZONES.h, ua=c.annexU*c.annexO, ai=Za.w*ua*(1-Za.out)*(s.cons?0.9:1)*priceX, ao=Za.w*ua*Za.out*heat*(1+hx)*(s.cons?0.7:1)*priceX*(1-c.rx);
       mIn+=ai; mOut+=ao; uH+=ai+ao; full+=Za.w*ua; }
     var dem=mIn+mOut+ind+ag, saved=Math.max(0,full-dem);
     /* supply */
@@ -2233,10 +2270,10 @@ function cityRun(d, E){
     var ent=rivAF(s), sen=senAF(s), riv=sen*Math.min(1, E.Rs[y])+RIVB*Math.min(1, E.R[y]*(1.25-0.5*c.x));
     var loss = et==='bloom'? 0.45*(0.55+0.45*Math.min(1,d.nearF/2))*Math.max(0,1-bufF)
              : et==='flood'? 0.22*(0.4+0.6*d.imp)*Math.max(0,1-bufF) : 0;
-    /* nitrogen and phosphorus from farms on the riverbank build up year after year unless buffers trap them;
+    /* nitrogen and phosphorus from farms near the river build up year after year unless buffers trap them;
        past a threshold the river turns eutrophic: algae, then oxygen loss as they decay */
-    var agRun=0; for(i=0;i<NT;i++){ var Zn=ZONES[z[i]]; if(NEAR[i] && Zn && Zn.run && B[i]) agRun+=Zn.run*B[i]*(1-F[i]); }
-    c.nut=c.nut*0.93+agRun*(1-bufF)*(et==='flood'? 1.6 : 1);
+    var NL=nutLoad(z.join(''), B, F, s.buf), agRun=NL.gross;
+    c.nut=c.nut*0.93+NL.net*(et==='flood'? 1.6 : 1);
     var eut=Math.max(0, Math.min(1, (c.nut-EUT_T)/EUT_W));
     loss=Math.min(0.8, loss+0.12*eut);
     riv*=(1-loss);
@@ -2274,6 +2311,7 @@ function cityRun(d, E){
     /* farms fallow when cut, and replant when water returns */
     if(ag>0 && fallowNow>0){ var fr=fallowNow/ag; for(i=0;i<NT;i++){ var Zf=ZONES[z[i]]; if(Zf&&Zf.kind==='ag'&&B[i]) F[i]=Math.min(1, F[i]+(1-F[i])*fr); } }
     else if(met>=OK) for(i=0;i<NT;i++) if(F[i]>0) F[i]=Math.max(0, F[i]-0.5);
+    if(c.rx>0) for(i=0;i<NT;i++){ var Zx=ZONES[z[i]]; if(Zx&&Zx.kind==='ag'&&B[i]) F[i]=Math.max(F[i], c.rx); }
     /* confidence: shortages, a dwindling aquifer, and sinking ground scare people and business away */
     var over=pump-recharge, yearsLeft=over>1? c.A/over : 99;
     /* an aquifer drawn nearly dry keeps worrying people even after the pumping falls off */
@@ -2281,11 +2319,13 @@ function cityRun(d, E){
     var outlook=Math.min(lvlOut, over>1? Math.max(0.35, Math.min(1, (c.A/A0-0.12)/0.38)) : 1);
     var tgt=(metM>=OK? 1 : Math.max(0.2, 1-3*(OK-metM)))*outlook*(c.sub? 0.88 : 1)*(1-0.1*eut);
     c.conf+=0.25*(tgt-c.conf);
+    var tgtO=(metM>=OK? 1 : Math.max(0.2, 1-3*(OK-metM)))*(1-OSOFT*(1-outlook))*(c.sub? 0.88 : 1)*(1-0.1*eut);
+    c.confO+=0.25*(tgtO-c.confO);
     /* people and jobs */
     var stA=stat(), W=0.48*stA.P, jobsWant=stA.J, unemp=W? Math.max(0, 1-jobsWant/W) : 0;
-    var tgtR=Math.min(0.97, c.conf*(0.93+0.05*Math.min(1, W? jobsWant/W : 1))*(1-0.7*unemp));
+    var tgtR=Math.min(0.97, c.confO*(0.93+0.05*Math.min(1, W? jobsWant/W : 1))*(1-0.7*unemp));
     var JcB=0; for(i=0;i<NT;i++) if(z[i]==='c') JcB+=ZONES.c.jobs*B[i];
-    var tgtC=Math.min(0.98, (JcB? 0.22*stA.P/JcB : 0.9)*c.conf*(pTax?1.15:1)), tgtI=Math.min(0.98, 0.95*c.conf*(metM>=OK? 1 : 0.6)*(pTax?1.15:1));
+    var tgtC=Math.min(0.98, (JcB? 0.22*stA.P/JcB : 0.9)*c.confO*(pTax?1.15:1)), tgtI=Math.min(0.98, 0.95*c.confO*(metM>=OK? 1 : 0.6)*(pTax?1.15:1));
     var gapM=Math.max(0, OK-metM);
     for(i=0;i<NT;i++){ var Zo=ZONES[z[i]]; if(!Zo||!B[i]) continue;
       var tg= Zo.kind==='res'? tgtR : z[i]==='c'? tgtC : z[i]==='i'? tgtI : null; if(tg==null) continue;
@@ -2310,9 +2350,9 @@ function cityRun(d, E){
       var occ=resN? resO/resN : 0.95;
       var market=Math.max(G.spec, c.conf*Math.max(0, Math.min(1, (occ-0.78)/0.15)));
       var budget=G.permits*market*(pPerm?1.8:1);
-      /* Managed and Steady cities pause new building while the aquifer is below half and the wells
-         are taking more than nature puts back */
-      if(d.g<=1 && c.A<0.5*A0 && pump>recharge*1.05){ budget=0; paused=true; }
+      /* Managed and Steady cities pause new building while the aquifer is low (PAUSEA) and the
+         wells are taking more than nature puts back */
+      if(d.g<=1 && c.A<PAUSEA[d.g]*A0 && pump>recharge*1.05){ budget=0; paused=true; }
       if(d.aws){
         /* 100 years of water: the dependable supply plus a hundredth of the aquifer must cover
            today's demand plus what this year would add */
@@ -2347,6 +2387,10 @@ function cityRun(d, E){
       if(G.drill && pump>=0.85*wFull && c.A>0.35*A0) c.extra+=G.drill;
     } else if(G.drill && need>0.5 && c.A>0.35*A0) c.extra+=G.drill;
     if(unmetM>0.5 && metM<OK) c.cool=2;
+    /* water rules for next year: on while the aquifer is under 60% and the wells outpace recharge */
+    var rxMax=RXG[d.g]||0;
+    if(rxMax && c.A<RXA*A0 && pump>recharge*1.05) c.rx=Math.min(rxMax, c.rx+rxMax/2);
+    else if(c.rx>0 && (c.A>0.7*A0 || pump<recharge)) c.rx=Math.max(0, c.rx-0.1);
     /* a secure city gets more productive each year (about 1.2%); a city in water trouble slips */
     c.prod*= (metM>=OK && c.conf>0.8)? 1.012 : 0.995;
     var stE=stat(), subsDmg=(c.sub===Y1)? 0.03*stE.gdp : 0;
@@ -2363,9 +2407,9 @@ function cityRun(d, E){
                 dem:dem, saved:saved, reuse:reuse, river:rUse, store:sUse, wells:pump, unmet:unmet, met:met, metM:metM,
                 restrict:restrict, fallow:fallowNow, A:c.A/A0, S:scap? c.S/scap : 0, ent:ent, got:riv, loss:loss,
                 heatX:dem? hot/dem : 0, hit:hit, sub:c.sub===Y1, built:built, bld:bld$, grow:c.sprawl.length+Math.floor(c.annexU),
-                annex:Math.floor(c.annexU), rate:c.rate, depth:depth, recharge:recharge, mined:mined, blocked:blocked, paused:paused,
+                annex:Math.floor(c.annexU), rate:c.rate, depth:depth, recharge:recharge, mined:mined, blocked:blocked, paused:paused, rx:c.rx,
                 uHomes:uH*metM, uBiz:uC*metM, uParks:uP*metM, uInd:ind*metM, uFarms:Math.max(0,ag-fallowNow), uOut:mOut*metM+Math.max(0,ag-fallowNow),
-                rNat:nat, rInc:incid, rBas:rin, eut:eut, nut:c.nut, nearRun:agRun,
+                rNat:nat, rInc:incid, rBas:rin, eut:eut, nut:c.nut, nearRun:agRun, nTrap:NL.trap, nByR:NL.byR,
                 eH:stE.gH*c.prod, eC:stE.gC*c.prod, eI:stE.gI*c.prod, eA:stE.gA*c.prod, eB:bld$, eP:polCost(d)+subsDmg, eU:eutCost,
                 B:B.slice(), O:O.slice(), F:F.slice(), z:z.join('')});
   }
@@ -2639,6 +2683,17 @@ function mixCol(a,b,t){
   t=Math.max(0,Math.min(1,t)); var o='#'; for(var i=0;i<3;i++){ var v=Math.round(hx(a,i)+(hx(b,i)-hx(a,i))*t); o+=(v<16?'0':'')+v.toString(16); }
   return o;
 }
+/* river colour by eutrophication, 0 to 1: clear blue, then sea green, then a vivid algae lime */
+function eutCol(e){ e=Math.max(0,Math.min(1,e)); return e<0.5? mixCol('#86b8d8','#7cc79a',e*2) : mixCol('#7cc79a','#a6ec2c',(e-0.5)*2); }
+/* how green each river square looks in a year: the city's nutrient level (a faint tint builds
+   before the bloom line, full lime at the top of the algae range), greener downstream of where
+   farm runoff enters */
+function eutTiles(r){
+  var lo=EUT_T*0.5, lvl=Math.pow(Math.max(0, Math.min(1, ((r.nut||0)-lo)/(EUT_T+EUT_W-lo))), 1.4), out={lvl:lvl};
+  var by=r.nByR||{}, tot=0; RIVER.forEach(function(t){ tot+=by[t]||0; });
+  var cum=0; RIVER.forEach(function(t){ cum+=by[t]||0; out[t]=lvl*(tot>0? 0.5+0.5*cum/tot : 1); });
+  return out;
+}
 function tree(x,y,r,col){ return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r+'" fill="'+col+'" stroke="'+INK+'" stroke-width="1"/>'
   +'<circle cx="'+(x-r*.3).toFixed(1)+'" cy="'+(y-r*.3).toFixed(1)+'" r="'+(r*.35).toFixed(1)+'" fill="rgba(255,255,255,.25)"/>'; }
 function deadTree(x,y,s){ return '<path d="M'+x+','+(y+6*s)+' v'+(-12*s)+' M'+x+','+(y-1*s)+' l'+(-5*s)+','+(-5*s)+' M'+x+','+(y-3*s)+' l'+(5*s)+','+(-6*s)+' M'+(x-2.5*s)+','+(y-3.5*s)+' l'+(-2*s)+','+(1*s)+'" stroke="#7d6b55" stroke-width="'+(1.6*s)+'" stroke-linecap="round" fill="none"/>'; }
@@ -2693,10 +2748,11 @@ function tileArt(ch, x, y, i, o){
     for(k=0;k<3;k++) h.push('<ellipse cx="'+(x+8+R2('px'+k)*44).toFixed(1)+'" cy="'+(y+8+R2('py'+k)*44).toFixed(1)+'" rx="1.8" ry="1.2" fill="#c9ab78"/>');
     if(R2('cac')<0.35) h.push(cactus(x+18+R2('cx')*24, y+44, 0.9));
   } else if(ch==='r'){
+    /* the more eutrophic, the brighter the green: clear blue, then sea green, then vivid algae lime */
     var eu=o.eut||0;
-    if(eu>0.05) h.push('<rect x="'+(x+1)+'" y="'+(y+1)+'" width="'+(T-2)+'" height="'+(T-2)+'" rx="3" fill="'+mixCol('#86b8d8','#6f9a3a',Math.min(1,eu*1.1))+'"/>');
-    h.push('<path d="M'+(x+6)+','+(y+20)+' q6,-4 12,0 t12,0 t12,0 t12,0 M'+(x+6)+','+(y+40)+' q6,-4 12,0 t12,0 t12,0 t12,0" stroke="'+(eu>0.3?'#a9c47c':'#dcedf7')+'" stroke-width="1.6" fill="none"/>');
-    if(eu>0.2){ for(k=0;k<Math.round(eu*9);k++) h.push('<ellipse cx="'+(x+6+R2('al'+k)*48).toFixed(1)+'" cy="'+(y+6+R2('ay'+k)*48).toFixed(1)+'" rx="'+(2.5+R2('ar'+k)*3).toFixed(1)+'" ry="'+(1.6+R2('aq'+k)*1.6).toFixed(1)+'" fill="#4f7a2f" opacity=".75"/>'); }
+    if(eu>0.03) h.push('<rect x="'+(x+1)+'" y="'+(y+1)+'" width="'+(T-2)+'" height="'+(T-2)+'" rx="3" fill="'+eutCol(eu)+'"/>');
+    h.push('<path d="M'+(x+6)+','+(y+20)+' q6,-4 12,0 t12,0 t12,0 t12,0 M'+(x+6)+','+(y+40)+' q6,-4 12,0 t12,0 t12,0 t12,0" stroke="'+mixCol('#dcedf7','#e6fb9e',Math.min(1,eu*1.4))+'" stroke-width="1.6" fill="none"/>');
+    if(eu>0.42){ for(k=0;k<Math.round((eu-0.3)*14);k++) h.push('<ellipse cx="'+(x+6+R2('al'+k)*48).toFixed(1)+'" cy="'+(y+6+R2('ay'+k)*48).toFixed(1)+'" rx="'+(2.5+R2('ar'+k)*3).toFixed(1)+'" ry="'+(1.6+R2('aq'+k)*1.6).toFixed(1)+'" fill="'+mixCol('#4f8a2e','#6fb520',eu)+'" opacity=".7"/>'); }
     if(eu>0.6 && R2('fish')<0.6){ var fx=x+18+R2('fx')*20, fy=y+26+R2('fy')*14;
       h.push('<g transform="rotate(180 '+fx.toFixed(1)+' '+fy.toFixed(1)+')"><path d="M'+(fx-7)+','+fy+' q7,-5 12,0 q-5,5 -12,0 Z M'+(fx+5)+','+fy+' l4,-3 v6 Z" fill="#e8e4d8" stroke="#3b3222" stroke-width=".7"/>'
         +'<path d="M'+(fx-4)+','+(fy-1.3)+' l1.6,1.6 m0,-1.6 l-1.6,1.6" stroke="#3b3222" stroke-width=".6"/></g>'); }
@@ -2801,14 +2857,14 @@ function gridSvg(z, o){
   if(!o.flat) h.push('<rect x="-4" y="-4" width="'+(GW+8)+'" height="'+(GH+8)+'" rx="8" fill="#d8bf8e"/>');
   for(var i=0;i<NT;i++){
     var ch=z.charAt(i), x=(i%COLS)*GT, y=Math.floor(i/COLS)*GT;
-    var st={flat:o.flat, fresh:fresh[i], aband:aband[i], lock:lock[i], dry:o.dry, eut:o.eut};
+    var st={flat:o.flat, fresh:fresh[i], aband:aband[i], lock:lock[i], dry:o.dry, eut:o.eu? o.eu[i]||0 : o.eut};
     if(at){ st.B=at.B[i]; st.O=at.O[i]; st.F=at.F[i]; st.building=at.prevB? at.B[i]>at.prevB[i]+0.01 : false; }
     else if(o.plan){ st.B= o.plan[i]? 1 : 0; }
     h.push(tileArt(ch, x, y, i, st));
   }
   if(!o.flat){
     var pts=RIVER.map(function(i){ return ((i%COLS)*GT+GT/2)+','+(Math.floor(i/COLS)*GT+GT/2); });
-    h.push('<path d="M'+((RIVER[0]%COLS)*GT+GT/2)+',-4 L'+pts.join(' L')+' L'+((RIVER[RIVER.length-1]%COLS)*GT+GT/2)+','+(GH+4)+'" stroke="#4f86b0" stroke-width="7" stroke-linejoin="round" stroke-linecap="round" fill="none" opacity=".55"/>');
+    h.push('<path d="M'+((RIVER[0]%COLS)*GT+GT/2)+',-4 L'+pts.join(' L')+' L'+((RIVER[RIVER.length-1]%COLS)*GT+GT/2)+','+(GH+4)+'" stroke="'+(o.eu? mixCol('#4f86b0','#6fc92a',o.eu.lvl) : '#4f86b0')+'" stroke-width="7" stroke-linejoin="round" stroke-linecap="round" fill="none" opacity=".55"/>');
     if(o.hi) h.push(o.hi);
     var gl=''; for(var c=1;c<COLS;c++) gl+='M'+(c*GT)+',0 V'+GH+' '; for(var r=1;r<ROWS;r++) gl+='M0,'+(r*GT)+' H'+GW+' ';
     h.push('<path d="'+gl+'" stroke="rgba(90,70,40,.16)" stroke-width="1"/>');
@@ -3328,7 +3384,7 @@ function quizHtml(item){
 }
 function youLine(sim, c, y){
   var t=sim.ev[y], r=c.yrs[y-1], d=c.d, s=d.s;
-  if(t==='bloom') return r.loss>0.01? 'Your city lost '+pct(r.loss)+' of its river water'+(d.nearF? ': farms on your riverbank fed the bloom.' : '.') : 'Your buffers kept your intakes open.';
+  if(t==='bloom') return r.loss>0.01? 'Your city lost '+pct(r.loss)+' of its river water'+(d.nG>=0.5? ': runoff from your farms fed the bloom.' : '.') : 'Your buffers kept your intakes open.';
   if(t==='flood') return (s.rch? 'Your recharge basins soaked the storm into the aquifer.' : 'Most of your storm water ran off to the drains.')
     +(r.loss>0.01? ' Sediment cost you '+pct(r.loss)+' of your river water.' : '');
   if(t==='heat') return r.heatX>0.02? 'Your outdoor watering pushed demand up '+pct(r.heatX)+'.' : 'Your city held demand steady.';
@@ -3519,14 +3575,14 @@ var ZTIP={h:'Lawns and pools: over half of this water is used outdoors, and heat
   a:'Twice the people of houses on about the same water.',
   c:'Jobs and a strong economy on modest water.',
   i:'The most output per square, and a lot of water. A factory on the riverbank adds pollution risk.',
-  f:'Alfalfa and cotton: the thirstiest crops, much of it cattle feed. On the riverbank, fertilizer runoff feeds algal blooms.',
+  f:'Alfalfa and cotton: the thirstiest crops, much of it cattle feed. Near the river, fertilizer runoff feeds algal blooms; the closer, the worse.',
   v:'Vegetables: about half the water of alfalfa, and more jobs and value per square.',
   o:'Citrus and pecan orchards: thirsty all year, and trees cannot be fallowed in a drought.',
-  k:'Cattle and dairy: the cows drink and wash with 235 acre-feet a year, but their feed needs two alfalfa & hay squares (about 1,700 more). Placing a dairy adds those two squares nearby. On the riverbank, manure runoff is the worst for algal blooms.',
+  k:'Cattle and dairy: the cows drink and wash with 235 acre-feet a year, but their feed needs two alfalfa & hay squares (about 1,700 more). Placing a dairy adds those two squares nearby. Near the river, manure runoff is the worst for algal blooms.',
   n:'Natural desert or forest, protected. No water use, the best recharge, and growth can never build on it.',
   p:'Shade and grass, but grass transpires a lot of water, most of all in a heat wave.',
   x:'Native plants use almost no water.',
-  w:'Riparian buffer: trees and wetland on the riverbank only. It traps runoff before it reaches the river.',
+  w:'Riparian buffer: trees and wetland on the riverbank only. It traps runoff from farms beside it (45% each) and two squares away (25%), and a riverbank lined with them traps more.',
   '.':'Leave a square unused. It stays open ground for now, but a growing city will build on it.'};
 function tileIcon(ch){ return '<svg viewBox="0 0 60 60" class="wt-zic">'+tileArt(ch,0,0,7,{})+'</svg>'; }
 function renderDesign(force){
@@ -3726,7 +3782,7 @@ function sparkGrowth(c, upto){
 }
 function cityAt(c, i){
   var r=i? c.yrs[i-1] : null, ch=i? changesSince(c, i>=10? i-(i%10||10) : 0, i) : null;
-  var body = r? gridSvg(r.z,{at:{B:r.B, O:r.O, F:r.F, prevB:i>1? c.yrs[i-2].B : null}, fresh:ch.fresh, aband:ch.aband, dry:Math.max(0,OK-r.met), run:true, eut:r.eut})
+  var body = r? gridSvg(r.z,{at:{B:r.B, O:r.O, F:r.F, prevB:i>1? c.yrs[i-2].B : null}, fresh:ch.fresh, aband:ch.aband, dry:Math.max(0,OK-r.met), run:true, eut:r.eut, eu:eutTiles(r)})
               : gridSvg(c.d.z,{plan:startOf(c.d)});
   return '<button type="button" class="wt-mapbtn" data-opencity="'+c.k+'" title="Open a bigger view of your city"><svg viewBox="-4 -4 '+(GW+8)+' '+(GH+8)+'" class="wt-mygrid">'+body+'</svg>'
     +'<span class="wt-mapzoom">See my city &#8599;</span></button>';
@@ -3807,11 +3863,13 @@ function newsAlerts(c, i){
   function add(pri, cat, col, head, line){ out.push({pri:pri, cat:cat, col:col, head:head, line:line}); }
   if(r.sub) add(7,'Ground','#8a5a2a','The ground sinks','Over-pumping compacted the aquifer. It will never hold as much water again.');
   if(r.paused && !(p && p.paused)) add(4,'City Hall','#2f6f96','Building paused to protect the aquifer','New construction waits until the wells stop outpacing recharge.');
+  if(r.rx>0 && !(p && p.rx>0)) add(4,'City Hall','#2f6f96','Water rules take effect','Outdoor watering is cut and some farmland is paid to rest until the aquifer recovers.');
+  else if(p && p.rx>0 && !(r.rx>0)) add(3,'City Hall','#2f6f96','Water rules lifted','The aquifer is holding again, so outdoor watering and the rested farmland return.');
   if(r.met<OK) add(6,'Water','#A4373A', r.met<0.8? 'Severe water shortage' : 'Water shortage',
     'The city met only '+pct(r.met)+' of demand'+(r.fallow>0.5? '; farms were fallowed.' : r.restrict>0.5? '; outdoor watering was restricted.' : '.'));
   else if(p && p.met<OK) add(3,'Water','#2f6f96','Taps flowing again','Every need was met this year.');
   if(p){
-    if(r.eut>0.35 && !(p.eut>0.35)) add(5,'River','#5f8a3e','Algae bloom chokes the river','Nutrients from riverbank farms turned the water green.');
+    if(r.eut>0.35 && !(p.eut>0.35)) add(5,'River','#5f8a3e','Algae bloom chokes the river','Nutrients from farms near the river turned the water green.');
     else if(p.eut>0.35 && !(r.eut>0.35)) add(3,'River','#2f6f96','The river runs clear again','Nutrients fell back below the bloom line.');
     var dA=r.A-p.A, lvl=[0.75,0.5,0.25].filter(function(v){ return p.A>=v && r.A<v; })[0];
     if(lvl) add(lvl<0.3? 6 : lvl<0.6? 5 : 4,'Aquifer','#8a5a2a', lvl<0.3? 'Aquifer below a quarter: wells running low' : lvl<0.6? 'Aquifer falls below half' : 'Aquifer below three-quarters',
@@ -3892,22 +3950,22 @@ function observations(c, upto){
   var maxE=0, eY=0, minA=1, pumpT=0, rchT=0, outT=0, useT=0, basT=0;
   yrs.forEach(function(r,i){ if(r.eut>maxE) maxE=r.eut; if(!eY && r.eut>0.35) eY=i+1; minA=Math.min(minA,r.A);
     pumpT+=r.wells; rchT+=r.rNat+r.rInc+r.rBas; basT+=r.rBas; outT+=r.uOut; useT+=r.dem-r.unmet; });
-  var bufOn=s.buf || d.nearB>=1.5;
+  var bufOn=s.buf || d.nTrap>=0.4;
   if(eY){
     out.push({k:'eu-cause', idea:'Eutrophication is primarily caused by excess nutrients entering water bodies.',
-      text:'Fertilizer and manure from farms on your riverbank washed into the river year after year. By year '+eY+' the water had turned green with algae.'});
+      text:'Fertilizer and manure from farms near your river washed into it year after year. By year '+eY+' the water had turned green with algae.'});
     out.push({k:'eu-p', idea:'Phosphorus is the nutrient most often associated with eutrophication.',
       text:'Farm fertilizer and manure are rich in phosphorus, and it is the nutrient that most often sets off algal blooms in fresh water.'});
     if(maxE>0.6) out.push({k:'eu-o2', idea:'A major consequence of eutrophication is oxygen depletion in water.',
       text:'As the algae died and decayed, bacteria used up the dissolved oxygen, and fish died. Your river intakes lost water to treatment and closures.'});
     out.push({k:'buf', idea:'Establishing vegetated buffer zones near streams is the conservation strategy that best improves water quality.',
-      text:'Your riverbank farms had no buffer strips'+(s.buf? '' : ' and no buffer law')+'. Planted buffers trap nutrients and sediment before they reach the water.'});
-  } else if(d.nearF>=1 && bufOn){
+      text:'Buffers trapped only '+pct(d.nTrap)+' of your farms\' runoff'+(s.buf? '' : ', and you had no buffer law')+'. Buffer strips planted beside farms trap nutrients and sediment before they reach the water.'});
+  } else if(d.nG>=1 && bufOn){
     out.push({k:'buf', idea:'Establishing vegetated buffer zones near streams is the conservation strategy that best improves water quality.',
-      text:'You farm on the riverbank, but your '+(s.buf? 'buffer law' : 'riparian buffers')+' trapped the runoff, and your river stayed clear.'});
-  } else if(d.nearF>=1 && maxE>0.1){
+      text:'You farm near the river, but your '+(s.buf? 'buffer law' : 'riparian buffers')+' trapped '+pct(d.nTrap)+' of the runoff, and your river stayed clear.'});
+  } else if(d.nG>=1 && maxE>0.1){
     out.push({k:'eu-cause', idea:'Eutrophication is primarily caused by excess nutrients entering water bodies.',
-      text:'Runoff from your riverbank farms is building up nutrients in the river. Without buffers, algae will follow.'});
+      text:'Runoff from your farms near the river is building up nutrients in it. Without buffers beside those farms, algae will follow.'});
   }
   if(minA<0.5 || c.sub){
     out.push({k:'aq', idea:'Excessive groundwater withdrawal can result in aquifer depletion.',
@@ -4062,6 +4120,20 @@ function openCity(k, y){
   renderCityView(true);
 }
 function cityYears(){ var now=idxNow(), out=[0]; [10,20,30].forEach(function(y){ if(y<=now) out.push(y); }); if(now%10 && out.indexOf(now)<0) out.push(now); return out; }
+/* tooltips: where a farm's runoff goes, and which farms a buffer protects */
+function runNote(z, i, law){
+  var d=RDIST[i], bl=bufList(z), pass=farmPass(i, bl), w=runW(i);
+  var t= d===1? 'On the riverbank: its fertilizer and manure run straight into the river' : d===2? 'Two squares from the river: about half of its runoff reaches the water'
+    : d===3? 'Three squares from the river: about a quarter of its runoff reaches the water' : 'Far from the river: only a little of its runoff reaches the water';
+  var tr=[]; if(pass<0.99) tr.push('buffers beside it trap '+pct(1-pass)); if(law) tr.push('the buffer law traps half');
+  return t+(tr.length? '; '+tr.join(', and ')+'.' : w>=0.5? ', unless a buffer beside it traps it.' : '.');
+}
+function bufNote(z, i){
+  var n=0, r=Math.floor(i/COLS), c=i%COLS;
+  for(var j=0;j<NT;j++){ var Z=ZONES[z.charAt(j)]; if(Z && Z.run && Math.max(Math.abs(Math.floor(j/COLS)-r), Math.abs(j%COLS-c))<=2) n++; }
+  return 'Trees and wetland along the river trap runoff and sediment before they reach the water. '
+    +(n? 'It is catching runoff from '+n+' farm'+(n===1?'':'s')+' within two squares.' : 'No farms within two squares yet, so it mostly guards the bank.');
+}
 /* one square of a city in a given year: what it is, how built and full it is, its water and output */
 var cvSq=null, cvFocus='';
 function sqInfo(c, y, i){
@@ -4090,13 +4162,13 @@ function sqInfo(c, y, i){
     rows.push(['Water use', 'about '+num(Z.w*waterMult(d,ch)*B*(1-F))+' acre-feet a year']);
     rows.push(['Farm sales', 'about '+money(Z.gdp*outMult(d,ch)*B*(1-F))+' a year']);
     if(ch==='k') note.push('The cows drink about '+num(ZONES.k.w)+' acre-feet a year; their feed, grown on two alfalfa & hay squares, takes about '+num(2*ZONES.f.w)+' more.');
-    if(NEAR[i] && Z.run) note.push(hasPol(d,'buf')? 'On the riverbank: the buffer law traps much of its fertilizer runoff.' : 'On the riverbank: its fertilizer and manure run off into the river unless buffers trap them.');
+    if(Z.run) note.push(runNote(r? r.z : d.z, i, hasPol(d,'buf')));
   } else if(Z.kind==='park'){
     rows.push(['Water use', 'about '+num(Z.w*B)+' acre-feet a year']);
     note.push(ch==='p'? 'Grass and shade trees: cool, but thirsty, and most of the water is transpired.' : 'Native desert plants: a park on a fraction of the water.');
   } else {
     rows.push(['Water use', 'none']);
-    note.push(ch==='w'? 'Trees and wetland along the river trap runoff and sediment before they reach the water.'
+    note.push(ch==='w'? bufNote(r? r.z : d.z, i)
       : ch==='n'? 'Protected desert or forest: rain soaks in here and recharges the aquifer.'
       : 'Open ground: storms soak in here. A growing city may build on it.');
   }
@@ -4124,7 +4196,7 @@ function renderCityView(force){
   var ch= y? changesSince(c, y%10? y-(y%10) : prev, y) : {fresh:{}, aband:{}, nNew:0, nAb:0, nFal:0};
   var at= r? {B:r.B, O:r.O, F:r.F, prevB: y>1? c.yrs[y-2].B : null} : null;
   var map='<svg viewBox="-6 -6 '+(GW+12)+' '+(GH+12)+'" class="wt-cv-map" role="img" aria-label="'+esc(d.nm)+' in year '+y+'">'
-    +(r? gridSvg(r.z,{at:at, fresh:ch.fresh, aband:ch.aband, dry:Math.max(0,OK-r.met), eut:r.eut}) : gridSvg(d.z,{plan:startOf(d)}))+sqHits()+'</svg>';
+    +(r? gridSvg(r.z,{at:at, fresh:ch.fresh, aband:ch.aband, dry:Math.max(0,OK-r.met), eut:r.eut, eu:eutTiles(r)}) : gridSvg(d.z,{plan:startOf(d)}))+sqHits()+'</svg>';
   var h='<div class="wt-pl-card wt-cv-card"><div class="wt-pl-head"><div><div class="wt-pl-eyebrow">'+(cvKey===PK&&!HOST? 'Your city' : 'City view')+(cvKind==='mega'?' · megadrought':'')+'</div>'
     +'<div class="wt-pl-title">'+esc(d.nm)+'</div></div>'
     +'<div class="wt-cv-years">'+cityYears().map(function(yy){ return '<button type="button" class="ev-bandbtn'+(yy===y?' on':'')+'" data-cvyear="'+yy+'">Year '+yy+'</button>'; }).join('')+'</div>'
@@ -4146,14 +4218,14 @@ function renderCityView(force){
       if(ch.nFal) story.push(ch.nFal+' farm'+(ch.nFal===1?' was':'s were')+' fallowed for lack of water.');
       if(c.sub && c.sub<=y) story.push('The ground sank in year '+c.sub+': the aquifer can never hold as much again.');
       if(r.blocked) story.push('The assured-supply rule is holding back new building.');
-      else if(r.paused) story.push('Building is paused while the aquifer is below half and the wells take more than nature returns.');
+      else if(r.paused) story.push('City Hall has paused building to protect the aquifer while the wells take more than nature returns.');
       if(r.unemp>0.12) story.push('Unemployment is '+pct(r.unemp)+': more homes than jobs.');
       var shortY=0; for(var sy=Math.max(1,from+1); sy<=y; sy++) if(c.yrs[sy-1].met<OK) shortY++;
       if(shortY) story.push('Why: '+shortY+' year'+(shortY===1?'':'s')+' without enough water since year '+from+'.');
       if(r.conf<0.8 && r.A<0.6) story.push('Why: the aquifer is '+pct(r.A)+' full and falling, so businesses and families are moving to cities with safer water.');
       else if(r.conf<0.8) story.push('Why: water trouble has shaken confidence; builders and businesses are holding back.');
       if(r.rate>1.25) story.push('Water now costs '+signed(r.rate*100-100,'%')+' more, as wells pump from deeper.');
-      if(r.eut>0.35) story.push('The river is eutrophic: nutrient runoff from riverbank farms feeds algae, and oxygen is running low.');
+      if(r.eut>0.35) story.push('The river is eutrophic: nutrient runoff from farms near the river feeds algae, and oxygen is running low.');
     }
     h+=blk(bhead('','Year '+y)+'<div class="wt-cv-story">'+story.map(function(t){ return '<div>'+esc(t)+'</div>'; }).join('')+'</div>');
     h+=blk(statRow('People', ppl(r.P), signed(r.P/c.P0*100-100,'%'))
@@ -4598,12 +4670,12 @@ function obsNoIdea(list, title){ return obsHtml(list, title).replace(/<div class
 function eutOf(c, upto){
   var yrs=0, first=0, peak=0, flood=0, farms=0, types={}, bufSq=0, d=c.d, n=Math.max(1, Math.min(YEARS, upto||YEARS));
   c.yrs.slice(0, n).forEach(function(r,i){ if(r.eut>0.35){ yrs++; if(!first) first=i+1; } peak=Math.max(peak, r.nut||0); });
-  var z=c.yrs[n-1].z;
-  for(var i=0;i<NT;i++){ if(!NEAR[i]) continue; var ch=z.charAt(i), Z=ZONES[ch]; if(Z && Z.run){ farms++; types[Z.sh]=(types[Z.sh]||0)+1; } if(ch==='w') bufSq++; }
-  return {yrs:yrs, first:first, peak:peak, farms:farms, types:types, bufSq:bufSq, law:hasPol(d,'buf'), n:n};
+  var z=c.yrs[n-1].z, bank=0;
+  for(var i=0;i<NT;i++){ var ch=z.charAt(i), Z=ZONES[ch]; if(Z && Z.run && RDIST[i]<=2){ farms++; if(RDIST[i]===1) bank++; types[Z.sh]=(types[Z.sh]||0)+1; } if(ch==='w') bufSq++; }
+  return {yrs:yrs, first:first, peak:peak, farms:farms, bank:bank, types:types, bufSq:bufSq, law:hasPol(d,'buf'), trap:c.yrs[n-1].nTrap||0, n:n};
 }
 function eutFacts(e){
-  return (e.farms? e.farms+' riverbank farm'+(e.farms===1?'':'s') : 'no riverbank farms')+' · '
+  return (e.farms? e.farms+' farm'+(e.farms===1?'':'s')+' near the river' : 'no farms near the river')+' · '
     +(e.law? 'buffer law' : 'no buffer law')+' · '+(e.bufSq? e.bufSq+' buffer square'+(e.bufSq===1?'':'s') : 'no buffer squares');
 }
 function eutHtml(sim){
@@ -4618,8 +4690,8 @@ function eutHtml(sim){
   }
   return blk(bhead('','Eutrophication: which rivers turned green?')
     +list('Algae trouble', 'Years the river by the city was eutrophic', bad, 'bad')
-    +list('Clear rivers', 'No eutrophic years, most riverbank farming first', good, 'good')
-    +'<div class="ev-hint dim">Click a city to see its riverbank: the farms, the buffers, and its nutrient load year by year.</div>');
+    +list('Clear rivers', 'No eutrophic years, most farming near the river first', good, 'good')
+    +'<div class="ev-hint dim">Click a city to see the farms near its river, the buffers, and its nutrient load year by year.</div>');
 }
 /* in the city view: the river by this city, and the nutrient load against the bloom threshold */
 function eutBlock(c, y){
@@ -4632,8 +4704,9 @@ function eutBlock(c, y){
     +'<text x="6" y="'+(H-2)+'" class="wt-fm">year 0</text><text x="'+(W-6)+'" y="'+(H-2)+'" text-anchor="end" class="wt-fm">year 30</text></svg>';
   var tl=Object.keys(e.types).map(function(t){ return e.types[t]+' '+t; }).join(', ');
   return blk(bhead('','The river by this city')
-    +statRow('Farms on the riverbank', e.farms? e.farms+(tl? ' ('+tl+')' : '') : 'none', e.farms? 'fertilizer and manure run off' : '')
+    +statRow('Farms near the river', e.farms? e.farms+(tl? ' ('+tl+')' : '') : 'none', e.farms? (e.bank? e.bank+' on the riverbank; ' : '')+'within two squares' : '')
     +statRow('Riparian buffers', e.bufSq+' square'+(e.bufSq===1?'':'s'), e.law? 'plus a buffer law' : 'no buffer law')
+    +statRow('Runoff trapped', e.farms? pct(e.trap) : 'nothing to trap', e.farms? 'before it reaches the river' : '')
     +statRow('Eutrophic years', e.yrs? e.yrs+' of '+e.n : 'none so far', e.first? 'first in year '+e.first : '')
     +'<div class="wt-eu-cap">Nutrient load in the river, year by year</div>'+svg);
 }
@@ -4713,7 +4786,7 @@ function drawMyCity(svg, c, i, sim){
   h.push('<text x="20" y="34" class="wt-cityname">'+esc(d.nm)+(r? ', year '+i : '')+'</text>');
   h.push('<text x="21" y="56" class="wt-citysub">'+(r? fnum(r.P*1000)+' people'+(ch.nNew? ' · '+ch.nNew+' new square'+(ch.nNew===1?'':'s') : '')+(ch.nAb? ' · '+ch.nAb+' mostly empty' : '') : esc(TYBY[d.ty].n))
     +(sim.kind==='mega'? ' · megadrought' : '')+'</text>');
-  var grid = r? gridSvg(r.z,{at:{B:r.B, O:r.O, F:r.F, prevB:i>1? c.yrs[i-2].B : null}, fresh:ch.fresh, aband:ch.aband, dry:Math.max(0,OK-r.met), run:true, eut:r.eut})
+  var grid = r? gridSvg(r.z,{at:{B:r.B, O:r.O, F:r.F, prevB:i>1? c.yrs[i-2].B : null}, fresh:ch.fresh, aband:ch.aband, dry:Math.max(0,OK-r.met), run:true, eut:r.eut, eu:eutTiles(r)})
               : gridSvg(d.z,{plan:startOf(d)});
   h.push('<g transform="translate('+gx+','+gy+') scale('+sc+')">'+grid+'</g>');
   var ky=gy+GH*sc+26;
