@@ -700,6 +700,7 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .c56 .c56-demobar .c56-replay{color:#fbf5e6;text-decoration:none;font:700 11.5px Inter;margin-left:4px;white-space:nowrap}
 .c56.c56-demo #rGo,.c56.c56-demo .r-cact .btn{pointer-events:none}
 .c56.c56-demobarOn{padding-bottom:52px}
+.c56 .c56-demobar .c56-dpause{background:none;border:1px solid rgba(251,245,230,.5);color:#fbf5e6;border-radius:999px;font:700 11.5px Inter;padding:3px 10px;cursor:pointer;white-space:nowrap}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -4660,7 +4661,7 @@ const SIM = (function () {
       [3000, () => toEnd(), '2056: where did the class land?'],
     ];
     const bar = document.createElement('div'); bar.className = 'c56-demobar';
-    bar.innerHTML = `<span class="c56-demotag">Demo</span><span class="c56-demotxt"></span><span class="c56-demoroles">${[['projector', 'Projector'], ['household', 'Household'], ['company', 'Company'], ['government', 'Government']].map(([k, l]) => `<a href="?demo=1&role=${k}" class="${(DQ.get('role') || 'projector') === k ? 'on' : ''}">${l}</a>`).join('')}</span><a href="${location.search}" class="c56-replay">↻ Replay</a>`;
+    bar.innerHTML = `<span class="c56-demotag">Demo</span><span class="c56-demotxt"></span><span class="c56-demoroles">${[['projector', 'Projector'], ['household', 'Household'], ['company', 'Company'], ['government', 'Government']].map(([k, l]) => `<a href="?demo=1&role=${k}" class="${(DQ.get('role') || 'projector') === k ? 'on' : ''}">${l}</a>`).join('')}</span><button class="c56-dpause" data-dpause>❚❚ Pause</button><a href="${location.search}" class="c56-replay">↻ Replay</a>`;
     root.classList.add('c56-demo');
     root.appendChild(bar);
     const txt = bar.querySelector('.c56-demotxt');
@@ -4672,7 +4673,19 @@ const SIM = (function () {
       return;
     }
     root.classList.add('c56-demobarOn');
-    (function play() { if (step >= S.length) return; const st = S[step++]; setTimeout(() => { txt.textContent = st[2]; try { st[1](); } catch (e) { console.error(e); } play(); }, st[0]); })();
+    // each step stays up long enough to read its caption and look at the screen: 2.6x the old gap, and never
+    // less than ~2.6 s plus 70 ms a character. The Pause button stops the clock between steps.
+    const dwell = i => Math.max((S[i + 1] ? S[i + 1][0] : 6000) * 2.6, 2600 + 70 * S[i][2].length);
+    let left = 1200, paused = false;
+    const pb = bar.querySelector('[data-dpause]');
+    pb.onclick = () => { paused = !paused; pb.textContent = paused ? '▶ Play' : '❚❚ Pause'; };
+    const iv = setInterval(() => {
+      if (paused || (left -= 100) > 0) return;
+      if (step >= S.length) { clearInterval(iv); pb.hidden = true; return; }
+      const i = step++; txt.textContent = S[i][2];
+      try { S[i][1](); } catch (e) { console.error(e); }
+      left = dwell(i);
+    }, 100);
   }
 
   // a handle for testing from the console
