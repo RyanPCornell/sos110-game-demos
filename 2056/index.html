@@ -535,6 +535,44 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .c56 .r-card:has(.r-mkt){width:min(1100px,100%)}
 .c56 .r-mid3 .r-ct{font-size:12px}
 .c56 .r-mid3 .r-ax{font-size:10px}
+.c56 .c-svg{width:100%;height:auto;display:block}
+.c56 .c-insc{font:700 12.5px Merriweather,serif;letter-spacing:.42em;fill:#7a5a30}
+.c56 .c-bd-eb{font:800 10.5px Inter;letter-spacing:.2em;fill:#d9bf7c}
+.c56 .c-bd-ti{font:italic 900 25px Merriweather,serif;fill:#f5ecd6}
+.c56 .c-bd-q{font:500 12.5px Inter;fill:#e3d6b8}
+.c56 .c-bd-l{font:800 11.5px Inter;fill:#f5ecd6}
+.c56 .c-bd-s{font:800 8.5px Inter;letter-spacing:.12em;fill:#cbb88e}
+.c56 .c-bd-big{font:900 50px Merriweather,serif;fill:#f5ecd6}
+.c56 .c-bd-of{font:italic 700 24px Merriweather,serif;fill:#cbb88e}
+.c56 .c-st{font:900 25px Merriweather,serif;letter-spacing:.05em}
+.c56 .c-st2{font:800 8.5px Inter;letter-spacing:.18em}
+.c56 .c-you{font:900 9.5px Inter;fill:#fff;letter-spacing:.14em}
+.c56 .c-raise{animation:craise .5s cubic-bezier(.2,1.45,.4,1) both;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes craise{from{transform:translateY(20px) scale(.55);opacity:0}to{transform:none;opacity:1}}
+.c56 .c-stampin{animation:cstampin .45s cubic-bezier(.2,1.6,.4,1) both;transform-box:fill-box;transform-origin:center}
+@keyframes cstampin{from{transform:scale(1.9) rotate(4deg);opacity:0}to{transform:none;opacity:1}}
+.c56 .c-bdin{animation:cbdin .4s ease-out both}
+@keyframes cbdin{from{opacity:0}to{opacity:1}}
+.c56 .c-flame{animation:cflk 1.8s ease-in-out infinite alternate}
+@keyframes cflk{from{opacity:.7}to{opacity:1}}
+.c56 .r-card.wide{width:min(1300px,100%)}
+.c56 .r-cham{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:14px;align-items:start;margin:6px 0 8px}
+.c56 .r-chplate{display:flex;justify-content:center}
+.c56 .r-chplate .c-svg{width:100%;max-height:calc(100vh - 250px);border-radius:6px}
+.c56 .r-chlist{display:flex;flex-direction:column;gap:5px;max-height:calc(100vh - 250px);overflow:auto}
+.c56 .r-chb{border:1px solid #e2d5b6;border-radius:9px;background:#fffaf0;padding:7px 10px;display:flex;flex-direction:column;gap:3px;opacity:.5;transition:opacity .25s,border-color .25s,box-shadow .25s}
+.c56 .r-chb b{font:italic 800 13.5px Merriweather,serif;color:var(--ink);line-height:1.2}
+.c56 .r-chb b em{font:800 9px Inter;font-style:normal;letter-spacing:.12em;color:#fff;background:#8a4fa8;border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:2px}
+.c56 .r-chb.live{opacity:1;border-color:var(--gold);box-shadow:0 0 0 3px rgba(138,106,47,.16)}
+.c56 .r-chb.done{opacity:1}
+.c56 .r-chr{font:800 11px Inter;letter-spacing:.08em;min-height:1em}
+.c56 .r-chr.pass{color:#3f6f3a}
+.c56 .r-chr.fail{color:#a8483f}
+.c56 .r-chr.set{color:#2f5f84}
+.c56 .r-chb.live .r-chr::before{content:'On the floor…';color:var(--gold);letter-spacing:.02em;font-weight:700}
+.c56 .r-pcham{max-width:640px;margin:10px auto 0}
+@media (max-width:1000px){.c56 .r-cham{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.c56 .c-raise,.c56 .c-stampin,.c56 .c-bdin,.c56 .c-flame{animation:none}}
 .c56-slide{padding:0;background:#f3ecdc;}
 .c56{--ink:#3b3222;--gold:#8a6a2f;--paper:#fbf5e6;--bg:#f3ecdc;--muted:#5e5340;--red:#a8483f;--grn:#3f6f3a;--blu:#2f5f84;
   position:absolute;inset:0;display:flex;flex-direction:column;gap:6px;padding:.55rem clamp(3.6rem,4.6vw,4.6rem) .5rem;color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:15px;
@@ -701,6 +739,9 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .c56.c56-demo #rGo,.c56.c56-demo .r-cact .btn{pointer-events:none}
 .c56.c56-demobarOn{padding-bottom:52px}
 .c56 .c56-demobar .c56-dpause{background:none;border:1px solid rgba(251,245,230,.5);color:#fbf5e6;border-radius:999px;font:700 11.5px Inter;padding:3px 10px;cursor:pointer;white-space:nowrap}
+.c56 .c56-gcham{display:flex;flex-direction:column;gap:5px;margin:-4px -4px 2px}
+.c56 .c56-gcham svg{width:100%;height:auto;display:block;border-radius:8px}
+.c56 .c56-gcham small{font:500 11.5px/1.4 Inter;color:var(--muted)}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -3324,6 +3365,372 @@ const SIM = (function () {
   render();
 })();
 
+// THE CHAMBER: the government's hall, drawn as a living plate (ink and watercolor, like the valley).
+//   CHAMBER.reveal(el, rec, gov, o)  the law reveal: each bill goes up on the vote board, every member raises a
+//                                    placard, the tally fills, and the result is stamped. o.onBill(i, 'live'|'done'),
+//                                    o.onDone(). Returns { skip, stop }.
+//   CHAMBER.mini(p, gov, o)          the same hall as a picture whose seats light up as members lock in their votes
+//                                    (o.lit = member indices that have voted, o.you = the viewer's seat). No votes shown.
+// The seats follow the class: any number of members, in as many curved rows as it takes.
+'use strict';
+const CHAMBER = (function () {
+  const W = 1200, H = 680, CX = 600, CYS = 404;
+  const SKIN = ['#efcfae', '#d8a880', '#c99a72', '#b88a62', '#9a6a48', '#8a5a3a', '#6a4430', '#e3b892', '#a8744a', '#5a3a28'];
+  const HAIR = ['#2a211a', '#3b2a1e', '#5a3a22', '#7a4a2a', '#a8743a', '#c9a060', '#1e1a18', '#6a2e1e', '#3a2c24', '#4a3626'];
+  const GRAY = ['#8a8478', '#bdb6a8', '#d8d2c4'];
+  const COAT = ['#2f5f84', '#3f6f3a', '#7a5a3a', '#5a4a6a', '#a8483f', '#2f4a5e', '#6a7a5a', '#8a6a2f', '#4a4a52', '#5e6b7a', '#7a3a50', '#3e5a52'];
+  const PICK = ['#3f6f3a', '#c08a2a', '#2f5f84'], PICKL = ['Dividend', 'Subsidies', 'Pay debt'];
+  const hs = s => { let h = 2166136261; for (const c of String(s)) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; };
+  const f1 = v => v.toFixed(1);
+
+  // ── seats: curved rows facing the rostrum; more members, more rows (and smaller figures) ──
+  const SPACE = 46;
+  function arcLen(rad, a0, a1) {
+    let L = 0, px = 0, py = 0;
+    for (let k = 0; k <= 24; k++) { const a = Math.PI * lerp(a0, a1, k / 24), x = rad * Math.cos(a), y = rad * Math.sin(a) * .42; if (k) L += Math.hypot(x - px, y - py); px = x; py = y; }
+    return L;
+  }
+  const span = (i, R) => { const t = R > 1 ? i / (R - 1) : 0; return [lerp(.16, .05, t), lerp(.84, .95, t)]; };
+  function layout(n) {
+    n = Math.max(1, n);
+    // a small government sits in one or two rows of larger figures; a big one needs more, smaller rows
+    let R = n <= 4 ? 1 : n <= 10 ? 2 : 3, sc = 1, radii, caps;
+    for (; ; R++) {
+      sc = R === 1 ? 1.4 : R === 2 ? 1.2 : R === 3 ? 1 : Math.max(.4, 1 - (R - 3) * .13);
+      radii = R === 1 ? [300] : R === 2 ? [262, 400] : Array.from({ length: R }, (_, i) => lerp(228, 468, i / (R - 1)));
+      caps = radii.map((r, i) => { const [a0, a1] = span(i, R); return Math.floor(arcLen(r, a0, a1) / (SPACE * sc)) + 1; });
+      if (caps.reduce((a, b) => a + b, 0) >= n || R >= 10) break;
+    }
+    // share the members out in proportion to each row's room (largest remainder)
+    const tot = caps.reduce((a, b) => a + b, 0), cnt = caps.map(c => Math.min(c, Math.floor(n * c / tot)));
+    const order = caps.map((c, i) => [n * c / tot - cnt[i], i]).sort((a, b) => b[0] - a[0]);
+    for (let left = n - cnt.reduce((a, b) => a + b, 0), j = 0; left > 0 && j < 400; j++) { const i = order[j % R][1]; if (cnt[i] < caps[i]) { cnt[i]++; left--; } }
+    const seats = [], rows = [];
+    radii.forEach((rad, i) => {
+      const k = cnt[i]; if (!k) return;
+      const [a0, a1] = span(i, R), full = arcLen(rad, a0, a1);
+      const f = k === 1 ? 0 : Math.min(1, Math.max((k - 1) * SPACE * sc * 1.18 / full, (k - 1) / (k + 1.2))), m = (a0 + a1) / 2, h = (a1 - a0) / 2 * f;
+      const s = sc * (.92 + .2 * (rad - 228) / 240);
+      rows.push({ rad, s, from: m - h, to: m + h });
+      for (let j = 0; j < k; j++) {
+        const a = Math.PI * (k === 1 ? m : lerp(m - h, m + h, j / (k - 1)));
+        seats.push({ x: CX + rad * Math.cos(a), y: CYS + rad * Math.sin(a) * .42, s });
+      }
+    });
+    return { seats, rows };
+  }
+
+  // ── the room ──
+  function defsX(p) {
+    return `<linearGradient id="${p}Sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4d2"/><stop offset=".55" stop-color="#e7eef0"/><stop offset="1" stop-color="#bfd5e2"/></linearGradient>
+    <linearGradient id="${p}Ray" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3cf" stop-opacity=".7"/><stop offset="1" stop-color="#fff3cf" stop-opacity="0"/></linearGradient>
+    <linearGradient id="${p}Slate" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34453c"/><stop offset="1" stop-color="#26332c"/></linearGradient>
+    <linearGradient id="${p}Gilt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d6b46a"/><stop offset=".5" stop-color="#a8823c"/><stop offset="1" stop-color="#c9a457"/></linearGradient>
+    <linearGradient id="${p}Wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5e38"/><stop offset="1" stop-color="#5e3d22"/></linearGradient>
+    <radialGradient id="${p}Glow"><stop offset="0" stop-color="#ffd98a" stop-opacity=".75"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient>
+    <radialGradient id="${p}Vig" cx=".5" cy=".46" r=".72"><stop offset=".62" stop-color="#3b2a14" stop-opacity="0"/><stop offset="1" stop-color="#3b2a14" stop-opacity=".32"/></radialGradient>
+    <pattern id="${p}Pq" width="28" height="14" patternUnits="userSpaceOnUse"><path d="M0,14 L14,0 L28,14 M14,14 L28,0" stroke="#7a5634" stroke-width=".7" opacity=".35" fill="none"/></pattern>
+    <clipPath id="${p}Clip"><rect x="26" y="26" width="${W - 52}" height="${H - 52}" rx="9"/></clipPath>
+    <clipPath id="${p}Win"><path d="M512,160 A88,88 0 0 1 688,160 Z"/></clipPath>`;
+  }
+  function chandelier(p, x) {
+    let o = `<circle cx="${x}" cy="112" r="78" fill="url(#${p}Glow)" opacity=".55"/>`;
+    o += `<path d="M${x},26 V92" stroke="${INK}" stroke-width="1.4"/><path d="M${x - 4},72 h8 M${x - 3},80 h6" stroke="${GOLD}" stroke-width="1.6"/>`;
+    o += `<path d="M${x - 34},108 Q${x},128 ${x + 34},108" fill="none" stroke="${GOLD}" stroke-width="3"/><path d="M${x - 34},108 Q${x},128 ${x + 34},108" fill="none" stroke="${INK}" stroke-width=".8"/>`;
+    o += `<path d="M${x - 18},101 Q${x},112 ${x + 18},101" fill="none" stroke="${GOLD}" stroke-width="2.2"/><path d="M${x},92 V122" stroke="${GOLD}" stroke-width="2.4"/><circle cx="${x}" cy="125" r="3.2" fill="${GOLD}" stroke="${INK}" stroke-width=".6"/>`;
+    for (const [dx, dy] of [[-34, 108], [-22, 116], [-8, 120], [8, 120], [22, 116], [34, 108], [-18, 101], [18, 101], [0, 92]]) {
+      o += `<rect x="${x + dx - 1.8}" y="${dy - 11}" width="3.6" height="10" fill="#f7efdc" stroke="${INK}" stroke-width=".5"/>`;
+      o += `<ellipse class="c-flame" cx="${x + dx}" cy="${dy - 14}" rx="2.2" ry="3.6" fill="#ffcf6a"/><circle cx="${x + dx}" cy="${dy - 14}" r="6" fill="url(#${p}Glow)"/>`;
+    }
+    for (const dx of [-26, -12, 12, 26]) o += `<path d="M${x + dx},${dx * dx / 60 + 116} l-2,6 l2,4 l2,-4 Z" fill="#e8f0f2" stroke="${INK}" stroke-width=".4" opacity=".85"/>`;
+    return o;
+  }
+  function gallery(p, x0, x1, seed) {
+    const r = rng(seed);
+    let o = Wg(p, `<rect x="${x0}" y="132" width="${x1 - x0}" height="124" fill="#d4bf93"/>`);
+    // three arched openings at the back of the gallery
+    const w = (x1 - x0) / 3;
+    for (let i = 0; i < 3; i++) { const a = x0 + w * i + 10, b = x0 + w * (i + 1) - 10, m = (a + b) / 2; o += `<path d="M${a},250 V178 A${(b - a) / 2},${(b - a) / 2} 0 0 1 ${b},178 V250 Z" fill="#a98f62" opacity=".55"/>` + Kg(p, `<path d="M${a},250 V178 A${(b - a) / 2},${(b - a) / 2} 0 0 1 ${b},178 V250"/>`, 1.1); void m; }
+    // the public, watching: households and companies
+    let ppl = '';
+    for (let x = x0 + 12; x < x1 - 8; x += 15 + r() * 6) {
+      const y = 227 + r() * 5, c = COAT[(r() * COAT.length) | 0], sk = SKIN[(r() * SKIN.length) | 0], hr = HAIR[(r() * HAIR.length) | 0];
+      ppl += `<path d="M${f1(x - 8)},${f1(y + 18)} Q${f1(x - 8)},${f1(y + 4)} ${f1(x)},${f1(y + 3)} Q${f1(x + 8)},${f1(y + 4)} ${f1(x + 8)},${f1(y + 18)} Z" fill="${c}" stroke="${INK}" stroke-width=".6"/>`;
+      ppl += `<circle cx="${f1(x)}" cy="${f1(y - 4)}" r="5.4" fill="${sk}" stroke="${INK}" stroke-width=".6"/><path d="M${f1(x - 5.6)},${f1(y - 4.5)} A5.6,5.6 0 0 1 ${f1(x + 5.6)},${f1(y - 4.5)} Q${f1(x + 3)},${f1(y - 7.5)} ${f1(x)},${f1(y - 7)} Q${f1(x - 3)},${f1(y - 7.5)} ${f1(x - 5.6)},${f1(y - 4.5)} Z" fill="${hr}"/>`;
+    }
+    o += ppl;
+    // the balcony rail and balusters
+    o += Ws(p, `<rect x="${x0 - 6}" y="250" width="${x1 - x0 + 12}" height="34" fill="#e2d1aa"/>`);
+    let bal = '';
+    for (let x = x0 + 4; x < x1; x += 12) bal += `<path d="M${x},256 q-3,6 0,10 q3,4 0,10 v4" stroke="#9a7f52" stroke-width="2.4" fill="none"/>`;
+    o += bal + `<rect x="${x0 - 8}" y="244" width="${x1 - x0 + 16}" height="8" rx="2" fill="url(#${p}Wood)" stroke="${INK}" stroke-width=".8"/><rect x="${x0 - 8}" y="282" width="${x1 - x0 + 16}" height="7" fill="#c9b285" stroke="${INK}" stroke-width=".7"/>`;
+    return o;
+  }
+  function pilaster(p, x, y0, y1, w = 32) {
+    let o = Ws(p, `<rect x="${x}" y="${y0}" width="${w}" height="${y1 - y0}" fill="#f1e6cd"/>`);
+    for (let k = 1; k < 5; k++) o += `<path d="M${x + k * w / 5},${y0 + 16} V${y1 - 12}" stroke="#cdb88e" stroke-width="1.3"/>`;
+    o += `<path d="M${x - 7},${y0} h${w + 14} l-4,8 h-${w + 6} Z" fill="#e2d1aa" stroke="${INK}" stroke-width=".8"/><path d="M${x - 2},${y0 + 8} q${w / 4},8 ${w / 2 + 2},0 q${w / 4},8 ${w / 2 + 2},0" fill="none" stroke="${GOLD}" stroke-width="1.2"/>`;
+    o += `<path d="M${x - 6},${y1} h${w + 12} v-8 h-${w + 12} Z" fill="#e2d1aa" stroke="${INK}" stroke-width=".8"/>`;
+    return o + Kg(p, `<path d="M${x},${y0 + 8} V${y1 - 8} M${x + w},${y0 + 8} V${y1 - 8}"/>`, 1);
+  }
+  function flag(p, x, col, stripe, dir) {
+    const c = x + dir * 15;
+    return `<path d="M${x},92 V330" stroke="${INK}" stroke-width="2.2"/><circle cx="${x}" cy="89" r="3.6" fill="${GOLD}" stroke="${INK}" stroke-width=".7"/>` +
+      Ws(p, `<path d="M${x},98 Q${c},96 ${x + dir * 28},100 Q${x + dir * 25},150 ${x + dir * 30},212 Q${c},222 ${x},216 Z" fill="${col}"/>`) +
+      `<path d="M${x + dir * 9},100 Q${x + dir * 7},160 ${x + dir * 11},216 M${x + dir * 19},99 Q${x + dir * 17},160 ${x + dir * 22},218" stroke="#000" stroke-width="2.4" opacity=".12" fill="none"/>` +
+      `<path d="M${x},140 Q${c},139 ${x + dir * 27},142" stroke="${stripe}" stroke-width="5" fill="none" opacity=".9"/>` +
+      Kg(p, `<path d="M${x},98 Q${c},96 ${x + dir * 28},100 Q${x + dir * 25},150 ${x + dir * 30},212 Q${c},222 ${x},216"/>`, 1.1);
+  }
+  function person(x, y, s, r, robe) {     // facing us (the speaker and the clerks)
+    const sk = SKIN[(r() * SKIN.length) | 0], hr = HAIR[(r() * HAIR.length) | 0];
+    return `<g transform="translate(${x},${y}) scale(${s})"><path d="M-17,20 Q-18,4 0,1 Q18,4 17,20 Z" fill="${robe}" stroke="${INK}" stroke-width=".9"/><path d="M-5,2 L0,10 L5,2" fill="#f7efdc" stroke="${INK}" stroke-width=".6"/>` +
+      `<circle cx="0" cy="-9" r="9.5" fill="${sk}" stroke="${INK}" stroke-width=".8"/><path d="M-9.8,-10 A9.8,9.8 0 0 1 9.8,-10 Q8,-15 0,-15.5 Q-8,-15 -9.8,-10 Z" fill="${hr}" stroke="${INK}" stroke-width=".6"/>` +
+      `<circle cx="-3.2" cy="-8.5" r="1" fill="${INK}"/><circle cx="3.2" cy="-8.5" r="1" fill="${INK}"/><path d="M-2.6,-4 q2.6,1.8 5.2,0" stroke="${INK}" stroke-width=".8" fill="none"/></g>`;
+  }
+  function room(p, gov) {
+    let o = `<rect width="${W}" height="${H}" fill="#efe3c8"/>`;
+    // back wall, vault and frieze
+    o += Wg(p, `<rect x="20" y="20" width="${W - 40}" height="370" fill="#eadcbd"/><path d="M330,390 V170 Q600,40 870,170 V390 Z" fill="#e3d2ad"/>`);
+    o += `<rect x="20" y="20" width="${W - 40}" height="40" fill="#d8c59c"/><path d="M20,60 H${W - 20}" stroke="${GOLD}" stroke-width="1.6"/>`;
+    let dent = ''; for (let x = 30; x < W - 26; x += 14) dent += `<rect x="${x}" y="61" width="8" height="7" fill="#cdb88e"/>`;
+    o += dent + `<text x="${CX}" y="47" text-anchor="middle" class="c-insc">FOR THE GENERATIONS TO COME</text>`;
+    // the fanlight window and its light
+    o += `<path d="M512,160 A88,88 0 0 1 688,160 Z" fill="url(#${p}Sky)"/>` +
+      `<g clip-path="url(#${p}Win)"><path d="M520,160 Q560,128 600,138 Q650,120 690,150 V160 Z" fill="#cfdccf" opacity=".6"/></g>`;
+    let fan = ''; for (let k = 1; k < 8; k++) { const a = Math.PI * k / 8; fan += `M600,160 L${f1(600 - 88 * Math.cos(a))},${f1(160 - 88 * Math.sin(a))} `; }
+    o += Kg(p, `<path d="${fan}"/><path d="M560,160 A40,40 0 0 1 640,160 M532,160 A68,68 0 0 1 668,160"/>`, 1.1, '#6e5a3a');
+    o += `<path d="M502,162 A98,98 0 0 1 698,162" fill="none" stroke="#e2d1aa" stroke-width="12"/>` + Kg(p, `<path d="M496,162 A104,104 0 0 1 704,162 M508,162 A92,92 0 0 1 692,162 M500,162 H700"/>`, 1.2) +
+      `<path d="M592,56 h16 l-3,14 h-10 Z" fill="#e2d1aa" stroke="${INK}" stroke-width=".8"/>`;
+    // the public galleries, the pilasters and the flags
+    o += gallery(p, 46, 300, 11) + gallery(p, 900, 1154, 23);
+    o += pilaster(p, 316, 74, 382) + pilaster(p, 852, 74, 382) + pilaster(p, 30, 74, 382, 22) + pilaster(p, 1148, 74, 382, 22);
+    o += chandelier(p, 186) + chandelier(p, 1014);
+    // the vote board: gilt frame, slate face
+    o += `<rect x="378" y="158" width="444" height="156" rx="6" fill="url(#${p}Gilt)" stroke="${INK}" stroke-width="1.2"/><rect x="386" y="166" width="428" height="140" rx="3" fill="url(#${p}Slate)" stroke="#1d2620" stroke-width="1"/>` +
+      `<rect x="386" y="166" width="428" height="140" fill="#000" filter="url(#${p}pg)" opacity=".9"/><path d="M392,172 H808" stroke="#ffffff" stroke-width="1" opacity=".07"/>`;
+    for (const [x, y] of [[382, 162], [818, 162], [382, 310], [818, 310]]) o += `<circle cx="${x}" cy="${y}" r="3.4" fill="#e6c87a" stroke="${INK}" stroke-width=".6"/>`;
+    o += flag(p, 362, '#2f5f84', '#e6d8b8', -1) + flag(p, 838, '#3f6f3a', '#e6c87a', 1);
+    // the floor: parquet, then the carpet of the well
+    o += Wg(p, `<path d="M20,380 H${W - 20} V${H - 20} H20 Z" fill="#b8925e"/>`) + `<rect x="20" y="380" width="${W - 40}" height="${H - 400}" fill="url(#${p}Pq)"/>`;
+    o += Wg(p, `<ellipse cx="${CX}" cy="${CYS + 116}" rx="560" ry="168" fill="#8e3b33"/>`, .92) +
+      `<ellipse cx="${CX}" cy="${CYS + 116}" rx="540" ry="156" fill="none" stroke="#d6b46a" stroke-width="2.4" opacity=".75"/><ellipse cx="${CX}" cy="${CYS + 116}" rx="526" ry="148" fill="none" stroke="#d6b46a" stroke-width=".9" opacity=".6"/>` +
+      Wg(p, `<path d="M520,${H - 20} L556,386 H644 L680,${H - 20} Z" fill="#7d3029"/>`, .9);
+    o += `<path d="M536,394 L664,394 L880,${H - 20} L320,${H - 20} Z" fill="url(#${p}Ray)" opacity=".5"/><path d="M512,160 L688,160 L700,164 L500,164 Z" fill="#fff3cf" opacity=".35"/>`;
+    // the rostrum: the speaker between two clerks, behind a paneled bench with the class seal
+    const r = rng(77);
+    o += person(498, 336, 1, r, '#5a4a6a') + person(702, 336, 1, r, '#2f4a5e');
+    o += `<path d="M585,332 V313 Q585,307 600,306.5 Q615,307 615,313 V332 Z" fill="#7a2a26" stroke="${INK}" stroke-width=".9"/><path d="M589,312 Q600,309 611,312" stroke="#d6b46a" stroke-width="1.4" fill="none"/>`;
+    o += person(600, 331, 1.1, r, '#2a2622') + `<g transform="translate(622,333) rotate(-28)"><rect x="-1.4" y="-2" width="2.8" height="14" fill="#6e4a2e" stroke="${INK}" stroke-width=".5"/><rect x="-6" y="-6" width="12" height="6" rx="1.5" fill="#8a5e38" stroke="${INK}" stroke-width=".6"/></g>`;
+    o += Ws(p, `<path d="M392,338 H808 L822,394 H378 Z" fill="url(#${p}Wood)"/>`) + `<rect x="384" y="332" width="432" height="9" rx="2" fill="#a07a52" stroke="${INK}" stroke-width=".9"/>`;
+    let pan = ''; for (const x of [404, 466, 666, 728]) pan += `<rect x="${x}" y="350" width="52" height="34" rx="2" fill="none" stroke="#c9a46a" stroke-width="1.1" opacity=".75"/>`;
+    o += pan + `<circle cx="${CX}" cy="366" r="25" fill="url(#${p}Gilt)" stroke="${INK}" stroke-width="1"/><circle cx="${CX}" cy="366" r="18" fill="#3f6f3a" stroke="#e6c87a" stroke-width="1.2"/>` +
+      `<path d="M600,377 V357 M600,364 Q592,358 591,350 Q599,353 600,361 M600,368 Q608,362 609,354 Q601,357 600,365" stroke="#f3e7c4" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
+    o += Kg(p, `<path d="M378,394 H822"/>`, 1.2);
+    return o;
+  }
+
+  // ── a member, seen from the gallery at the back: high-backed chair, shoulders and the back of the head ──
+  function look(g, i) {
+    const r = rng(hs((g && g.id) || 'm' + i) ^ 0x5bd1e995);
+    const st = (r() * 7) | 0, old = r() < .16;
+    return { skin: SKIN[(r() * SKIN.length) | 0], hair: old ? GRAY[(r() * GRAY.length) | 0] : HAIR[(r() * HAIR.length) | 0], coat: COAT[(r() * COAT.length) | 0], st: old && st === 6 ? 0 : st, side: r() < .5 ? -1 : 1 };
+  }
+  function hairOf(L) {
+    const h = `fill="${L.hair}" stroke="${INK}" stroke-width=".7"`;
+    const short = `<path d="M-10.9,-54 A10.9,10.9 0 0 1 10.9,-54 Q11.2,-47 7,-45.4 Q0,-44 -7,-45.4 Q-11.2,-47 -10.9,-54 Z" ${h}/>`;
+    switch (L.st) {
+      case 1: return `<path d="M-11.2,-55 A11.2,11.2 0 0 1 11.2,-55 Q12.8,-44 11.8,-35.5 Q0,-32.8 -11.8,-35.5 Q-12.8,-44 -11.2,-55 Z" ${h}/>`;
+      case 2: return short + `<circle cx="0" cy="-64.5" r="5.4" ${h}/><path d="M-4,-61 q4,2 8,0" stroke="${INK}" stroke-width=".6" fill="none"/>`;
+      case 3: { let d = ''; for (let k = 0; k <= 16; k++) { const a = Math.PI * 2 * k / 16, rr = k % 2 ? 12.2 : 13.6; d += (k ? 'L' : 'M') + f1(rr * Math.cos(a)) + ',' + f1(-55 + rr * Math.sin(a) * .96); } return `<path d="${d}Z" ${h} stroke-linejoin="round"/>`; }
+      case 4: return short + `<path d="M-2.6,-47 Q-4.6,-39 0,-31.5 Q4.6,-39 2.6,-47 Z" ${h}/><rect x="-2.4" y="-47.5" width="4.8" height="2.4" rx="1" fill="#a8483f"/>`;
+      case 5: return `<path d="M-10.7,-51.5 Q0,-46.4 10.7,-51.5 L10.3,-47 Q0,-42.4 -10.3,-47 Z" ${h}/>`;
+      case 6: return `<path d="M-11,-53 A11,11 0 0 1 11,-53 Q11.4,-49 9,-48 Q0,-46.5 -9,-48 Q-11.4,-49 -11,-53 Z" ${h}/><path d="M-6,-62 Q0,-66 6,-62" stroke="${INK}" stroke-width=".6" fill="none" opacity=".5"/>`;
+      default: return short;
+    }
+  }
+  // each member's own desk, seen from behind: a leather-topped writing desk, a green banker's lamp, papers
+  function desk(L) {
+    const lx = 25 * L.side;
+    return `<path d="M-37,-27 L37,-27 L33,-41 L-33,-41 Z" fill="#6e4a2e" stroke="${INK}" stroke-width=".9"/><path d="M-31,-29.5 L31,-29.5 L28.4,-38.6 L-28.4,-38.6 Z" fill="#3f5e48" stroke="#2a3d30" stroke-width=".6"/>` +
+      `<path d="M-37,-27 L37,-27 L37,-22 L-37,-22 Z" fill="#5a3a22" stroke="${INK}" stroke-width=".8"/><path d="M-33,-41 L33,-41" stroke="#a07a52" stroke-width="1.2"/>` +
+      `<path d="M${-22 * L.side},-31 l9,-1.4 l1.6,-5.4 l-9,1.4 Z" fill="#fbf5e6" stroke="${INK}" stroke-width=".5"/><path d="M${-21 * L.side},-33 h6 M${-20.5 * L.side},-34.6 h5" stroke="${INK}" stroke-width=".4" opacity=".5"/>` +
+      `<ellipse cx="${lx}" cy="-38" rx="12" ry="5" fill="#ffd98a" opacity=".38"/><path d="M${lx},-36 V-46" stroke="#b08a3e" stroke-width="1.4"/><ellipse cx="${lx}" cy="-36" rx="3.6" ry="1.3" fill="#b08a3e" stroke="${INK}" stroke-width=".5"/>` +
+      `<path d="M${lx - 7.5},-44 Q${lx},-52 ${lx + 7.5},-44 Z" fill="#2f6b45" stroke="${INK}" stroke-width=".7"/><path d="M${lx - 6},-44 h12" stroke="#ffe7a8" stroke-width="1.2"/>`;
+  }
+  function member(L, i, seat) {
+    return `<g transform="translate(${f1(seat.x)},${f1(seat.y)}) scale(${seat.s.toFixed(3)})">` +
+      `<ellipse cx="0" cy="4" rx="26" ry="6" fill="${INK}" opacity=".2"/>` + desk(L) +
+      `<path d="M-19,2 Q-21.5,-29 -12.5,-37.5 Q0,-43 12.5,-37.5 Q21.5,-29 19,2 Z" fill="${L.coat}" stroke="${INK}" stroke-width=".9"/>` +
+      `<path d="M5,-41 Q17,-37 19,-14 L19,2 L9,2 Z" fill="#000" opacity=".13"/><path d="M-12,-37 Q-6,-40.5 -1,-41" stroke="#fff" stroke-width="1.6" opacity=".18" fill="none"/>` +
+      `<path d="M-4.6,-40.5 V-46 H4.6 V-40.5" fill="${L.skin}" stroke="${INK}" stroke-width=".7"/>` +
+      `<path d="M-13.5,6 V-23.5 Q-13.5,-31.5 0,-31.5 Q13.5,-31.5 13.5,-23.5 V6 Z" fill="#6b2a26" stroke="${INK}" stroke-width=".9"/>` +
+      `<path d="M-9.5,-25 Q0,-29.2 9.5,-25" stroke="#a25248" stroke-width="1.3" fill="none"/><circle cx="-6" cy="-17" r=".9" fill="#3d1714"/><circle cx="6" cy="-17" r=".9" fill="#3d1714"/><circle cx="0" cy="-9" r=".9" fill="#3d1714"/><path d="M-13.5,-2 H13.5" stroke="#d6b46a" stroke-width="1" opacity=".7"/>` +
+      `<ellipse cx="-10.4" cy="-53" rx="2.4" ry="3.6" fill="${L.skin}" stroke="${INK}" stroke-width=".6"/><ellipse cx="10.4" cy="-53" rx="2.4" ry="3.6" fill="${L.skin}" stroke="${INK}" stroke-width=".6"/>` +
+      `<circle cx="0" cy="-54" r="10.4" fill="${L.skin}" stroke="${INK}" stroke-width=".8"/>` + hairOf(L) +
+      `<path d="M-5,-62.5 Q0,-65 5,-62.5" stroke="#fff" stroke-width="1.5" opacity=".22" fill="none"/>` +
+      `<g data-hand="${i}"></g></g>`;
+  }
+  function desks(p, rows) {
+    let o = '';
+    for (const R of rows) {
+      const rad = R.rad, a0 = R.from - .05, a1 = R.to + .05;
+      let d = '';
+      for (let k = 0; k <= 36; k++) { const a = Math.PI * lerp(a0, a1, k / 36); d += (k ? 'L' : 'M') + f1(CX + rad * Math.cos(a)) + ',' + f1(CYS + rad * Math.sin(a) * .42 - 14 * R.s); }
+      o += `<path d="${d}" stroke="#6f2a24" stroke-width="${f1(30 * R.s)}" fill="none" stroke-linecap="round" opacity=".55"/><path d="${d}" stroke="#d6b46a" stroke-width="${f1(1.4 * R.s)}" fill="none" opacity=".55" transform="translate(0,${f1(15 * R.s)})"/>`;
+    }
+    return Ws(p, o, 1);
+  }
+  // a raised arm and a placard (reveal), or a lit token over the head (mini)
+  function placard(b, v) {
+    if (b.kind === 'yn') return v ? `<circle r="14" fill="#3f6f3a" stroke="${INK}" stroke-width="1.1"/><circle r="10.5" fill="none" stroke="#fff" stroke-width=".8" opacity=".35"/><path d="M-6.5,.5 l4.5,5 l8.5,-10.5" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
+      : `<circle r="14" fill="#a8483f" stroke="${INK}" stroke-width="1.1"/><circle r="10.5" fill="none" stroke="#fff" stroke-width=".8" opacity=".35"/><path d="M-5.5,-5.5 l11,11 M5.5,-5.5 l-11,11" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>`;
+    if (b.kind === 'level') return `<rect x="-23" y="-13.5" width="46" height="27" rx="4" fill="${PAPER}" stroke="${INK}" stroke-width="1.2"/><rect x="-20" y="-10.5" width="40" height="21" rx="2.5" fill="none" stroke="${GOLD}" stroke-width=".8"/><text y="5" text-anchor="middle" class="c-pad">$${v}</text>`;
+    return `<circle r="14" fill="${PICK[v] || GOLD}" stroke="${INK}" stroke-width="1.1"/><text y="5" text-anchor="middle" class="c-tk" fill="#fff">${'DSP'[v] || '?'}</text>`;
+  }
+  function arm(L, b, v) {
+    const d = -L.side, x = 20 * d;
+    return `<g class="c-raise"><path d="M${11 * d},-35 Q${17 * d},-53 ${x},-70" stroke="${INK}" stroke-width="8.6" fill="none" stroke-linecap="round"/><path d="M${11 * d},-35 Q${17 * d},-53 ${x},-70" stroke="${L.coat}" stroke-width="6.6" fill="none" stroke-linecap="round"/>` +
+      `<path d="M${x},-70 V-90" stroke="#6e4a2e" stroke-width="2.4"/><circle cx="${x}" cy="-72" r="3.6" fill="${L.skin}" stroke="${INK}" stroke-width=".7"/><g transform="translate(${x},-103)">${placard(b, v)}</g></g>`;
+  }
+  const token = `<g class="c-raise"><circle cy="-80" r="9.5" fill="#3f6f3a" stroke="${PAPER}" stroke-width="2"/><path d="M-4,-80 l3,3.5 l5.5,-7" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+
+  function plate(p, gov, label, extra = '') {
+    const L = layout(gov.length), looks = gov.map(look);
+    const idx = L.seats.map((s, i) => i).sort((a, b) => L.seats[a].y - L.seats[b].y);
+    const svg = `<svg class="c-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">${defs(p, defsX(p))}<rect width="${W}" height="${H}" fill="${PAPER}"/>` +
+      `<g clip-path="url(#${p}Clip)">${room(p, gov)}<g data-board></g>${desks(p, L.rows)}${idx.map(i => member(looks[i], i, L.seats[i])).join('')}` +
+      `<g data-you></g><g data-stamp></g><rect x="20" y="20" width="${W - 40}" height="${H - 40}" fill="url(#${p}Vig)" pointer-events="none"/>${extra}</g>${frame(p, W, H)}</svg>`;
+    return { svg, L, looks };
+  }
+
+  // ── the vote board ──
+  function wrap(t, n) {
+    if (t.length <= n) return [t];
+    let cut = t.lastIndexOf(' ', Math.ceil(t.length / 2) + 6);
+    if (cut < 10) cut = t.indexOf(' ', n - 8);
+    return [t.slice(0, cut), t.slice(cut + 1)];
+  }
+  function tally(b, vs, n) {
+    let o = '';
+    if (b.kind === 'yn') {
+      const y = vs.filter(v => v).length, no = vs.length - y, need = Math.floor(n / 2) + 1, x0 = 470, w = 290, X = k => x0 + w * k / n;
+      o += `<rect x="${x0}" y="268" width="${w}" height="15" rx="7.5" fill="#ffffff" opacity=".1"/>` +
+        (y ? `<rect x="${x0}" y="268" width="${f1(X(y) - x0)}" height="15" rx="7.5" fill="#86b07a"/>` : '') +
+        (no ? `<rect x="${f1(x0 + w - (X(no) - x0))}" y="268" width="${f1(X(no) - x0)}" height="15" rx="7.5" fill="#d98a74"/>` : '') +
+        `<path d="M${f1(X(need) - .5)},263 V288" stroke="#f5ecd6" stroke-width="1.4" stroke-dasharray="3 2"/><text x="${f1(X(need))}" y="261" text-anchor="middle" class="c-bd-s">MAJORITY ${need}</text>` +
+        `<text x="${x0 - 10}" y="280" text-anchor="end" class="c-bd-l">AYE ${y}</text><text x="${x0 + w + 10}" y="280" class="c-bd-l">NO ${no}</text>`;
+    } else if (b.kind === 'level') {
+      const x0 = 452, w = 296, X = v => x0 + v / 150 * w, cnt = {}; vs.forEach(v => cnt[v] = (cnt[v] || 0) + 1);
+      const mx = Math.max(1, ...Object.values(cnt));
+      o += `<path d="M${x0 - 6},288 H${x0 + w + 6}" stroke="#f5ecd6" stroke-width="1.2" opacity=".7"/>`;
+      for (const v of b.opts) {
+        const c = cnt[v] || 0, h = c ? 4 + 16 * c / mx : 0;
+        o += `<path d="M${X(v)},285 v6" stroke="#f5ecd6" stroke-width="1" opacity=".6"/><text x="${X(v)}" y="299" text-anchor="middle" class="c-bd-s">$${v}</text>`;
+        if (c) o += `<rect x="${f1(X(v) - 9)}" y="${f1(287 - h)}" width="18" height="${f1(h)}" rx="2" fill="#e6c87a"/><text x="${X(v)}" y="${f1(283 - h)}" text-anchor="middle" class="c-bd-l">${c}</text>`;
+      }
+      if (vs.length) {
+        const so = vs.slice().sort((a, c) => a - c), med = so[Math.floor((so.length - 1) / 2)];
+        o += `<path d="M${X(med)},259 V291" stroke="#e8836c" stroke-width="2"/><path d="M${X(med) - 4},257 h8 l-4,5 Z" fill="#e8836c"/><text x="${X(med) + (med > 100 ? -8 : 8)}" y="255" text-anchor="${med > 100 ? 'end' : 'start'}" class="c-bd-s" fill="#f0a08a">MIDDLE VOTE</text>`;
+      }
+    } else {
+      const c = [0, 0, 0]; vs.forEach(v => c[v]++);
+      [0, 1, 2].forEach(k => {
+        const x = 480 + k * 120;
+        o += `<circle cx="${x - 40}" cy="274" r="6" fill="${PICK[k]}" stroke="#f5ecd6" stroke-width="1"/><text x="${x - 30}" y="278" class="c-bd-l">${PICKL[k]} ${c[k]}</text>` +
+          `<rect x="${x - 40}" y="287" width="${f1(Math.max(2, 92 * c[k] / Math.max(1, n)))}" height="4" rx="2" fill="${PICK[k]}" opacity="${c[k] ? 1 : .35}"/>`;
+      });
+    }
+    return o;
+  }
+  function board(b, i, total, vs, n, isNew) {
+    const q = wrap(b.q || '', 56);
+    return `<g class="c-bdin"><text x="${CX}" y="186" text-anchor="middle" class="c-bd-eb">BILL ${i + 1} OF ${total}${isNew ? ' · NEW' : ''}</text>` +
+      `<text x="${CX}" y="${q.length > 1 ? 211 : 216}" text-anchor="middle" class="c-bd-ti">${b.title}</text>` +
+      q.map((t, k) => `<text x="${CX}" y="${(q.length > 1 ? 229 : 236) + k * 14}" text-anchor="middle" class="c-bd-q">${t}</text>`).join('') + `</g>` + tally(b, vs, n);
+  }
+  function outcome(b) {
+    if (b.kind === 'yn') return b.result ? ['PASSED', '#3f6f3a', 'by majority'] : ['FAILED', '#a8483f', 'short of a majority'];
+    if (b.kind === 'level') return [b.result ? `$${b.result} A TONNE` : 'NO TAX', b.result ? '#2f5f84' : '#a8483f', 'set by the middle vote'];
+    const k = b.opts ? b.opts.indexOf(b.result) : 0; return [PICKL[k].toUpperCase(), PICK[k], 'the most votes'];
+  }
+  function stamp(b) {
+    const [t, c, s] = outcome(b);
+    return `<g transform="translate(752,318) rotate(-6)"><g class="c-stampin"><rect x="-104" y="-33" width="208" height="66" rx="5" fill="${PAPER}" stroke="${INK}" stroke-width=".8" filter="drop-shadow(0 5px 8px rgba(40,25,10,.35))"/>` +
+      `<rect x="-96" y="-25" width="192" height="50" rx="5" fill="none" stroke="${c}" stroke-width="3.6" filter="url(#chr)"/><text y="6" text-anchor="middle" class="c-st" fill="${c}">${t}</text><text y="19" text-anchor="middle" class="c-st2" fill="${c}">${s.toUpperCase()}</text></g></g>`;
+  }
+
+  // ── the reveal ──
+  function reveal(el, rec, gov, o = {}) {
+    const p = 'ch', n = gov.length, total = rec.bills.length;
+    const P = plate(p, gov, 'The chamber votes on each bill');
+    el.innerHTML = P.svg;
+    const svg = el.querySelector('svg'), bd = svg.querySelector('[data-board]'), sp = svg.querySelector('[data-stamp]');
+    const hands = []; svg.querySelectorAll('[data-hand]').forEach(h => hands[+h.dataset.hand] = h);
+    const per = clamp(n * 170, 1700, 3000), hold = 1700;
+    let T = [], k = -1, done = false;
+    const at = (ms, f) => T.push(setTimeout(f, ms));
+    const clear = () => { T.forEach(clearTimeout); T = []; };
+    const isNew = b => !!(SIM.BILLS[b.id] && SIM.BILLS[b.id].extra);
+    bd.innerHTML = `<text x="${CX}" y="226" text-anchor="middle" class="c-bd-ti">The chamber is in session</text><text x="${CX}" y="252" text-anchor="middle" class="c-bd-q">${n} members · ${total} ${total === 1 ? 'bill' : 'bills'} on the floor</text>`;
+    function bill(i) {
+      k = i; const b = rec.bills[i], vs = [];
+      hands.forEach(h => h && (h.innerHTML = '')); sp.innerHTML = '';
+      bd.innerHTML = board(b, i, total, vs, n, isNew(b));
+      o.onBill && o.onBill(i, 'live');
+      const order = gov.map((g, j) => j).sort((a, c) => hs(rec.year + ':' + i + ':' + a) - hs(rec.year + ':' + i + ':' + c));
+      order.forEach((j, q) => at(450 + per * (q + .4) / n, () => {
+        if (hands[j]) hands[j].innerHTML = arm(P.looks[j], b, b.votes[j]);
+        vs.push(b.votes[j]); bd.innerHTML = board(b, i, total, vs, n, isNew(b)).replace(' class="c-bdin"', '');
+      }));
+      at(450 + per + 380, () => { sp.innerHTML = stamp(b); o.onBill && o.onBill(i, 'done'); });
+      at(450 + per + 380 + hold, () => i + 1 < total ? bill(i + 1) : finish());
+    }
+    function finish() { if (done) return; done = true; clear(); o.onDone && o.onDone(); }
+    function skip() {
+      if (done) return; clear();
+      for (let i = Math.max(0, k); i < total; i++) o.onBill && o.onBill(i, 'done');
+      const i = total - 1, b = rec.bills[i];
+      gov.forEach((g, j) => { if (hands[j]) hands[j].innerHTML = arm(P.looks[j], b, b.votes[j]); });
+      bd.innerHTML = board(b, i, total, b.votes, n, isNew(b)); sp.innerHTML = stamp(b);
+      finish();
+    }
+    if (!total || !n) { finish(); return { skip() { }, stop: clear }; }
+    at(900, () => bill(0));
+    return { skip, stop: clear };
+  }
+
+  // ── the hall as members lock in (no votes shown) ──
+  function mini(p, gov, o = {}) {
+    const n = gov.length, lit = new Set(o.lit || []), you = o.you == null ? -1 : o.you;
+    const P = plate(p, gov, `${lit.size} of ${n} members have voted`);
+    let s = P.svg;
+    // light the seats that have voted: a green token over each head
+    gov.forEach((g, j) => { if (lit.has(j)) s = s.replace(`<g data-hand="${j}"></g>`, `<g data-hand="${j}">${token}</g>`); });
+    const bd = `<text x="${CX}" y="190" text-anchor="middle" class="c-bd-eb">${o.eyebrow || 'MEMBERS WHO HAVE VOTED'}</text><text x="${CX}" y="252" text-anchor="middle" class="c-bd-big">${lit.size} <tspan class="c-bd-of">of ${n}</tspan></text>` +
+      `<text x="${CX}" y="285" text-anchor="middle" class="c-bd-q">${o.note || 'Every vote stays secret until the reveal.'}</text>`;
+    s = s.replace('<g data-board></g>', `<g data-board>${bd}</g>`);
+    if (you >= 0 && P.L.seats[you]) {
+      const S = P.L.seats[you];
+      s = s.replace('<g data-you></g>', `<g data-you transform="translate(${f1(S.x)},${f1(S.y)}) scale(${S.s.toFixed(3)})"><ellipse cx="0" cy="-30" rx="30" ry="48" fill="none" stroke="#e6c87a" stroke-width="3.4" stroke-dasharray="7 4"/>` +
+        `<g transform="translate(0,22)"><rect x="-20" y="-9" width="40" height="17" rx="8.5" fill="${GOLD}" stroke="${PAPER}" stroke-width="1.4"/><text y="3.5" text-anchor="middle" class="c-you">YOU</text></g></g>`);
+    }
+    return s;
+  }
+
+  // the prototype page shows a reveal of a pretend chamber
+  const host = typeof document !== 'undefined' && document.getElementById('chamber');
+  if (host && !document.querySelector('[data-c56]') && typeof SIM !== 'undefined') {
+    const gov = Array.from({ length: 11 }, (_, i) => ({ id: 'p' + i, name: 'Member ' + 'ABCDEFGHJKL'[i] }));
+    const mk = (id, votes, result) => ({ id, title: SIM.BILLS[id].title, q: SIM.BILLS[id].q, kind: SIM.BILLS[id].kind, opts: SIM.BILLS[id].opts, votes, result });
+    const rec = { year: 2026, bills: [mk('tax', [0, 25, 25, 50, 50, 50, 75, 100, 100, 150, 0], 50), mk('cap', [1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0].map(Boolean), true), mk('evRebate', [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0].map(Boolean), false), mk('use', [0, 1, 0, 0, 2, 1, 0, 1, 0, 2, 0], 'dividend')] };
+    host.innerHTML = '<div class="r-chplate" id="cProto"></div>';
+    const go = () => reveal(document.getElementById('cProto'), rec, gov, { onDone: () => setTimeout(go, 4000) });
+    go();
+  }
+  return { reveal, mini, layout };
+})();
+window.CHAMBER = CHAMBER;
+
 // RUN THE YEARS: the whole class plays 30 years on the simulation engine. In this prototype every student is a
 // stand-in (sim agents); in the live game their choices come from phones. Flow:
 //   deal → laws (government votes) → react → 2026–35 → election → (re-vote) → react → 2036–45 → election → … → 2056
@@ -3589,10 +3996,11 @@ const SIM = (function () {
   // ── overlays ──
   function overlay(html, onOpen) {
     if (R.iv) { clearInterval(R.iv); R.iv = null; }
-    clearTimeout(R.closeT); $('#rCard').innerHTML = html; $('#rOv').hidden = false; $('#rCard').scrollTop = 0;
+    if (R.chStop) { R.chStop(); R.chStop = null; }
+    clearTimeout(R.closeT); $('#rCard').classList.remove('wide'); $('#rCard').innerHTML = html; $('#rOv').hidden = false; $('#rCard').scrollTop = 0;
     void $('#rOv').offsetWidth; $('#rOv').classList.add('on'); onOpen && onOpen();
   }
-  function closeOv() { $('#rOv').classList.remove('on'); clearTimeout(R.closeT); R.closeT = setTimeout(() => $('#rOv').hidden = true, 250); }   // a card opened within 250 ms cancels this
+  function closeOv() { if (R.chStop) { R.chStop(); R.chStop = null; } $('#rOv').classList.remove('on'); clearTimeout(R.closeT); R.closeT = setTimeout(() => $('#rOv').hidden = true, 250); }   // a card opened within 250 ms cancels this
   // a card's footer: a button for whoever runs the class (the projector), a note for everyone else
   const act = (o, label, extra = '') => `<div class="r-cact">${extra}${o && o.onGo ? `<button class="btn" id="rGo"${o.wait ? ' disabled' : ''}>${o.goLabel || label}</button>` : `<span class="r-note r-wait">${(o && o.note) || 'The instructor will move the class on.'}</span>`}</div>`;
   const wire = o => { const b = $('#rGo'); if (b && o && o.onGo) b.onclick = () => o.onGo(); };
@@ -3619,6 +4027,28 @@ const SIM = (function () {
     const C = R.C, extras = rec.extras;
     const n = C.gov.length;
     const res = b => b.kind === 'level' ? `$${b.result}/t` : b.kind === 'yn' ? (b.result ? 'PASSED' : 'FAILED') : ['Dividend', 'Subsidies', 'Pay debt'][b.opts.indexOf(b.result)];
+    if (n && typeof CHAMBER !== 'undefined') {     // the chamber: bill by bill, every member raises a placard
+      overlay(head(rec.mid ? `YEAR ${rec.year} · MIDTERM SESSION` : extras ? 'A NEW GOVERNMENT' : 'STEP 2 · THE GOVERNMENT VOTES', rec.mid ? 'Three laws, reopened' : extras ? 'The government re-votes, with new options' : 'The first laws', rec.mid ? 'Halfway through the decade, the government reopened the carbon tax and the two bills the polls asked about most. Everything else stays.' : extras ? 'Voters spoke. The members heard the complaints, and six more bills are on the table.' : `${n} members vote on every bill. The carbon tax is set by the middle (median) vote; every other bill needs a majority.`) +
+        `<div class="r-cham"><div class="r-chplate" id="rCh"></div><div class="r-chlist">${rec.bills.map((b, i) => `<div class="r-chb" data-i="${i}"><b>${b.title}${BILLS_X(b) ? '<em>NEW</em>' : ''}</b><span class="r-chr"></span></div>`).join('')}</div></div>` +
+        act({ ...o, wait: o && o.onGo }, 'Announce the laws ▸', '<span class="r-note" id="rVoteNote">Votes coming in…</span><button class="btn ghost" id="rChSkip">Show every result ▸▸</button>'), () => {
+        $('#rCard').classList.add('wide');
+        const rows = $$('.r-chb');
+        const ctl = CHAMBER.reveal($('#rCh'), rec, C.gov, {
+          onBill(i, st) {
+            const row = rows[i]; if (!row) return;
+            rows.forEach(r => r.classList.remove('live'));
+            if (st === 'live') { row.classList.add('live'); row.scrollIntoView({ block: 'nearest' }); return; }
+            const b = rec.bills[i], r = row.querySelector('.r-chr');
+            row.classList.add('done'); r.textContent = res(b); r.className = 'r-chr ' + (b.kind === 'yn' ? (b.result ? 'pass' : 'fail') : 'set');
+          },
+          onDone() { const g = $('#rGo'); if (g) g.disabled = false; const vn = $('#rVoteNote'); if (vn) vn.textContent = 'All votes are in.'; const sk = $('#rChSkip'); if (sk) sk.hidden = true; paint(); },
+        });
+        R.chStop = ctl.stop;
+        const sk = $('#rChSkip'); if (sk) sk.onclick = () => ctl.skip();
+      });
+      wire(o);
+      return;
+    }
     const vote = (b, v) => b.kind === 'level' ? `<span class="r-vp">$${v}</span>` : b.kind === 'yn' ? `<span class="r-vd ${v ? 'y' : 'n'}" aria-label="${v ? 'yes' : 'no'}">${v ? '✓' : '✕'}</span>` : `<span class="r-vd p${v}">${'DSP'[v]}</span>`;
     overlay(head(rec.mid ? `YEAR ${rec.year} · MIDTERM SESSION` : extras ? 'A NEW GOVERNMENT' : 'STEP 2 · THE GOVERNMENT VOTES', rec.mid ? 'Three laws, reopened' : extras ? 'The government re-votes, with new options' : 'The first laws', rec.mid ? 'Halfway through the decade, the government reopened the carbon tax and the two bills the polls asked about most. Everything else stays.' : extras ? 'Voters spoke. The members heard the complaints, and six more bills are on the table.' : `${n} members vote on every bill. The carbon tax is set by the middle (median) vote.`) +
       `<div class="r-bills">${rec.bills.map((b, i) => `<div class="r-bill${BILLS_X(b) ? ' x' : ''}" data-i="${i}"><div class="r-bt1"><b>${b.title}</b>${BILLS_X(b) ? '<em>NEW</em>' : ''}<small>${b.q}</small></div><div class="r-bv">${b.votes.map(v => `<span class="r-vs">${vote(b, v)}</span>`).join('')}</div><div class="r-bres ${b.kind === 'yn' ? (b.result ? 'pass' : 'fail') : 'set'}">${res(b)}</div></div>`).join('')}</div>
@@ -4002,18 +4432,19 @@ const SIM = (function () {
       { t: 'The election', b: 25, cap: 'Companies vote in the elections too, with their own reasons: profits, carbon costs, or the climate.' }] },
     gov: { t: 'Government', steps: [
       { t: 'The deal', b: 2, cap: 'About a fifth of the class is the government.' },
-      { t: 'The first laws', b: 3, cap: 'The government votes on every bill. The carbon tax is set by the middle vote and every other bill needs a majority. The panel on the right previews what the laws would do to a typical household.' },
+      { t: 'The first laws', b: 3, cap: 'The government votes on every bill. The carbon tax is set by the middle vote and every other bill needs a majority. On the right, your seat in the chamber is marked, and seats light up as members vote. Below it, a preview of what the laws would do.' },
       { t: 'The years', b: 12, cap: 'The government watches the same years as everyone else: warming, emissions, bills, and the polls.' },
       { t: 'The midterm', b: 15, cap: 'In year 5 of each decade three laws reopen: the carbon tax, plus the two the polls asked about most.' },
       { t: 'The re-vote', b: 27, cap: 'If the class votes the government out in year 10 or 20, it re-votes on every law, with six more bills on the table.' }] },
     host: { t: 'Projector', steps: [
       { t: 'The lobby', b: 1, cap: 'Students join from the slide. The options menu turns the midterms, permit trading and the polls on or off.' },
-      { t: 'Building', b: 3, cap: 'While students build, the projector counts who has finished in each role.' },
-      { t: 'The laws', b: 5, cap: 'The laws are revealed vote by vote.' },
+      { t: 'Building', b: 4, cap: 'While students build, the projector counts who has finished in each role. In the chamber below, a seat lights up each time a member of the government casts their votes.' },
+      { t: 'The laws', b: 5, cap: 'The laws are revealed in the chamber, one bill at a time. Each member raises a placard, the vote board fills, and the result is stamped.' },
       { t: 'The years', b: 12, cap: 'The years run on the projector: the valley, the class’s CO₂, warming, clean power, company sales, and the news.' },
       { t: 'The midterm', b: 15, cap: 'During the midterm the projector shows all three groups at once: the government’s vote count, household changes, and the permit market as orders come in.' },
       { t: 'The market clears', b: 17, cap: 'The permit market clears at a single price, and the projector shows who bought and who sold.' },
       { t: 'The election', b: 26, cap: 'The ballots are counted, with the main reasons people gave.' },
+      { t: 'The re-vote', b: 28, cap: 'A government that lost the election votes again in the chamber, with six new bills marked NEW.' },
       { t: 'In 2056', b: 30, cap: 'Thirty years later: where the class landed, against the world’s standard climate pathways.' }] },
   };
   const sampleBase = () => /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? '/game-demos-web/2056/' : 'https://ryanpcornell.github.io/sos110-game-demos/2056/';
@@ -4231,9 +4662,10 @@ const SIM = (function () {
         <h3>${midterm ? 'Three laws are back on the table' : extras ? 'Re-vote, with six new options' : 'Vote on every bill'}</h3>
         <p class="c56-gsub">Your votes are secret until the reveal. The carbon tax is set by the middle vote of the ${C.gov.length} members; every other bill needs a majority.</p>
         ${ids.map(card).join('')}</div>
-      <aside class="c56-gside"><div class="c56-eb">WHAT YOUR LAWS WOULD DO</div>${prev}${pollPanel()}
+      <aside class="c56-gside"><div class="c56-gcham" data-gcham></div><div class="c56-eb">WHAT YOUR LAWS WOULD DO</div>${prev}${pollPanel()}
         <div class="c56-glock"><div class="h-lockst">${m.locked ? 'Votes cast. You can change them until time runs out.' : ''}</div><button class="c56-b go big" data-cast>${m.locked ? 'Change my votes' : 'Cast my votes'}</button></div></aside></div>`;
     const box = q('[data-screen=gov]');
+    gchamSig = ''; paintGcham(C);
     box.querySelectorAll('[data-b]').forEach(b => b.onclick = () => {
       if ((mine(k) || {}).locked) return;
       v[b.dataset.b] = +b.dataset.v; setMine(k, { ...(mine(k) || {}), draft: SIM.packVote(v), touched: 1 }); govSig = ''; paintGov(C);
@@ -4243,6 +4675,14 @@ const SIM = (function () {
       if (cur.locked) { setMine(k, { ...cur, locked: 0, draft: cur.v }); } else submit(k, SIM.packVote(v));
       govSig = ''; paintGov(C);
     };
+  }
+  // the little chamber on a government student's screen: seats light up as members lock in, yours is marked
+  let gchamSig = '';
+  function paintGcham(C) {
+    const el = q('[data-gcham]'); if (!el || !C) return;
+    const lit = govLit(C), you = C.gov.findIndex(g => g.id === PK), sig = gid() + phase() + win() + ':' + lit.join(',') + ':' + you;
+    if (sig === gchamSig) return; gchamSig = sig;
+    el.innerHTML = CHAMBER.mini('cg', C.gov, { lit, you, note: 'How anyone voted stays secret.' }) + `<small>${lit.length} of ${C.gov.length} members have voted. The chamber reveals every vote together.</small>`;
   }
   const lawsAsVote = p => ({ tax: p.tax, cap: p.cap ? 1 : 0, evRebate: p.evRebate ? 1 : 0, hpRebate: p.hpRebate ? 1 : 0, solarCredit: p.solarCredit ? 1 : 0, use: ['dividend', 'subsidies', 'debt'].indexOf(p.use), cleanStd: p.cleanStd ? 1 : 0, fuelStd: p.fuelStd ? 1 : 0, border: p.border ? 1 : 0, methane: p.methane ? 1 : 0, seaWall: p.seaWall ? 1 : 0, nuclear: p.nuclear ? 1 : 0 });
   // a rough preview: a typical household's yearly bills and the government's carbon money under these laws
@@ -4475,6 +4915,18 @@ const SIM = (function () {
     const y = C.hist[C.hist.length - 1].year;
     if (y !== lastYear) { const rec = C.hist[C.hist.length - 1]; if (lastYear !== -1 && y === lastYear + 1) RUN.arrive(rec); lastYear = y; }
   }
+  // the government's seats that have locked in this round. The projector (and the demo) knows exactly who;
+  // a student only gets the count from the projector, so their picture lights that many seats.
+  function govLit(C) {
+    const ph = phase(), w = win(), key = ph === 'build' ? 'V0' : ph === 'revote' ? 'V' + w : ph === 'mid' ? 'MV' + (w + 1) : null;
+    if (!key || !C) return [];
+    const ins = (state.in && state.in[key]) || {};
+    if (HOST || DEMO_ON) return C.gov.map((g, i) => typeof ins[g.id] === 'string' ? i : -1).filter(i => i >= 0);
+    const k = (state.cnt && state.cnt.k === ph + w && state.cnt.n[ph === 'build' ? 2 : 0]) || 0;
+    const you = C.gov.findIndex(g => g.id === PK), mineIn = you >= 0 && (mine(key) || {}).locked;
+    const order = C.gov.map((g, i) => i).filter(i => i !== you).sort((a, b) => SIM.hash(gid() + ':seat:' + a) - SIM.hash(gid() + ':seat:' + b));
+    return [...(mineIn ? [you] : []), ...order.slice(0, Math.max(0, k - (mineIn ? 1 : 0)))];
+  }
   // a timed round in progress (projector and anyone not acting in it)
   function progress(C, first) {
     const ph = phase(), w = win(), mem = members(), ins = state.in || {};
@@ -4492,6 +4944,7 @@ const SIM = (function () {
       rows: [['capitol', 'Government votes', has('MV' + (w + 1), ['gov']), cnt('gov')], ['home', 'Households', has('MA' + (w + 1), ['hh']), cnt('hh')], ['factory', SIM.tradingNow(C) ? 'Company orders' : 'Companies', has((SIM.tradingNow(C) ? 'MT' : 'MA') + (w + 1), ['biz']), cnt('biz')]] };
     else o = { id: 'v' + w + gid(), eb: `YEAR ${C.year} · A NEW VOTE`, title: 'The government re-votes', sub: 'The government lost the election. It votes again, with six more bills on the table.', rows: [['capitol', 'Government votes', has('V' + w, ['gov']), cnt('gov')]] };
     if (ph === 'mid' && HOST) { const mb = midBody(C, w); o.body = mb.html; o.bodySig = mb.sig; }
+    else if ((ph === 'build' || ph === 'revote') && C.gov.length) { const lit = govLit(C); o.body = `<div class="r-pcham">${CHAMBER.mini('cm', C.gov, { lit, eyebrow: ph === 'build' ? 'THE FIRST LAWS · MEMBERS WHO HAVE VOTED' : 'THE RE-VOTE · MEMBERS WHO HAVE VOTED' })}</div>`; o.bodySig = gid() + ph + w + ':' + lit.join(','); }
     const left = state.deadline ? state.deadline - Date.now() : null;
     o.clock = left != null ? CG.clock(Math.max(0, left)) : (state.paused ? 'Paused' : '');
     o.low = left != null && left < 30000;
@@ -4568,6 +5021,7 @@ const SIM = (function () {
     if (ph !== 'idle' && ph !== 'lobby') paintTop(cMemo.C);
     if (['build', 'react', 'elect', 'revote', 'mid'].includes(ph) && root.dataset.on === 'run') progress(cMemo.C || classNow(), false);
     if (ph === 'run') paintPoll();
+    if (role() === 'gov' && ['build', 'revote', 'mid'].includes(ph) && root.dataset.on === 'gov') paintGcham(cMemo.C);
   }
   setInterval(tick, 250);
 
@@ -4641,7 +5095,7 @@ const SIM = (function () {
       [3600, () => draft('D'), want === 'gov' ? 'The government votes on the first laws. The carbon tax is set by the middle vote.' : want === 'host' ? 'While students build, the projector counts who has finished.' : 'Each household and company builds before anyone knows the laws.'],
       [2200, () => { lock('D'); botsVote('V0', { cap: 1, evRebate: 1, hpRebate: 1, solarCredit: 0, use: 0 }); }, 'Plans lock in. Anyone who doesn’t finish is played by a stand-in.'],
       [2600, () => advance(), 'The laws are announced, vote by vote.'],
-      [3800, () => { go.laws(); draft('A'); }, 'Everyone gets one chance to react to the laws, at today’s prices.'],
+      [11000, () => { go.laws(); draft('A'); }, 'Everyone gets one chance to react to the laws, at today’s prices.'],
       [2600, () => { lock('A'); advance(); }, 'What the class changed.'],
       [3000, () => go.reacted(), 'The years begin. The valley changes with the class’s emissions.'],
       ...years(4, 'A year passes.'),
@@ -4649,7 +5103,7 @@ const SIM = (function () {
       [2400, () => advance(), 'Year 5: the midterm. Three laws reopen; households make one change; companies trade permits.'],
       [2600, () => { draft('M'); botsVote('MV1', { ...lawsAsVote(C().pol), evRebate: 1 }); botsHouseholds('MA1', { car: 'ev' }); if (SIM.tradingNow(C())) botsMarket(); }, want === 'host' ? 'The projector shows all three at once: the vote count, household changes, and the permit market.' : 'Your midterm move.'],
       [2600, () => { lock('M'); advance(); }, 'The midterm laws.'],
-      [3800, () => go.midlaws(), 'The permit market clears at one price.'],
+      [6500, () => go.midlaws(), 'The permit market clears at one price.'],
       [3800, () => { if (phase() === 'midtrade') go.midtrade(); }, 'Who changed what at the midterm.'],
       [2600, () => go.midreact(), 'The years continue.'],
       ...years(5, 'A year passes.'),
@@ -4657,7 +5111,7 @@ const SIM = (function () {
       [2600, () => { lock('B'); advance(); }, 'The ballots are counted.'],
       [4200, () => { go.elected(C().logs.elect1.keep); draft('R'); botsVote('V1', { cap: 1, evRebate: 1, hpRebate: 1, solarCredit: 1, use: 0, cleanStd: 1, border: 1, seaWall: 1 }); }, 'Voted out: the government re-votes, with six more bills on the table.'],
       [2600, () => { lock('R'); advance(); }, 'The new laws.'],
-      [3800, () => { go.laws(); advance(); go.reacted(); }, 'Everyone adjusts, and the second decade runs.'],
+      [20500, () => { go.laws(); advance(); go.reacted(); }, 'Everyone adjusts, and the second decade runs.'],
       [3000, () => toEnd(), '2056: where did the class land?'],
     ];
     const bar = document.createElement('div'); bar.className = 'c56-demobar';
