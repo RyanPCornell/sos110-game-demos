@@ -681,6 +681,55 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .os .os-lhead span:nth-child(2),.os .os-lhead span:nth-child(3){text-align:right;font-size:9px}
 .os .os-lnum.w{border-left:1px dotted #e3d7b8}
 .os .os-lnum{white-space:nowrap}
+.os .os-count2{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:14px;align-items:stretch}
+.os .os-cstage{position:relative;min-height:330px;background:radial-gradient(120% 90% at 50% 0%,#fffaf0,#f3ead6);border:1px solid var(--line);border-top:6px solid var(--c);border-radius:14px;padding:14px 18px;overflow:hidden}
+.os .os-claw{display:flex;gap:12px;align-items:center}
+.os .os-claw b{display:block;font:italic 900 26px Merriweather,serif}
+.os .os-claw small{font-size:13.5px;color:var(--muted)}
+.os .os-claw{animation:osup .35s both}
+.os .os-trays{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px}
+.os .os-tray{position:relative;border-radius:12px;padding:10px 12px 12px;min-height:170px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.os .os-tray.yes{background:rgba(47,122,64,.09);border:2px dashed rgba(47,122,64,.45)}
+.os .os-tray.no{background:rgba(168,72,63,.08);border:2px dashed rgba(168,72,63,.4)}
+.os .os-tray>span{font:900 13px Inter;letter-spacing:.24em}
+.os .os-tray.yes>span{color:#2f7a40}
+.os .os-tray.no>span{color:#a8483f}
+.os .os-tray>b{font:900 44px/1 Merriweather,serif;font-variant-numeric:tabular-nums}
+.os .os-tray.yes>b{color:#2f7a40}
+.os .os-tray.no>b{color:#a8483f}
+.os .os-slips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:100%;min-height:52px}
+.os .os-slip{width:30px;height:40px;border-radius:4px;background:#fffdf6;border:1px solid #b9a983;box-shadow:0 3px 6px rgba(60,45,20,.18);position:relative;display:grid;place-items:center;font:900 8px Inter;color:#7a5a14;animation:osdrop .45s cubic-bezier(.2,1.4,.4,1) both}
+.os .os-slip::before{content:'';position:absolute;left:6px;right:6px;top:9px;height:2px;background:#d9c9a3;box-shadow:0 6px 0 #d9c9a3,0 12px 0 #d9c9a3}
+.os .os-slip.me{background:#f6e3a8;border-color:var(--gold);box-shadow:0 0 0 2px rgba(230,200,122,.7),0 3px 8px rgba(60,45,20,.25)}
+.os .os-slip.me::before{display:none}
+@keyframes osdrop{from{transform:translateY(-70px) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+.os .os-stamp2{position:absolute;left:50%;top:60%;transform:translate(-50%,-50%);pointer-events:none;z-index:2}
+.os .os-stamp2 .os-stampin{display:flex;flex-direction:column;align-items:center;border:5px solid;border-radius:10px;padding:8px 26px;background:rgba(255,253,246,.94);box-shadow:0 10px 30px rgba(60,45,20,.25);transform:rotate(-8deg);animation:osstamp .45s cubic-bezier(.2,1.6,.4,1) both}
+.os .os-stamp2 b{font:900 54px/1 Merriweather,serif;letter-spacing:.05em}
+.os .os-stamp2 span{font:800 11px Inter;letter-spacing:.18em;text-transform:uppercase}
+.os .os-stampin.pass{color:#2f7a40;border-color:#2f7a40}
+.os .os-stampin.fail{color:#a8483f;border-color:#a8483f}
+.os .os-stampin.tie,.os .os-stampin.set{color:#8a6a2f;border-color:#8a6a2f}
+@keyframes osstamp{from{transform:rotate(-8deg) scale(2.2);opacity:0}to{transform:rotate(-8deg) scale(1);opacity:1}}
+.os .os-scale2{position:relative;margin:56px 30px 0;height:150px}
+.os .os-sline{position:absolute;left:0;right:0;bottom:30px;height:4px;background:#cdb98d;border-radius:2px}
+.os .os-sline span{position:absolute;top:-6px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+.os .os-sline i{width:2px;height:16px;background:#9a8d70}
+.os .os-sline em{font:800 13px Inter;font-style:normal;margin-top:4px;color:var(--muted)}
+.os .os-sdrops{position:absolute;left:0;right:0;bottom:40px;height:100px}
+.os .os-sdrops .os-slip{position:absolute;width:24px;height:13px;margin-left:-12px;border-radius:3px;font-size:6.5px}
+.os .os-sdrops .os-slip::before{display:none}
+.os .os-needle{position:absolute;bottom:20px;top:-20px;width:4px;margin-left:-2px;background:#b8432f;border-radius:2px;opacity:0;transition:left .5s cubic-bezier(.2,1.2,.4,1),opacity .3s}
+.os .os-needle.in{opacity:1}
+.os .os-needle::after{content:'MIDDLE VOTE';position:absolute;top:-16px;left:50%;transform:translateX(-50%);font:900 9px Inter;letter-spacing:.14em;color:#b8432f;white-space:nowrap}
+.os .os-clist{display:flex;flex-direction:column;gap:2px;background:#fffaf0;border:1px solid var(--line);border-radius:12px;padding:6px 8px}
+.os .os-cli{display:grid;grid-template-columns:16px 1fr auto;gap:6px;align-items:center;font-size:12px;padding:3px 5px;border-radius:6px;color:#9a8d70;transition:background .3s,color .3s}
+.os .os-cli.on{background:rgba(230,200,122,.35);color:var(--ink)}
+.os .os-cli.done{color:var(--ink)}
+.os .os-cli em{font-style:normal;font:900 10px Inter;letter-spacing:.06em;border-radius:4px;padding:1px 6px}
+.os .os-cli.done.pass em{background:#dcebd6;color:#2f6a36}
+.os .os-cli.done.fail em{background:#f3e0dc;color:#8a3a2a}
+.os .os-cli.done.tie em,.os .os-cli.done.set em{background:#efe6d0;color:#7a5a14}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -2367,7 +2416,63 @@ const UI = (function () {
         $('#osGo').onclick = stage2;
       }, 'wide');
     };
-    stage1();
+    // stage 0 (a delegate's screen only): your own assembly's count, law by law, ballots dropping in, then the verdict
+    const stage0 = () => {
+      const n = R.you, N = N5[n], r = sess.res[n], laws = SIM.lawsFor(n), mineB = o && o.mine ? o.mine : null;
+      const verdict = l => {
+        const now = r.laws[l.id], was = sess.before[n][l.id], t = r.tally[l.id];
+        if (l.kind === 'yn') { const [y, no] = t; const tie = y === no; return { cls: tie ? 'tie' : now ? 'pass' : 'fail', big: tie ? 'TIE' : now ? 'PASSED' : 'FAILED', sub: tie ? (now ? 'The law stays' : 'Nothing changes') : !!now !== !!was ? (now ? 'A new law' : 'Repealed') : now ? 'Stays in force' : 'Stays off the books', chip: tie ? 'Tie' : now ? 'Passed' : 'Failed' }; }
+        const lab = v => l.id === 'tax' ? '$' + v : SIM.LI.build.opts[v] + '%';
+        return { cls: now > was ? 'pass' : now < was ? 'fail' : 'set', big: 'SET AT ' + lab(now), sub: now === was ? 'Unchanged' : `Was ${lab(was)}`, chip: lab(now) };
+      };
+      overlay(head(`THE ASSEMBLY OF ${N.name.toUpperCase()} · ${yr}`, 'The count', `Every ballot cast by ${N.name}’s ${r.size} ${r.size === 1 ? 'delegate' : 'delegates'}, law by law.${mineB ? ' Your ballot is the gold one.' : ''}`) +
+        `<div class="os-count2" style="--c:${N.color}"><div class="os-cstage" id="osCstage"></div><div class="os-clist">${laws.map((l, i) => `<div class="os-cli" data-i="${i}">${glyph(l.id, 14)}<span>${l.title}</span><em></em></div>`).join('')}</div></div>` +
+        act({ onGo: () => stage1() , goLabel: 'Skip to all five nations ▸▸' }, '', `<span class="os-note" id="osCnote">Counting ${N.name}’s ballots…</span>`), () => {
+        const stage = $('#osCstage'), items = $$('.os-cli');
+        let t = 400;
+        laws.forEach((l, i) => {
+          const fast = i >= 3, per = fast ? 70 : 150, V = verdict(l), tally = r.tally[l.id];
+          // the ballots, in a fixed shuffled order; yours (if you voted) is gold
+          let slips;
+          if (l.kind === 'yn') { const [y, no] = tally; slips = [...Array(y).fill(1), ...Array(no).fill(0)]; }
+          else slips = tally.slice();
+          const mv = mineB && mineB[l.id] != null ? mineB[l.id] : null;
+          slips.sort((a, b) => SIM.hash(yr + l.id + a + Math.random()) - SIM.hash(yr + l.id + b));
+          let mineAt = mv == null ? -1 : slips.indexOf(mv);
+          at(t, () => {
+            items.forEach((e, j) => e.classList.toggle('on', j === i));
+            if (l.kind === 'yn') stage.innerHTML = `<div class="os-claw">${glyph(l.id, 26)}<div><b>${l.title}</b><small>${l.q}</small></div></div>
+              <div class="os-trays"><div class="os-tray yes"><span>YES</span><div class="os-slips" id="osYes"></div><b id="osYn">0</b></div><div class="os-tray no"><span>NO</span><div class="os-slips" id="osNo"></div><b id="osNn">0</b></div></div><div class="os-stamp2" id="osStamp"></div>`;
+            else { const opts = l.id === 'tax' ? l.opts : [0, 1, 2, 3];
+              stage.innerHTML = `<div class="os-claw">${glyph(l.id, 26)}<div><b>${l.title}</b><small>${l.q}</small></div></div>
+              <div class="os-scale2"><div class="os-sline">${opts.map((v, k) => `<span style="left:${k / (opts.length - 1) * 100}%"><i></i><em>${l.id === 'tax' ? '$' + v : SIM.LI.build.opts[v] + '%'}</em></span>`).join('')}</div><div class="os-sdrops" id="osDrops"></div><div class="os-needle" id="osNeedle"></div></div><div class="os-stamp2" id="osStamp"></div>`; }
+          });
+          const posOf = v => { const opts = l.id === 'tax' ? l.opts : [0, 1, 2, 3]; return opts.indexOf(v) / (opts.length - 1) * 100; };
+          const stack = {};
+          slips.forEach((v, k) => at(t + 380 + k * per, () => {
+            const me = k === mineAt, cls = `os-slip${me ? ' me' : ''}`;
+            if (l.kind === 'yn') {
+              const box = $(v ? '#osYes' : '#osNo'); if (!box) return;
+              box.insertAdjacentHTML('beforeend', `<i class="${cls}">${me ? 'YOU' : ''}</i>`);
+              const c = $(v ? '#osYn' : '#osNn'); c.textContent = +c.textContent + 1;
+            } else {
+              const d = $('#osDrops'); if (!d) return; const h = stack[v] = (stack[v] || 0) + 1;
+              d.insertAdjacentHTML('beforeend', `<i class="${cls}" style="left:${posOf(v)}%;bottom:${(h - 1) * 15}px">${me ? 'YOU' : ''}</i>`);
+            }
+          }));
+          const tEnd = t + 380 + slips.length * per + 180;
+          if (l.kind !== 'yn') at(tEnd - 60, () => { const nd = $('#osNeedle'); if (nd) { nd.style.left = posOf(r.laws[l.id]) + '%'; nd.classList.add('in'); } });
+          at(tEnd + (l.kind !== 'yn' ? 350 : 0), () => {
+            const st = $('#osStamp'); if (st) st.innerHTML = `<div class="os-stampin ${V.cls}"><b>${V.big}</b><span>${V.sub}</span></div>`;
+            const it = items[i]; it.classList.add('done', V.cls); it.querySelector('em').textContent = V.chip;
+          });
+          t = tEnd + (l.kind !== 'yn' ? 350 : 0) + (fast ? 900 : 1400);
+        });
+        at(t, () => { const nn = $('#osCnote'); if (nn) nn.textContent = 'Now: how all five nations voted…'; });
+        at(t + 1600, () => stage1());
+      }, 'wide');
+    };
+    if (R.you >= 0 && !(o && o.noCount)) stage0(); else stage1();
   }
   // the reckoning at 2066 (pages: the world, who paid and who gained, and in round 2 the twist)
   function showFinal(L, o) {
@@ -2682,7 +2787,7 @@ const UI = (function () {
     const first = sig !== ovSig;
     if (ph === 'deal') { if (first) UI.show.deal({ round2: state.round === 2, ...(HOST ? { onGo: go.first, goLabel: 'Open the first session ▸' } : { note: 'The first session opens in a moment.' }) }); }
     else if (ph === 'vote') progress(C, first);
-    else if (ph === 'summit') { if (first) { const sess = C.sessions[C.sessions.length - 1]; UI.show.summit(sess, HOST ? { onGo: go.run, goLabel: `Run the years to ${SIM.SESSIONS[s + 1] || SIM.YN} ▸`, foot: summitFoot(C) } : { note: 'The years start in a moment.', foot: summitFoot(C) }); } }
+    else if (ph === 'summit') { if (first) { const sess = C.sessions[C.sessions.length - 1]; const mv = !HOST && myN() >= 0 ? (mine('V' + s) || {}) : {}; UI.show.summit(sess, Object.assign({ mine: mv.v ? SIM.parse(mv.v) : null }, HOST ? { onGo: go.run, goLabel: `Run the years to ${SIM.SESSIONS[s + 1] || SIM.YN} ▸`, foot: summitFoot(C) } : { note: 'The years start in a moment.', foot: summitFoot(C) })); } }
     else if (ph === 'final') { if (first) finale(C); }
     else if (UI.isOpen()) UI.show.close();
     ovSig = sig;
@@ -2800,14 +2905,14 @@ const UI = (function () {
       [3400, () => { go.first(); botsVote('half'); }, you ? 'The first session: your nation’s delegates vote on its own laws.' : 'The first session opens. Each nation votes on its own laws; the projector counts the votes.'],
       [2800, () => { draft(); botsVote('all'); }, you ? 'Every choice updates the preview: what your laws would do to your own growth, and to the whole world’s warming.' : 'Delegates are casting their votes.'],
       [2600, cast, you ? 'You cast your votes. Nobody sees them until the summit.' : 'The session closes when time runs out, or when the instructor closes it.'],
-      [2400, adv(1), 'The summit: first the vote board, nation by nation, then what changed and where it puts the world in 2066.'],
-      [16000, go.run, 'The years begin. The map follows every nation’s choices.'],
+      [2400, adv(1), you ? `The summit opens with ${nm}’s own count: every ballot, law by law, then PASSED or FAILED. Then all five nations, and what changed.` : 'The summit: first the vote board, nation by nation, then what changed and where it puts the world in 2066.'],
+      [you ? 30000 : 16000, go.run, 'The years begin. The map follows every nation’s choices.'],
       ...years(4, 'A year passes.'),
       [2200, () => { R0.tab = 'impact'; adv(1)(); }, you ? 'The Impact chart: the world as voted, against no nation acting and every nation acting. The shaded band is how far your nation alone could swing it.' : 'The Impact chart: where the world is heading, against no nation acting and every nation acting.'],
       ...years(3, 'A year passes.'),
       [3200, () => { draft(); botsVote('all'); }, you ? 'Year 2034: the second session. You strengthen your nation’s laws.' : 'Year 2034: the second session. The nations vote again.'],
       [2800, () => { cast(); adv(1)(); }, 'The second summit.'],
-      [16000, go.run, 'The years continue.'],
+      [you ? 30000 : 16000, go.run, 'The years continue.'],
       ...years(8, 'A year passes.'),
       [2400, () => { botsVote('all'); cast(); adv(1)(); }, 'Sessions in 2042, 2050 and 2058 follow the same pattern.'],
       [7000, () => { go.run(); adv(4)(); }, 'Forty years go by in eight-year steps.'],
@@ -2852,7 +2957,7 @@ const UI = (function () {
     del: { t: 'A delegate', view: 'terrasen', steps: [
       { t: 'Your nation', b: 2, cap: 'Each student is dealt into one of five nations. The card shows the nation’s economy, its emissions and what warming threatens.' },
       { t: 'The ballot', b: 4, cap: 'Every eight years, delegates vote on their own nation’s laws. Under each law, a small chart shows whether it pays now and costs later, or costs now and pays later. The panel on the right previews the whole package.' },
-      { t: 'The votes', b: 6, cap: 'Each summit opens with the vote board: every law, every nation, the count revealed one nation at a time, and the closest calls. Then what changed, and a gauge of where it puts the world in 2066.' },
+      { t: 'The count', b: 6, cap: 'Each summit opens with the delegate’s own nation’s count: every ballot drops into Yes or No (theirs is gold), law by law, and each law is stamped PASSED or FAILED. Then the vote board for all five nations, what changed, and a gauge of where it puts the world in 2066.' },
       { t: 'The years', b: 9, cap: 'The years run on a living map: plants open and close, forests fall or regrow, the ice shrinks, coasts flood, storms strike. The side panel follows the student’s own nation.' },
       { t: 'Your impact', b: 12, cap: 'The Impact chart: the world as voted, the path if today’s laws hold, and the worlds where no nation or every nation acts. The shaded band is how far your nation alone could move 2066.' },
       { t: 'The second session', b: 16, cap: 'In 2034 the delegates vote again, knowing what eight years of their laws did.' },
