@@ -964,6 +964,9 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .os .os-hghost b{font-weight:800}
 .os .os-hsum .os-hghost{margin-top:2px;line-height:1.3}
 .os .os-hsum .os-hghost b{display:inline;font:800 11.5px Inter;color:#a8483f}
+.os .os-tn{flex-wrap:wrap;row-gap:0}
+.os .os-ttag{flex-basis:100%;padding-left:30px;font:700 10px Inter;letter-spacing:.06em;color:var(--muted)}
+.os .os-trow.sorted .os-ttag{color:var(--c);font-weight:900}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -1379,6 +1382,31 @@ const SIM = (function () {
     const perm = [0, 1, 2, 3, 4].sort((a, b) => hash(seed + ':perm:' + a) - hash(seed + ':perm:' + b));
     order.forEach((k, i) => out[k] = perm[Math.min(4, Math.floor(i * 5 / order.length))]);
     return out;
+  }
+  // the deal used in class: five nations of near-equal size. One nation is filled with the students most concerned about
+  // climate change (8 to 10 on the opening question), one with the least concerned (5 or lower), and three are dealt at
+  // random. A sorted nation holds the class's most (or least) concerned students, but only if at least 60% of its seats
+  // come from its group; otherwise it is dealt at random too. Which nations get the sorted groups is random.
+  // s5 is stored on the old 0-100 spectrum: 0 = 10/10 (strongly agree) … 100 = 1/10.
+  function dealSplit(players, seed) {
+    const r = rng(hash(seed + ':split')), ks = Object.keys(players).sort();
+    for (let i = ks.length - 1; i > 0; i--) { const j = (r() * (i + 1)) | 0; [ks[i], ks[j]] = [ks[j], ks[i]]; }
+    const s5 = k => { const v = players[k] && players[k].s5; return v === '' || v == null || !isFinite(+v) ? null : +v; };
+    const N = ks.length, size = [0, 1, 2, 3, 4].map(i => Math.floor(N / 5) + (i < N % 5 ? 1 : 0));
+    const perm = [0, 1, 2, 3, 4].sort((a, b) => hash(seed + ':perm:' + a) - hash(seed + ':perm:' + b));
+    // the two sorted nations get the smaller sizes, so the groups have the best chance of filling them
+    const bySize = perm.slice().sort((a, b) => size[a] - size[b]), hiN = bySize[0], loN = bySize[1];
+    const out = {}, used = new Set();
+    // a sorted nation takes the m most extreme answers in the class, provided at least 60% of them are in its group
+    const fill = (n, order, inGroup) => { const m = size[n], take = order.slice(0, m); if (!m || take.filter(inGroup).length < Math.ceil(m * .6)) return false; take.forEach(k => { out[k] = n; used.add(k); }); return true; };
+    const answered = ks.filter(k => s5(k) != null);
+    const hi = fill(hiN, answered.slice().sort((a, b) => s5(a) - s5(b)), k => s5(k) <= 22.3);
+    const lo = fill(loN, answered.filter(k => !used.has(k)).sort((a, b) => s5(b) - s5(a)), k => s5(k) >= 55.5);
+    // everyone else, dealt into the remaining seats
+    const rest = ks.filter(k => !used.has(k)), left = size.map((m, n) => m - Object.values(out).filter(x => x === n).length);
+    let n = 0;
+    for (const k of rest) { let guard = 0; while (left[perm[n % 5]] <= 0 && guard++ < 5) n++; out[k] = perm[n % 5]; left[perm[n % 5]]--; n++; }
+    return { a: out, hi: hi ? hiN : -1, lo: lo ? loN : -1 };
   }
   const packAssign = a => Object.entries(a).map(([k, v]) => k + ':' + v).join(',');
   const parseAssign = s => Object.fromEntries(String(s || '').split(',').filter(Boolean).map(x => { const i = x.lastIndexOf(':'); return [x.slice(0, i), +x.slice(i + 1)]; }));
@@ -1874,7 +1902,7 @@ const SIM = (function () {
 
   return { Y0, YN, SESSIONS, NATIONS, NI, LAWS, LI, GROUPS, SECTORS, lawsFor, pack, parse, deal, packAssign, parseAssign, newWorld, run, step, session, decide, standIn,
     ledger, whatIf, effort, project, futures, heldRun, profiles, GREEN, BROWN, SSP, at, hash, cleanCost, emptyLaws, T0, PPM0,
-    dilemma, PLATFORMS, PI, STD_START, stdLaws, platOf, ppack, pparse, standInStd, optionPreview, platProfiles };
+    dealSplit, dilemma, PLATFORMS, PI, STD_START, stdLaws, platOf, ppack, pparse, standInStd, optionPreview, platProfiles };
 })();
 
 // ONE SKY: the continent. A seeded heightmap (fractal noise under an oval falloff) gives the land, the islands,
@@ -2809,7 +2837,7 @@ const UI = (function () {
         <div class="os-dmeter"><span>Exposed to warming</span><i><b style="width:${Math.round(N.vuln / 2.6 * 100)}%"></b></i></div><div class="os-drisk">${N.exposure}</div>
         <div class="os-ddel">${cnt(n)} ${cnt(n) === 1 ? 'delegate' : 'delegates'}${n === R.you ? ' · <b>you are one of them</b>' : ''}</div></div>`; };
     const order = R.you >= 0 ? [R.you, ...[0, 1, 2, 3, 4].filter(n => n !== R.you)] : [0, 1, 2, 3, 4];
-    overlay(head(o.round2 ? 'A NEW WORLD · THE SAME SKY' : 'THE FIVE NATIONS', R.you >= 0 ? `You speak for ${N5[R.you].name}` : 'Five nations, one sky', R.you >= 0 ? 'Every eight years your nation’s delegates vote on its own laws. The other four nations vote on theirs. The air belongs to all of you.' : 'Every student now speaks for a nation. Every eight years each nation votes on its own laws; the other four vote on theirs. The air belongs to all of them.') +
+    overlay(head('THE FIVE NATIONS', R.you >= 0 ? `You speak for ${N5[R.you].name}` : 'Five nations, one sky', R.you >= 0 ? 'Every eight years your nation’s delegates vote on its own laws. The other four nations vote on theirs. The air belongs to all of you.' : 'Every student now speaks for a nation. Every eight years each nation votes on its own laws; the other four vote on theirs. The air belongs to all of them.') +
       `<div class="os-deal${R.you >= 0 ? ' mine' : ''}">${order.map(card).join('')}</div>` + act(o, 'Open the first session ▸'), null, 'wide');
     wire(o);
   }
@@ -3502,7 +3530,7 @@ const FIN = (function () {
     ];
     const tips = [['First ice-free Arctic summer', a.ice, b.ice], ['Permafrost starts to thaw', a.perma, b.perma], ['Erid’s coral reefs die', a.reef, b.reef]];
     el.innerHTML = `<div class="os-thead"><span></span><b>Your world</b><b>${other}</b></div>` +
-      rows.map(([l, va, vb, d, f], i) => `<div class="os-trow2" style="animation-delay:${200 + i * 160}ms"><span>${l}</span><b>${va}</b><b class="${(d > 0) === (k === 'none') ? 'worse' : 'better'}">${vb}<em>${f(d)}</em></b></div>`).join('') +
+      rows.map(([l, va, vb, d, f], i) => `<div class="os-trow2" style="animation-delay:${200 + i * 160}ms"><span>${l}</span><b>${va}</b><b class="${d > 0 ? 'worse' : d < 0 ? 'better' : ''}">${vb}<em>${f(d)}</em></b></div>`).join('') +
       `<div class="os-ttips">${tips.map(([l, ya, yb]) => `<div><span>${l}</span><b class="${ya ? 'bad' : 'ok'}">${tip(ya, 'Yes,')}</b><b class="${yb ? 'bad' : 'ok'}">${tip(yb, 'Yes,')}</b></div>`).join('')}</div>`;
   }
 
@@ -3576,7 +3604,7 @@ const FIN = (function () {
 // LIVE: the class plays One Sky on laptops. Rides the deck's live backend (window.__deckLiveReady: sharded Firestore
 // writes, ?host = the projected copy). Phases (main doc):
 //   idle → lobby → deal → vote (timed, session 0) → summit → run (years tick) → vote (session 1) → summit → run → …
-//   → final → [play again: deal (round 2, nations sorted by the slide-5 answer) → … → final with the twist]
+//   → final (ending with the reveal: one nation held the most concerned students, one the least, three were random)
 // The host's copy is the clock. When a session's time runs out it FREEZES the delegates' votes (their shard writes)
 // into the main doc as F.V<si>; every screen replays the world with SIM.run from the frozen votes, so all screens agree.
 'use strict';
@@ -3668,19 +3696,16 @@ const FIN = (function () {
     first: () => setPhase('vote', SECS.vote0, { si: 0, yr: SIM.Y0 }),
     run: () => setPhase('run', pace(), { yr: SIM.SESSIONS[si()] }),
   };
-  function deal(round) {
+  // one nation of the most concerned students, one of the least concerned, three at random (SIM.dealSplit)
+  function deal() {
     const players = { ...(state.players || {}) };
     if (!Object.keys(players).length) for (let i = 0; i < 20; i++) players['standin' + String(i).padStart(2, '0')] = { s5: '' };
-    const g = Date.now() % 100000 + 1, a = SIM.deal(players, g, round === 2);
+    const g = Date.now() % 100000 + 1, D = SIM.dealSplit(players, g), a = D.a;
     // for the twist: each nation's average slide-5 answer (0 = strongly agree it is serious), frozen now
     const sums = [0, 0, 0, 0, 0], ns = [0, 0, 0, 0, 0];
     for (const [pk, n] of Object.entries(a)) { const v = players[pk] && players[pk].s5; if (v !== '' && v != null && isFinite(+v)) { sums[n] += +v; ns[n]++; } }
     const s5m = sums.map((s, n) => ns[n] ? (s / ns[n]).toFixed(1) : '').join(',') + '|' + ns.join(',');
-    const extra = { phase: 'deal', gameId: g, round, assign: SIM.packAssign(a), s5m, si: 0, yr: SIM.Y0, F: {}, in: {}, deadline: null, cnt: null, hostId: HOSTID };
-    if (round === 2) {
-      const C = worldNow(), last = C.hist[C.hist.length - 1];
-      extra.r1 = last ? `${last.T.toFixed(2)}|${last.worldE.toFixed(1)}|${last.Y.toFixed(1)}` : '';
-    }
+    const extra = { phase: 'deal', gameId: g, round: 1, assign: SIM.packAssign(a), s5m, sp: D.hi + ',' + D.lo, si: 0, yr: SIM.Y0, F: {}, in: {}, deadline: null, cnt: null, hostId: HOSTID };
     backend.setDoc('polls', GID, { ...extra, mode: MODE(), players: Object.fromEntries(Object.keys(players).map(k => [k, { t: 1, s5: players[k].s5 || '' }])), pace: state.pace || 3.5 });
   }
   function hostBar() {
@@ -3699,7 +3724,7 @@ const FIN = (function () {
     const ms = bar.querySelector('[data-mode]'); ms.value = pickMode();
     ms.onchange = () => { try { localStorage.setItem('os-mode', ms.value); } catch (e) { } if (phase() === 'lobby') backend.mergeDoc('polls', GID, { mode: ms.value }); };
     bar.querySelector('[data-open]').onclick = () => backend.setDoc('polls', GID, { phase: 'lobby', players: {}, gameId: Date.now() % 100000 + 1, pace: 3.5, hostId: HOSTID, round: 1, mode: ms.value });
-    bar.querySelector('[data-start]').onclick = () => { if (!Object.keys(state.players || {}).length && !confirm('Nobody has joined yet. Deal a class of stand-ins?')) return; deal(1); };
+    bar.querySelector('[data-start]').onclick = () => { if (!Object.keys(state.players || {}).length && !confirm('Nobody has joined yet. Deal a class of stand-ins?')) return; deal(); };
     bar.querySelector('[data-skip]').onclick = () => { if (phase() === 'vote') advance(); else if (phase() === 'run') { const nx = SIM.SESSIONS[si() + 1] || SIM.YN; if (confirm(`Jump ahead to ${nx}?`)) backend.mergeDoc('polls', GID, { yr: nx - 1, deadline: Date.now() + 300, paused: 0 }); } };
     bar.querySelector('[data-pace]').onchange = e => backend.mergeDoc('polls', GID, { pace: +e.target.value });
     bar.querySelector('[data-pause]').onclick = () => state.paused ? backend.mergeDoc('polls', GID, { paused: 0, deadline: Date.now() + pace() * 1000 }) : backend.mergeDoc('polls', GID, { paused: 1, deadline: null });
@@ -3716,7 +3741,7 @@ const FIN = (function () {
     bar.querySelector('[data-pause]').textContent = state.paused ? 'Resume' : 'Pause';
     const ps = bar.querySelector('[data-pace]'); if (state.pace && ps.value !== String(state.pace)) ps.value = String(state.pace);
     bar.querySelector('[data-hs]').textContent = !clockMine() && ph !== 'idle' ? 'Another screen is running the clock.' : ph === 'idle' ? 'Open the lobby when the room has the deck.' : ph === 'lobby' ? `${n} joined. Deal when everyone is in.` :
-      ph === 'run' ? `Year ${yr()}${state.paused ? ' · paused' : ''}` : ph === 'final' ? (state.round === 2 ? 'Both runs are done.' : 'Forty years are done.') : '';
+      ph === 'run' ? `Year ${yr()}${state.paused ? ' · paused' : ''}` : ph === 'final' ? 'Forty years are done.' : '';
   }
 
   // ── screens ──
@@ -3897,7 +3922,7 @@ const FIN = (function () {
     lastYear = recY;
     const sig = gid() + ph + s + (ph === 'final' ? '' : '');
     const first = sig !== ovSig;
-    if (ph === 'deal') { if (first) UI.show.deal({ round2: state.round === 2, ...(HOST ? { onGo: go.first, goLabel: 'Open the first session ▸' } : { note: 'The first session opens in a moment.' }) }); }
+    if (ph === 'deal') { if (first) UI.show.deal({ ...(HOST ? { onGo: go.first, goLabel: 'Open the first session ▸' } : { note: 'The first session opens in a moment.' }) }); }
     else if (ph === 'vote') progress(C, first);
     else if (ph === 'summit') { if (first) { const sess = C.sessions[C.sessions.length - 1]; const mv = !HOST && myN() >= 0 ? (mine('V' + s) || {}) : {};
       const o = Object.assign({ mine: mv.v ? (STDM() ? SIM.pparse(mv.v) : SIM.parse(mv.v)) : null }, HOST ? { onGo: go.run, goLabel: `Run the years to ${SIM.SESSIONS[s + 1] || SIM.YN} ▸`, foot: summitFoot(C) } : { note: 'The years start in a moment.', foot: summitFoot(C) });
@@ -3939,23 +3964,32 @@ const FIN = (function () {
   function finale(C) {
     const I = II(votesUpTo(5));
     const L = SIM.ledger(I);
-    const o = HOST ? (state.round === 2 ? { onGo: () => { if (confirm('Close the game for everyone?')) backend.setDoc('polls', GID, { phase: 'idle' }); }, goLabel: 'Close the game' } : { onGo: () => deal(2), goLabel: 'Play again with new nations ▸' }) : { note: state.round === 2 ? 'Thanks for playing.' : 'Your instructor may run the world once more.' };
-    if (state.round === 2) o.twist = twist(C);
+    const o = HOST ? { onGo: () => { if (confirm('Close the game for everyone?')) backend.setDoc('polls', GID, { phase: 'idle' }); }, goLabel: 'Close the game' } : { note: 'Thanks for playing.' };
+    o.twist = twist(C);
     o.fut = futAt(4, myN()); o.I = I;
     UI.show.final(L, o);
   }
   function twist(C) {
     const [ms, cs] = String(state.s5m || '').split('|'), mean = (ms || '').split(','), cnt = (cs || '').split(',').map(Number);
+    const [hi, lo] = String(state.sp || '-1,-1').split(',').map(Number), NM = n => SIM.NATIONS[n].name;
     const rows = SIM.NATIONS.map((N, n) => ({ n, s5: mean[n] === '' || mean[n] == null ? null : +mean[n], k: cnt[n] || 0, effort: SIM.effort(C, n), cut: C.hist[C.hist.length - 1].nat[n].emis / C.nat[n].Gt0 - 1 }));
     rows.sort((a, b) => (a.s5 == null ? 101 : a.s5) - (b.s5 == null ? 101 : b.s5));
-    const [t1, e1] = String(state.r1 || '').split('|').map(Number), last = C.hist[C.hist.length - 1];
     const agree = v => v == null ? 'no answers' : `${(10 - v * 9 / 100).toFixed(1)} / 10 · ${v <= 12 ? 'Strongly agree' : v < 40 ? 'Agree' : v <= 60 ? 'Neutral' : v < 88 ? 'Disagree' : 'Strongly disagree'}`;
-    return UI.show && `<div class="os-ceb">ONE MORE THING</div><h2 class="os-ch">These nations were not random</h2><p class="os-csub">The second time, every delegate was placed by their answer to the opening question: <b>“Climate change is a serious issue”</b> (1 to 10). The nation at the top holds the students who agreed most strongly. Round two also re-dealt the random draws and disasters, and stand-ins filled in for missing answers and ballots, so read this as a demonstration, not a controlled experiment.</p>
-      <div class="os-twist">${rows.map(r => `<div class="os-trow" style="--c:${SIM.NATIONS[r.n].color}"><div class="os-tn">${UI.crest(r.n, 22)}<b>${SIM.NATIONS[r.n].name}</b></div>
+    const tag = n => n === hi ? 'Most concerned' : n === lo ? 'Least concerned' : 'Dealt at random';
+    const Q = '<b>“Climate change is a serious issue”</b> (1 to 10)';
+    const sorted = hi >= 0 || lo >= 0;
+    const sub = hi >= 0 && lo >= 0 ? `Before the game began, ${NM(hi)} was filled with the students who agreed most strongly with the opening question, ${Q}, and ${NM(lo)} with the students who agreed least. The other three nations were dealt at random.`
+      : hi >= 0 ? `Before the game began, ${NM(hi)} was filled with the students who agreed most strongly with the opening question, ${Q}. Too few students answered at the other end to fill a nation, so the other four were dealt at random.`
+      : lo >= 0 ? `Before the game began, ${NM(lo)} was filled with the students who agreed least with the opening question, ${Q}. Too few students answered at the top to fill a nation, so the other four were dealt at random.`
+      : `The class’s answers to the opening question, ${Q}, were too alike to sort, so all five nations were dealt at random. Here is how each nation’s answers compare with what it did.`;
+    const R = n => rows.find(r => r.n === n), pc = v => UI.sgn(v * 100, 0) + '%';
+    const foot = hi >= 0 && lo >= 0 ? `${NM(hi)}, the most concerned, changed its emissions by <b>${pc(R(hi).cut)}</b>; ${NM(lo)}, the least concerned, by <b>${pc(R(lo).cut)}</b>. ` : '';
+    return `<div class="os-ceb">ONE MORE THING</div><h2 class="os-ch">${sorted ? 'These nations were not all random' : 'Did caring change what nations did?'}</h2><p class="os-csub">${sub}</p>
+      <div class="os-twist">${rows.map(r => `<div class="os-trow${r.n === hi || r.n === lo ? ' sorted' : ''}" style="--c:${SIM.NATIONS[r.n].color}"><div class="os-tn">${UI.crest(r.n, 22)}<b>${NM(r.n)}</b><small class="os-ttag">${tag(r.n)}</small></div>
         <div class="os-tc"><span>Opening question</span><b>${agree(r.s5)}</b><i class="os-scale"><em style="left:${r.s5 == null ? 50 : r.s5}%"></em></i><small>${r.k} answered</small></div>
         <div class="os-te"><span>Climate effort</span><i class="os-bar"><b style="width:${Math.round(r.effort * 100)}%"></b></i></div>
-        <div class="os-tx"><span>Emissions, 2026→2066</span><b class="${r.cut <= 0 ? 'up' : 'dn'}">${UI.sgn(r.cut * 100, 0)}%</b></div></div>`).join('')}</div>
-      <p class="os-tfoot">${isFinite(t1) ? `Round 1 (random nations): <b>+${t1.toFixed(2)} °C</b> in 2066. Round 2 (sorted nations): <b>+${last.T.toFixed(2)} °C</b>.` : ''} Did the nations that cared most also act most? And did it matter, when they shared the sky with everyone else?</p>`;
+        <div class="os-tx"><span>Emissions, 2026→2066</span><b class="${r.cut <= 0 ? 'up' : 'dn'}">${pc(r.cut)}</b></div></div>`).join('')}</div>
+      <p class="os-tfoot">${foot}Did the nations that cared most also act most? And did it matter, when they shared the sky with everyone else?</p>`;
   }
 
   // ── render ──
@@ -4003,9 +4037,11 @@ const FIN = (function () {
     const doc = o => backend.mergeDoc('polls', GID, o), shard = o => backend.mergeDocShard('polls', GID, o);
     const you = want >= 0, nm = you ? SIM.NATIONS[want].name : '';
     function dealDemo() {
-      const a = SIM.deal(players, SEED, false);
+      const D = SIM.dealSplit(players, SEED), a = D.a;
       if (you && a[PK] !== want) { const swap = Object.keys(a).find(k => k !== PK && a[k] === want); a[swap] = a[PK]; a[PK] = want; }
-      backend.setDoc('polls', GID, { phase: 'deal', gameId: SEED, round: 1, assign: SIM.packAssign(a), s5m: '', si: 0, yr: SIM.Y0, F: {}, in: {}, players, pace: 3.5, hostId: HOSTID, mode: DMODE });
+      const sums = [0, 0, 0, 0, 0], ns = [0, 0, 0, 0, 0];
+      for (const [pk, n] of Object.entries(a)) { const v = players[pk].s5; if (v !== '' && isFinite(+v)) { sums[n] += +v; ns[n]++; } }
+      backend.setDoc('polls', GID, { phase: 'deal', gameId: SEED, round: 1, assign: SIM.packAssign(a), sp: D.hi + ',' + D.lo, s5m: sums.map((x, n) => ns[n] ? (x / ns[n]).toFixed(1) : '').join(',') + '|' + ns.join(','), si: 0, yr: SIM.Y0, F: {}, in: {}, players, pace: 3.5, hostId: HOSTID, mode: DMODE });
     }
     // the bots vote the way their nation's mood leans (greener as the damage arrives); `part` of them first
     function botsVote(part) {
@@ -4055,11 +4091,13 @@ const FIN = (function () {
         [12000, goBtn, 'What did the nations’ choices do to the climate? Their world, against the alternatives, and where the cooling came from.'],
         [14000, goBtn, 'The temptation: going fossil-first pays each nation more, whatever the others do. If all five take that deal, all five lose.'],
         [12000, goBtn, 'Now or later? Every clean direction costs first. Some pay the nation back; others mostly help the world.'],
-        [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own choices, but the cooling was shared.']] : [
+        [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own choices, but the cooling was shared.'],
+        [12000, goBtn, 'One more thing: one nation held the class’s most concerned students and one the least concerned. Did caring change what they did?']] : [
         [12000, goBtn, 'What did the nations’ laws do to the climate? Their world, against the alternatives, and where the cooling came from.'],
         [14000, goBtn, 'The temptation: going fossil-first pays each nation more, whatever the others do. If all five take that deal, all five lose.'],
         [12000, goBtn, 'Now or later? Some laws pay first and cost later; others cost first and pay later.'],
-        [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own laws, but the cooling was shared.']]),
+        [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own laws, but the cooling was shared.'],
+        [12000, goBtn, 'One more thing: one nation held the class’s most concerned students and one the least concerned. Did caring change what they did?']]),
     ];
     const bar = document.createElement('div'); bar.className = 'os-demobar';
     const views = [['projector', 'Projector'], ...SIM.NATIONS.map(N => [N.id, N.name])];
@@ -4102,7 +4140,8 @@ const FIN = (function () {
       { t: 'The climate', b: 38, cap: 'What the choices did to the climate: your world against the alternatives, and how much each nation’s choices cooled the world.' },
       { t: 'The temptation', b: 39, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
       { t: 'Now or later?', b: 40, cap: 'Every clean direction costs first. Some pay the nation back later (cheap clean power, efficient buildings); others mostly help the world.' },
-      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own choices did for itself and for its neighbors.' }] },
+      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own choices did for itself and for its neighbors.' },
+      { t: 'One more thing', b: 42, cap: 'The reveal: one nation was filled with the class’s most concerned students and one with the least concerned; the other three were random. Did caring change what they did?' }] },
     host: { t: 'The projector', view: 'projector', steps: [
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
@@ -4116,7 +4155,8 @@ const FIN = (function () {
       { t: 'The climate', b: 38, cap: 'What the choices did to the climate, nation by nation.' },
       { t: 'The temptation', b: 39, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
       { t: 'Now or later?', b: 40, cap: 'Costs now, pays later, or costs the nation and helps the world.' },
-      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained.' }] },
+      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained.' },
+      { t: 'One more thing', b: 42, cap: 'The reveal: which nation held the most and least concerned students.' }] },
   };
   const SAMPLE = {
     del: { t: 'A delegate', view: 'terrasen', steps: [
@@ -4131,7 +4171,8 @@ const FIN = (function () {
       { t: 'The climate', b: 37, cap: 'What the laws did to the climate: your world against the alternatives, how much each nation’s laws cooled the world, and what was avoided.' },
       { t: 'The temptation', b: 38, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
       { t: 'Now or later?', b: 39, cap: 'Which laws pay now and cost later (subsidies, drilling) and which cost now and pay later (carbon prices, clean energy, adaptation), against the world’s income over forty years.' },
-      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own laws did for itself and for its neighbors.' }] },
+      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own laws did for itself and for its neighbors.' },
+      { t: 'One more thing', b: 41, cap: 'The reveal: one nation was filled with the class’s most concerned students and one with the least concerned; the other three were random. Did caring change what they did?' }] },
     host: { t: 'The projector', view: 'projector', steps: [
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
@@ -4143,7 +4184,8 @@ const FIN = (function () {
       { t: 'The climate', b: 37, cap: 'What the laws did to the climate, nation by nation.' },
       { t: 'The temptation', b: 38, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
       { t: 'Now or later?', b: 39, cap: 'Pays now, costs later, or the other way around.' },
-      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained.' }] },
+      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained.' },
+      { t: 'One more thing', b: 41, cap: 'The reveal: which nation held the most and least concerned students.' }] },
   };
   const sampleBase = () => /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? '/game-demos-web/onesky/' : 'https://ryanpcornell.github.io/sos110-game-demos/onesky/';
   let sR = 'del', sAt = 0;
