@@ -3604,7 +3604,7 @@ const FIN = (function () {
 // LIVE: the class plays One Sky on laptops. Rides the deck's live backend (window.__deckLiveReady: sharded Firestore
 // writes, ?host = the projected copy). Phases (main doc):
 //   idle → lobby → deal → vote (timed, session 0) → summit → run (years tick) → vote (session 1) → summit → run → …
-//   → final (ending with the reveal: one nation held the most concerned students, one the least, three were random)
+//   → final. The deal puts the most concerned students in one nation and the least concerned in another (the instructor can tell the class)
 // The host's copy is the clock. When a session's time runs out it FREEZES the delegates' votes (their shard writes)
 // into the main doc as F.V<si>; every screen replays the world with SIM.run from the frozen votes, so all screens agree.
 'use strict';
@@ -3965,33 +3965,9 @@ const FIN = (function () {
     const I = II(votesUpTo(5));
     const L = SIM.ledger(I);
     const o = HOST ? { onGo: () => { if (confirm('Close the game for everyone?')) backend.setDoc('polls', GID, { phase: 'idle' }); }, goLabel: 'Close the game' } : { note: 'Thanks for playing.' };
-    o.twist = twist(C);
     o.fut = futAt(4, myN()); o.I = I;
     UI.show.final(L, o);
   }
-  function twist(C) {
-    const [ms, cs] = String(state.s5m || '').split('|'), mean = (ms || '').split(','), cnt = (cs || '').split(',').map(Number);
-    const [hi, lo] = String(state.sp || '-1,-1').split(',').map(Number), NM = n => SIM.NATIONS[n].name;
-    const rows = SIM.NATIONS.map((N, n) => ({ n, s5: mean[n] === '' || mean[n] == null ? null : +mean[n], k: cnt[n] || 0, effort: SIM.effort(C, n), cut: C.hist[C.hist.length - 1].nat[n].emis / C.nat[n].Gt0 - 1 }));
-    rows.sort((a, b) => (a.s5 == null ? 101 : a.s5) - (b.s5 == null ? 101 : b.s5));
-    const agree = v => v == null ? 'no answers' : `${(10 - v * 9 / 100).toFixed(1)} / 10 · ${v <= 12 ? 'Strongly agree' : v < 40 ? 'Agree' : v <= 60 ? 'Neutral' : v < 88 ? 'Disagree' : 'Strongly disagree'}`;
-    const tag = n => n === hi ? 'Most concerned' : n === lo ? 'Least concerned' : 'Dealt at random';
-    const Q = '<b>“Climate change is a serious issue”</b> (1 to 10)';
-    const sorted = hi >= 0 || lo >= 0;
-    const sub = hi >= 0 && lo >= 0 ? `Before the game began, ${NM(hi)} was filled with the students who agreed most strongly with the opening question, ${Q}, and ${NM(lo)} with the students who agreed least. The other three nations were dealt at random.`
-      : hi >= 0 ? `Before the game began, ${NM(hi)} was filled with the students who agreed most strongly with the opening question, ${Q}. Too few students answered at the other end to fill a nation, so the other four were dealt at random.`
-      : lo >= 0 ? `Before the game began, ${NM(lo)} was filled with the students who agreed least with the opening question, ${Q}. Too few students answered at the top to fill a nation, so the other four were dealt at random.`
-      : `The class’s answers to the opening question, ${Q}, were too alike to sort, so all five nations were dealt at random. Here is how each nation’s answers compare with what it did.`;
-    const R = n => rows.find(r => r.n === n), pc = v => UI.sgn(v * 100, 0) + '%';
-    const foot = hi >= 0 && lo >= 0 ? `${NM(hi)}, the most concerned, changed its emissions by <b>${pc(R(hi).cut)}</b>; ${NM(lo)}, the least concerned, by <b>${pc(R(lo).cut)}</b>. ` : '';
-    return `<div class="os-ceb">ONE MORE THING</div><h2 class="os-ch">${sorted ? 'These nations were not all random' : 'Did caring change what nations did?'}</h2><p class="os-csub">${sub}</p>
-      <div class="os-twist">${rows.map(r => `<div class="os-trow${r.n === hi || r.n === lo ? ' sorted' : ''}" style="--c:${SIM.NATIONS[r.n].color}"><div class="os-tn">${UI.crest(r.n, 22)}<b>${NM(r.n)}</b><small class="os-ttag">${tag(r.n)}</small></div>
-        <div class="os-tc"><span>Opening question</span><b>${agree(r.s5)}</b><i class="os-scale"><em style="left:${r.s5 == null ? 50 : r.s5}%"></em></i><small>${r.k} answered</small></div>
-        <div class="os-te"><span>Climate effort</span><i class="os-bar"><b style="width:${Math.round(r.effort * 100)}%"></b></i></div>
-        <div class="os-tx"><span>Emissions, 2026→2066</span><b class="${r.cut <= 0 ? 'up' : 'dn'}">${pc(r.cut)}</b></div></div>`).join('')}</div>
-      <p class="os-tfoot">${foot}Did the nations that cared most also act most? And did it matter, when they shared the sky with everyone else?</p>`;
-  }
-
   // ── render ──
   function render() {
     const ph = phase();
@@ -4091,13 +4067,11 @@ const FIN = (function () {
         [12000, goBtn, 'What did the nations’ choices do to the climate? Their world, against the alternatives, and where the cooling came from.'],
         [14000, goBtn, 'The temptation: going fossil-first pays each nation more, whatever the others do. If all five take that deal, all five lose.'],
         [12000, goBtn, 'Now or later? Every clean direction costs first. Some pay the nation back; others mostly help the world.'],
-        [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own choices, but the cooling was shared.'],
-        [12000, goBtn, 'One more thing: one nation held the class’s most concerned students and one the least concerned. Did caring change what they did?']] : [
+        [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own choices, but the cooling was shared.']] : [
         [12000, goBtn, 'What did the nations’ laws do to the climate? Their world, against the alternatives, and where the cooling came from.'],
         [14000, goBtn, 'The temptation: going fossil-first pays each nation more, whatever the others do. If all five take that deal, all five lose.'],
         [12000, goBtn, 'Now or later? Some laws pay first and cost later; others cost first and pay later.'],
-        [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own laws, but the cooling was shared.'],
-        [12000, goBtn, 'One more thing: one nation held the class’s most concerned students and one the least concerned. Did caring change what they did?']]),
+        [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own laws, but the cooling was shared.']]),
     ];
     const bar = document.createElement('div'); bar.className = 'os-demobar';
     const views = [['projector', 'Projector'], ...SIM.NATIONS.map(N => [N.id, N.name])];
@@ -4140,8 +4114,7 @@ const FIN = (function () {
       { t: 'The climate', b: 38, cap: 'What the choices did to the climate: your world against the alternatives, and how much each nation’s choices cooled the world.' },
       { t: 'The temptation', b: 39, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
       { t: 'Now or later?', b: 40, cap: 'Every clean direction costs first. Some pay the nation back later (cheap clean power, efficient buildings); others mostly help the world.' },
-      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own choices did for itself and for its neighbors.' },
-      { t: 'One more thing', b: 42, cap: 'The reveal: one nation was filled with the class’s most concerned students and one with the least concerned; the other three were random. Did caring change what they did?' }] },
+      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own choices did for itself and for its neighbors.' }] },
     host: { t: 'The projector', view: 'projector', steps: [
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
@@ -4155,8 +4128,7 @@ const FIN = (function () {
       { t: 'The climate', b: 38, cap: 'What the choices did to the climate, nation by nation.' },
       { t: 'The temptation', b: 39, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
       { t: 'Now or later?', b: 40, cap: 'Costs now, pays later, or costs the nation and helps the world.' },
-      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained.' },
-      { t: 'One more thing', b: 42, cap: 'The reveal: which nation held the most and least concerned students.' }] },
+      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained.' }] },
   };
   const SAMPLE = {
     del: { t: 'A delegate', view: 'terrasen', steps: [
@@ -4171,8 +4143,7 @@ const FIN = (function () {
       { t: 'The climate', b: 37, cap: 'What the laws did to the climate: your world against the alternatives, how much each nation’s laws cooled the world, and what was avoided.' },
       { t: 'The temptation', b: 38, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
       { t: 'Now or later?', b: 39, cap: 'Which laws pay now and cost later (subsidies, drilling) and which cost now and pay later (carbon prices, clean energy, adaptation), against the world’s income over forty years.' },
-      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own laws did for itself and for its neighbors.' },
-      { t: 'One more thing', b: 41, cap: 'The reveal: one nation was filled with the class’s most concerned students and one with the least concerned; the other three were random. Did caring change what they did?' }] },
+      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own laws did for itself and for its neighbors.' }] },
     host: { t: 'The projector', view: 'projector', steps: [
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
@@ -4184,8 +4155,7 @@ const FIN = (function () {
       { t: 'The climate', b: 37, cap: 'What the laws did to the climate, nation by nation.' },
       { t: 'The temptation', b: 38, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
       { t: 'Now or later?', b: 39, cap: 'Pays now, costs later, or the other way around.' },
-      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained.' },
-      { t: 'One more thing', b: 41, cap: 'The reveal: which nation held the most and least concerned students.' }] },
+      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained.' }] },
   };
   const sampleBase = () => /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? '/game-demos-web/onesky/' : 'https://ryanpcornell.github.io/sos110-game-demos/onesky/';
   let sR = 'del', sAt = 0;
