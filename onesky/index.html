@@ -886,6 +886,84 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .os .os-fhow{margin:.6rem 0 0;font-size:13px;color:var(--muted)}
 .os .os-linkb{font:700 13px Inter;color:var(--ink);background:none;border:0;border-bottom:1.5px solid var(--gold);padding:0;cursor:pointer}
 @media (max-width:800px){.os .os-mcols{grid-template-columns:1fr}}
+.os .os-two{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
+.os .os-twtog{display:flex;gap:4px;margin-bottom:6px}
+.os .os-twtog button{font:700 12.5px Inter;color:var(--muted);background:var(--paper);border:1.5px solid #d9c9a3;border-radius:999px;padding:4px 12px;cursor:pointer}
+.os .os-twtog button[aria-selected=true]{color:var(--paper);background:var(--ink);border-color:var(--ink)}
+.os .os-earths{--x:100%;position:relative;border-radius:12px;overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;box-shadow:0 6px 18px rgba(60,45,20,.18);outline-offset:3px}
+.os .os-snap{position:relative;line-height:0}
+.os .os-snap .os-svg{width:100%;height:auto}
+.os .os-snap .os-fx{animation:none;opacity:.95}
+.os .os-snapb{position:absolute;inset:0;clip-path:inset(0 0 0 var(--x))}
+.os .os-ehandle{position:absolute;top:0;bottom:0;left:var(--x);width:0;pointer-events:none}
+.os .os-ehandle i{position:absolute;top:0;bottom:0;left:-1.5px;width:3px;background:#fbf5e6;box-shadow:0 0 0 1px rgba(59,50,34,.5)}
+.os .os-ehandle b{position:absolute;top:50%;left:0;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:#fbf5e6;border:2px solid var(--ink);display:grid;place-items:center;font:900 17px Inter;color:var(--ink);box-shadow:0 4px 12px rgba(30,20,8,.3)}
+.os .os-elbl{position:absolute;top:10px;font:800 10.5px Inter;letter-spacing:.14em;color:#fbf5e6;background:rgba(59,50,34,.82);border-radius:6px;padding:4px 9px;pointer-events:none}
+.os .os-elbl b{font:900 13px Merriweather,serif;letter-spacing:0;margin-left:5px;color:#f6d38a}
+.os .os-elbl.l{left:10px}
+.os .os-elbl.r{right:10px;background:rgba(138,52,40,.86)}
+.os .os-tally{display:flex;flex-direction:column;gap:5px}
+.os .os-thead,.os .os-trow2{display:grid;grid-template-columns:minmax(0,1.3fr) 76px 112px;gap:8px;align-items:center}
+.os .os-thead b{font:800 10px Inter;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-align:right}
+.os .os-trow2{background:#fffaf0;border:1px solid var(--line);border-radius:9px;padding:6px 10px;font-size:12.5px;animation:osup .5s both}
+.os .os-trow2 span{color:var(--muted);line-height:1.3}
+.os .os-trow2 b{text-align:right;font:900 16px Merriweather,serif}
+.os .os-trow2 b em{display:block;font:800 10.5px Inter;font-style:normal}
+.os .os-trow2 b.worse{color:#a8483f}
+.os .os-trow2 b.worse em{color:#a8483f}
+.os .os-trow2 b.better{color:#2f7a40}
+.os .os-trow2 b.better em{color:#2f7a40}
+.os .os-ttips{display:flex;flex-direction:column;gap:3px;margin-top:2px}
+.os .os-ttips div{display:grid;grid-template-columns:minmax(0,1.3fr) 76px 112px;gap:8px;font-size:12px;padding:2px 10px}
+.os .os-ttips span{color:var(--muted)}
+.os .os-ttips b{text-align:right;font-weight:800}
+.os .os-ttips b.bad{color:#a8483f}
+.os .os-ttips b.ok{color:#2f7a40}
+@media (max-width:1100px){.os .os-two{grid-template-columns:1fr}}
+.os .os-tmtop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.os .os-tmnat,.os .os-tmyr{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.os .os-tmyr span{font-size:12px;color:var(--muted);margin-right:4px}
+.os .os-tmnat button,.os .os-tmyr button{display:inline-flex;align-items:center;gap:5px;font:700 12.5px Inter;color:var(--ink);background:var(--paper);border:1.5px solid #d9c9a3;border-radius:999px;padding:3px 11px 3px 7px;cursor:pointer}
+.os .os-tmyr button{padding:3px 11px}
+.os .os-tmnat button[aria-pressed=true]{border-color:var(--c);box-shadow:inset 0 0 0 1.5px var(--c);background:#fffdf6}
+.os .os-tmyr button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.os .os-grid4{display:grid;grid-template-columns:150px 1fr 1fr;gap:9px;align-items:stretch}
+.os .os-gh{font:600 13px Inter;color:var(--muted);text-align:center;align-self:end}
+.os .os-gh b,.os .os-gv b{color:var(--ink);font-weight:900}
+.os .os-gv{display:flex;align-items:center;justify-content:flex-end;text-align:right;font:600 13px/1.35 Inter;color:var(--muted);border-right:4px solid var(--c);padding-right:10px}
+.os .os-c4{position:relative;display:flex;flex-direction:column;gap:3px;background:#fffaf0;border:1.5px solid var(--line);border-radius:12px;padding:11px 14px 12px;transition:border-color .4s,box-shadow .4s,background .4s;animation:osup .45s both}
+.os .os-c4.gb{animation-delay:.1s}
+.os .os-c4.bg{animation-delay:.2s}
+.os .os-c4.bb{animation-delay:.3s}
+.os .os-cwho{font:800 10px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.os .os-c4>b{font:900 30px/1.1 Merriweather,serif}
+.os .os-c4>em{font-style:normal;font-size:11.5px;color:var(--muted)}
+.os .os-cd{font:800 12px Inter}
+.os .os-cd.up{color:#2f7a40}
+.os .os-cd.dn{color:#a8483f}
+.os .os-cd.same{color:#9a8d70;font-weight:600}
+.os .os-ct{display:flex;flex-direction:column;gap:2px;font:600 11.5px Inter;color:var(--muted);margin-top:4px}
+.os .os-ct i{display:block;height:6px;border-radius:3px;background:linear-gradient(90deg,#2f7a40,#c9b46a 45%,#c8783a 70%,#a8483f);transition:width .6s}
+.os .os-c4.best{border-color:#b8902f;box-shadow:0 0 0 3px rgba(230,200,122,.45)}
+.os .os-c4.trap{border-color:#a8483f;background:#fbefe6}
+.os .os-tag{position:absolute;top:-10px;right:12px;text-decoration:none;font:900 9.5px Inter;letter-spacing:.1em;text-transform:uppercase;border-radius:5px;padding:3px 7px;color:#fff}
+.os .os-tag.best{background:#b8902f}
+.os .os-tag.trap{background:#a8483f}
+.os .os-c4.best.trap .os-tag.trap{top:auto;bottom:-10px}
+.os .os-tverd{margin:.8rem 0 0;font-size:15px;line-height:1.6;max-width:105ch}
+.os .os-tverd b{font-weight:800}
+.os .os-moms{position:absolute;left:0;right:0;top:22%;display:flex;justify-content:center;pointer-events:none;z-index:4}
+.os .os-mom{max-width:min(620px,86%);text-align:center;background:rgba(251,245,230,.96);border:1px solid var(--gold);border-radius:14px;padding:14px 26px 16px;box-shadow:0 18px 50px rgba(30,20,8,.4),inset 0 0 0 4px rgba(251,245,230,.96),inset 0 0 0 5px var(--line);animation:osmom 6.5s ease-out both}
+.os .os-mom span{display:block;font:900 11px Inter;letter-spacing:.24em;color:#a8483f}
+.os .os-mom b{display:block;margin:.3rem 0;font:italic 900 26px/1.2 Merriweather,serif;color:var(--ink)}
+.os .os-mom em{display:block;font-style:normal;font-size:14px;line-height:1.45;color:var(--muted)}
+.os .os-mom.tip{border-color:#a8483f;border-top:6px solid #a8483f}
+.os .os-mom.dis{border-top:6px solid var(--c);animation-duration:4.5s}
+@keyframes osmom{0%{opacity:0;transform:translateY(10px) scale(.96)}8%{opacity:1;transform:none}85%{opacity:1}100%{opacity:0}}
+.os .os-hghost{color:#a8483f!important}
+.os .os-hghost b{font-weight:800}
+.os .os-hsum .os-hghost{margin-top:2px;line-height:1.3}
+.os .os-hsum .os-hghost b{display:inline;font:800 11.5px Inter;color:#a8483f}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -1740,6 +1818,18 @@ const SIM = (function () {
     return clamp(s / C.hist.length / .96 + .1);
   }
 
+  // ── the temptation: four worlds for nation k, each nation keeping one plan from 2026 (act, or go fossil-first) ──
+  // cells gg (k acts, the others act), bg (k fossil-first, the others act), gb, bb; each holds k's income, the others'
+  // average income and the warming, in 2034, 2050 and 2066
+  const DIL_Y = [2034, 2050, 2066];
+  function dilemma(I, k) {
+    return withMode(I, () => {
+      const w = (me, oth) => heldRun({ ...I, V: [{}] }, 0, n => n === k ? (me ? GREEN(n) : BROWN()) : (oth ? GREEN(n) : BROWN()));
+      const pick = C => Object.fromEntries(DIL_Y.map(y => { const r = C.hist.find(h => h.year === y); return [y, { inc: r.nat[k].gdpPc, others: r.nat.filter((x, n) => n !== k).reduce((a, x) => a + x.gdpPc, 0) / 4, T: r.T, lost: C.hist.filter(h => h.year <= y).reduce((a, h) => a + h.nat[k].Y * (h.nat[k].dmg + h.nat[k].shock), 0) }]; }));
+      return { k, years: DIL_Y, gg: pick(w(1, 1)), bg: pick(w(0, 1)), gb: pick(w(1, 0)), bb: pick(w(0, 0)) };
+    });
+  }
+
   // ── the standard game's previews ──
   // every option of every platform for nation n at session si, the other platforms as `picks` and the other nations
   // keeping their laws: that sector's emissions eight years on, n's income then and in 2066, and the world's warming
@@ -1784,7 +1874,7 @@ const SIM = (function () {
 
   return { Y0, YN, SESSIONS, NATIONS, NI, LAWS, LI, GROUPS, SECTORS, lawsFor, pack, parse, deal, packAssign, parseAssign, newWorld, run, step, session, decide, standIn,
     ledger, whatIf, effort, project, futures, heldRun, profiles, GREEN, BROWN, SSP, at, hash, cleanCost, emptyLaws, T0, PPM0,
-    PLATFORMS, PI, STD_START, stdLaws, platOf, ppack, pparse, standInStd, optionPreview, platProfiles };
+    dilemma, PLATFORMS, PI, STD_START, stdLaws, platOf, ppack, pparse, standInStd, optionPreview, platProfiles };
 })();
 
 // ONE SKY: the continent. A seeded heightmap (fractal noise under an oval falloff) gives the land, the islands,
@@ -2177,7 +2267,7 @@ const WORLD = (function () {
     s += `<text x="560" y="72" class="os-sea" text-anchor="middle">The Frozen Sea</text><text x="120" y="210" class="os-sea">The Western Ocean</text><text x="1120" y="560" class="os-sea" text-anchor="middle">Sea of Storms</text><text x="560" y="676" class="os-sea" text-anchor="middle">The Southern Gulf</text>`;
     return s;
   }
-  function mount(el) {
+  function build(el) {
     root = el;
     const mtns = G.MTN.map(m => mountain(...m)).join('');
     const rivers = [...G.RIVERS, ...G.DELTA].map((r, i) => { const dd = G.d(r); const w = i === 0 ? 2.6 : i >= G.RIVERS.length ? 1.5 : 1.9; return `<path d="${dd}" fill="none" stroke="${INK}" stroke-width="${w + 1.4}" stroke-linecap="round" opacity=".55"/><path d="${dd}" fill="none" stroke="#5e93b8" stroke-width="${w}" stroke-linecap="round"/>`; }).join('');
@@ -2217,6 +2307,9 @@ const WORLD = (function () {
     el.innerHTML = svg + live + top;
     svg = el.querySelector('svg');
     for (const k of ['ice', 'flood', 'dry', 'forest', 'solar', 'wind', 'works', 'rigs', 'ships', 'smoke', 'haze', 'fx', 'you', 'cart', 'labels']) dyn[k] = el.querySelector(`[data-${k}]`);
+  }
+  function mount(el) {
+    build(el);
     const layers = [...el.querySelectorAll('.os-layer')];
     const fit = () => {
       const r = svg.getBoundingClientRect(), e = el.getBoundingClientRect();
@@ -2379,7 +2472,30 @@ const WORLD = (function () {
       s.el.setAttribute('opacity', (Math.min(1, s.t * 8, (1 - s.t) * 8)).toFixed(2));
     }
   }
-  return { mount, set, setVisible(fn) { vis = fn; }, CITY, PAL };
+  // a still picture of one year, for side-by-side worlds: the same plate, its own copy of every id, no motion.
+  // o = { id, you, events: [disasters to draw], caption }
+  function snapshot(rec, o = {}) {
+    const keep = { root, svg, dyn, state, lastSig };
+    const el = document.createElement('div');
+    dyn = {}; state = { rec: null, you: -1 };
+    let html = '';
+    try {
+      build(el);
+      set(rec, { you: o.you == null ? -1 : o.you });
+      if (o.events && o.events.length) { fx({ year: rec.year, events: o.events }); clearTimeout(state.fxT); }
+      // a still has no moving smoke, so draw it: a plume over every running stack, and land that browns with the heat
+      const T = rec ? rec.T : SIM.T0, heat = clamp((T - 1.6) * .5, 0, .4);
+      let still = `<g clip-path="url(#${P}Land)"><rect width="${W}" height="${H}" fill="#c8783a" opacity="${f1(heat * .6)}"/></g>`;
+      (state.stacks || []).forEach(([x, y, kind], i) => { const r = rng(i * 13 + 7), col = kind === 'coal' ? '#3f3830' : kind === 'gas' ? '#a8a29a' : '#625a50';
+        for (let j = 0; j < 5; j++) { const t = j / 4; still += `<circle cx="${f1(x + t * 18 + r() * 3)}" cy="${f1(y - t * 30)}" r="${f1(2 + t * (kind === 'coal' ? 10 : 7))}" fill="${col}" opacity="${f1((kind === 'gas' ? .3 : .5) * (1 - t * .55))}"/>`; } });
+      dyn.smoke.innerHTML = still;
+      if (o.caption) dyn.cart.innerHTML = dyn.cart.innerHTML.replace('THE FIVE NATIONS', o.caption);
+      html = el.innerHTML;
+    } finally { ({ root, svg, dyn, state, lastSig } = keep); }
+    const px = 'os' + (o.id || 'snap');
+    return html.replace(/([("])#os/g, `$1#${px}`).replace(/id="os/g, `id="${px}`);
+  }
+  return { mount, set, snapshot, setVisible(fn) { vis = fn; }, CITY, PAL };
 })();
 
 // ONE SKY: the screens around the map. The run view (map + side panel of KPIs, the nations, charts and news),
@@ -2456,6 +2572,7 @@ const UI = (function () {
     // the news for a new year: tipping points first, then disasters, then the energy crises
     const tip = rec.news.find(n => n[0] === 'tip') || rec.news.find(n => n[0] === 'crisis') || rec.news.find(n => n[0] === 'ev');
     if (tip) news(tip[1], rec.year, tip[0] === 'tip');
+    if (typeof FIN !== 'undefined') FIN.moment(rec);
   }
   function news(t, y, big) {
     const n = $('#osNtxt'); if (!n) return;
@@ -2518,6 +2635,8 @@ const UI = (function () {
     const box = $('#osHarm'); if (!box) return;
     if (!rec) { box.innerHTML = `<span class="os-hl">Climate damage</span><span class="os-hnone">None yet. Once the years run, every storm, flood, heat wave, drought and fire, and what it costs, shows up here.</span>`; box.className = 'os-harm'; return; }
     const lost = rec.Y * rec.dmgShare, sum = h.reduce((a, r) => a + r.Y * r.dmgShare, 0), nEv = h.reduce((a, r) => a + r.events.length, 0);
+    // the same years in the world where every nation went fossil-first
+    const NC = R.fut && R.fut.noneC, noneSum = NC ? NC.hist.filter(r => r.year <= rec.year).reduce((a, r) => a + r.Y * r.dmgShare, 0) : null;
     const ev = rec.events.slice().sort((a, b) => b.sev - a.sev).slice(0, 3);
     const hit = rec.nat.map((x, n) => Math.max(0, x.dmg + x.shock)), mx = Math.max(.03, ...hit);
     const tone = rec.dmgShare > .05 ? 'sev' : rec.dmgShare > .02 ? 'mid' : 'low';
@@ -2525,7 +2644,7 @@ const UI = (function () {
     box.innerHTML = `<div class="os-hnow"><span class="os-hl">Climate damage · ${rec.year}</span><b>$${lost.toFixed(lost < 1 ? 2 : 1)}T</b><em>${(rec.dmgShare * 100).toFixed(1)}% of the world’s income</em></div>
       <div class="os-hev">${ev.length ? ev.map(e => `<span style="--c:${N5[e.n].color}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">${HZ[e.kind] || ''}</svg>${HZN[e.kind] || e.kind} in <b>${N5[e.n].name}</b> <em>−${(e.sev * 100).toFixed(1)}% of GDP</em></span>`).join('') : '<span class="os-hquiet">No major disaster this year. The slow losses from heat, drought and rising seas continue.</span>'}</div>
       <div class="os-hwho" title="Share of each nation’s income lost to climate this year">${hit.map((v, n) => `<span style="--c:${N5[n].color}"><i style="height:${Math.max(4, v / mx * 100).toFixed(0)}%"></i><em>${(v * 100).toFixed(1)}</em></span>`).join('')}<small>% lost, by nation</small></div>
-      <div class="os-hsum"><b>$${sum.toFixed(1)}T</b><em>lost since 2026 · ${nEv} disasters</em></div>`;
+      <div class="os-hsum"><b>$${sum.toFixed(1)}T</b><em>lost since 2026 · ${nEv} disasters</em>${noneSum != null ? `<em class="os-hghost">Fossil-first world by now: <b>$${noneSum.toFixed(1)}T</b></em>` : ''}</div>`;
   }
   function spark(d) {
     if (!d || d.length < 2) return '<svg class="os-spark" viewBox="0 0 100 22"></svg>';
@@ -2870,6 +2989,8 @@ const UI = (function () {
     const aw = [['Fastest growing', by('gr', -1), r => `${(r.gr * 100).toFixed(2)}% a year`], ['Biggest cut', by('cut', 1), r => `${sgn(r.cut * 100, 0)}% emissions`], ['Hit hardest', by('dmg', -1), r => `$${r.dmg.toFixed(1)}T lost to climate since 2026`]];
     add('world', head('2066 · FORTY YEARS LATER', 'Where did the world land?', `The five nations finished at <b>+${last.T.toFixed(2)} °C</b>, ${Math.round(last.ppm)} ppm of CO₂ and seas ${Math.round(last.slr)} cm higher. World emissions went from ${first.worldE.toFixed(1)} to ${last.worldE.toFixed(1)} Gt a year.`) +
       `<div class="os-fin"><div class="os-fchart" id="osFchart"></div><div class="os-awards">${aw.map(([t, r, f]) => `<div class="os-aw" style="--c:${N5[r.n].color}">${crest(r.n, 22)}<div><span>${t}</span><b>${N5[r.n].name}</b><em>${f(r)}</em></div></div>`).join('')}</div></div>` + MODEL_NOTE);
+    // the two worlds: the class's 2066 against the world of inaction
+    if (L) add('earths', FIN.earthsPage(L));
     // (standard game) the chain, 2026 to 2066
     let chainD = null;
     if (std() && L) {
@@ -2878,6 +2999,8 @@ const UI = (function () {
     }
     // 2. what the laws did to the climate
     if (L && o.fut) add('impact', impactPage(L, o.fut));
+    // the temptation: why every nation is drawn to fossil-first, and where that leads
+    if (o.I) add('tempt', FIN.temptPage());
     // 3. now or later: which laws pay off first and cost later, and the other way around
     if (L && o.I) add('later', std() ? STD.laterPage(o) : laterPage(L, o));
     // 4. who paid, who gained (the commons)
@@ -2894,9 +3017,11 @@ const UI = (function () {
     let pg = Math.min(pages.length - 1, R.fpg || 0); R.fpg = 0;
     const draw = () => {
       overlay(pages[pg] + (pg === pages.length - 1 ? `<p class="os-fhow">Where do these numbers come from? <button class="os-linkb" data-how2>How this model works, and its sources</button></p>` : '') + `<div class="os-fnav">${pages.map((_, i) => `<i class="${i === pg ? 'on' : ''}"></i>`).join('')}</div>` +
-        act(pg < pages.length - 1 ? { onGo: () => { pg++; draw(); }, goLabel: { chain: 'From choices to climate ▸', later: 'Now or later? ▸', impact: `What did your ${W()} do? ▸`, ledger: 'Who paid, who gained? ▸', twist: 'One more thing… ▸' }[kinds[pg + 1]] || 'Next ▸' } : o, 'Close', pg ? '<button class="os-btn ghost" id="osBack">◂ Back</button>' : ''), () => {
+        act(pg < pages.length - 1 ? { onGo: () => { pg++; draw(); }, goLabel: { earths: 'Two worlds ▸', tempt: 'The temptation ▸', chain: 'From choices to climate ▸', later: 'Now or later? ▸', impact: `What did your ${W()} do? ▸`, ledger: 'Who paid, who gained? ▸', twist: 'One more thing… ▸' }[kinds[pg + 1]] || 'Next ▸' } : o, 'Close', pg ? '<button class="os-btn ghost" id="osBack">◂ Back</button>' : ''), () => {
         if (pg === 0) finalChart($('#osFchart'));
         if (kinds[pg] === 'chain' && chainD) STD.mountChain(chainD, true);
+        if (kinds[pg] === 'earths') FIN.mountEarths(L);
+        if (kinds[pg] === 'tempt') FIN.mountTempt(o.I);
         if ($('#osLchart')) laterChart($('#osLchart'), L);
         if ($('#osIchart')) { const keepF = R.fut; R.fut = o.fut; impactChart($('#osIchart'), null, true); R.fut = keepF; }
         const b = $('#osBack'); if (b) b.onclick = () => { pg--; draw(); };
@@ -3298,6 +3423,154 @@ const STD = (function () {
   const pips = L => { const p = SIM.platOf(L); return P5.map(P => `<i class="os-pip" style="--oc:${OPT_C[p[P.id]]}" title="${P.title}: ${esc(P.opts[p[P.id]].t)}">${glyph(P.id, 12)}</i>`).join(''); };
 
   return { SECT, OPT_C, glyph, dir, ballotRows, fillOptions, sectorBars, data, draw, mountChain, chainHTML, story, summit, laterPage, sectorChart, pips, optName };
+})();
+
+// ONE SKY · THE RECKONING. Two finale pages that make the cost of inaction and the commons felt rather than told:
+//   TWO WORLDS  the 2066 map drawn twice, the class's world and the world where every nation went fossil-first (or every
+//               nation acted), with a handle to drag between them and a tally of what the difference cost
+//   THE TEMPTATION  four worlds for one nation: it acts or goes fossil-first, and so do the other four. Every nation sees
+//               that going fossil-first pays it more, whatever the others do; if all five take that deal, all five lose.
+// Both work for the standard and the advanced game. The words are written from the numbers, so they hold for any class.
+'use strict';
+const FIN = (function () {
+  const N5 = SIM.NATIONS, K = UI.kit, esc = UI.esc, sgn = UI.sgn;
+  const money = v => '$' + (v >= 100 ? v.toFixed(0) : v.toFixed(1)) + 'k';
+  const sumH = (H, f) => H.reduce((a, r) => a + f(r), 0);
+
+  // ── TWO WORLDS ──
+  function facts(C) {
+    const h = C.hist, last = h[h.length - 1];
+    const erid = last.nat[4];
+    return {
+      T: last.T, ppm: last.ppm, slr: last.slr, share: last.dmgShare, lost: sumH(h, r => r.Y * r.dmgShare), ev: sumH(h, r => r.events.length),
+      ice: C.tips.ice || 0, reef: C.tips.reef || 0, perma: C.tips.perma || 0, eridLost: Math.max(0, erid.dmg + erid.shock), E: last.worldE,
+      worst: h.filter(r => r.year > 2060).flatMap(r => r.events).sort((a, b) => b.sev - a.sev).slice(0, 5),
+    };
+  }
+  function earthsPage(L) {
+    return K.head('2066 · TWO WORLDS', 'The world you made, and the world of inaction', 'Drag the handle across the map. Left: the five nations’ world in 2066, as you voted it. Right: the same five nations, the same forty years, if each one had chosen differently.') +
+      `<div class="os-two"><div><div class="os-twtog" role="tablist">${[['none', 'Every nation fossil-first'], ['all', 'Every nation acted']].map(([k, t], i) => `<button role="tab" data-alt="${k}" aria-selected="${i === 0}">${t}</button>`).join('')}</div>
+        <div class="os-earths" id="osEarths"><div class="os-snap" data-a></div><div class="os-snap os-snapb" data-b></div><div class="os-ehandle" data-h><i></i><b aria-hidden="true">⟷</b></div>
+          <span class="os-elbl l" data-la></span><span class="os-elbl r" data-lb></span></div></div>
+        <div class="os-tally" id="osTally"></div></div>`;
+  }
+  function mountEarths(L) {
+    const box = K.$('#osEarths'); if (!box) return;
+    const A = L.actual, worlds = { none: L.none, all: L.all }, fa = facts(A), fw = { none: facts(L.none), all: facts(L.all) };
+    box.querySelector('[data-a]').innerHTML = WORLD.snapshot(A.hist[A.hist.length - 1], { id: 'ea', you: UI.R.you, events: fa.worst, caption: 'YOUR WORLD' });
+    const snaps = {};
+    const setB = k => {
+      snaps[k] = snaps[k] || WORLD.snapshot(worlds[k].hist[worlds[k].hist.length - 1], { id: 'eb' + k, events: fw[k].worst, caption: k === 'none' ? 'FOSSIL-FIRST' : 'EVERY NATION ACTED' });
+      box.querySelector('[data-b]').innerHTML = snaps[k];
+      box.querySelector('[data-la]').innerHTML = `YOUR WORLD <b>+${fa.T.toFixed(2)} °C</b>`;
+      box.querySelector('[data-lb]').innerHTML = `${k === 'none' ? 'EVERY NATION FOSSIL-FIRST' : 'EVERY NATION ACTED'} <b>+${fw[k].T.toFixed(2)} °C</b>`;
+      tally(fa, fw[k], k);
+    };
+    // the handle: drag, click or use the arrow keys; it sweeps across once on its own
+    let x = 100;
+    const place = v => { x = clamp(v, 0, 100); box.style.setProperty('--x', x + '%'); };
+    const fromEvent = e => { const r = box.getBoundingClientRect(); place((e.clientX - r.left) / r.width * 100); };
+    let drag = false;
+    box.onpointerdown = e => { drag = true; box.setPointerCapture(e.pointerId); stop = true; fromEvent(e); };
+    box.onpointermove = e => { if (drag) fromEvent(e); };
+    box.onpointerup = box.onpointercancel = () => { drag = false; };
+    box.tabIndex = 0; box.setAttribute('role', 'slider'); box.setAttribute('aria-label', 'Compare the two worlds');
+    box.onkeydown = e => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); e.stopPropagation(); stop = true; place(x + (e.key === 'ArrowLeft' ? -5 : 5)); } };
+    let stop = false;
+    place(100);
+    const sweep = [[600, 100], [2400, 8], [3800, 50]];
+    let t0 = null;
+    const anim = ts => { if (stop) return; if (t0 == null) t0 = ts; const t = ts - t0; let v = 50;
+      for (let i = 1; i < sweep.length; i++) if (t < sweep[i][0]) { const [a, va] = sweep[i - 1], [b, vb] = sweep[i], f = clamp((t - a) / (b - a)); v = va + (vb - va) * (f < .5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2); break; }
+      place(t < sweep[0][0] ? 100 : v); if (t < sweep[sweep.length - 1][0]) requestAnimationFrame(anim); };
+    requestAnimationFrame(anim);
+    K.$$('[data-alt]').forEach(b => b.onclick = () => { K.$$('[data-alt]').forEach(o => o.setAttribute('aria-selected', o === b)); setB(b.dataset.alt); });
+    setB('none');
+  }
+  // the tally: what the difference between the two worlds cost, counting up
+  function tally(a, b, k) {
+    const el = K.$('#osTally'); if (!el) return;
+    const other = k === 'none' ? 'Fossil-first' : 'Everyone acted';
+    const tip = (y, what) => y ? `${what} in ${y}` : 'Never';
+    const rows = [
+      ['Warming in 2066', `+${a.T.toFixed(2)} °C`, `+${b.T.toFixed(2)} °C`, b.T - a.T, v => `${sgn(v, 2)} °C`],
+      ['Lost to climate in 2066', `${(a.share * 100).toFixed(1)}%`, `${(b.share * 100).toFixed(1)}%`, b.share - a.share, v => `${sgn(v * 100, 1)} pts of world income`],
+      ['Lost to climate, 2026–2066', `$${a.lost.toFixed(0)}T`, `$${b.lost.toFixed(0)}T`, b.lost - a.lost, v => `${v >= 0 ? '+' : '−'}$${Math.abs(v).toFixed(0)}T`],
+      ['Storms, floods, heat waves, droughts and fires', `${a.ev}`, `${b.ev}`, b.ev - a.ev, v => `${sgn(v, 0)}`],
+      ['Seas higher than 2026', `${a.slr.toFixed(0)} cm`, `${b.slr.toFixed(0)} cm`, b.slr - a.slr, v => `${sgn(v, 0)} cm`],
+      ['Erid’s income lost to climate, 2066', `${(a.eridLost * 100).toFixed(1)}%`, `${(b.eridLost * 100).toFixed(1)}%`, b.eridLost - a.eridLost, v => `${sgn(v * 100, 1)} pts`],
+    ];
+    const tips = [['First ice-free Arctic summer', a.ice, b.ice], ['Permafrost starts to thaw', a.perma, b.perma], ['Erid’s coral reefs die', a.reef, b.reef]];
+    el.innerHTML = `<div class="os-thead"><span></span><b>Your world</b><b>${other}</b></div>` +
+      rows.map(([l, va, vb, d, f], i) => `<div class="os-trow2" style="animation-delay:${200 + i * 160}ms"><span>${l}</span><b>${va}</b><b class="${(d > 0) === (k === 'none') ? 'worse' : 'better'}">${vb}<em>${f(d)}</em></b></div>`).join('') +
+      `<div class="os-ttips">${tips.map(([l, ya, yb]) => `<div><span>${l}</span><b class="${ya ? 'bad' : 'ok'}">${tip(ya, 'Yes,')}</b><b class="${yb ? 'bad' : 'ok'}">${tip(yb, 'Yes,')}</b></div>`).join('')}</div>`;
+  }
+
+  // ── THE TEMPTATION ──
+  function temptPage() {
+    const you = UI.R.you >= 0 ? UI.R.you : 0;
+    return K.head('THE TEMPTATION', 'Four worlds, one choice', 'Each nation picks one plan in 2026 and keeps it: act on climate, or go fossil-first. Here are the four ways it can turn out for one nation, depending on what it does and what the other four do.') +
+      `<div class="os-tmpt"><div class="os-tmtop"><div class="os-tmnat">${N5.map((N, n) => `<button data-tn="${n}" aria-pressed="${n === you}" style="--c:${N.color}">${UI.crest(n, 16)}${N.name}</button>`).join('')}</div>
+        <div class="os-tmyr"><span>Income in</span>${SIM.dilemma ? [2034, 2050, 2066].map(y => `<button data-ty="${y}">${y}</button>`).join('') : ''}</div></div>
+        <div class="os-grid4" id="osGrid4"></div><p class="os-tverd" id="osTverd"></p></div>`;
+  }
+  function mountTempt(I) {
+    let n = UI.R.you >= 0 ? UI.R.you : 0, y = 2034, auto = true;
+    const memo = {};
+    const D = k => memo[k] = memo[k] || SIM.dilemma(I, k);
+    const draw = () => {
+      const d = D(n), N = N5[n], c = { gg: d.gg[y], bg: d.bg[y], gb: d.gb[y], bb: d.bb[y] };
+      const best = Object.keys(c).sort((a, b) => c[b].inc - c[a].inc)[0];
+      const dom = c.bg.inc >= c.gg.inc && c.bb.inc >= c.gb.inc;
+      const vs = v => (v / c.gg.inc - 1) * 100;
+      const cell = (key, who) => { const v = c[key], dv = vs(v.inc);
+        return `<div class="os-c4 ${key}${key === best ? ' best' : ''}${key === 'bb' && dom ? ' trap' : ''}"><span class="os-cwho">${who}</span><b>${money(v.inc)}</b><em>${N.name}’s income per person, ${y}</em>
+          <span class="os-cd ${key === 'gg' ? 'same' : dv >= 0 ? 'up' : 'dn'}">${key === 'gg' ? 'the starting point' : `${sgn(dv, 1)}% vs. all acting`}</span>
+          <span class="os-ct"><i style="width:${clamp((v.T - 1.3) / 1.3 * 100, 4, 100).toFixed(0)}%"></i>World +${v.T.toFixed(2)} °C</span>
+          ${key === best ? `<u class="os-tag best">Best for ${N.name}</u>` : ''}${key === 'bb' && dom ? `<u class="os-tag trap">Where every nation’s best deal leads</u>` : ''}</div>`; };
+      K.$('#osGrid4').innerHTML = `<span></span><span class="os-gh">The other four <b>act</b></span><span class="os-gh">The other four go <b>fossil-first</b></span>
+        <span class="os-gv" style="--c:${N.color}"><span>${N.name} <b>acts</b></span></span>${cell('gg', 'Everyone acts')}${cell('gb', `${N.name} acts alone`)}
+        <span class="os-gv" style="--c:${N.color}"><span>${N.name} goes <b>fossil-first</b></span></span>${cell('bg', `${N.name} rides on the others`)}${cell('bb', 'No one acts')}`;
+      // the verdict, written from the numbers
+      const p = (a, b) => `${money(a)} instead of ${money(b)}`;
+      let t = dom ? `In ${y}, going fossil-first pays ${N.name} more <b>whatever the other four do</b>: ${p(c.bg.inc, c.gg.inc)} if they act, ${p(c.bb.inc, c.gb.inc)} if they don’t. `
+        : c.bg.inc >= c.gg.inc ? `In ${y}, going fossil-first pays ${N.name} more while the others act (${p(c.bg.inc, c.gg.inc)}), but once they stop acting, acting pays ${N.name} more (${p(c.gb.inc, c.bb.inc)}). `
+        : `By ${y}, acting pays ${N.name} more if the others act too (${p(c.gg.inc, c.bg.inc)}). `;
+      if (dom) t += `Every nation sees the same thing from its own seat. If all five take that deal, all five land in the bottom-right corner: ${c.bb.inc < c.gg.inc ? `<b>${N.name} ${sgn(vs(c.bb.inc), 1)}%</b> poorer than if all had acted` : `${N.name} still slightly ahead of all acting, <b>for now</b>`}, and the world at <b>+${c.bb.T.toFixed(2)} °C</b> instead of +${c.gg.T.toFixed(2)} °C.`;
+      else t += `No one acting leaves the world at <b>+${c.bb.T.toFixed(2)} °C</b> instead of +${c.gg.T.toFixed(2)} °C.`;
+      if (y < 2066 && c.bb.inc >= c.gg.inc) t += ` The costs of acting come first and the damage comes later: look at 2066.`;
+      if (N5[n].id === 'saldaea' && y === 2066 && c.bb.inc > c.gg.inc) t += ` Saldaea sells the fossil fuels, so it gains from everyone burning them. The other four do not.`;
+      K.$('#osTverd').innerHTML = t;
+      K.$$('[data-ty]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.ty === y));
+      K.$$('[data-tn]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.tn === n));
+    };
+    K.$$('[data-ty]').forEach(b => b.onclick = () => { auto = false; y = +b.dataset.ty; draw(); });
+    K.$$('[data-tn]').forEach(b => b.onclick = () => { auto = false; n = +b.dataset.tn; draw(); });
+    draw();
+    // the years advance on their own once: the temptation first, then where it leads
+    K.at(6500, () => { if (auto) { y = 2050; draw(); } });
+    K.at(12000, () => { if (auto) { y = 2066; draw(); } });
+  }
+
+  // ── MOMENTS: tipping points and the worst disasters, across the map ──
+  const TIPS = [
+    [/Arctic/, 'TIPPING POINT', 'Without its white summer ice, the Arctic soaks up more sunlight, and the warming speeds up.'],
+    [/permafrost/i, 'TIPPING POINT', 'Thawing ground now releases carbon of its own. No nation can switch it off.'],
+    [/reefs/, 'TIPPING POINT', 'The reefs fed Erid’s fishing towns and broke the waves on its coast. Both are gone.'],
+  ];
+  function moment(rec) {
+    const host = document.querySelector('.os #osMap'); if (!host) return;
+    const tip = rec.news.find(x => x[0] === 'tip'), big = rec.events.slice().sort((a, b) => b.sev - a.sev)[0];
+    let html = '';
+    if (tip) { const m = TIPS.find(t => t[0].test(tip[1])) || [null, 'TIPPING POINT', '']; html = `<div class="os-mom tip"><span>${m[1]} · ${rec.year}</span><b>${esc(tip[1])}</b><em>${m[2]}</em></div>`; }
+    else if (big && big.sev >= .015) { const N = N5[big.n]; html = `<div class="os-mom dis" style="--c:${N.color}"><span>DISASTER · ${N.name.toUpperCase()} · ${rec.year}</span><b>${esc(big.text.split(' · ')[0])}</b><em>${N.name} loses ${(big.sev * 100).toFixed(1)}% of its income this year.</em></div>`; }
+    if (!html) return;
+    let box = host.querySelector('.os-moms'); if (!box) { box = document.createElement('div'); box.className = 'os-moms'; host.appendChild(box); }
+    box.innerHTML = html;
+    clearTimeout(box._t); box._t = setTimeout(() => { box.innerHTML = ''; }, tip ? 6500 : 4500);
+  }
+
+  return { earthsPage, mountEarths, temptPage, mountTempt, moment };
 })();
 
 // LIVE: the class plays One Sky on laptops. Rides the deck's live backend (window.__deckLiveReady: sharded Firestore
@@ -3776,12 +4049,15 @@ const STD = (function () {
       [2400, () => { botsVote('all'); cast(); adv(1)(); }, 'The last summit, 2058.'],
       [7000, () => { go.run(); adv(4)(); }, ''],
       [2400, adv(4), '2066: where did the world land?'],
+      [12000, goBtn, 'Two worlds: drag across the map from the world the class made to the world where every nation went fossil-first.'],
       ...(DSTD ? [
-        [9000, goBtn, 'From choices to climate: forty years of choices, link by link, from emissions to the air to the warming.'],
+        [12000, goBtn, 'From choices to climate: forty years of choices, link by link, from emissions to the air to the warming.'],
         [12000, goBtn, 'What did the nations’ choices do to the climate? Their world, against the alternatives, and where the cooling came from.'],
+        [14000, goBtn, 'The temptation: going fossil-first pays each nation more, whatever the others do. If all five take that deal, all five lose.'],
         [12000, goBtn, 'Now or later? Every clean direction costs first. Some pay the nation back; others mostly help the world.'],
         [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own choices, but the cooling was shared.']] : [
-        [9000, goBtn, 'What did the nations’ laws do to the climate? Their world, against the alternatives, and where the cooling came from.'],
+        [12000, goBtn, 'What did the nations’ laws do to the climate? Their world, against the alternatives, and where the cooling came from.'],
+        [14000, goBtn, 'The temptation: going fossil-first pays each nation more, whatever the others do. If all five take that deal, all five lose.'],
         [12000, goBtn, 'Now or later? Some laws pay first and cost later; others cost first and pay later.'],
         [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own laws, but the cooling was shared.']]),
     ];
@@ -3821,10 +4097,12 @@ const STD = (function () {
       { t: 'Your impact', b: 12, cap: 'The Impact chart: the world as chosen, the path if today’s choices hold, and the worlds where every nation goes fossil-first or every nation acts. The shaded band is how far your nation alone could move 2066.' },
       { t: 'The second session', b: 16, cap: 'In 2034 the delegates choose again, knowing what eight years of their choices did.' },
       { t: 'Where it landed', b: 35, cap: 'In 2066: where the world landed, against the published climate pathways.' },
-      { t: 'Choices to climate', b: 36, cap: 'Forty years, link by link: the nation’s choices, its emissions, the world’s emissions, the CO₂ in the air, the warming and the economy.' },
-      { t: 'The climate', b: 37, cap: 'What the choices did to the climate: your world against the alternatives, and how much each nation’s choices cooled the world.' },
-      { t: 'Now or later?', b: 38, cap: 'Every clean direction costs first. Some pay the nation back later (cheap clean power, efficient buildings); others mostly help the world.' },
-      { t: 'The ledger', b: 39, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own choices did for itself and for its neighbors.' }] },
+      { t: 'Two worlds', b: 36, cap: 'The 2066 map drawn twice: the world the class made and the world where every nation went fossil-first, with a handle to drag between them and a tally of what the difference cost.' },
+      { t: 'Choices to climate', b: 37, cap: 'Forty years, link by link: the nation’s choices, its emissions, the world’s emissions, the CO₂ in the air, the warming and the economy.' },
+      { t: 'The climate', b: 38, cap: 'What the choices did to the climate: your world against the alternatives, and how much each nation’s choices cooled the world.' },
+      { t: 'The temptation', b: 39, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
+      { t: 'Now or later?', b: 40, cap: 'Every clean direction costs first. Some pay the nation back later (cheap clean power, efficient buildings); others mostly help the world.' },
+      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own choices did for itself and for its neighbors.' }] },
     host: { t: 'The projector', view: 'projector', steps: [
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
@@ -3833,10 +4111,12 @@ const STD = (function () {
       { t: 'The chain', b: 6, x: '&summit=chain', cap: 'From choices to climate, for the whole world: where the five nations stand on each platform, the world’s emissions by sector, the air, the warming and the economy.' },
       { t: 'The years', b: 9, cap: 'The years run on the map: indicators, the nations’ choices, breaking news, and charts.' },
       { t: 'Where it landed', b: 35, cap: 'The world in 2066.' },
-      { t: 'Choices to climate', b: 36, cap: 'Forty years, link by link.' },
-      { t: 'The climate', b: 37, cap: 'What the choices did to the climate, nation by nation.' },
-      { t: 'Now or later?', b: 38, cap: 'Costs now, pays later, or costs the nation and helps the world.' },
-      { t: 'The ledger', b: 39, cap: 'Who paid, and who gained.' }] },
+      { t: 'Two worlds', b: 36, cap: 'The world the class made against the world of inaction.' },
+      { t: 'Choices to climate', b: 37, cap: 'Forty years, link by link.' },
+      { t: 'The climate', b: 38, cap: 'What the choices did to the climate, nation by nation.' },
+      { t: 'The temptation', b: 39, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
+      { t: 'Now or later?', b: 40, cap: 'Costs now, pays later, or costs the nation and helps the world.' },
+      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained.' }] },
   };
   const SAMPLE = {
     del: { t: 'A delegate', view: 'terrasen', steps: [
@@ -3847,9 +4127,11 @@ const STD = (function () {
       { t: 'Your impact', b: 12, cap: 'The Impact chart: the world as voted, the path if today’s laws hold, and the worlds where every nation goes fossil-first or every nation acts. The shaded band is how far your nation alone could move 2066.' },
       { t: 'The second session', b: 16, cap: 'In 2034 the delegates vote again, knowing what eight years of their laws did.' },
       { t: 'Where it landed', b: 35, cap: 'In 2066: where the world landed, against the published climate pathways.' },
-      { t: 'The climate', b: 36, cap: 'What the laws did to the climate: your world against the alternatives, how much each nation’s laws cooled the world, and what was avoided.' },
-      { t: 'Now or later?', b: 37, cap: 'Which laws pay now and cost later (subsidies, drilling) and which cost now and pay later (carbon prices, clean energy, adaptation), against the world’s income over forty years.' },
-      { t: 'The ledger', b: 38, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own laws did for itself and for its neighbors.' }] },
+      { t: 'Two worlds', b: 36, cap: 'The 2066 map drawn twice: the world the class made and the world where every nation went fossil-first, with a handle to drag between them and a tally of what the difference cost.' },
+      { t: 'The climate', b: 37, cap: 'What the laws did to the climate: your world against the alternatives, how much each nation’s laws cooled the world, and what was avoided.' },
+      { t: 'The temptation', b: 38, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
+      { t: 'Now or later?', b: 39, cap: 'Which laws pay now and cost later (subsidies, drilling) and which cost now and pay later (carbon prices, clean energy, adaptation), against the world’s income over forty years.' },
+      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own laws did for itself and for its neighbors.' }] },
     host: { t: 'The projector', view: 'projector', steps: [
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
@@ -3857,9 +4139,11 @@ const STD = (function () {
       { t: 'The votes', b: 6, cap: 'The vote board: every law and every nation, counted one nation at a time, then what changed.' },
       { t: 'The years', b: 9, cap: 'The years run on the map: indicators, the nations’ laws, breaking news, and charts.' },
       { t: 'Where it landed', b: 35, cap: 'The world in 2066.' },
-      { t: 'The climate', b: 36, cap: 'What the laws did to the climate, nation by nation.' },
-      { t: 'Now or later?', b: 37, cap: 'Pays now, costs later, or the other way around.' },
-      { t: 'The ledger', b: 38, cap: 'Who paid, and who gained.' }] },
+      { t: 'Two worlds', b: 36, cap: 'The world the class made against the world of inaction.' },
+      { t: 'The climate', b: 37, cap: 'What the laws did to the climate, nation by nation.' },
+      { t: 'The temptation', b: 38, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
+      { t: 'Now or later?', b: 39, cap: 'Pays now, costs later, or the other way around.' },
+      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained.' }] },
   };
   const sampleBase = () => /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? '/game-demos-web/onesky/' : 'https://ryanpcornell.github.io/sos110-game-demos/onesky/';
   let sR = 'del', sAt = 0;
@@ -3900,7 +4184,7 @@ const STD = (function () {
   }
   function sampleClose() { const box = q('[data-sample]'); if (box) { box.hidden = true; q('[data-sframe]').innerHTML = ''; } }
 
-  window.__os = { SIM, UI, WORLD, state: () => state, worldNow, PK, assign, myN, backend: () => backend, advance, deal, GID };
+  window.__os = { SIM, UI, WORLD, STD, FIN, state: () => state, worldNow, PK, assign, myN, backend: () => backend, advance, deal, GID };
 
   // ── connect ──
   window.__deckLiveReady.then(live => {
