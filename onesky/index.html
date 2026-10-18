@@ -967,6 +967,136 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .os .os-tn{flex-wrap:wrap;row-gap:0}
 .os .os-ttag{flex-basis:100%;padding-left:30px;font:700 10px Inter;letter-spacing:.06em;color:var(--muted)}
 .os .os-trow.sorted .os-ttag{color:var(--c);font-weight:900}
+.os .os-card.tv{background:#0c141e;border-color:#2c3c50;color:#e9e4d6;padding:0;box-shadow:0 22px 56px rgba(0,0,0,.55),inset 0 0 0 1px #2c3c50}
+.os .os-card.tv .os-cact{padding:0 18px 14px}
+.os .os-tv{position:relative;display:flex;flex-direction:column;min-height:min(640px,calc(100vh - 60px));background:radial-gradient(120% 80% at 70% 0%,#1d2c40 0%,#0f1824 55%,#0a1018 100%);overflow:hidden;border-radius:15px;animation:ostvcut .35s ease-out both}
+.os .os-tv::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px);pointer-events:none}
+@keyframes ostvcut{0%{filter:brightness(2.2) saturate(0)}100%{filter:none}}
+.os .os-tvbar{position:relative;display:flex;align-items:center;gap:14px;padding:10px 18px;border-bottom:1px solid #263649;background:linear-gradient(90deg,rgba(10,16,24,.9),rgba(29,44,64,.6))}
+.os .os-tvbug{font:900 13px Inter;letter-spacing:.24em;color:#e9e4d6}
+.os .os-tvbug b{color:#e0a64a;font-weight:900}
+.os .os-tvlive{display:inline-flex;align-items:center;gap:6px;font:900 11px Inter;letter-spacing:.2em;color:#fff;background:#b8322a;border-radius:4px;padding:3px 8px}
+.os .os-tvlive i{width:7px;height:7px;border-radius:50%;background:#fff;animation:ostvblink 1.2s ease-in-out infinite}
+@keyframes ostvblink{50%{opacity:.25}}
+.os .os-tvshow{font:800 11px Inter;letter-spacing:.22em;color:#9fb3c8}
+.os .os-tvclock{margin-left:auto;font:700 12px Inter;color:#9fb3c8}
+.os .os-tvbody{position:relative;flex:1;padding:18px 22px 10px;display:flex;flex-direction:column}
+.os .os-tvticker{position:relative;display:flex;align-items:stretch;height:34px;border-top:1px solid #263649;background:#0a1018;overflow:hidden}
+.os .os-tvticker>b{flex:0 0 auto;display:grid;place-items:center;padding:0 14px;font:900 11px Inter;letter-spacing:.2em;color:#0c141e;background:#e0a64a}
+.os .os-tvcrawl{flex:1;display:flex;white-space:nowrap;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.os .os-tvcrawl span{display:inline-block;padding-left:40px;font:600 13px Inter;line-height:34px;color:#dfe6ee;animation:ostvcrawl 38s linear infinite}
+@keyframes ostvcrawl{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+.os .os-tvskip{position:absolute;right:18px;bottom:10px;font:700 12px Inter;color:#9fb3c8;background:rgba(10,16,24,.6);border:1px solid #2c3c50;border-radius:999px;padding:5px 12px;cursor:pointer;z-index:3}
+.os .os-tvskip:hover{color:#fff;border-color:#9fb3c8}
+.os .os-tvkick{display:block;font:900 11px Inter;letter-spacing:.24em;color:#e0a64a}
+.os .os-tvmap{width:100%;height:auto;display:block}
+.os .os-tvml{font:800 22px Inter;letter-spacing:.2em;fill:#9fb3c8;opacity:.55}
+.os .os-tvml.on{fill:#fff4d6;opacity:1}
+.os .os-tvopen{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:10px 30px 40px}
+.os .os-tvopen h2{margin:.4rem 0 .5rem;font:italic 900 64px/1.05 Merriweather,serif;color:#fff;animation:ostvin .8s .2s both}
+.os .os-tvopen h2 em{color:#e0a64a}
+.os .os-tvopen p{max-width:60ch;font-size:17px;line-height:1.55;color:#c5d0dc;animation:ostvin .8s .5s both}
+.os .os-tvopen .os-tvkick{animation:ostvin .6s both}
+.os .os-tvopenn{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.os .os-tvopenn span{display:inline-flex;align-items:center;gap:7px;font:700 13px Inter;color:#e9e4d6;border:1px solid #2c3c50;border-left:4px solid var(--c);border-radius:8px;padding:6px 12px 6px 8px;background:rgba(15,24,36,.8);animation:ostvin .5s both}
+.os .os-tvopenn span:nth-child(2){animation-delay:.9s}
+.os .os-tvopenn span:nth-child(3){animation-delay:1s}
+.os .os-tvopenn span:nth-child(4){animation-delay:1.1s}
+.os .os-tvopenn span:nth-child(5){animation-delay:1.2s}
+.os .os-tvopenn span:first-child{animation-delay:.8s}
+.os .os-tvsweep{position:absolute;inset:-20% -10%;background:linear-gradient(105deg,transparent 40%,rgba(224,166,74,.12) 48%,rgba(255,255,255,.08) 50%,transparent 58%);animation:ostvsweep 3.5s ease-in-out both;pointer-events:none}
+@keyframes ostvsweep{from{transform:translateX(-60%)}to{transform:translateX(60%)}}
+@keyframes ostvin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.os .os-tvcall{flex:1;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:22px;align-items:center}
+.os .os-tvleft{display:flex;flex-direction:column;gap:12px;animation:ostvin .5s both}
+.os .os-tvnat{display:flex;align-items:center;gap:12px;border-left:5px solid var(--c);padding-left:12px}
+.os .os-tvnat span{display:block;font:900 10.5px Inter;letter-spacing:.2em;color:#e0a64a}
+.os .os-tvnat b{display:block;font:italic 900 38px/1.1 Merriweather,serif;color:#fff}
+.os .os-tvnat em{font-style:normal;font-size:12.5px;color:#9fb3c8}
+.os .os-tvraces{display:flex;flex-direction:column;gap:9px}
+.os .os-tvcall.adv .os-tvraces{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+.os .os-race{position:relative;display:grid;grid-template-columns:1fr auto;grid-template-areas:'t c' 'b b' 'l l';gap:4px 10px;padding:8px 12px;background:rgba(20,32,46,.85);border:1px solid #263649;border-radius:10px;opacity:0;transform:translateX(18px);transition:opacity .4s,transform .45s cubic-bezier(.2,.9,.3,1),border-color .4s,box-shadow .4s}
+.os .os-race.in{opacity:1;transform:none}
+.os .os-rt{grid-area:t;display:flex;align-items:center;gap:7px;font:800 14px Inter;color:#fff}
+.os .os-rt svg{filter:invert(.9)}
+.os .os-rt u{text-decoration:none;font:900 9px Inter;letter-spacing:.12em;color:#0c141e;background:#e0a64a;border-radius:4px;padding:1px 5px}
+.os .os-rbar{grid-area:b;display:flex;height:16px;border-radius:5px;overflow:hidden;background:#1b2838;gap:2px}
+.os .os-rbar i{flex:0 0 auto;flex-grow:0;flex-basis:0;min-width:0;background:var(--c);opacity:.75;transition:flex-grow 1.1s cubic-bezier(.3,.8,.3,1),opacity .4s}
+.os .os-rbar i.win{opacity:1;box-shadow:inset 0 0 0 2px rgba(255,255,255,.75)}
+.os .os-rlbl{grid-area:l;display:flex;flex-wrap:wrap;gap:3px 14px;font:700 11.5px Inter;color:#c5d0dc}
+.os .os-rlbl span{position:relative;display:inline-flex;align-items:center;gap:4px}
+.os .os-rlbl span::before{content:'';width:8px;height:8px;border-radius:2px;background:var(--c)}
+.os .os-rlbl em{font-style:normal;font-weight:900;color:#fff;font-variant-numeric:tabular-nums}
+.os .os-ryou{font:900 8.5px Inter;letter-spacing:.1em;color:#0c141e;background:#f0d27a;border-radius:3px;padding:1px 4px;margin-left:2px}
+.os .os-rcall{grid-area:c;display:flex;align-items:center;gap:7px;min-height:20px}
+.os .os-rcall b{font:900 13.5px Inter;color:#fff}
+.os .os-rcall u{text-decoration:none;font:900 9.5px Inter;letter-spacing:.12em;border-radius:4px;padding:2px 6px;color:#9fb3c8;border:1px solid #3b5068}
+.os .os-rcall u.flip{color:#0c141e;background:#e0a64a;border-color:#e0a64a;animation:ostvflip .5s cubic-bezier(.2,1.6,.4,1) both}
+.os .os-rcall u.tie{color:#f0d27a;border-color:#f0d27a}
+.os .os-rcall u.newc{color:#7cc08b;border-color:#7cc08b}
+.os .os-rchk{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#5aa36a;color:#fff;font:900 12px Inter;animation:ostvflip .4s cubic-bezier(.2,1.6,.4,1) both}
+.os .os-race.called.flip{border-color:#e0a64a;box-shadow:0 0 0 1px #e0a64a,0 0 22px rgba(224,166,74,.25)}
+@keyframes ostvflip{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}
+.os .os-wall{flex:1;display:flex;flex-direction:column;gap:6px}
+.os .os-wrow{display:grid;grid-template-columns:170px repeat(5,minmax(0,1fr));gap:10px;align-items:center;opacity:.3;transition:opacity .4s}
+.os .os-wrow.in,.os .os-whead{opacity:1}
+.os .os-wnat{display:grid;grid-template-columns:24px 1fr;gap:0 8px;align-items:center;border-top:4px solid var(--c);padding-top:6px}
+.os .os-wnat b{font:italic 900 18px Merriweather,serif;color:#fff}
+.os .os-wnat em{grid-column:2;font-style:normal;font-size:11px;color:#9fb3c8}
+.os .os-wlaw{display:flex;align-items:center;gap:7px;font:800 13px Inter;color:#fff}
+.os .os-wlaw svg{filter:invert(.9)}
+.os .os-wlaw u{text-decoration:none;font:900 8.5px Inter;letter-spacing:.1em;color:#0c141e;background:#e0a64a;border-radius:3px;padding:1px 4px}
+.os .os-wcell{display:flex;flex-direction:column;gap:4px;padding:8px 9px;background:rgba(20,32,46,.85);border:1px solid #263649;border-radius:9px;transition:border-color .4s,box-shadow .4s}
+.os .os-wcell.empty{background:none;border:0}
+.os .os-wcell .os-rbar{height:14px}
+.os .os-wcall{display:flex;align-items:center;gap:6px;min-height:18px;font-size:12px}
+.os .os-wcall em{font-style:normal;color:#6f8297}
+.os .os-wcall b{display:inline-flex;align-items:center;gap:5px;font:900 13px Inter;color:#fff;animation:ostvflip .4s cubic-bezier(.2,1.6,.4,1) both}
+.os .os-wcall b::before{content:'';width:9px;height:9px;border-radius:2px;background:var(--c)}
+.os .os-wcall u{text-decoration:none;font:900 9px Inter;letter-spacing:.12em;border-radius:3px;padding:1px 5px;color:#0c141e;background:#e0a64a}
+.os .os-wcall u.tie{background:none;color:#f0d27a;border:1px solid #f0d27a}
+.os .os-wcell.called.flip{border-color:#e0a64a;box-shadow:0 0 0 1px #e0a64a,0 0 18px rgba(224,166,74,.2)}
+.os .os-wall.adv .os-wrow{gap:6px}
+.os .os-wall.adv .os-wcell{padding:4px 7px;gap:2px}
+.os .os-wall.adv .os-wcell .os-rbar{height:8px}
+.os .os-wall.adv .os-wlaw{font-size:11.5px}
+.os .os-tvmapshot{flex:1;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;align-items:center;animation:ostvin .5s both}
+.os .os-tvsum h3{margin:.3rem 0 .8rem;font:italic 900 30px Merriweather,serif;color:#fff}
+.os .os-tvsrow{display:grid;grid-template-columns:22px 100px 1fr 150px;gap:9px;align-items:center;padding:6px 0;border-bottom:1px solid #1e2c3d;font-size:13px}
+.os .os-tvsrow b{font:italic 900 16px Merriweather,serif;color:#fff}
+.os .os-tvsrow i{height:12px;border-radius:6px;background:#1b2838;overflow:hidden}
+.os .os-tvsrow i span{display:block;height:100%;border-radius:6px;animation:ostvgrow 1.2s cubic-bezier(.3,.8,.3,1) both}
+.os .os-tvsrow em{font-style:normal;font-weight:700;color:#c5d0dc}
+@keyframes ostvgrow{from{width:0!important}}
+.os .os-tvkey{display:flex;justify-content:space-between;margin-top:10px;font:700 11px Inter;color:#9fb3c8}
+.os .os-tvkey span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--c);margin-right:6px;vertical-align:-1px}
+.os .os-desk{flex:1;display:flex;flex-direction:column;gap:10px}
+.os .os-deskh h3{margin:.25rem 0 0;font:italic 900 30px Merriweather,serif;color:#fff}
+.os .os-deskv{flex:1;display:flex;flex-direction:column;justify-content:center;background:rgba(15,24,36,.7);border:1px solid #263649;border-radius:12px;padding:12px 16px;animation:ostvin .5s both}
+.os .os-tvchart{width:100%;height:auto;max-height:44vh;display:block}
+.os .os-tvax{font:600 12px Inter;fill:#9fb3c8}
+.os .os-tvax.b{font-weight:800;fill:#e9e4d6}
+.os .os-tvax.up{fill:#7cc08b}
+.os .os-tvax.dn{fill:#e08a78}
+.os .os-grow{transform-box:fill-box;transform-origin:left center;animation:ostvbar 1.3s cubic-bezier(.3,.8,.3,1) both}
+@keyframes ostvbar{from{transform:scaleX(0)}}
+.os .os-draw{stroke-dasharray:1;stroke-dashoffset:1;animation:ostvdraw 2.4s .4s cubic-bezier(.4,.1,.3,1) forwards}
+@keyframes ostvdraw{to{stroke-dashoffset:0}}
+.os .os-tvleg{display:flex;gap:16px;font:600 11.5px Inter;color:#9fb3c8;margin-top:4px}
+.os .os-tvleg i{display:inline-block;width:12px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.os .os-tvleg i.d{background:none;border-left:2px dashed #e9e4d6;width:2px;height:12px}
+.os .os-deskcap{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:start;background:linear-gradient(90deg,rgba(224,166,74,.16),rgba(15,24,36,.6));border-left:4px solid #e0a64a;border-radius:8px;padding:10px 14px;min-height:76px}
+.os .os-deskwho{font:600 11px Inter;color:#9fb3c8}
+.os .os-deskwho b{display:block;font:900 13px Inter;letter-spacing:.12em;text-transform:uppercase;color:#e0a64a}
+.os .os-deskcap p{margin:0;font-size:16px;line-height:1.55;color:#f3efe4}
+.os .os-deskcap p b{color:#fff;font-weight:800}
+.os .os-tvact{padding:0!important;display:flex;justify-content:flex-end;gap:8px}
+.os .os-card.tv .os-btn.ghost{background:transparent;color:#c5d0dc;border-color:#3b5068}
+.os .os-card.tv .os-btn.go{background:#e0a64a;border-color:#e0a64a;color:#0c141e}
+@media (max-width:1100px){.os .os-tvcall,.os .os-tvmapshot{grid-template-columns:1fr}
+.os .os-wrow{grid-template-columns:110px repeat(5,minmax(0,1fr))}}
+.os .os-tvleft .os-tvmap{max-height:42vh;width:auto;max-width:100%;margin:0 auto}
+.os .os-tvbig .os-tvmap{max-height:52vh;width:auto;max-width:100%;margin:0 auto}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -1232,7 +1362,7 @@ function fitBoxes(svg) {
 function fitWhenVisible(svg) { if (svg && !svg.dataset.fitted && fitBoxes(svg)) svg.dataset.fitted = '1'; }
 
 // ONE SKY: the engine (no DOM). Five nations share one atmosphere for forty years (2026-2066).
-// Every eight years each nation's delegates vote on that nation's own laws; the years in between are simulated here.
+// Three times (2026, 2040, 2054) each nation's delegates vote on that nation's own laws; the years in between are simulated here.
 // The whole game is a pure function of (seed, who is in which nation, the frozen votes), so every screen replays
 // the same world with SIM.run and nothing but the votes ever has to be written.
 //
@@ -1242,7 +1372,9 @@ function fitWhenVisible(svg) { if (svg && !svg.dataset.fitted && fitBoxes(svg)) 
 // 1000 Gt, CO2 airborne fraction ~0.47, damages quadratic in warming (DICE-style) scaled by each nation's vulnerability.
 'use strict';
 const SIM = (function () {
-  const Y0 = 2026, YN = 2066, SESSIONS = [2026, 2034, 2042, 2050, 2058];
+  const Y0 = 2026, YN = 2066, SESSIONS = [2026, 2040, 2054];
+  // the year of the next election (or the end): what every preview looks ahead to
+  const horizon = si => si + 1 < SESSIONS.length ? SESSIONS[si + 1] : YN;
   const T0 = 1.36, PPM0 = 429, TCRE = 0.00048;
   const hash = s => { let h = 2166136261; for (const c of String(s)) h = Math.imul(h ^ c.charCodeAt(0), 16777619); h ^= h >>> 15; h = Math.imul(h, 2246822507); h ^= h >>> 13; return h >>> 0; };
   const rk = (C, key) => rng(hash(C.seed + ':' + key));
@@ -1283,18 +1415,20 @@ const SIM = (function () {
       why: 'Fast cuts and construction jobs, paid for by taxpayers. Every panel built makes the next one cheaper, everywhere.' },
     { id: 'solar', group: 'build', kind: 'yn', title: 'Solar tax credit', q: 'Take 30% off rooftop and utility solar?', why: 'Makes new clean power cheaper to build than fossil power, sooner.' },
     { id: 'ev', group: 'build', kind: 'yn', title: 'EV tax credit', q: '$7,500 back on every electric car?', why: 'Pulls the switch to electric cars about four years earlier.' },
+    { id: 'dac', group: 'build', kind: 'yn', from: 2, title: 'Carbon-removal machines', q: 'Build machines that pull CO₂ out of the air and bury it?', why: 'The technology is finally ready, but it is expensive: about $300 for every tonne removed. It cleans up after emissions instead of preventing them.' },
     { id: 'rd', group: 'build', kind: 'yn', title: 'Green research fund', q: 'Spend 0.2% of GDP on clean-energy research?', why: 'Inventions spread to every nation. Your taxpayers pay; the whole world gets cheaper clean energy.' },
     { id: 'coal', group: 'rules', kind: 'yn', title: 'Coal phase-out', q: 'Close every coal plant within ten years?', why: 'The biggest single cut for coal-heavy nations. Coal towns lose jobs; the plants are written off.' },
     { id: 'gascar', group: 'rules', kind: 'yn', title: 'Gas-car phase-out', q: 'End sales of new gas and diesel cars within eight years?', why: 'Guarantees the switch to electric cars. Costly while EVs still cost more.' },
     { id: 'forest', group: 'rules', kind: 'yn', title: 'Protect the forests', q: 'End deforestation and clearing new farmland?', why: 'Forests keep their carbon. Farmers cannot clear new land.' },
     { id: 'drill', group: 'growth', kind: 'yn', title: 'Drill and build', q: 'Open new oil and gas fields and fast-track new coal and gas plants?', why: 'Cheap energy and a building boom: faster growth now, decades of emissions locked in.' },
     { id: 'subs', group: 'growth', kind: 'yn', title: 'Fossil fuel subsidies', q: 'Keep paying to hold fuel and power prices down?', why: 'Cheaper fuel for everyone today. More burning, and the treasury pays.' },
-    { id: 'adapt', group: 'growth', kind: 'yn', title: 'Adaptation and sea walls', q: 'Spend 0.4% of GDP on sea walls, cooling centers and drought-proof farms?', why: 'Cuts the damage your nation takes from floods, heat and drought. Does nothing for the warming itself.' },
-    { id: 'aid', group: 'growth', kind: 'yn', title: 'Climate aid to Erid', q: 'Send 0.5% of GDP to help Erid build clean power and protect its coast?', why: 'Erid is poorest and most exposed. The money is yours; the cooling and the safety are shared.' },
+    { id: 'adapt', group: 'growth', kind: 'yn', from: 1, title: 'Adaptation and sea walls', q: 'Spend 0.4% of GDP on sea walls, cooling centers and drought-proof farms?', why: 'Cuts the damage your nation takes from floods, heat and drought. Does nothing for the warming itself.' },
+    { id: 'aid', group: 'growth', kind: 'yn', from: 1, title: 'Climate aid to Erid', q: 'Send 0.5% of GDP to help Erid build clean power and protect its coast?', why: 'Erid is poorest and most exposed. The money is yours; the cooling and the safety are shared.' },
   ];
   const LI = Object.fromEntries(LAWS.map((l, i) => [l.id, l]));
   const GROUPS = [['price', 'Put a price on carbon'], ['build', 'Build clean energy'], ['rules', 'Set the rules'], ['growth', 'Growth, safety and aid']];
-  const lawsFor = n => LAWS.filter(l => !(l.id === 'aid' && NATIONS[n].id === 'erid'));
+  // the laws on a nation's ballot at session si (some appear only at later elections); si omitted = every law
+  const lawsFor = (n, si) => LAWS.filter(l => !(l.id === 'aid' && NATIONS[n].id === 'erid') && (si == null || (l.from || 0) <= si));
   const STATUS_QUO = [
     { tax: 25, ev: 1, subs: 0 },          // Cairhien
     { solar: 1 },                         // Andor
@@ -1303,7 +1437,7 @@ const SIM = (function () {
     { subs: 1 },                          // Erid
   ];
   // levers only the standard game pulls (0 = no effect, so the advanced game never sees them)
-  const STD_LEVERS = ['igrow', 'ieff', 'fexp', 'farm', 'roads', 'transit', 'bcheap', 'beff'];
+  const STD_LEVERS = ['igrow', 'ieff', 'fexp', 'farm', 'roads', 'transit', 'bcheap', 'beff', 'adaptL', 'refor'];
   function emptyLaws() { return Object.fromEntries([...LAWS.map(l => [l.id, 0]), ...STD_LEVERS.map(k => [k, 0])]); }
 
   // ── STANDARD GAME: five general platforms instead of fourteen laws ──
@@ -1331,7 +1465,19 @@ const SIM = (function () {
       { t: 'Build cheap', s: 'Cheap', d: 'Build as cheaply as possible and heat with gas and oil.', laws: { bcheap: 1 } },
       { t: 'Efficient', s: 'Efficient', d: 'Require insulation, better windows and efficient appliances.', laws: { beff: 1 } },
       { t: 'Zero-carbon', s: 'Zero-carbon', d: 'Insulate every building and heat with electric heat pumps and rooftop solar.', laws: { beff: 2 } }] },
+    // new at the second election, once the damage has arrived
+    { id: 'protect', from: 1, metric: 'loss', title: 'Protect our people', q: 'The storms, floods and heat are here. How should your nation prepare?', opts: [
+      { t: 'Rebuild after disasters', s: 'Rebuild', d: 'Spend nothing in advance; pay to repair the damage after each disaster.', laws: {} },
+      { t: 'Protect the most exposed', s: 'Protect some', d: 'Sea walls for the biggest cities, cooling centers, early warnings.', laws: { adaptL: 1 } },
+      { t: 'Prepare the whole nation', s: 'Prepare all', d: 'Sea walls, drought-proof farms, heat-safe homes and hospitals everywhere.', laws: { adapt: 1 } }] },
+    // new at the third election: the technology arrives late, and it is expensive
+    { id: 'removal', from: 2, metric: 'removal', title: 'Pull carbon from the sky', q: 'New technology can take CO₂ back out of the air. Should your nation use it?', opts: [
+      { t: 'No removal', s: 'None', d: 'Leave the CO₂ where it is and spend the money elsewhere.', laws: {} },
+      { t: 'Replant forests', s: 'Forests', d: 'Plant trees on spare land. Cheap, but slow and limited by space.', laws: { refor: 1 } },
+      { t: 'Forests and machines', s: 'Machines', d: 'Replant forests and build machines that pull CO₂ from the air: about $300 a tonne.', laws: { refor: 1, dac: 1 } }] },
   ];
+  // the platforms on the ballot at session si
+  const platsAt = si => PLATFORMS.filter(P => (P.from || 0) <= (si == null ? 99 : si));
   const PI = Object.fromEntries(PLATFORMS.map(p => [p.id, p]));
   const STD_START = [
     { energy: 1, industry: 1, farms: 1, transport: 1, buildings: 1 },   // Cairhien
@@ -1343,13 +1489,14 @@ const SIM = (function () {
   // a full set of levers from five picks (every lever not named by a pick is off)
   function stdLaws(picks) {
     const L = emptyLaws();
-    for (const P of PLATFORMS) Object.assign(L, P.opts[picks[P.id] == null ? 1 : picks[P.id]].laws);
+    for (const P of PLATFORMS) Object.assign(L, P.opts[picks[P.id] == null ? (P.from ? 0 : 1) : picks[P.id]].laws);
     return L;
   }
   // and back: which option of each platform a set of levers is
   function platOf(L) {
     return { energy: L.build >= 2 || L.coal ? 2 : L.drill ? 0 : 1, industry: L.ieff >= 2 ? 2 : L.igrow ? 0 : 1, farms: L.farm ? 2 : L.forest ? 1 : 0,
-      transport: L.transit ? 2 : L.gascar ? 1 : 0, buildings: L.beff >= 2 ? 2 : L.bcheap ? 0 : 1 };
+      transport: L.transit ? 2 : L.gascar ? 1 : 0, buildings: L.beff >= 2 ? 2 : L.bcheap ? 0 : 1,
+      protect: L.adapt ? 2 : L.adaptL ? 1 : 0, removal: L.dac ? 2 : L.refor ? 1 : 0 };
   }
   const ppack = v => PLATFORMS.filter(p => v[p.id] != null).map(p => p.id + '=' + (+v[p.id])).join(';');
   function pparse(s) {
@@ -1413,17 +1560,17 @@ const SIM = (function () {
 
   // ── stand-in delegates: each nation's political mood, leaning greener as the damage arrives ──
   const LEAN = [
-    { tax: 50, cap: .6, bta: .55, build: 1, solar: .6, ev: .7, rd: .55, coal: .5, gascar: .4, forest: .5, drill: .2, subs: .1, adapt: .65, aid: .45 },   // Cairhien
-    { tax: 25, cap: .4, bta: .6, build: .5, solar: .55, ev: .4, rd: .4, coal: .2, gascar: .25, forest: .4, drill: .55, subs: .3, adapt: .5, aid: .25 },  // Andor
-    { tax: 0, cap: .2, bta: .2, build: .5, solar: .35, ev: .3, rd: .3, coal: .3, gascar: .15, forest: .35, drill: .85, subs: .75, adapt: .4, aid: .15 }, // Saldaea
-    { tax: 25, cap: .3, bta: .3, build: .5, solar: .6, ev: .4, rd: .35, coal: .25, gascar: .2, forest: .25, drill: .45, subs: .6, adapt: .75, aid: .2 }, // Terrasen
-    { tax: 0, cap: .25, bta: .2, build: 1, solar: .7, ev: .35, rd: .25, coal: .2, gascar: .15, forest: .3, drill: .5, subs: .7, adapt: .9, aid: 0 },    // Erid
+    { tax: 50, cap: .6, bta: .55, build: 1, solar: .6, ev: .7, rd: .55, coal: .5, gascar: .4, forest: .5, drill: .2, subs: .1, adapt: .65, aid: .45, dac: .45 },   // Cairhien
+    { tax: 25, cap: .4, bta: .6, build: .5, solar: .55, ev: .4, rd: .4, coal: .2, gascar: .25, forest: .4, drill: .55, subs: .3, adapt: .5, aid: .25, dac: .3 },  // Andor
+    { tax: 0, cap: .2, bta: .2, build: .5, solar: .35, ev: .3, rd: .3, coal: .3, gascar: .15, forest: .35, drill: .85, subs: .75, adapt: .4, aid: .15, dac: .5 }, // Saldaea
+    { tax: 25, cap: .3, bta: .3, build: .5, solar: .6, ev: .4, rd: .35, coal: .25, gascar: .2, forest: .25, drill: .45, subs: .6, adapt: .75, aid: .2, dac: .3 }, // Terrasen
+    { tax: 0, cap: .25, bta: .2, build: 1, solar: .7, ev: .35, rd: .25, coal: .2, gascar: .15, forest: .3, drill: .5, subs: .7, adapt: .9, aid: 0, dac: .15 },    // Erid
   ];
   function standIn(C, n, key, si) {
     const r = rk(C, 'si:' + si + ':' + n + ':' + key), L = LEAN[n], last = C.hist.length ? C.hist[C.hist.length - 1] : null;
     const worry = last ? clamp((last.T - T0) * 1.6 * (.5 + NATIONS[n].vuln * .4)) : 0;          // damage makes the mood greener
     const v = {};
-    for (const l of lawsFor(n)) {
+    for (const l of lawsFor(n, si)) {
       if (l.id === 'tax') { const t = L.tax * (1 + worry * 1.5) + (r() - .5) * 60; v.tax = l.opts.reduce((a, b) => Math.abs(b - t) < Math.abs(a - t) ? b : a, 0); }
       else if (l.id === 'build') v.build = clamp(Math.round(L.build + worry * 1.2 + (r() - .5) * 1.4), 0, 3);
       else { const green = !['drill', 'subs'].includes(l.id); const p = clamp(L[l.id] + (green ? worry * .35 : -worry * .3)); v[l.id] = r() < p ? 1 : 0; }
@@ -1432,16 +1579,16 @@ const SIM = (function () {
   }
   // the standard game's stand-ins: each nation's lean on each platform (0 fossil … 2 clean), greener as the damage arrives
   const LEAN_STD = [
-    { energy: 1.4, industry: 1.1, farms: 1.3, transport: 1.3, buildings: 1.3 },   // Cairhien
-    { energy: .8, industry: .6, farms: 1.0, transport: .8, buildings: .8 },       // Andor
-    { energy: .3, industry: .5, farms: .9, transport: .5, buildings: .6 },        // Saldaea
-    { energy: .9, industry: .8, farms: .5, transport: .8, buildings: .8 },        // Terrasen
-    { energy: 1.0, industry: .6, farms: .6, transport: .7, buildings: .7 },       // Erid
+    { energy: 1.4, industry: 1.1, farms: 1.3, transport: 1.3, buildings: 1.3, protect: 1.4, removal: .9 },   // Cairhien
+    { energy: .8, industry: .6, farms: 1.0, transport: .8, buildings: .8, protect: 1.0, removal: .5 },       // Andor
+    { energy: .3, industry: .5, farms: .9, transport: .5, buildings: .6, protect: .8, removal: .6 },         // Saldaea
+    { energy: .9, industry: .8, farms: .5, transport: .8, buildings: .8, protect: 1.4, removal: .8 },        // Terrasen
+    { energy: 1.0, industry: .6, farms: .6, transport: .7, buildings: .7, protect: 1.6, removal: .4 },       // Erid
   ];
   function standInStd(C, n, key, si) {
     const r = rk(C, 'ss:' + si + ':' + n + ':' + key), last = C.hist.length ? C.hist[C.hist.length - 1] : null;
     const worry = last ? clamp((last.T - T0) * 1.6 * (.5 + NATIONS[n].vuln * .4)) : 0, v = {};
-    for (const P of PLATFORMS) v[P.id] = clamp(Math.round(LEAN_STD[n][P.id] + worry * 1.1 + (r() - .5) * 1.7), 0, 2);
+    for (const P of platsAt(si)) v[P.id] = clamp(Math.round(LEAN_STD[n][P.id] + worry * 1.1 + (r() - .5) * 1.7), 0, 2);
     return v;
   }
   function decideStd(C, n, si, votes) {
@@ -1449,8 +1596,8 @@ const SIM = (function () {
     for (const m of del) { const v = votes && votes[m.pk] ? pparse(votes[m.pk]) : null; ballots.push(v && Object.keys(v).length ? { ...standInStd(C, n, m.pk, si), ...v, real: 1 } : standInStd(C, n, m.pk, si)); }
     if (!ballots.length) for (let k = 0; k < 3; k++) ballots.push(standInStd(C, n, 'ghost' + k, si));
     const plat = {}, tally = {};
-    for (const P of PLATFORMS) {
-      const c = [0, 0, 0]; ballots.forEach(b => c[b[P.id]]++);
+    for (const P of platsAt(si)) {
+      const c = [0, 0, 0]; ballots.forEach(b => { if (b[P.id] != null) c[b[P.id]]++; });
       const mx = Math.max(...c), top = [0, 1, 2].filter(i => c[i] === mx);
       const s = ballots.map(b => b[P.id]).sort((a, b) => a - b), med = s[Math.floor((s.length - 1) / 2)];
       plat[P.id] = top.length === 1 ? top[0] : top.includes(old[P.id]) ? old[P.id] : top.slice().sort((a, b) => Math.abs(a - med) - Math.abs(b - med) || Math.abs(a - 1) - Math.abs(b - 1))[0];
@@ -1466,7 +1613,7 @@ const SIM = (function () {
     // a nation nobody was dealt is run by three stand-ins
     if (!ballots.length) for (let k = 0; k < 3; k++) ballots.push(standIn(C, n, 'ghost' + k, si));
     const res = {}, tally = {};
-    for (const l of lawsFor(n)) {
+    for (const l of lawsFor(n, si)) {
       const vs = ballots.map(b => b[l.id]).filter(v => v != null);
       if (l.kind === 'yn') { const y = vs.filter(v => v).length; res[l.id] = y * 2 > vs.length ? 1 : y * 2 < vs.length ? 0 : old[l.id]; tally[l.id] = [y, vs.length - y]; }
       else { const s = vs.slice().sort((a, b) => a - b); res[l.id] = s[Math.floor((s.length - 1) / 2)]; tally[l.id] = s; }
@@ -1579,7 +1726,10 @@ const SIM = (function () {
         else s.permit = Math.max(5, Math.round(s.permit * .8));
       } else s.permit = 0;
       s.sect = sect;
-      s.emis = SECTORS.reduce((a, k) => a + sect[k], 0);
+      // carbon removal: replanted forests (cheap, limited) and machines (costly), both ramping up over about ten years
+      const ramp = k => s.since[k] != null ? Math.min(1, (y - s.since[k]) / 10) : 0;
+      s.removal = (L.refor ? .009 * s.Ypot * ramp('refor') : 0) + (L.dac ? .03 * s.Ypot * ramp('dac') : 0);
+      s.emis = SECTORS.reduce((a, k) => a + sect[k], 0) - s.removal;
       if (L.rd) rdCount++;
       if (L.aid && N.id !== 'erid') aidPool += s.Y * .005;
     }
@@ -1604,7 +1754,7 @@ const SIM = (function () {
     for (const s of nat) {
       const N = NATIONS[s.i], L = s.laws, t = y - Y0;
       // climate damage (DICE-style, relative to today) and this year's disasters
-      const adapt = L.adapt ? .6 : 1;
+      const adapt = L.adapt ? .6 : L.adaptL ? .8 : 1;
       let dmg = N.vuln * .0095 * (C.T * C.T - T0 * T0) * adapt;
       if (N.id === 'saldaea') dmg -= .006 * Math.min(.6, Math.max(0, C.T - T0));       // longer summers, for a while
       if (C.tips.reef && N.id === 'erid') dmg += .003;
@@ -1633,6 +1783,9 @@ const SIM = (function () {
       if (L.bcheap) cost -= .0006;
       if (L.beff === 1) cost += yrs('beff') <= 10 ? .0006 : -.0005;
       if (L.beff >= 2) cost += yrs('beff') <= 12 ? .0022 : -.001;
+      if (L.adaptL) cost += .0018;
+      if (L.refor) cost += .0008;
+      if (L.dac) cost += .009 * Math.min(1, yrs('dac') / 10);          // about $300 a tonne removed
       // leakage and tariffs
       const gap = s.P - avgP;
       if (gap > 20 && !L.bta) cost += .00005 * gap;
@@ -1657,7 +1810,7 @@ const SIM = (function () {
       s.growth = s.Y / Yprev - 1;
       s.pop *= 1 + ({ erid: .012, terrasen: .007, cairhien: .002, andor: -.001, saldaea: -.002 })[N.id] * (1 - t / 80);
       s.cumE += s.emis;
-      rec.nat.push({ Y: s.Y, gdpPc: s.Y / s.pop, growth: s.growth, emis: s.emis, sect: { ...s.sect }, clean: s.c, coal: s.k, ev: s.ev, P: s.P, permit: s.permit,
+      rec.nat.push({ Y: s.Y, gdpPc: s.Y / s.pop, growth: s.growth, emis: s.emis, removal: s.removal || 0, sect: { ...s.sect }, clean: s.c, coal: s.k, ev: s.ev, P: s.P, permit: s.permit,
         dmg: s.dmg, shock: s.shock, cost: s.cost, petro, laws: { ...s.laws } });
     }
     Object.assign(rec, { T: C.T, ppm: C.ppm, worldE, slr: C.slr, cleanCost: cleanCost(C), Y: nat.reduce((a, s) => a + s.Y, 0),
@@ -1709,7 +1862,8 @@ const SIM = (function () {
       session(C, si, V[si]);
       const stop = Math.min(si + 1 < SESSIONS.length ? SESSIONS[si + 1] : YN, end);
       while (C.year < stop) step(C);
-      if (C.year >= end) break;
+      // no early break here: when the run ends exactly on an election year whose votes are frozen (a summit), that
+      // session still has to be held; the check at the top of the loop stops everything else
     }
     return C;
   }
@@ -1721,12 +1875,13 @@ const SIM = (function () {
   }
 
   // ── what-ifs for the final reveal: the same world with other choices ──
-  const GREEN_ADV = n => ({ ...emptyLaws(), tax: 100, cap: 0, bta: 1, build: 1, solar: 1, ev: 1, rd: 1, coal: 1, gascar: 1, forest: 1, drill: 0, subs: 0, adapt: 1, aid: NATIONS[n].id === 'erid' ? 0 : 1 });
-  const BROWN_ADV = () => ({ ...emptyLaws(), tax: 0, cap: 0, bta: 0, build: 0, solar: 0, ev: 0, rd: 0, coal: 0, gascar: 0, forest: 0, drill: 1, subs: 1, adapt: 1, aid: 0 });
-  const ALL = v => Object.fromEntries(PLATFORMS.map(p => [p.id, v]));
+  // what every nation acting means at session si (later options only once they are on the ballot)
+  const GREEN_ADV = (n, si = 9) => ({ ...emptyLaws(), tax: 100, cap: 0, bta: 1, build: 1, solar: 1, ev: 1, rd: 1, coal: 1, gascar: 1, forest: 1, drill: 0, subs: 0, adapt: si >= 1 ? 1 : 0, aid: si >= 1 && NATIONS[n].id !== 'erid' ? 1 : 0, dac: si >= 2 ? 1 : 0 });
+  const BROWN_ADV = (si = 9) => ({ ...emptyLaws(), tax: 0, cap: 0, bta: 0, build: 0, solar: 0, ev: 0, rd: 0, coal: 0, gascar: 0, forest: 0, drill: 1, subs: 1, adapt: si >= 1 ? 1 : 0, aid: 0 });
+  const ALL = (v, si) => Object.fromEntries(platsAt(si).map(p => [p.id, v]));
   // every nation acting / no nation acting, in the game being played
   let MODE = 'adv';
-  const GREEN = n => MODE === 'std' ? stdLaws(ALL(2)) : GREEN_ADV(n), BROWN = () => MODE === 'std' ? stdLaws(ALL(0)) : BROWN_ADV();
+  const GREEN = (n, si) => MODE === 'std' ? stdLaws(ALL(2, si)) : GREEN_ADV(n, si), BROWN = si => MODE === 'std' ? stdLaws(ALL(0, si)) : BROWN_ADV(si);
   const withMode = (I, f) => { const keep = MODE; MODE = I.mode === 'std' ? 'std' : 'adv'; try { return f(); } finally { MODE = keep; } };
   function whatIf(I, rule) {
     // rule(n, si, actual) → laws; the actual game's laws are passed in so a scenario can keep them
@@ -1742,12 +1897,12 @@ const SIM = (function () {
   function ledger(I) { return withMode(I, () => ledger0(I)); }
   function ledger0(I) {
     const A = run(I);
-    const all = whatIf(I, n => GREEN(n)), none = whatIf(I, () => BROWN());
+    const all = whatIf(I, (n, si) => GREEN(n, si)), none = whatIf(I, (n, si) => BROWN(si));
     // each nation's own contribution: the world without that nation's laws (it drills and builds, the others as they did)
-    const without = NATIONS.map((N, k) => whatIf(I, (n, si, act) => n === k ? BROWN() : act));
+    const without = NATIONS.map((N, k) => whatIf(I, (n, si, act) => n === k ? BROWN(si) : act));
     // … and against a middle course: the middle direction on every platform (standard), or its 2026 laws held (advanced)
-    const MID = n => MODE === 'std' ? stdLaws(ALL(1)) : { ...emptyLaws(), ...STATUS_QUO[n] };
-    const mid = NATIONS.map((N, k) => whatIf(I, (n, si, act) => n === k ? MID(n) : act));
+    const MID = (n, si) => MODE === 'std' ? stdLaws(ALL(1, si)) : { ...emptyLaws(), ...STATUS_QUO[n] };
+    const mid = NATIONS.map((N, k) => whatIf(I, (n, si, act) => n === k ? MID(n, si) : act));
     const last = C => C.hist[C.hist.length - 1];
     const cumE = n => A.hist.reduce((a, r) => a + r.nat[n].emis, 0);
     return {
@@ -1782,10 +1937,10 @@ const SIM = (function () {
   function futures0(I, si, k) {
     const T = C => C.hist.map(r => [r.year, r.T]), E = C => C.hist.map(r => [r.year, r.worldE]);
     const out = {};
-    const A = heldRun(I, si), none = heldRun(I, si, () => BROWN()), all = heldRun(I, si, n => GREEN(n));
+    const A = heldRun(I, si), none = heldRun(I, si, (n, s) => BROWN(s)), all = heldRun(I, si, (n, s) => GREEN(n, s));
     Object.assign(out, { held: T(A), heldE: E(A), none: T(none), noneE: E(none), all: T(all), allE: E(all), A, noneC: none, allC: all });
     if (k != null && k >= 0) {
-      const lo = heldRun(I, si, n => n === k ? GREEN(n) : null), hi = heldRun(I, si, n => n === k ? BROWN() : null);
+      const lo = heldRun(I, si, (n, s) => n === k ? GREEN(n, s) : null), hi = heldRun(I, si, (n, s) => n === k ? BROWN(s) : null);
       Object.assign(out, { kGreen: T(lo), kBrown: T(hi) });
     }
     return out;
@@ -1797,7 +1952,7 @@ const SIM = (function () {
     const keep = (k, s, C) => s === si ? (k === n ? null : { ...C.nat[k].laws }) : null;
     const run1 = L => heldRun({ ...I, V: (I.V || []).slice(0, si) }, si, (k, s, C) => s === si && k === n ? L : keep(k, s, C));
     const out = {};
-    for (const l of lawsFor(n)) {
+    for (const l of lawsFor(n, si)) {
       const pick = picks && picks[l.id] ? picks[l.id] : ON[l.id];
       const on = { ...laws, [l.id]: l.kind === 'yn' ? 1 : pick }, off = { ...laws, [l.id]: 0 };
       if (!on[l.id]) continue;
@@ -1807,7 +1962,7 @@ const SIM = (function () {
       const inc = (r, k) => r.nat[k].gdpPc / (1 - r.nat[k].shock), wInc = r => r.nat.reduce((a, x) => a + x.Y / (1 - x.shock), 0);
       for (let i = 0; i < A.hist.length; i++) { const a = A.hist[i], b = B.hist[i]; if (a.year <= SESSIONS[si]) continue; you.push([a.year, (inc(a, n) / inc(b, n) - 1) * 100]); world.push([a.year, (wInc(a) / wInc(b) - 1) * 100]); }
       const avg = (arr, y1, y2) => { const v = arr.filter(p => p[0] > y1 && p[0] <= y2).map(p => p[1]); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0; };
-      const s0 = SESSIONS[si], early = avg(you, s0, s0 + 8), late = you.length ? you[you.length - 1][1] : 0, wLate = world.length ? world[world.length - 1][1] : 0;
+      const s0 = SESSIONS[si], early = avg(you, s0, horizon(si)), late = you.length ? you[you.length - 1][1] : 0, wLate = world.length ? world[world.length - 1][1] : 0;
       const dT = A.hist[A.hist.length - 1].T - B.hist[B.hist.length - 1].T;
       let tag;
       if (Math.abs(early) < .02 && Math.abs(late) < .02 && Math.abs(wLate) < .02) tag = ['flat', 'Little effect yet'];
@@ -1828,7 +1983,7 @@ const SIM = (function () {
       session(C, si, null, k => k === n ? { ...C.nat[k].laws, ...mine } : { ...C.nat[k].laws });
       const y0 = C.year, e0 = C.nat[n].emis, Y0n = C.nat[n].Y;
       while (C.year < YN) step(C);
-      const h = C.hist, i8 = h.findIndex(r => r.year === Math.min(YN, y0 + 8)), r8 = h[i8], last = h[h.length - 1];
+      const h = C.hist, i8 = h.findIndex(r => r.year === horizon(si)), r8 = h[i8], last = h[h.length - 1];
       return { growth: Math.pow(r8.nat[n].Y / Y0n, 1 / (r8.year - y0)) - 1, emis: r8.nat[n].emis, emisNow: e0, T: last.T, gdpPc: last.nat[n].gdpPc, y8: r8.year };
     };
     return { mine: go(draft), base: go(null) };
@@ -1836,11 +1991,11 @@ const SIM = (function () {
   // how hard each nation tried, 0 (drill, subsidize, nothing else) … 1 (every green law, all the time)
   function effort(C, n) {
     if (!C.hist.length) return 0;
-    if (C.mode === 'std') { let s = 0; for (const h of C.hist) { const p = platOf(h.nat[n].laws); s += PLATFORMS.reduce((a, P) => a + p[P.id], 0) / 10; } return s / C.hist.length; }
+    if (C.mode === 'std') { let s = 0; for (const h of C.hist) { const p = platOf(h.nat[n].laws); s += PLATFORMS.filter(P => P.sector).reduce((a, P) => a + p[P.id], 0) / 10; } return s / C.hist.length; }
     let s = 0;
     for (const h of C.hist) {
       const L = h.nat[n].laws;
-      s += (L.tax / 250) * .22 + L.cap * .1 + LI.build.opts[L.build] / 2 * .14 + L.solar * .05 + L.ev * .05 + L.rd * .05 + L.coal * .12 + L.gascar * .07 + L.forest * .08 + L.aid * .05 + L.bta * .03
+      s += (L.tax / 250) * .22 + L.cap * .1 + LI.build.opts[L.build] / 2 * .14 + L.solar * .05 + L.ev * .05 + L.rd * .05 + L.coal * .12 + L.gascar * .07 + L.forest * .08 + L.aid * .05 + L.bta * .03 + (L.dac || 0) * .04
         - L.drill * .1 - L.subs * .06;
     }
     return clamp(s / C.hist.length / .96 + .1);
@@ -1848,11 +2003,11 @@ const SIM = (function () {
 
   // ── the temptation: four worlds for nation k, each nation keeping one plan from 2026 (act, or go fossil-first) ──
   // cells gg (k acts, the others act), bg (k fossil-first, the others act), gb, bb; each holds k's income, the others'
-  // average income and the warming, in 2034, 2050 and 2066
-  const DIL_Y = [2034, 2050, 2066];
+  // average income and the warming, in 2040, 2054 and 2066
+  const DIL_Y = [2040, 2054, 2066];
   function dilemma(I, k) {
     return withMode(I, () => {
-      const w = (me, oth) => heldRun({ ...I, V: [{}] }, 0, n => n === k ? (me ? GREEN(n) : BROWN()) : (oth ? GREEN(n) : BROWN()));
+      const w = (me, oth) => heldRun({ ...I, V: [{}] }, 0, n => n === k ? (me ? GREEN(n, 0) : BROWN(0)) : (oth ? GREEN(n, 0) : BROWN(0)));
       const pick = C => Object.fromEntries(DIL_Y.map(y => { const r = C.hist.find(h => h.year === y); return [y, { inc: r.nat[k].gdpPc, others: r.nat.filter((x, n) => n !== k).reduce((a, x) => a + x.gdpPc, 0) / 4, T: r.T, lost: C.hist.filter(h => h.year <= y).reduce((a, h) => a + h.nat[k].Y * (h.nat[k].dmg + h.nat[k].shock), 0) }]; }));
       return { k, years: DIL_Y, gg: pick(w(1, 1)), bg: pick(w(0, 1)), gb: pick(w(1, 0)), bb: pick(w(0, 0)) };
     });
@@ -1867,25 +2022,25 @@ const SIM = (function () {
       session(C, si, null, k => k === n ? stdLaws(p) : { ...C.nat[k].laws });
       const y0 = C.year, s0 = { ...C.nat[n].sect };
       while (C.year < YN) step(C);
-      const h = C.hist, r8 = h.find(r => r.year === Math.min(YN, y0 + 8)), last = h[h.length - 1];
-      return { y0, y8: r8.year, sect0: s0, sect8: r8.nat[n].sect, emis8: r8.nat[n].emis, inc8: r8.nat[n].gdpPc / (1 - r8.nat[n].shock), inc66: last.nat[n].gdpPc / (1 - last.nat[n].shock), T: last.T };
+      const h = C.hist, r8 = h.find(r => r.year === horizon(si)), last = h[h.length - 1];
+      return { y0, y8: r8.year, sect0: s0, sect8: r8.nat[n].sect, emis8: r8.nat[n].emis, loss8: r8.nat[n].dmg, removal8: r8.nat[n].removal || 0, inc8: r8.nat[n].gdpPc / (1 - r8.nat[n].shock), inc66: last.nat[n].gdpPc / (1 - last.nat[n].shock), T: last.T };
     };
     const out = { base: one(picks) };
-    for (const P of PLATFORMS) out[P.id] = [0, 1, 2].map(o => o === picks[P.id] ? out.base : one({ ...picks, [P.id]: o }));
+    for (const P of platsAt(si)) out[P.id] = [0, 1, 2].map(o => o === picks[P.id] ? out.base : one({ ...picks, [P.id]: o }));
     return out;
   }
   // each platform's cleanest option against its most fossil one, for nation n, year by year (as `profiles` does for laws)
   function platProfiles(I, si, n, picks) {
     const run1 = L => heldRun({ ...I, V: (I.V || []).slice(0, si) }, si, (k, s, C) => s === si ? (k === n ? L : { ...C.nat[k].laws }) : null);
     const out = {};
-    for (const P of PLATFORMS) {
+    for (const P of platsAt(si)) {
       const A = run1(stdLaws({ ...picks, [P.id]: 2 })), B = run1(stdLaws({ ...picks, [P.id]: 0 }));
       const inc = (r, k) => r.nat[k].gdpPc / (1 - r.nat[k].shock), wInc = r => r.nat.reduce((a, x) => a + x.Y / (1 - x.shock), 0);
       const you = [], world = [];
       for (let i = 0; i < A.hist.length; i++) { const a = A.hist[i], b = B.hist[i]; if (a.year <= SESSIONS[si]) continue; you.push([a.year, (inc(a, n) / inc(b, n) - 1) * 100]); world.push([a.year, (wInc(a) / wInc(b) - 1) * 100]); }
       const avg = (arr, y1, y2) => { const v = arr.filter(p => p[0] > y1 && p[0] <= y2).map(p => p[1]); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0; };
-      const s0 = SESSIONS[si], early = avg(you, s0, s0 + 8), late = you[you.length - 1][1], wLate = world[world.length - 1][1];
-      const eA = A.hist[A.hist.length - 1].nat[n].sect[P.sector], eB = B.hist[B.hist.length - 1].nat[n].sect[P.sector];
+      const s0 = SESSIONS[si], early = avg(you, s0, horizon(si)), late = you[you.length - 1][1], wLate = world[world.length - 1][1];
+      const eA = P.sector ? A.hist[A.hist.length - 1].nat[n].sect[P.sector] : 0, eB = P.sector ? B.hist[B.hist.length - 1].nat[n].sect[P.sector] : 0;
       const cum = (H, k) => H.reduce((a, r) => a + r.nat[k].emis, 0);
       out[P.id] = { you, world, early, late, wLate, dT: A.hist[A.hist.length - 1].T - B.hist[B.hist.length - 1].T, eA, eB, cutGt: cum(B.hist, n) - cum(A.hist, n) };
     }
@@ -1902,7 +2057,7 @@ const SIM = (function () {
 
   return { Y0, YN, SESSIONS, NATIONS, NI, LAWS, LI, GROUPS, SECTORS, lawsFor, pack, parse, deal, packAssign, parseAssign, newWorld, run, step, session, decide, standIn,
     ledger, whatIf, effort, project, futures, heldRun, profiles, GREEN, BROWN, SSP, at, hash, cleanCost, emptyLaws, T0, PPM0,
-    dealSplit, dilemma, PLATFORMS, PI, STD_START, stdLaws, platOf, ppack, pparse, standInStd, optionPreview, platProfiles };
+    dealSplit, dilemma, DIL_Y, horizon, platsAt, PLATFORMS, PI, STD_START, stdLaws, platOf, ppack, pparse, standInStd, optionPreview, platProfiles };
 })();
 
 // ONE SKY: the continent. A seeded heightmap (fractal noise under an oval falloff) gives the land, the islands,
@@ -2607,12 +2762,12 @@ const UI = (function () {
     n.textContent = t; $('#osNyr').textContent = y || '';
     const b = $('#osNews'); b.classList.remove('flash'); void b.offsetWidth; b.classList.add('flash'); b.classList.toggle('big', !!big);
   }
-  const STEPS = [['deal', 'Nations'], ['s0', '2026'], ['s1', '2034'], ['s2', '2042'], ['s3', '2050'], ['s4', '2058'], ['end', '2066']];
+  const STEPS = [['deal', 'Nations'], ...SIM.SESSIONS.map((y, i) => ['s' + i, String(y)]), ['end', '2066']];
   function paint() {
     if (!el) return;
     const C = R.C, h = C ? C.hist : [], rec = h[h.length - 1];
     $('#osYear').textContent = rec ? rec.year : 2026;
-    const si = R.step === 'deal' ? 0 : R.step === 'end' ? 6 : R.si == null ? 1 : R.si + 1;
+    const si = R.step === 'deal' ? 0 : R.step === 'end' ? STEPS.length - 1 : R.si == null ? 1 : R.si + 1;
     $('#osSteps').innerHTML = STEPS.map(([k, l], j) => `<li class="${j < si ? 'done' : j === si ? 'on' : ''}">${l}</li>`).join('');
     // the viewer's nation
     const you = $('#osYou');
@@ -2766,7 +2921,7 @@ const UI = (function () {
     const fmtv = v => v.toFixed(o.dec) + (o.unit.startsWith('%') ? '%' : '');
     let s = `<text x="${L}" y="13" class="os-ct">${o.title}</text><text x="${W - 4}" y="13" class="os-cu" text-anchor="end">${o.unit}</text>`;
     for (let k = 0; k <= 4; k++) { const v = o.yMin + (o.yMax - o.yMin) * k / 4; s += `<path d="M${L},${Y(v).toFixed(1)} H${W - Rm}" stroke="#e8dcc0" stroke-width="1"/><text x="${L - 5}" y="${(Y(v) + 3).toFixed(1)}" class="os-ax" text-anchor="end">${v.toFixed(o.dec > 1 ? 1 : 0)}</text>`; }
-    for (const y of [2026, 2034, 2042, 2050, 2058, 2066]) s += `<text x="${X(y)}" y="${H - 6}" class="os-ax" text-anchor="middle">${y}</text>`;
+    for (const y of [...SIM.SESSIONS, 2066]) s += `<text x="${X(y)}" y="${H - 6}" class="os-ax" text-anchor="middle">${y}</text>`;
     for (const y of SIM.SESSIONS.slice(1)) s += `<path d="M${X(y)},${T} V${H - B}" stroke="#c9b68c" stroke-width="1" stroke-dasharray="2 3"/>`;
     const h = R.C ? R.C.hist : [], now = h.length ? h[h.length - 1].year : 2026;
     s += `<rect x="${X(now)}" y="${T}" width="${Math.max(0, X(x1) - X(now))}" height="${H - T - B}" fill="#efe6d0" opacity=".45"/>`;
@@ -2837,7 +2992,7 @@ const UI = (function () {
         <div class="os-dmeter"><span>Exposed to warming</span><i><b style="width:${Math.round(N.vuln / 2.6 * 100)}%"></b></i></div><div class="os-drisk">${N.exposure}</div>
         <div class="os-ddel">${cnt(n)} ${cnt(n) === 1 ? 'delegate' : 'delegates'}${n === R.you ? ' · <b>you are one of them</b>' : ''}</div></div>`; };
     const order = R.you >= 0 ? [R.you, ...[0, 1, 2, 3, 4].filter(n => n !== R.you)] : [0, 1, 2, 3, 4];
-    overlay(head('THE FIVE NATIONS', R.you >= 0 ? `You speak for ${N5[R.you].name}` : 'Five nations, one sky', R.you >= 0 ? 'Every eight years your nation’s delegates vote on its own laws. The other four nations vote on theirs. The air belongs to all of you.' : 'Every student now speaks for a nation. Every eight years each nation votes on its own laws; the other four vote on theirs. The air belongs to all of them.') +
+    overlay(head('THE FIVE NATIONS', R.you >= 0 ? `You speak for ${N5[R.you].name}` : 'Five nations, one sky', R.you >= 0 ? 'At each of three elections your nation’s delegates vote on its own laws. The other four nations vote on theirs. The air belongs to all of you.' : 'Every student now speaks for a nation. At three elections each nation votes on its own laws; the other four vote on theirs. The air belongs to all of them.') +
       `<div class="os-deal${R.you >= 0 ? ' mine' : ''}">${order.map(card).join('')}</div>` + act(o, 'Open the first session ▸'), null, 'wide');
     wire(o);
   }
@@ -2845,7 +3000,7 @@ const UI = (function () {
   function showProgress(o) {
     const sig = o.id;
     const rows = o.rows.map(([n, k, tot]) => `<div class="os-prow${tot ? '' : ' si'}" style="--c:${N5[n].color}">${crest(n, 18)}<b>${N5[n].name}</b><i><span style="width:${tot ? Math.round(k / tot * 100) : 100}%"></span></i><em>${tot ? `${k} of ${tot}` : 'stand-ins'}</em></div>`).join('');
-    if (R.progSig === sig && isOpen()) { $('#osProws').innerHTML = rows; $('#osPclock').textContent = o.clock || ''; $('#osPclock').classList.toggle('low', !!o.low); return; }
+    if (R.progSig === sig && isOpen() && $('#osProws')) { $('#osProws').innerHTML = rows; $('#osPclock').textContent = o.clock || ''; $('#osPclock').classList.toggle('low', !!o.low); return; }
     R.progSig = sig;
     overlay(head(o.eb, o.title, o.sub) + `<div class="os-prog${o.spot ? ' spot' : ''}"><div class="os-pleft"><div class="os-pclock${o.low ? ' low' : ''}" id="osPclock">${o.clock || ''}</div><div class="os-prows" id="osProws">${rows}</div></div>${o.spot ? '<div class="os-spot" id="osSpot"></div>' : ''}</div>${o.body || ''}` + act(o, 'Close the session now ▸'), () => {
       if (!o.spot) return;
@@ -2950,7 +3105,7 @@ const UI = (function () {
     };
     // stage 0 (a delegate's screen only): your own assembly's count, law by law, ballots dropping in, then the verdict
     const stage0 = () => {
-      const n = R.you, N = N5[n], r = sess.res[n], laws = SIM.lawsFor(n), mineB = o && o.mine ? o.mine : null;
+      const n = R.you, N = N5[n], r = sess.res[n], laws = SIM.lawsFor(n, sess.si), mineB = o && o.mine ? o.mine : null;
       const verdict = l => {
         const now = r.laws[l.id], was = sess.before[n][l.id], t = r.tally[l.id];
         if (l.kind === 'yn') { const [y, no] = t; const tie = y === no; return { cls: tie ? 'tie' : now ? 'pass' : 'fail', big: tie ? 'TIE' : now ? 'PASSED' : 'FAILED', sub: tie ? (now ? 'The law stays' : 'Nothing changes') : !!now !== !!was ? (now ? 'A new law' : 'Repealed') : now ? 'Stays in force' : 'Stays off the books', chip: tie ? 'Tie' : now ? 'Passed' : 'Failed' }; }
@@ -3004,7 +3159,7 @@ const UI = (function () {
         at(t + 1600, () => stage1());
       }, 'wide');
     };
-    if (R.you >= 0 && !(o && o.noCount)) stage0(); else stage1();
+    if (o && o.start === 'changes') stage2(); else if (R.you >= 0 && !(o && o.noCount)) stage0(); else stage1();
   }
   // the reckoning at 2066 (pages: the world, who paid and who gained, and in round 2 the twist)
   function showFinal(L, o) {
@@ -3023,7 +3178,7 @@ const UI = (function () {
     let chainD = null;
     if (std() && L) {
       chainD = STD.data(SIM.newWorld(C.seed, {}, 'std'), C, { you: R.you, final: true, alt: { none: L.T.none, all: L.T.all } });
-      add('chain', head('2066 · FROM CHOICES TO CLIMATE', 'Forty years, link by link', `How the choices of 2026 to 2058 became emissions, the emissions became CO₂ in the air, and the air became the warming every nation now lives with.`) + STD.chainHTML());
+      add('chain', head('2066 · FROM CHOICES TO CLIMATE', 'Forty years, link by link', `How the choices of 2026, 2040 and 2054 became emissions, the emissions became CO₂ in the air, and the air became the warming every nation now lives with.`) + STD.chainHTML());
     }
     // 2. what the laws did to the climate
     if (L && o.fut) add('impact', impactPage(L, o.fut));
@@ -3126,6 +3281,9 @@ const UI = (function () {
 const STD = (function () {
   const N5 = SIM.NATIONS, P5 = SIM.PLATFORMS, K = UI.kit, esc = UI.esc, sgn = UI.sgn;
   // each sector keeps one color everywhere (ballot, chain, charts); the three directions are always labeled in words
+  // the two platforms that arrive later have no sector of their own: they keep their own color
+  const XCOL = { protect: '#4f7fa0', removal: '#5f8a6a' };
+  const pcol = P => P.sector ? SECT[P.sector][1] : XCOL[P.id];
   const SECT = { power: ['Electricity', '#c9962c'], industry: ['Industry', '#6d6a8c'], land: ['Farms and forests', '#6f9447'], transport: ['Transportation', '#3f86a0'], buildings: ['Buildings', '#b5654a'] };
   const OPT_C = ['#8a5a3c', '#b39a63', '#2f7a40'];
   const G = {
@@ -3134,6 +3292,8 @@ const STD = (function () {
     farms: '<path d="M6,2 l3.6,6 h-2.3 l2.8,4.8 h-8.2 l2.8,-4.8 h-2.3 Z" fill="#6f9447" stroke="#3b3222" stroke-width=".9"/><path d="M6,12.8 v3.4 M13.5,16.2 V5.5 M13.5,8 l-2,-2 M13.5,8 l2,-2 M13.5,11 l-2,-2 M13.5,11 l2,-2" stroke="#3b3222" stroke-width="1.1" fill="none"/>',
     transport: '<rect x="4" y="2.5" width="10" height="11" rx="2.6" fill="none" stroke="#3b3222" stroke-width="1.2"/><path d="M4,8 h10" stroke="#3b3222" stroke-width="1.1"/><circle cx="7" cy="10.8" r="1" fill="#3b3222"/><circle cx="11" cy="10.8" r="1" fill="#3b3222"/><path d="M6.2,13.5 l-2,3 M11.8,13.5 l2,3" stroke="#3b3222" stroke-width="1.2"/>',
     buildings: '<path d="M2.5,9 L9,3 L15.5,9 M4.5,7.6 V15.6 H13.5 V7.6" fill="none" stroke="#3b3222" stroke-width="1.3" stroke-linejoin="round"/><rect x="7.5" y="10.6" width="3" height="5" fill="none" stroke="#3b3222" stroke-width="1.1"/>',
+    protect: '<path d="M9,1.8 L15,4.2 V8.6 C15,12.4 12.4,15 9,16.3 C5.6,15 3,12.4 3,8.6 V4.2 Z" fill="#cfe0ea" stroke="#3b3222" stroke-width="1.2" stroke-linejoin="round"/><path d="M5.2,10 q1.9,-1.6 3.8,0 t3.8,0" stroke="#2668a8" stroke-width="1.3" fill="none"/>',
+    removal: '<path d="M3,6.5 a3,2.4 0 0 1 5,-1.6 a3,2.4 0 0 1 6,1.2 a2,2 0 0 1 -.6,3.9 H4.2 a2,2 0 0 1 -1.2,-3.5Z" fill="#d8d4c8" stroke="#3b3222" stroke-width="1"/><path d="M9,10 V16 M6.6,13.6 L9,16 L11.4,13.6" stroke="#2f7a40" stroke-width="1.5" fill="none"/>',
   };
   const glyph = (k, s = 16) => `<svg class="os-g" width="${s}" height="${s}" viewBox="0 0 18 18" aria-hidden="true">${G[k] || ''}</svg>`;
   const glyphSvg = (k, x, y, s) => `<g transform="translate(${x},${y}) scale(${s / 18})">${G[k] || ''}</g>`;
@@ -3146,24 +3306,33 @@ const STD = (function () {
   // ── the ballot: five platform cards ──
   // ctx = { n, v: draft picks, cur: today's picks, sect0: the nation's sectors today, emis0, name }
   function ballotRows(ctx) {
-    return P5.map(P => {
-      const sec = SECT[P.sector], e = ctx.sect0[P.sector], changed = ctx.v[P.id] !== ctx.cur[P.id];
-      return `<div class="os-plat${changed ? ' changed' : ''}" style="--sc:${sec[1]}"><div class="os-ph">${glyph(P.id, 26)}<div><b>${P.title}</b><small>${P.q}</small>
-          <em class="os-psec"><i></i>Today: <strong>${f1(e)} Gt</strong> of CO₂e a year, ${Math.round(e / ctx.emis0 * 100)}% of ${esc(ctx.name)}’s emissions</em></div></div>
+    return SIM.platsAt(ctx.si).map(P => {
+      const changed = ctx.v[P.id] !== ctx.cur[P.id], isNew = P.from && P.from === ctx.si;
+      const today = P.sector ? `Today: <strong>${f1(ctx.sect0[P.sector])} Gt</strong> of CO₂e a year, ${Math.round(ctx.sect0[P.sector] / ctx.emis0 * 100)}% of ${esc(ctx.name)}’s emissions`
+        : P.metric === 'loss' ? `Today: climate damage costs ${esc(ctx.name)} <strong>${(ctx.loss0 * 100).toFixed(1)}%</strong> of its income a year`
+        : `Today: no CO₂ is being taken back out of the air`;
+      return `<div class="os-plat${changed ? ' changed' : ''}${isNew ? ' new' : ''}" style="--sc:${pcol(P)}"><div class="os-ph">${glyph(P.id, 26)}<div>${isNew ? '<span class="os-newtag">New this election</span>' : ''}<b>${P.title}</b><small>${P.q}</small>
+          <em class="os-psec"><i></i>${today}</em></div></div>
         <div class="os-opts">${P.opts.map((O, o) => `<button class="os-opt${ctx.v[P.id] === o ? ' on' : ''}" data-p="${P.id}" data-o="${o}" aria-pressed="${ctx.v[P.id] === o}">
           <span class="os-oh">${dir(o)}<b>${O.t}</b>${ctx.cur[P.id] === o ? '<em class="os-today">today</em>' : ''}</span><small>${O.d}</small><span class="os-ofx" data-fx="${P.id}:${o}"><span class="os-wait">…</span></span></button>`).join('')}</div></div>`;
     }).join('');
   }
   // under each option: that sector's emissions eight years on, and the nation's income then and in 2066 (against today's direction)
   function fillOptions(box, PV, ctx) {
-    for (const P of P5) {
-      const arr = PV[P.id], ref = arr[ctx.cur[P.id]], s0 = ctx.sect0[P.sector], mx = Math.max(s0, ...arr.map(r => r.sect8[P.sector])) || 1;
+    for (const P of SIM.platsAt(ctx.si)) {
+      const arr = PV[P.id]; if (!arr) continue;
+      const ref = arr[ctx.cur[P.id]];
+      // what each option moves: a sector's emissions, the nation's climate losses, or the CO₂ it removes
+      const val = r => P.sector ? r.sect8[P.sector] : P.metric === 'loss' ? r.loss8 * 100 : r.removal8;
+      const v0 = P.sector ? ctx.sect0[P.sector] : P.metric === 'loss' ? ctx.loss0 * 100 : 0, mx = Math.max(v0, ...arr.map(val)) || 1;
+      const lbl = P.sector ? 'CO₂' : P.metric === 'loss' ? 'Losses' : 'Removed', unit = v => P.metric === 'loss' ? v.toFixed(1) + '%' : f1(v) + ' Gt';
       arr.forEach((r, o) => {
         const el = box.querySelector(`[data-fx="${P.id}:${o}"]`); if (!el) return;
-        const e8 = r.sect8[P.sector], d8 = (r.inc8 / ref.inc8 - 1) * 100, d66 = (r.inc66 / ref.inc66 - 1) * 100, same = o === ctx.cur[P.id];
+        const e8 = val(r), d8 = (r.inc8 / ref.inc8 - 1) * 100, d66 = (r.inc66 / ref.inc66 - 1) * 100, same = o === ctx.cur[P.id];
         const m = v => Math.abs(v) < .005 ? '<em class="same">±0</em>' : `<em class="${v > 0 ? 'up' : 'dn'}">${sgn(v, 2)}%</em>`;
-        el.innerHTML = `<span class="os-fxr"><span>CO₂, ${r.y8}</span><i class="os-fxbar"><b style="width:${(e8 / mx * 100).toFixed(0)}%"></b><u style="left:${(s0 / mx * 100).toFixed(0)}%"></u></i><strong>${f1(e8)} Gt</strong><em class="${e8 <= s0 ? 'up' : 'dn'}">${pctx(e8, s0)}</em></span>
-          <span class="os-fxr inc"><span>Income</span>${same ? '<em class="same">today’s direction</em>' : `<span class="os-fxy">${r.y8}</span>${m(d8)}<span class="os-fxy">2066</span>${m(d66)}`}</span>`;
+        const good = P.metric === 'removal' ? e8 >= v0 : e8 <= v0;
+        el.innerHTML = `<span class="os-fxr"><span>${lbl}, ${r.y8}</span><i class="os-fxbar"><b style="width:${(e8 / mx * 100).toFixed(0)}%"></b>${v0 ? `<u style="left:${(v0 / mx * 100).toFixed(0)}%"></u>` : ''}</i><strong>${unit(e8)}</strong>${v0 ? `<em class="${good ? 'up' : 'dn'}">${pctx(e8, v0)}</em>` : ''}</span>
+          <span class="os-fxr inc"><span>Income</span>${same ? '<em class="same">today’s direction</em>' : (r.y8 >= 2066 ? `<span class="os-fxy">2066</span>${m(d66)}` : `<span class="os-fxy">${r.y8}</span>${m(d8)}<span class="os-fxy">2066</span>${m(d66)}`)}</span>`;
       });
     }
   }
@@ -3190,12 +3359,15 @@ const STD = (function () {
   const bandPath = (x1, a0, a1, x2, b0, b1) => { const m = (x1 + x2) / 2; return `M${x1},${a0} C${m},${a0} ${m},${b0} ${x2},${b0} L${x2},${b1} C${m},${b1} ${m},${a1} ${x1},${a1} Z`; };
   function draw(box, D) {
     const W = 1160, H = 448, top = 52, bot = 430, mid = (top + bot) / 2, you = D.you, me = you >= 0;
-    const S = SIM.SECTORS.slice(), rowsP = P5;   // the platforms, in the same order as their sectors
+    const S = SIM.SECTORS.slice(), rowsP = P5.filter(P => P.sector);   // the sector platforms, in the same order as their sectors
     const sect = (r, k) => me ? r.nat[you].sect[k] : r.nat.reduce((s, x) => s + x.sect[k], 0);
     const s0 = Object.fromEntries(S.map(k => [k, sect(D.a, k)])), s1 = Object.fromEntries(S.map(k => [k, sect(D.b, k)]));
     const rowH = (bot - top) / 5, rc = i => top + (i + .5) * rowH;
     const kL = Math.min(rowH - 12, 70) / Math.max(.05, ...S.map(k => Math.max(s0[k], s1[k])));
     const wE0 = D.a.worldE, wE1 = D.b.worldE, kW = 250 / Math.max(wE0, wE1, 1);
+    // once carbon removal starts, the net emissions are less than the sectors' sum: the bands narrow to fit
+    const gross = me ? SIM.SECTORS.reduce((a, k) => a + D.b.nat[you].sect[k], 0) : SIM.SECTORS.reduce((a, k) => a + s1[k], 0);
+    const netF = clamp((me ? D.b.nat[you].emis : wE1) / (gross || 1), .05, 1);
     const xA = 0, xBar = 262, xN = 486, xW = me ? 616 : 580, xAir = 684, xT = 832, xE = 976;
     let s = '';
     // the step labels
@@ -3231,7 +3403,7 @@ const STD = (function () {
       N5.forEach((_, n) => { nTop.push(y); y += natH[n] + gap; });
       let acc = nTop[you];
       S.forEach((k, i) => {
-        const h = s1[k] * kL, a0 = rc(i) - h / 2, a1 = rc(i) + h / 2, hb = D.b.nat[you].sect[k] * kW, b0 = acc, b1 = acc + hb; acc = b1;
+        const h = s1[k] * kL, a0 = rc(i) - h / 2, a1 = rc(i) + h / 2, hb = D.b.nat[you].sect[k] * kW * netF, b0 = acc, b1 = acc + hb; acc = b1;
         g2 += `<rect x="${xBar - 6}" y="${(rc(i) - s0[k] * kL / 2).toFixed(1)}" width="6" height="${(s0[k] * kL).toFixed(1)}" fill="none" stroke="${SECT[k][1]}" stroke-dasharray="2 2"/>` +
           `<path d="${bandPath(xBar, a0, a1, xN, b0, b1)}" fill="${SECT[k][1]}" opacity=".62"/><rect x="${xBar - 6}" y="${a0.toFixed(1)}" width="6" height="${Math.max(.6, h).toFixed(1)}" fill="${SECT[k][1]}"/>`;
       });
@@ -3245,7 +3417,7 @@ const STD = (function () {
     } else {
       let acc = wTop;
       S.forEach((k, i) => {
-        const h = s1[k] * kL, a0 = rc(i) - h / 2, a1 = rc(i) + h / 2, hb = s1[k] * kW, b0 = acc, b1 = acc + hb; acc = b1;
+        const h = s1[k] * kL, a0 = rc(i) - h / 2, a1 = rc(i) + h / 2, hb = s1[k] * kW * netF, b0 = acc, b1 = acc + hb; acc = b1;
         g2 += `<rect x="${xBar - 6}" y="${(rc(i) - s0[k] * kL / 2).toFixed(1)}" width="6" height="${(s0[k] * kL).toFixed(1)}" fill="none" stroke="${SECT[k][1]}" stroke-dasharray="2 2"/>` +
           `<path d="${bandPath(xBar, a0, a1, xW, b0, b1)}" fill="${SECT[k][1]}" opacity=".62"/><rect x="${xBar - 6}" y="${a0.toFixed(1)}" width="6" height="${Math.max(.6, h).toFixed(1)}" fill="${SECT[k][1]}"/>`;
       });
@@ -3358,7 +3530,7 @@ const STD = (function () {
     };
     const closest = () => {
       const out = [];
-      order.forEach(n => P5.forEach(P => { const c = sess.res[n].tally[P.id], s = c.slice().sort((a, b) => b - a); if (c[0] + c[1] + c[2] >= 3 && s[0] - s[1] <= 1) out.push({ n, P, c, d: s[0] - s[1], now: sess.res[n].plat[P.id], chg: sess.res[n].plat[P.id] !== before[n][P.id] }); }));
+      order.forEach(n => SIM.platsAt(sess.si).forEach(P => { const c = sess.res[n].tally[P.id], s = c.slice().sort((a, b) => b - a); if (c[0] + c[1] + c[2] >= 3 && s[0] - s[1] <= 1) out.push({ n, P, c, d: s[0] - s[1], now: sess.res[n].plat[P.id], chg: sess.res[n].plat[P.id] !== before[n][P.id] }); }));
       out.sort((a, b) => a.d - b.d || b.chg - a.chg);
       return out.slice(0, 4);
     };
@@ -3366,7 +3538,7 @@ const STD = (function () {
       const cc = closest();
       K.overlay(K.head(`THE SUMMIT OF ${yr} · THE VOTES`, 'How the nations chose', 'Every delegate’s secret ballot, counted. On each platform the direction with the most votes wins; a tie keeps today’s direction. The bars show the votes for each direction.') +
         `<div class="os-board std"><div class="os-bhd"><span></span>${order.map(n => `<span class="os-bnat" data-col="${n}" style="--c:${N5[n].color}">${UI.crest(n, 18)}<b>${N5[n].name}</b><em>${sess.res[n].real} of ${sess.res[n].size} voted</em></span>`).join('')}</div>` +
-        P5.map(P => `<div class="os-brow"><span class="os-blaw">${glyph(P.id, 16)}${P.title}</span>${order.map(n => `<span class="os-bcell" data-col="${n}">${cell(n, P)}</span>`).join('')}</div>`).join('') +
+        SIM.platsAt(sess.si).map(P => `<div class="os-brow"><span class="os-blaw">${glyph(P.id, 16)}${P.title}</span>${order.map(n => `<span class="os-bcell" data-col="${n}">${cell(n, P)}</span>`).join('')}</div>`).join('') +
         `<div class="os-bkey"><span>Directions:</span>${['Fossil fuels and growth first', 'In between', 'Cut emissions'].map((t, i) => `<span><i style="background:${OPT_C[i]}"></i>${t}</span>`).join('')}</div></div><div class="os-close" id="osClose"></div>` +
         K.act({ onGo: stage2, goLabel: 'What these choices will do ▸' }, '', '<span class="os-note" id="osBnote">Counting the votes…</span>'), () => {
         const cols = order.map(n => K.$$(`[data-col="${n}"]`));
@@ -3390,11 +3562,11 @@ const STD = (function () {
         return { cls: now > was ? 'pass' : now < was ? 'fail' : 'set', big: P.opts[now].s.toUpperCase(), sub: tie ? 'A tie · today’s direction stays' : now === was ? 'Most votes · unchanged' : `Most votes · was ${P.opts[was].s}`, chip: P.opts[now].s };
       };
       K.overlay(K.head(`THE ASSEMBLY OF ${N.name.toUpperCase()} · ${yr}`, 'The count', `Every ballot cast by ${N.name}’s ${r.size} ${r.size === 1 ? 'delegate' : 'delegates'}, platform by platform. The direction with the most votes wins.${mineB ? ' Your ballot is the gold one.' : ''}`) +
-        `<div class="os-count2" style="--c:${N.color}"><div class="os-cstage" id="osCstage"></div><div class="os-clist">${P5.map((P, i) => `<div class="os-cli" data-i="${i}">${glyph(P.id, 14)}<span>${P.title}</span><em></em></div>`).join('')}</div></div>` +
+        `<div class="os-count2" style="--c:${N.color}"><div class="os-cstage" id="osCstage"></div><div class="os-clist">${SIM.platsAt(sess.si).map((P, i) => `<div class="os-cli" data-i="${i}">${glyph(P.id, 14)}<span>${P.title}</span><em></em></div>`).join('')}</div></div>` +
         K.act({ onGo: () => stage1(), goLabel: 'Skip to all five nations ▸▸' }, '', `<span class="os-note" id="osCnote">Counting ${N.name}’s ballots…</span>`), () => {
         const stage = K.$('#osCstage'), items = K.$$('.os-cli');
         let t = 400;
-        P5.forEach((P, i) => {
+        SIM.platsAt(sess.si).forEach((P, i) => {
           const per = i >= 2 ? 80 : 140, V = verdict(P), c = r.tally[P.id];
           const slips = [...Array(c[0]).fill(0), ...Array(c[1]).fill(1), ...Array(c[2]).fill(2)];
           slips.sort((a, b) => SIM.hash(yr + P.id + a + Math.random()) - SIM.hash(yr + P.id + b));
@@ -3431,7 +3603,7 @@ const STD = (function () {
       const W = 150, H = 34, mx = Math.max(.6, ...p.you.map(q => Math.abs(q[1]))), x0 = p.you[0][0], X = y => 2 + (y - x0) / (2066 - x0) * (W - 4), Y = v => H / 2 - v / mx * (H / 2 - 3);
       const ln = p.you.map((q, i) => (i ? 'L' : 'M') + X(q[0]).toFixed(1) + ',' + Y(q[1]).toFixed(1)).join('');
       return `<div class="os-lrow2 std">${glyph(id, 16)}<b>${Pl.opts[2].t}<small>instead of ${Pl.opts[0].t.toLowerCase()}</small></b><svg viewBox="0 0 ${W} ${H}" class="os-lsp"><path d="M0,${H / 2} H${W}" stroke="#9a8d70" stroke-width=".8"/><path d="${ln}" fill="none" stroke="${N.color}" stroke-width="2"/></svg><span class="os-lnum"><em class="${p.early >= 0 ? 'up' : 'dn'}">${sgn(p.early, 1)}%</em> → <em class="${p.late >= 0 ? 'up' : 'dn'}">${sgn(p.late, 1)}%</em></span><span class="os-lnum w"><em class="${p.cutGt >= 0 ? 'up' : 'dn'}">${p.cutGt.toFixed(0)} Gt</em></span></div>`; };
-    const later = P5.filter(p => P[p.id].late > 0).map(p => p.id), world = P5.filter(p => P[p.id].late <= 0).map(p => p.id);
+    const PS = P5.filter(p => P[p.id]), later = PS.filter(p => P[p.id].late > 0).map(p => p.id), world = PS.filter(p => P[p.id].late <= 0).map(p => p.id);
     return K.head('NOW OR LATER?', 'Cutting emissions costs first. Who gets paid back, and when?', `Each row is one platform for ${N.name}: the clean direction instead of the fossil one, everything else unchanged. The line is ${N.name}’s income, year by year. The fossil direction is the mirror image: it pays now and costs later.`) +
       `<div class="os-later"><div class="os-ichart" id="osLchart"></div><div class="os-lside">
         <div class="os-lhead"><span class="os-eb">${N.name}’s income</span><span class="os-eb">first 8 yrs → 2066</span><span class="os-eb">CO₂ avoided</span></div>
@@ -3448,9 +3620,9 @@ const STD = (function () {
       stack: SIM.SECTORS.map(k => ({ name: SECT[k][0], color: SECT[k][1], pts: h.map(r => [r.year, v(r, k)]) })) });
   }
   // the nations table's "choices" cell: five glyphs, each tinted by its direction
-  const pips = L => { const p = SIM.platOf(L); return P5.map(P => `<i class="os-pip" style="--oc:${OPT_C[p[P.id]]}" title="${P.title}: ${esc(P.opts[p[P.id]].t)}">${glyph(P.id, 12)}</i>`).join(''); };
+  const pips = L => { const p = SIM.platOf(L); return P5.filter(P => P.sector || p[P.id] > 0).map(P => `<i class="os-pip" style="--oc:${OPT_C[p[P.id]]}" title="${P.title}: ${esc(P.opts[p[P.id]].t)}">${glyph(P.id, 12)}</i>`).join(''); };
 
-  return { SECT, OPT_C, glyph, dir, ballotRows, fillOptions, sectorBars, data, draw, mountChain, chainHTML, story, summit, laterPage, sectorChart, pips, optName };
+  return { snap, SECT, OPT_C, glyph, dir, ballotRows, fillOptions, sectorBars, data, draw, mountChain, chainHTML, story, summit, laterPage, sectorChart, pips, optName };
 })();
 
 // ONE SKY · THE RECKONING. Two finale pages that make the cost of inaction and the commons felt rather than told:
@@ -3539,11 +3711,11 @@ const FIN = (function () {
     const you = UI.R.you >= 0 ? UI.R.you : 0;
     return K.head('THE TEMPTATION', 'Four worlds, one choice', 'Each nation picks one plan in 2026 and keeps it: act on climate, or go fossil-first. Here are the four ways it can turn out for one nation, depending on what it does and what the other four do.') +
       `<div class="os-tmpt"><div class="os-tmtop"><div class="os-tmnat">${N5.map((N, n) => `<button data-tn="${n}" aria-pressed="${n === you}" style="--c:${N.color}">${UI.crest(n, 16)}${N.name}</button>`).join('')}</div>
-        <div class="os-tmyr"><span>Income in</span>${SIM.dilemma ? [2034, 2050, 2066].map(y => `<button data-ty="${y}">${y}</button>`).join('') : ''}</div></div>
+        <div class="os-tmyr"><span>Income in</span>${SIM.dilemma ? SIM.DIL_Y.map(y => `<button data-ty="${y}">${y}</button>`).join('') : ''}</div></div>
         <div class="os-grid4" id="osGrid4"></div><p class="os-tverd" id="osTverd"></p></div>`;
   }
   function mountTempt(I) {
-    let n = UI.R.you >= 0 ? UI.R.you : 0, y = 2034, auto = true;
+    let n = UI.R.you >= 0 ? UI.R.you : 0, y = SIM.DIL_Y[0], auto = true;
     const memo = {};
     const D = k => memo[k] = memo[k] || SIM.dilemma(I, k);
     const draw = () => {
@@ -3576,7 +3748,7 @@ const FIN = (function () {
     K.$$('[data-tn]').forEach(b => b.onclick = () => { auto = false; n = +b.dataset.tn; draw(); });
     draw();
     // the years advance on their own once: the temptation first, then where it leads
-    K.at(6500, () => { if (auto) { y = 2050; draw(); } });
+    K.at(6500, () => { if (auto) { y = SIM.DIL_Y[1]; draw(); } });
     K.at(12000, () => { if (auto) { y = 2066; draw(); } });
   }
 
@@ -3599,6 +3771,231 @@ const FIN = (function () {
   }
 
   return { earthsPage, mountEarths, temptPage, mountTempt, moment };
+})();
+
+// ONE SKY · ELECTION NIGHT. The summit is staged as a live newscast, for the standard and the advanced game alike:
+//   cold open → the calls, one nation at a time (vote bars count up, each race is CALLED, flips flagged) → the map of
+//   how the five nations voted → THE CLIMATE DESK, an analyst's three panels (emissions, warming, the economy) with
+//   captions written from the projections → the game's own summary (the chain, or the change cards), with "Run the years".
+// A delegate's own nation is called last, and their own ballot is marked on every race.
+'use strict';
+const NEWS = (function () {
+  const N5 = SIM.NATIONS, K = UI.kit, esc = UI.esc, sgn = UI.sgn, G = GEO;
+  const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2);
+  const YES = '#5aa36a', NO = '#c0614f';
+
+  // ── the races on one nation's ballot ──
+  function races(sess, n, mine) {
+    const r = sess.res[n], si = sess.si;
+    if (r.std) {
+      const before = SIM.platOf(sess.before[n]);
+      return SIM.platsAt(si).map(P => {
+        const c = r.tally[P.id] || [0, 0, 0], top = Math.max(...c);
+        return { title: P.title, glyph: STD.glyph(P.id, 18), opts: P.opts.map((O, i) => ({ lab: O.s, long: O.t, v: c[i], col: STD.OPT_C[i] })), win: r.plat[P.id], was: P.from === si ? null : before[P.id],
+          tie: c.filter(x => x === top).length > 1, me: mine && mine[P.id] != null ? mine[P.id] : null, isNew: P.from === si };
+      });
+    }
+    const L = r.laws, B = sess.before[n];
+    return SIM.lawsFor(n, si).map(l => {
+      const t = r.tally[l.id]; if (!t) return null;
+      if (l.kind === 'yn') {
+        const [y, no] = t, my = mine && mine[l.id] != null ? (mine[l.id] ? 0 : 1) : null;
+        return { title: l.title, glyph: UI.glyph(l.id, 16), opts: [{ lab: 'Yes', long: 'Passed', v: y, col: YES }, { lab: 'No', long: 'Failed', v: no, col: NO }], win: L[l.id] ? 0 : 1, was: (l.from || 0) === si ? null : (B[l.id] ? 0 : 1), tie: y === no, me: my, isNew: (l.from || 0) === si && si > 0 };
+      }
+      const vals = l.id === 'tax' ? l.opts : [0, 1, 2, 3], lab = v => l.id === 'tax' ? '$' + v : SIM.LI.build.opts[v] + '%';
+      const cnt = vals.map(v => t.filter(x => x === v).length), shade = i => `hsl(${140 - i * 18}, ${30 + i * 6}%, ${62 - i * 6}%)`;
+      return { title: l.title, glyph: UI.glyph(l.id, 16), opts: vals.map((v, i) => ({ lab: lab(v), long: 'Set at ' + lab(v), v: cnt[i], col: shade(i) })), win: vals.indexOf(L[l.id]), was: vals.indexOf(B[l.id]), tie: false, me: mine && mine[l.id] != null ? vals.indexOf(mine[l.id]) : null, level: 1 };
+    }).filter(Boolean);
+  }
+
+  // ── a dark map of the continent: one nation lit, or every nation shaded ──
+  function tvMap(fill, lit) {
+    const land = G.dAll(G.landLoops);
+    return `<svg class="os-tvmap" viewBox="0 0 1200 720" aria-hidden="true"><defs><filter id="osTvGlow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <clipPath id="osTvLand"><path d="${land}"/></clipPath></defs>
+      <path d="${land}" fill="#1c2a3a" stroke="#3b5068" stroke-width="2"/>
+      <g clip-path="url(#osTvLand)">${G.REGS.map((l, k) => `<path d="${G.dAll(l)}" fill="${fill(k)}" stroke="#0e1622" stroke-width="3"${k === lit ? ' filter="url(#osTvGlow)"' : ''}/>`).join('')}</g>
+      <g clip-path="url(#osTvLand)">${G.REGS.map((l, k) => k === lit ? `<path d="${G.dAll(l)}" fill="none" stroke="#f3e2b0" stroke-width="6"/>` : '').join('')}</g>
+      ${N5.map((N, k) => { const [x, y] = G.CENT[k]; return `<text x="${x}" y="${y}" class="os-tvml${k === lit ? ' on' : ''}" text-anchor="middle">${N.name.toUpperCase()}</text>`; }).join('')}</svg>`;
+  }
+
+  // ── the broadcast frame around every shot ──
+  function frame(yr, inner, o = {}) {
+    return `<div class="os-tv"><div class="os-tvbar"><span class="os-tvbug">ONE SKY <b>NEWS</b></span><span class="os-tvlive"><i></i>LIVE</span><span class="os-tvshow">${o.show || 'ELECTION NIGHT ' + yr}</span><span class="os-tvclock">${o.clock || ''}</span></div>
+      <div class="os-tvbody">${inner}</div>
+      <div class="os-tvticker"><b>${o.tag || 'HEADLINES'}</b><div class="os-tvcrawl"><span>${o.ticker || ''}</span><span aria-hidden="true">${o.ticker || ''}</span></div></div></div>`;
+  }
+
+  // o: { mine, onGo, goLabel, note, foot, chain(), data() } as the summit receives them, plus o.end(o) for the game's summary
+  function show(sess, o) {
+    const yr = sess.si != null ? sess.year : SIM.Y0, you = UI.R.you, D = o.data();
+    const order = you >= 0 ? [0, 1, 2, 3, 4].filter(n => n !== you).concat(you) : [0, 1, 2, 3, 4];
+    const T0 = D.a.T, E0 = D.a.worldE;
+    const tick0 = [`Polls have closed in all five nations`, `Warming so far: +${f2(T0)} °C`, `World emissions: ${f1(E0)} Gt a year`, `CO₂ in the air: ${Math.round(D.a.ppm)} ppm`, sess.si ? 'New on the ballot tonight: ' + (D.newItems || []).join(', ') : 'The first election of the new climate era'].filter(Boolean).join('  ·  ');
+    // the night's changes, worked out up front so every shot's ticker can carry them
+    const allRaces = N5.map((N, n) => races(sess, n, null));
+    const changes = allRaces.flatMap((R, n) => R.filter(x => x.was != null && x.was !== x.win && x.opts[x.was]).map(x => `${N5[n].name}: ${x.title}, ${x.opts[x.was].lab} → ${x.opts[x.win].lab}`));
+    const resultsTicker = () => changes.length ? changes.join('  ·  ') : 'No nation changed course tonight';
+    const called = [];
+    const skip = () => `<button class="os-tvskip" id="osTvSkip">Skip to the analysis ▸▸</button>`;
+    const wireSkip = () => { const b = K.$('#osTvSkip'); if (b) b.onclick = () => desk(0); };
+
+    // 1. cold open
+    const open = () => {
+      K.overlay(frame(yr, `<div class="os-tvopen"><div class="os-tvsweep"></div><span class="os-tvkick">ONE SKY NEWS · SPECIAL COVERAGE</span><h2>Election Night <em>${yr}</em></h2>
+        <p>${sess.si === 0 ? 'Five nations choose how they will power, build, farm and travel for the years ahead.' : `Year ${yr}. The world is at +${f2(T0)} °C. Five nations decide whether to change course.`}</p>
+        <div class="os-tvopenn">${N5.map((N, k) => `<span style="--c:${N.color}">${UI.crest(k, 20)}${N.name}</span>`).join('')}</div></div>${skip()}`, { ticker: tick0 }), () => { wireSkip(); K.at(4200, () => you >= 0 ? call(0) : wall()); }, 'wide tv');
+    };
+    // 2a. the projector: all five nations side by side, called race by race across the board
+    const wall = () => {
+      const all = N5.map((N, n) => races(sess, n, null)), rows = Math.max(...all.map(R => R.length));
+      const cell = (x, n, j) => !x ? '<div class="os-wcell empty"></div>' : `<div class="os-wcell" data-n="${n}" data-j="${j}"><div class="os-rbar">${x.opts.map((op, k) => `<i data-k="${k}" style="--c:${op.col}"><span></span></i>`).join('')}</div><div class="os-wcall"><em>counting…</em></div></div>`;
+      K.overlay(frame(yr, `<div class="os-wall${rows > 8 ? ' adv' : ''}"><div class="os-wrow os-whead"><span></span>${N5.map((N, n) => `<div class="os-wnat" style="--c:${N.color}">${UI.crest(n, 22)}<b>${N.name}</b><em>${sess.res[n].real} of ${sess.res[n].size} voted</em></div>`).join('')}</div>
+          ${Array.from({ length: rows }, (_, j) => { const R0 = all.find(R => R[j]), x0 = R0 && R0[j]; return `<div class="os-wrow" data-row="${j}"><span class="os-wlaw">${x0 ? x0.glyph + esc(x0.title) : ''}${x0 && x0.isNew ? '<u>NEW</u>' : ''}</span>${all.map((R, n) => cell(R[j], n, j)).join('')}</div>`; }).join('')}</div>${skip()}`, { ticker: tick0 }), () => {
+        wireSkip();
+        const step = rows > 8 ? 900 : 1500;
+        for (let j = 0; j < rows; j++) {
+          K.at(400 + j * step, () => { const r = K.$(`.os-wrow[data-row="${j}"]`); if (r) r.classList.add('in'); });
+          all.forEach((R, n) => { const x = R[j]; if (!x) return; const el = K.$(`.os-wcell[data-n="${n}"][data-j="${j}"]`), tot = x.opts.reduce((a, op) => a + op.v, 0) || 1;
+            K.at(400 + j * step + n * 120, () => el.querySelectorAll('.os-rbar i').forEach(b => { b.style.flexGrow = (x.opts[+b.dataset.k].v / tot * 100).toFixed(1); }));
+            K.at(400 + j * step + n * 120 + 1000, () => {
+              const flip = x.was != null && x.was !== x.win, w = x.opts[x.win] || x.opts[0];
+              el.classList.add('called', flip ? 'flip' : 'hold'); const wb = el.querySelector(`.os-rbar i[data-k="${x.win}"]`); if (wb) wb.classList.add('win');
+              el.querySelector('.os-wcall').innerHTML = `<b style="--c:${w.col}">${esc(w.lab)}</b>${flip ? '<u class="flip">FLIP</u>' : x.tie ? '<u class="tie">TIE</u>' : ''}`;
+              if (flip) called.push(`${N5[n].name}: ${x.title}, ${x.opts[x.was].lab} → ${w.lab}`);
+            }); });
+        }
+        K.at(400 + rows * step + 3500, map);
+      }, 'wide tv');
+    };
+    // 2b. a delegate: the calls, one nation at a time, their own last
+    const call = i => {
+      if (i >= order.length) return map();
+      const n = order[i], N = N5[n], r = sess.res[n], R = races(sess, n, n === you ? o.mine : null), adv = !r.std, mine = n === you;
+      const emis = D.a.nat[n].emis;
+      const row = (x, j) => `<div class="os-race${x.isNew ? ' isnew' : ''}" data-j="${j}"><div class="os-rt">${x.glyph}<b>${esc(x.title)}</b>${x.isNew ? '<u>NEW</u>' : ''}</div>
+        <div class="os-rbar">${x.opts.map((op, k) => `<i data-k="${k}" style="--c:${op.col}"><span></span></i>`).join('')}</div>
+        <div class="os-rlbl">${x.opts.map((op, k) => op.v || k === x.win ? `<span data-k="${k}" style="--c:${op.col}">${esc(op.lab)} <em>0%</em>${x.me === k ? '<b class="os-ryou">YOU</b>' : ''}</span>` : '').join('')}</div>
+        <div class="os-rcall"></div></div>`;
+      K.overlay(frame(yr, `<div class="os-tvcall${adv ? ' adv' : ''}"><div class="os-tvleft">${tvMap(k => k === n ? N.color : '#26364a', n)}
+          <div class="os-tvnat" style="--c:${N.color}">${UI.crest(n, 34)}<div><span>${mine ? 'YOUR NATION · ' : ''}RESULTS ${i + 1} OF 5</span><b>${N.name}</b><em>${r.real} of ${r.size} delegates voted${r.real < r.size ? ' · stand-ins for the rest' : ''} · ${Math.round(emis / E0 * 100)}% of the world’s emissions</em></div></div></div>
+        <div class="os-tvraces">${R.map(row).join('')}</div></div>${skip()}`, { ticker: called.length ? called.join('  ·  ') : tick0, tag: called.length ? 'CALLED' : 'HEADLINES' }), () => {
+        wireSkip();
+        const step = adv ? 300 : 620;
+        R.forEach((x, j) => {
+          const el = K.$(`.os-race[data-j="${j}"]`), tot = x.opts.reduce((a, op) => a + op.v, 0) || 1;
+          K.at(400 + j * step, () => {
+            el.classList.add('in');
+            el.querySelectorAll('.os-rbar i').forEach(b => { b.style.flexGrow = (x.opts[+b.dataset.k].v / tot * 100).toFixed(1); });
+            // the percentages count up while the bars fill
+            const lbl = [...el.querySelectorAll('.os-rlbl span')]; let f = 0;
+            const iv = setInterval(() => { f = Math.min(1, f + .08); lbl.forEach(s => { const k = +s.dataset.k; s.querySelector('em').textContent = Math.round(x.opts[k].v / tot * 100 * f) + '%'; }); if (f >= 1) clearInterval(iv); }, 45);
+            K.at(1500, () => clearInterval(iv));
+          });
+          K.at(400 + j * step + 1200, () => {
+            const flip = x.was != null && x.was !== x.win, w = x.opts[x.win] || x.opts[0];
+            el.classList.add('called', flip ? 'flip' : 'hold');
+            { const wb = el.querySelector(`.os-rbar i[data-k="${x.win}"]`); if (wb) wb.classList.add('win'); }
+            el.querySelector('.os-rcall').innerHTML = `<span class="os-rchk">✓</span><b>${esc(x.level ? w.long : x.opts.length === 2 ? w.long : w.long)}</b>` +
+              (flip ? `<u class="flip">FLIP · was ${esc(x.opts[x.was] ? x.opts[x.was].lab : '')}</u>` : x.tie ? '<u class="tie">TIE</u>' : x.isNew ? '<u class="newc">FIRST VOTE</u>' : '<u>HOLD</u>');
+          });
+        });
+        const flips = R.filter(x => x.was != null && x.was !== x.win).length;
+        called.push(`${N.name}: ${flips ? flips + (flips === 1 ? ' change' : ' changes') : 'no change'}`);
+        K.at(400 + R.length * step + 1200 + (mine ? 3600 : 2400), () => call(i + 1));
+      }, 'wide tv');
+    };
+    // 3. the map of the night
+    const map = () => {
+      const score = n => D.score[n];
+      const col = v => `hsl(${18 + v * 112}, ${38 + v * 10}%, ${36 + v * 8}%)`;
+      K.overlay(frame(yr, `<div class="os-tvmapshot"><div class="os-tvbig">${tvMap(k => col(score(k)), -1)}</div><div class="os-tvsum"><span class="os-tvkick">THE NIGHT AT A GLANCE</span><h3>How the five nations voted</h3>
+          ${[0, 1, 2, 3, 4].sort((a, b) => score(b) - score(a)).map(n => `<div class="os-tvsrow" style="--c:${N5[n].color}">${UI.crest(n, 18)}<b>${N5[n].name}</b><i><span style="width:${Math.round(score(n) * 100)}%;background:${col(score(n))}"></span></i><em>${D.lean[n]}</em></div>`).join('')}
+          <div class="os-tvkey"><span style="--c:${col(0)}">Fossil fuels and growth first</span><span style="--c:${col(1)}">Cut emissions</span></div></div></div>${skip()}`, { ticker: resultsTicker(), tag: 'CHANGES' }), () => { wireSkip(); K.at(8000, () => desk(0)); }, 'wide tv');
+    };
+    // 4. the climate desk
+    const desk = k => {
+      const panels = [emisPanel, warmPanel, econPanel];
+      if (k >= panels.length) return o.end(o);
+      const P = panels[k](D, yr);
+      K.overlay(frame(yr, `<div class="os-desk"><div class="os-deskh"><span class="os-tvkick">THE CLIMATE DESK · ANALYSIS ${k + 1} OF 3</span><h3>${P.title}</h3></div>
+          <div class="os-deskv">${P.html}</div>
+          <div class="os-deskcap"><span class="os-deskwho"><b>Climate desk</b>Analysis</span><p id="osCap"></p></div>
+          <div class="os-cact os-tvact"><button class="os-btn ghost" id="osDb">${k ? '◂ Back' : '◂ The calls'}</button><button class="os-btn go" id="osDn">${k < panels.length - 1 ? 'Next ▸' : 'The whole picture ▸'}</button></div></div>`, { show: 'ANALYSIS · ' + yr, ticker: resultsTicker(), tag: 'CHANGES' }), () => {
+        if (P.mount) P.mount();
+        // the analyst's words, typed out
+        const cap = K.$('#osCap'), txt = P.cap; let c = 0;
+        const iv = setInterval(() => { c = Math.min(txt.length, c + 3); cap.innerHTML = txt.slice(0, c).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*\*[^*]*$/, ''); if (c >= txt.length) { clearInterval(iv); cap.innerHTML = txt.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>'); } }, 28);
+        K.at(txt.length / 3 * 28 + 200, () => clearInterval(iv));
+        K.$('#osDn').onclick = () => desk(k + 1);
+        K.$('#osDb').onclick = () => k ? desk(k - 1) : you >= 0 ? call(0) : wall();
+        K.at(Math.max(15000, txt.length / 3 * 28 + 9000), () => desk(k + 1));
+      }, 'wide tv');
+    };
+    if (o.start === 'desk') desk(0); else open();
+  }
+
+  // ── the desk's three panels ──
+  function emisPanel(D, yr) {
+    const W = 760, H = 300, L = 120, Rr = 90, top = 18, rowH = (H - top - 20) / 5, mx = Math.max(...D.nat.map(x => Math.max(x.e0, x.e1, x.eB))) * 1.08;
+    const X = v => L + v / mx * (W - L - Rr);
+    let s = '';
+    D.nat.forEach((x, n) => { const y = top + n * rowH;
+      s += `<text x="${L - 10}" y="${y + rowH / 2 + 4}" class="os-tvax b" text-anchor="end" fill="${N5[n].color}">${N5[n].name}</text>
+        <rect x="${L}" y="${y + 6}" width="${(X(x.e0) - L).toFixed(1)}" height="${(rowH - 26) / 2}" rx="3" fill="#4a5a6e"/>
+        <rect class="os-grow" x="${L}" y="${y + 8 + (rowH - 26) / 2}" width="${(X(x.e1) - L).toFixed(1)}" height="${(rowH - 26) / 2}" rx="3" fill="${N5[n].color}"/>
+        ${Math.abs(x.eB - x.e1) > .05 ? `<path d="M${X(x.eB).toFixed(1)},${y + 4} v${rowH - 18}" stroke="#e9e4d6" stroke-width="1.5" stroke-dasharray="3 3"/>` : ''}
+        <text x="${(X(Math.max(x.e0, x.e1, x.eB)) + 8).toFixed(1)}" y="${y + rowH / 2 + 4}" class="os-tvax b ${x.e1 <= x.e0 ? 'up' : 'dn'}">${f1(x.e0)} → ${f1(x.e1)} Gt</text>`; });
+    const big = D.nat.map((x, n) => ({ n, d: x.e1 - x.eB })).sort((a, b) => a.d - b.d), best = big[0], worst = big[big.length - 1];
+    const cap = `Tonight’s results set the world’s emissions on a path from **${f1(D.E0)} to ${f1(D.E1)} Gt a year by ${D.y1}** (${sgn((D.E1 / D.E0 - 1) * 100, 0)}%). ` +
+      (Math.abs(best.d) > .05 ? `The biggest move toward cleaner air came from **${N5[best.n].name}**: ${sgn(best.d, 1)} Gt a year in ${D.y1} compared with keeping its old direction. ` : '') +
+      (worst.d > .05 ? `${N5[worst.n].name} went the other way, adding ${f1(worst.d)} Gt. ` : '') + `The dashed marks show where each nation was heading before tonight.`;
+    return { title: 'What the results mean for emissions', html: `<svg class="os-tvchart" viewBox="0 0 ${W} ${H}">${s}</svg><div class="os-tvleg"><span><i style="background:#4a5a6e"></i>${D.y0}, now</span><span><i style="background:#c9b46a"></i>${D.y1}, with tonight’s results</span><span><i class="d"></i>${D.y1}, before tonight</span></div>`, cap };
+  }
+  function warmPanel(D, yr) {
+    const W = 800, H = 300, L = 46, Rr = 200, T = 20, B = 26, y0 = 2026, y1 = 2066, lo = 1.3, hi = Math.max(2.5, ...D.none.map(p => p[1])) + .05;
+    const X = x => L + (x - y0) / (y1 - y0) * (W - L - Rr), Y = v => T + (1 - (v - lo) / (hi - lo)) * (H - T - B);
+    const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + X(p[0]).toFixed(1) + ',' + Y(p[1]).toFixed(1)).join('');
+    let s = '';
+    for (const t of [1.5, 2, 2.5]) if (t < hi) s += `<path d="M${L},${Y(t)} H${W - Rr}" stroke="#3b5068" stroke-dasharray="${t === 1.5 || t === 2 ? '0' : '3 4'}" stroke-width="${t === 1.5 || t === 2 ? 1.2 : .8}"/><text x="${L - 6}" y="${Y(t) + 4}" class="os-tvax" text-anchor="end">${t.toFixed(1)}°</text>`;
+    for (const y of [2026, 2040, 2054, 2066]) s += `<text x="${X(y)}" y="${H - 6}" class="os-tvax" text-anchor="middle">${y}</text>`;
+    s += `<rect x="${X(D.y0)}" y="${T}" width="${X(y1) - X(D.y0)}" height="${H - T - B}" fill="#16222f"/>`;
+    const lab = [];
+    s += `<path d="${path(D.none)}" stroke="#8a7d60" stroke-width="1.5" stroke-dasharray="5 4" fill="none"/>`; lab.push([D.none, 'Every nation fossil-first', '#b0a382']);
+    s += `<path d="${path(D.all)}" stroke="#5aa36a" stroke-width="1.5" stroke-dasharray="5 4" fill="none"/>`; lab.push([D.all, 'Every nation acts', '#7cc08b']);
+    if (D.prev) { s += `<path d="${path(D.prev)}" stroke="#9fb3c8" stroke-width="2" stroke-dasharray="2 3" fill="none"/>`; lab.push([D.prev, 'Before tonight', '#b8c8d8']); }
+    s += `<path class="os-draw" d="${path(D.held)}" stroke="#f08a5d" stroke-width="3.5" fill="none" pathLength="1"/>`; lab.push([D.held, 'Tonight’s results', '#f6a77f', 1]);
+    s += `<path d="${path(D.hist)}" stroke="#f3e2b0" stroke-width="3" fill="none"/>`;
+    lab.sort((a, b) => Y(a[0][a[0].length - 1][1]) - Y(b[0][b[0].length - 1][1]));
+    let last = -99;
+    for (const [pts, t, c, b] of lab) { const v = pts[pts.length - 1][1]; let y = Math.max(Y(v), last + 15); last = y; s += `<text x="${W - Rr + 8}" y="${y + 4}" class="os-tvax${b ? ' b' : ''}" fill="${c}">${t} +${f2(v)}</text>`; }
+    const h = D.held[D.held.length - 1][1], p = D.prev ? D.prev[D.prev.length - 1][1] : null;
+    const cap = `Put those emissions into the sky and the world is on course for **+${f2(h)} °C by 2066**` + (p != null ? (Math.abs(h - p) < .005 ? `, the same as before tonight. ` : h < p ? `, **${f2(p - h)} °C cooler** than it was heading before tonight. ` : `, **${f2(h - p)} °C warmer** than it was heading before tonight. `) : '. ') +
+      `If every nation went fossil-first it would be +${f2(D.none[D.none.length - 1][1])} °C; if every nation acted, +${f2(D.all[D.all.length - 1][1])} °C. ` + (h > 2 ? 'That is past the 2 °C line the world agreed to stay well below.' : h > 1.5 ? 'That is past 1.5 °C, but below 2 °C.' : 'That keeps the world near 1.5 °C.');
+    return { title: 'What the results mean for the climate', html: `<svg class="os-tvchart" viewBox="0 0 ${W} ${H}">${s}</svg>`, cap };
+  }
+  function econPanel(D, yr) {
+    const W = 760, H = 300, L = 120, mid = 430, Rr = 20, top = 30, rowH = (H - top - 10) / 5;
+    const gx = Math.max(.01, ...D.nat.map(x => Math.abs(x.g - x.gB))) * 1.2, lx = Math.max(.02, ...D.nat.map(x => x.loss66)) * 1.15;
+    let s = `<text x="${(L + mid) / 2}" y="16" class="os-tvax b" text-anchor="middle">Growth until ${D.y1}, against before tonight</text><text x="${(mid + 30 + W - Rr) / 2}" y="16" class="os-tvax b" text-anchor="middle">Lost to climate in 2066</text>`;
+    const cx = (L + mid) / 2, sx = (mid - L) / 2 - 10;
+    s += `<path d="M${cx},${top - 4} V${H - 6}" stroke="#4a5a6e"/>`;
+    D.nat.forEach((x, n) => { const y = top + n * rowH + rowH / 2, d = x.g - x.gB, w = d / gx * sx;
+      s += `<text x="${L - 10}" y="${y + 4}" class="os-tvax b" text-anchor="end" fill="${N5[n].color}">${N5[n].name}</text>
+        <rect class="os-grow" x="${(w >= 0 ? cx : cx + w).toFixed(1)}" y="${y - 9}" width="${Math.abs(w).toFixed(1)}" height="18" rx="3" fill="${d >= 0 ? '#5aa36a' : '#c0614f'}"/>
+        <text x="${(cx + (w >= 0 ? w + 6 : w - 6)).toFixed(1)}" y="${y + 4}" class="os-tvax" text-anchor="${w >= 0 ? 'start' : 'end'}">${sgn(d * 100, 2)} pts</text>
+        <rect x="${mid + 30}" y="${y - 9}" width="${((W - Rr - mid - 90) * x.loss66 / lx).toFixed(1)}" height="18" rx="3" fill="#c0614f" opacity=".85"/>
+        <rect x="${mid + 30}" y="${y - 9}" width="${((W - Rr - mid - 90) * x.lossB66 / lx).toFixed(1)}" height="18" rx="3" fill="none" stroke="#e9e4d6" stroke-dasharray="3 3"/>
+        <text x="${(mid + 36 + (W - Rr - mid - 90) * Math.max(x.loss66, x.lossB66) / lx).toFixed(1)}" y="${y + 4}" class="os-tvax">${(x.loss66 * 100).toFixed(1)}%</text>`; });
+    const costs = D.nat.map((x, n) => ({ n, d: x.g - x.gB })).sort((a, b) => a.d - b.d), hit = D.nat.map((x, n) => ({ n, l: x.loss66 })).sort((a, b) => b.l - a.l)[0];
+    const c0 = costs[0], c1 = costs[costs.length - 1];
+    const cap = (c0.d < -.0002 ? `The bill comes first: **${N5[c0.n].name}** grows ${sgn(c0.d * 100, 2)} points a year slower until ${D.y1} because of tonight’s choices. ` : 'Tonight’s choices barely change how fast the economies grow in the next few years. ') +
+      (c1.d > .0002 ? `${N5[c1.n].name} grows faster (${sgn(c1.d * 100, 2)} points). ` : '') +
+      `The damage comes later and lands hardest on the most exposed: by 2066 **${N5[hit.n].name} loses ${(hit.l * 100).toFixed(1)}% of its income** to climate every year. The dashed outlines show the losses before tonight.`;
+    return { title: 'What the results mean for the economy', html: `<svg class="os-tvchart" viewBox="0 0 ${W} ${H}">${s}</svg>`, cap };
+  }
+
+  return { show, races };
 })();
 
 // LIVE: the class plays One Sky on laptops. Rides the deck's live backend (window.__deckLiveReady: sharded Firestore
@@ -3627,13 +4024,13 @@ const FIN = (function () {
   const q = s => root.querySelector(s);
   const esc = UI.esc;
   const visible = () => slide.classList.contains('active') || !slide.classList.contains('slide');
-  const SECS = { vote0: 170, vote: 120 };
+  const SECS = { vote0: 200, vote: 170 };
   let backend = null, HOST = false, state = {}, unsub = null, subMode = '';
   const HOSTID = (() => { try { let v = sessionStorage.getItem('os-host'); if (!v) { v = Math.random().toString(36).slice(2, 10); sessionStorage.setItem('os-host', v); } return v; } catch (e) { return Math.random().toString(36).slice(2, 10); } })();
   const clockMine = () => !state.hostId || state.hostId === HOSTID;
   const phase = () => state.phase || 'idle', si = () => state.si || 0, yr = () => state.yr || SIM.Y0;
   const gid = () => String(state.gameId || 0), seed = () => +state.gameId || 1;
-  const pace = () => +state.pace || 3.5;
+  const pace = () => +state.pace || 5;
   // the version being played: 'std' (five platforms) or 'adv' (fourteen laws); a game opened before versions existed is advanced
   const MODE = () => state.mode === 'std' ? 'std' : 'adv', STDM = () => MODE() === 'std';
   const II = V => ({ seed: seed(), assign: assign(), V, mode: MODE() });
@@ -3706,7 +4103,7 @@ const FIN = (function () {
     for (const [pk, n] of Object.entries(a)) { const v = players[pk] && players[pk].s5; if (v !== '' && v != null && isFinite(+v)) { sums[n] += +v; ns[n]++; } }
     const s5m = sums.map((s, n) => ns[n] ? (s / ns[n]).toFixed(1) : '').join(',') + '|' + ns.join(',');
     const extra = { phase: 'deal', gameId: g, round: 1, assign: SIM.packAssign(a), s5m, sp: D.hi + ',' + D.lo, si: 0, yr: SIM.Y0, F: {}, in: {}, deadline: null, cnt: null, hostId: HOSTID };
-    backend.setDoc('polls', GID, { ...extra, mode: MODE(), players: Object.fromEntries(Object.keys(players).map(k => [k, { t: 1, s5: players[k].s5 || '' }])), pace: state.pace || 3.5 });
+    backend.setDoc('polls', GID, { ...extra, mode: MODE(), players: Object.fromEntries(Object.keys(players).map(k => [k, { t: 1, s5: players[k].s5 || '' }])), pace: state.pace || 5 });
   }
   function hostBar() {
     const bar = q('[data-hostbar]'); bar.hidden = false; slide.classList.add('os-host');
@@ -3715,7 +4112,7 @@ const FIN = (function () {
       <button class="os-b go" data-open>Open the lobby</button>
       <button class="os-b go" data-start hidden>Deal the nations</button>
       <button class="os-b" data-skip hidden>Close the session now</button>
-      <label class="os-set" data-pacewrap hidden>Pace <select data-pace><option value="5">Slow · 5 s a year</option><option value="3.5" selected>Normal · 3.5 s</option><option value="2.2">Fast · 2.2 s</option></select></label>
+      <label class="os-set" data-pacewrap hidden>Pace <select data-pace><option value="7">Slow · 7 s a year</option><option value="5" selected>Normal · 5 s</option><option value="3.5">Fast · 3.5 s</option><option value="2.2">Faster · 2.2 s</option></select></label>
       <button class="os-b" data-pause hidden>Pause</button>
       <button class="os-b" data-take hidden>Run the clock from this screen</button>
       <button class="os-b" data-samplebtn hidden>Sample student screen</button>
@@ -3723,7 +4120,7 @@ const FIN = (function () {
       <button class="os-b ghost" data-reset>Reset</button>`;
     const ms = bar.querySelector('[data-mode]'); ms.value = pickMode();
     ms.onchange = () => { try { localStorage.setItem('os-mode', ms.value); } catch (e) { } if (phase() === 'lobby') backend.mergeDoc('polls', GID, { mode: ms.value }); };
-    bar.querySelector('[data-open]').onclick = () => backend.setDoc('polls', GID, { phase: 'lobby', players: {}, gameId: Date.now() % 100000 + 1, pace: 3.5, hostId: HOSTID, round: 1, mode: ms.value });
+    bar.querySelector('[data-open]').onclick = () => backend.setDoc('polls', GID, { phase: 'lobby', players: {}, gameId: Date.now() % 100000 + 1, pace: 5, hostId: HOSTID, round: 1, mode: ms.value });
     bar.querySelector('[data-start]').onclick = () => { if (!Object.keys(state.players || {}).length && !confirm('Nobody has joined yet. Deal a class of stand-ins?')) return; deal(); };
     bar.querySelector('[data-skip]').onclick = () => { if (phase() === 'vote') advance(); else if (phase() === 'run') { const nx = SIM.SESSIONS[si() + 1] || SIM.YN; if (confirm(`Jump ahead to ${nx}?`)) backend.mergeDoc('polls', GID, { yr: nx - 1, deadline: Date.now() + 300, paused: 0 }); } };
     bar.querySelector('[data-pace]').onchange = e => backend.mergeDoc('polls', GID, { pace: +e.target.value });
@@ -3762,8 +4159,8 @@ const FIN = (function () {
     const dots = Array.from({ length: Math.min(n, 200) }, (_, i) => `<i style="animation-delay:${(i % 30) * 30}ms"></i>`).join('');
     box.innerHTML = `<div class="os-lobbyc"><div class="os-lt"><div class="os-eb">${ph === 'idle' ? 'NOT OPEN YET' : 'THE LOBBY IS OPEN'}</div>
       <h3>Five nations. Forty years. One sky.</h3>
-      <p>When the game starts you will be dealt one of five nations. Every eight years, each nation’s delegates vote on ${STDM() ? 'its direction on five platforms: energy, industry, farms and forests, transportation, and buildings' : 'its own climate and economic laws'}. Then the years run: economies grow or stall, storms and droughts arrive, and the sky over all five nations fills with whatever all five of them burn.</p>
-      ${STDM() ? `<div class="os-lplat">${SIM.PLATFORMS.map(P => `<span>${STD.glyph(P.id, 18)}${P.title}</span>`).join('')}</div>` : ''}
+      <p>When the game starts you will be dealt one of five nations. At three elections (2026, 2040 and 2054), each nation’s delegates vote on ${STDM() ? 'its direction on five platforms: energy, industry, farms and forests, transportation, and buildings, with new choices appearing at later elections' : 'its own climate and economic laws, with new laws appearing at later elections'}. Then the years run: economies grow or stall, storms and droughts arrive, and the sky over all five nations fills with whatever all five of them burn.</p>
+      ${STDM() ? `<div class="os-lplat">${SIM.platsAt(0).map(P => `<span>${STD.glyph(P.id, 18)}${P.title}</span>`).join('')}</div>` : ''}
       <div class="os-lnat">${SIM.NATIONS.map((N, k) => `<div style="--c:${N.color}">${UI.crest(k, 22)}<b>${N.name}</b><span>${N.epithet}</span></div>`).join('')}</div></div>
       <div class="os-lr"><div class="os-count"><b>${n}</b><span>${n === 1 ? 'delegate' : 'delegates'} joined</span></div><div class="os-dots">${dots}</div>
       ${!HOST && ph === 'lobby' ? (joined() ? '<div class="os-in">You are in.</div>' : '<button class="os-b go big" data-join>Join the game</button>') : ''}</div></div>`;
@@ -3778,7 +4175,7 @@ const FIN = (function () {
     const n = myN(), s = si(), k = 'V' + s, m = mine(k) || {}, cur = C.nat[n].laws;
     const sig = gid() + k + (m.locked ? 1 : 0) + (m.draft || m.v || ''); if (sig === ballotSig) return; ballotSig = sig;
     const v = { ...cur, ...SIM.parse(m.draft || m.v || '') };
-    const N = SIM.NATIONS[n], laws = SIM.lawsFor(n), dele = C.members.filter(x => x.n === n).length;
+    const N = SIM.NATIONS[n], laws = SIM.lawsFor(n, s), dele = C.members.filter(x => x.n === n).length;
     const card = l => {
       let ctl;
       if (l.kind === 'yn') ctl = `<div class="os-yn">${[[1, 'Yes'], [0, 'No']].map(([val, t]) => `<button class="os-seg${v[l.id] === val ? ' on' : ''}${cur[l.id] === val ? ' now' : ''}" data-l="${l.id}" data-v="${val}">${t}</button>`).join('')}</div>`;
@@ -3836,11 +4233,11 @@ const FIN = (function () {
     const v = { ...cur, ...SIM.pparse(m.draft || m.v || '') };
     const N = SIM.NATIONS[n], dele = C.members.filter(x => x.n === n).length, rec = C.hist[C.hist.length - 1];
     const sect0 = rec ? rec.nat[n].sect : C.nat[n].sect, emis0 = SIM.SECTORS.reduce((a, x) => a + sect0[x], 0);
-    const ctx = { n, v, cur, sect0, emis0, name: N.name };
+    const ctx = { n, v, cur, sect0, emis0, name: N.name, si: s, loss0: rec ? Math.max(0, rec.nat[n].dmg) : 0 };
     const box = q('[data-screen=ballot]');
     box.innerHTML = `<div class="os-ballot std"><div class="os-bills">
       <div class="os-bhead" style="--c:${N.color}">${UI.crest(n, 30)}<div><div class="os-eb">THE ASSEMBLY OF ${N.name.toUpperCase()} · SESSION OF ${SIM.SESSIONS[s]}</div><h3>${s === 0 ? 'Choose your nation’s direction' : 'Keep or change your nation’s direction'}</h3>
-        <p>${dele} ${dele === 1 ? 'delegate votes' : 'delegates vote'} for ${N.name}. Pick one direction on each platform. The direction with the most votes wins; a tie keeps today’s direction. Under each option: that sector’s emissions in eight years (the tick marks today), and ${N.name}’s income compared with keeping today’s direction.</p></div></div>
+        <p>${dele} ${dele === 1 ? 'delegate votes' : 'delegates vote'} for ${N.name}. Pick one direction on each platform. The direction with the most votes wins; a tie keeps today’s direction. Under each option: what it does by the next election (the tick marks today), and ${N.name}’s income compared with keeping today’s direction.</p></div></div>
       ${STD.ballotRows(ctx)}</div>
       <aside class="os-bside"><div class="os-eb">${N.name.toUpperCase()} TODAY</div><div id="osBnow"></div>
         <div class="os-eb" style="margin-top:6px">YOUR EMISSIONS, SECTOR BY SECTOR</div><div id="osSbars"><span class="os-wait">Working it out…</span></div>
@@ -3926,15 +4323,19 @@ const FIN = (function () {
     else if (ph === 'vote') progress(C, first);
     else if (ph === 'summit') { if (first) { const sess = C.sessions[C.sessions.length - 1]; const mv = !HOST && myN() >= 0 ? (mine('V' + s) || {}) : {};
       const o = Object.assign({ mine: mv.v ? (STDM() ? SIM.pparse(mv.v) : SIM.parse(mv.v)) : null }, HOST ? { onGo: go.run, goLabel: `Run the years to ${SIM.SESSIONS[s + 1] || SIM.YN} ▸`, foot: summitFoot(C) } : { note: 'The years start in a moment.', foot: summitFoot(C) });
-      if (STDM()) { o.chain = () => chainAt(C, sess); if (DEMO && QS0().get('summit') === 'chain') o.start = 'chain'; STD.summit(sess, o); } else UI.show.summit(sess, o); } }
+      if (STDM()) o.chain = () => chainAt(C, sess);
+      // election night: the newscast, then the game's own summary (the chain, or the change cards)
+      o.data = () => newsData(C, sess);
+      o.end = oo => STDM() ? STD.summit(sess, { ...oo, start: 'chain' }) : UI.show.summit(sess, { ...oo, start: 'changes' });
+      if (DEMO && QS0().get('summit') === 'chain') o.end(o); else { if (DEMO && QS0().get('summit') === 'desk') o.start = 'desk'; NEWS.show(sess, o); } } }
     else if (ph === 'final') { if (first) finale(C); }
     else if (UI.isOpen()) UI.show.close();
     ovSig = sig;
   }
   function summitFoot(C) {
-    // what these laws mean for the next eight years, if they hold
+    // what these laws mean until the next election, if they hold
     const s = si(), I = II(votesUpTo(s + 1));
-    const W = SIM.run(I, Math.min(SIM.YN, SIM.SESSIONS[s] + 8)), h = W.hist, e0 = C.hist.length ? C.hist[C.hist.length - 1].worldE : W.world0.E, e8 = h[h.length - 1].worldE;
+    const W = SIM.run(I, SIM.horizon(s)), h = W.hist, e0 = C.hist.length ? C.hist[C.hist.length - 1].worldE : W.world0.E, e8 = h[h.length - 1].worldE;
     const now = futAt(s, -1), before = s > 0 ? SIM.futures(II(votesUpTo(s)), s - 1, -1) : null;
     const t1 = now.held[now.held.length - 1][1], t0 = before ? before.held[before.held.length - 1][1] : now.none[now.none.length - 1][1];
     const ta = now.all[now.all.length - 1][1], tn = now.none[now.none.length - 1][1];
@@ -3943,10 +4344,24 @@ const FIN = (function () {
     const gauge = `<div class="os-gauge${before && Math.abs(X(t0) - X(t1)) < 22 && Math.abs(t0 - t1) > .004 ? ' tall' : ''}"><div class="os-gtrack">${[1.5, 2, 2.5].map(t => `<b style="left:${X(t)}%">${t.toFixed(1)} °C</b>`).join('')}</div>${pin(ta, 'all', 'Every nation acts', 1)}${pin(tn, 'none', 'Every nation fossil-first', 1)}${before && Math.abs(t0 - t1) > .004 ? pin(t0, 'prev' + (Math.abs(X(t0) - X(t1)) < 22 ? ' low' : ''), 'Before this summit') : ''}${pin(t1, 'now', 'These ' + LW())}</div>`;
     return gauge + `<b>If these ${LW()} hold,</b> world emissions go from ${e0.toFixed(1)} to ${e8.toFixed(1)} Gt a year by ${h[h.length - 1].year} (${UI.sgn((e8 / e0 - 1) * 100, 0)}%), and the world is on course for <b>+${t1.toFixed(2)} °C</b> in 2066 <span class="${t1 <= t0 ? 'up' : 'dn'}">(${before ? 'before this summit' : 'with every nation fossil-first'}: +${t0.toFixed(2)} °C)</span>.`;
   }
-  // the chain at a summit: the world now, and the same world eight years on if these choices hold
+  // the chain at a summit: the world now, and the same world at the next election if these choices hold
   function chainAt(C, sess) {
-    const s = si(), C1 = SIM.run(II(votesUpTo(s + 1)), Math.min(SIM.YN, SIM.SESSIONS[s] + 8)), F = futAt(s, -1), end = a => a[a.length - 1][1];
+    const s = si(), C1 = SIM.run(II(votesUpTo(s + 1)), SIM.horizon(s)), F = futAt(s, -1), end = a => a[a.length - 1][1];
     return STD.data(C, C1, { you: HOST ? -1 : myN(), before: sess.before.map(L => SIM.platOf(L)), alt: { held: end(F.held), none: end(F.none), all: end(F.all) } });
+  }
+  // what the newscast reports: the world now, at the next election and in 2066 with tonight's results, and before tonight
+  function newsData(C, sess) {
+    const s = si(), F = futAt(s, -1), A = F.A, y1 = SIM.horizon(s), a = STD.snap(C);
+    const B = s > 0 ? SIM.futures(II(votesUpTo(s)), s - 1, -1).A : SIM.heldRun(II([{}]), 0, (n, ss, W) => ({ ...W.nat[n].laws }));
+    const at = (W, y) => W.hist.find(r => r.year === y) || W.hist[W.hist.length - 1], r1 = at(A, y1), b1 = at(B, y1), r66 = A.hist[A.hist.length - 1], b66 = B.hist[B.hist.length - 1];
+    const T = W => W.hist.map(r => [r.year, r.T]), now = a.year;
+    const nat = SIM.NATIONS.map((N, n) => ({ e0: a.nat[n].emis, e1: r1.nat[n].emis, eB: b1.nat[n].emis,
+      g: Math.pow(r1.nat[n].Y / a.nat[n].Y, 1 / Math.max(1, y1 - now)) - 1, gB: Math.pow(b1.nat[n].Y / a.nat[n].Y, 1 / Math.max(1, y1 - now)) - 1, loss66: Math.max(0, r66.nat[n].dmg), lossB66: Math.max(0, b66.nat[n].dmg) }));
+    const L = n => sess.res[n].laws, score = SIM.NATIONS.map((N, n) => STDM() ? SIM.PLATFORMS.filter(P => P.sector).reduce((x, P) => x + SIM.platOf(L(n))[P.id], 0) / 10 : SIM.effort({ hist: [{ nat: sess.res.map(r => ({ laws: r.laws })) }], mode: 'adv' }, n));
+    const lean = score.map(v => v > .7 ? 'Cutting emissions' : v > .4 ? 'In between' : 'Fossil and growth first');
+    const newItems = STDM() ? SIM.PLATFORMS.filter(P => P.from === s).map(P => P.title) : SIM.LAWS.filter(l => (l.from || 0) === s && s > 0).map(l => l.title);
+    return { a, y0: now, y1, E0: a.worldE, E1: r1.worldE, nat, hist: C.hist.length ? T(C) : [[now, a.T]], held: T(A).filter(p => p[0] >= now), prev: s > 0 ? T(B).filter(p => p[0] >= now) : null,
+      none: T(F.noneC), all: T(F.allC), score, lean, newItems };
   }
   function progress(C, first) {
     const s = si(), rows = [0, 1, 2, 3, 4].map(n => [n, cntFor(n), Object.values(assign()).filter(x => x === n).length]);
@@ -3962,10 +4377,10 @@ const FIN = (function () {
     if (HOST) publishCounts();
   }
   function finale(C) {
-    const I = II(votesUpTo(5));
+    const I = II(votesUpTo(SIM.SESSIONS.length));
     const L = SIM.ledger(I);
     const o = HOST ? { onGo: () => { if (confirm('Close the game for everyone?')) backend.setDoc('polls', GID, { phase: 'idle' }); }, goLabel: 'Close the game' } : { note: 'Thanks for playing.' };
-    o.fut = futAt(4, myN()); o.I = I;
+    o.fut = futAt(SIM.SESSIONS.length - 1, myN()); o.I = I;
     UI.show.final(L, o);
   }
   // ── render ──
@@ -4025,11 +4440,11 @@ const FIN = (function () {
       Object.keys(a).filter(k => k.startsWith('bot')).forEach((k, i) => { if (part === 'half' ? i % 2 === 0 : true) o[k] = DSTD ? SIM.ppack(SIM.standInStd(C, a[k], k, s + 7)) : SIM.pack(SIM.standIn(C, a[k], k, s + 7)); });
       shard({ in: { ['V' + s]: o } });
     }
-    const PLAN = [{ tax: 50, solar: 1, ev: 1, adapt: 1, build: 1, subs: 0 }, { tax: 100, solar: 1, ev: 1, adapt: 1, build: 2, coal: 1, forest: 1, rd: 1, subs: 0 }];
-    const PLAN_STD = [{ energy: 2, industry: 1, farms: 1, transport: 1, buildings: 1 }, { energy: 2, industry: 2, farms: 2, transport: 2, buildings: 2 }];
+    const PLAN = [{ tax: 50, solar: 1, ev: 1, build: 1, subs: 0 }, { tax: 100, solar: 1, ev: 1, adapt: 1, aid: 1, build: 2, coal: 1, forest: 1, rd: 1, subs: 0 }, { tax: 150, solar: 1, ev: 1, adapt: 1, aid: 1, build: 2, coal: 1, forest: 1, rd: 1, subs: 0, dac: 1 }];
+    const PLAN_STD = [{ energy: 2, industry: 1, farms: 1, transport: 1, buildings: 1 }, { energy: 2, industry: 2, farms: 2, transport: 2, buildings: 2, protect: 2 }, { energy: 2, industry: 2, farms: 2, transport: 2, buildings: 2, protect: 2, removal: 1 }];
     function draft() { if (!you) return; const s = si(), C = worldNow();
-      if (DSTD) setMine('V' + s, { draft: SIM.ppack({ ...SIM.platOf(C.nat[want].laws), ...(PLAN_STD[s] || PLAN_STD[1]) }), touched: 1 });
-      else { const v = { ...C.nat[want].laws, ...(PLAN[s] || PLAN[1]) }; setMine('V' + s, { draft: SIM.pack(v), touched: 1 }); }
+      if (DSTD) setMine('V' + s, { draft: SIM.ppack({ ...SIM.platOf(C.nat[want].laws), ...(PLAN_STD[s] || PLAN_STD[2]) }), touched: 1 });
+      else { const v = { ...C.nat[want].laws, ...(PLAN[s] || PLAN[2]) }; setMine('V' + s, { draft: SIM.pack(v), touched: 1 }); }
       ballotSig = ''; render(); }
     function cast() { if (!you) return; const k = 'V' + si(), m = mine(k); if (m && m.draft) submit(k, m.draft); ballotSig = ''; render(); }
     const adv = n => () => { for (let i = 0; i < n; i++) { lastAdv = { tag: '', at: 0 }; advance(); } };
@@ -4043,24 +4458,26 @@ const FIN = (function () {
       [3400, () => { go.first(); botsVote('half'); }, DSTD ? (you ? 'The first session: your nation’s delegates choose its direction on five platforms.' : 'The first session opens. Each nation chooses its direction on five platforms; the projector counts the votes.') : you ? 'The first session: your nation’s delegates vote on its own laws.' : 'The first session opens. Each nation votes on its own laws; the projector counts the votes.'],
       [2800, () => { draft(); botsVote('all'); }, DSTD ? (you ? 'Under every option: what it would do to that sector’s emissions, and to your nation’s income. The panel on the right adds up the whole ballot.' : 'Delegates are casting their votes.') : you ? 'Every choice updates the preview: what your laws would do to your own growth, and to the whole world’s warming.' : 'Delegates are casting their votes.'],
       [2600, cast, you ? 'You cast your votes. Nobody sees them until the summit.' : 'The session closes when time runs out, or when the instructor closes it.'],
-      [2400, adv(1), DSTD ? (you ? `The summit opens with ${nm}’s own count: the ballots drop in, platform by platform. Then all five nations, and the chain from choices to climate.` : 'The summit: first the vote board, nation by nation, then the chain from choices to emissions, the air, the warming and the economy.') : you ? `The summit opens with ${nm}’s own count: every ballot, law by law, then PASSED or FAILED. Then all five nations, and what changed.` : 'The summit: first the vote board, nation by nation, then what changed and where it puts the world in 2066.'],
-      [you ? 30000 : 16000, go.run, 'The years begin. The map follows every nation’s choices.'],
+      [2400, adv(1), you ? `Election night: the newscast calls each nation’s results, ${nm} last, then the climate desk explains what they mean.` : 'Election night: the newscast calls all five nations side by side, then the climate desk explains what the results mean for emissions, the climate and the economy.'],
+      [you ? 62000 : 44000, go.run, 'The years begin. The map follows every nation’s choices.'],
       ...years(4, 'A year passes.'),
       [2200, () => { R0.tab = 'impact'; adv(1)(); }, you ? 'The Impact chart: the world as voted, against every nation going fossil-first and every nation acting. The shaded band is how far your nation alone could swing it.' : 'The Impact chart: where the world is heading, against every nation going fossil-first and every nation acting.'],
-      ...years(3, 'A year passes.'),
-      [3200, () => { draft(); botsVote('all'); }, you ? (DSTD ? 'Year 2034: the second session. You move your nation further toward the clean directions.' : 'Year 2034: the second session. You strengthen your nation’s laws.') : 'Year 2034: the second session. The nations vote again.'],
-      [2800, () => { cast(); adv(1)(); }, 'The second summit.'],
-      [you ? 30000 : 16000, go.run, 'The years continue.'],
+      [2400, adv(3), 'Fourteen years pass between elections, time to watch what the choices do.'],
+      [2400, adv(3), ''],
+      [2400, adv(3), 'Year 2040: the second election.'],
+      [3200, () => { draft(); botsVote('all'); }, DSTD ? 'A new platform joins the ballot: how to protect people from the damage that has arrived.' : 'Adaptation and climate aid join the ballot.'],
+      [2800, () => { cast(); adv(1)(); }, 'Election night, 2040.'],
+      [you ? 62000 : 44000, go.run, 'The years continue.'],
       ...years(8, 'A year passes.'),
-      [2400, () => { botsVote('all'); cast(); adv(1)(); }, 'Sessions in 2042, 2050 and 2058 follow the same pattern.'],
-      [7000, () => { go.run(); adv(4)(); }, 'Forty years go by in eight-year steps.'],
+      [2400, adv(6), 'Year 2054: the last election.'],
+      [3200, () => { draft(); botsVote('all'); }, DSTD ? 'One more new platform: pulling carbon back out of the sky, with forests or with costly machines.' : 'Carbon-removal machines join the ballot.'],
+      [2800, () => { cast(); adv(1)(); }, 'The last election night.'],
+      [you ? 62000 : 44000, go.run, 'The final twelve years.'],
       [2400, adv(4), ''],
-      [2400, () => { botsVote('all'); cast(); adv(1)(); }, 'The 2050 summit.'],
-      [7000, () => { go.run(); adv(4)(); }, ''],
       [2400, adv(4), ''],
-      [2400, () => { botsVote('all'); cast(); adv(1)(); }, 'The last summit, 2058.'],
-      [7000, () => { go.run(); adv(4)(); }, ''],
       [2400, adv(4), '2066: where did the world land?'],
+      [2400, () => { }, ''],
+      [2400, () => { }, ''],
       [12000, goBtn, 'Two worlds: drag across the map from the world the class made to the world where every nation went fossil-first.'],
       ...(DSTD ? [
         [12000, goBtn, 'From choices to climate: forty years of choices, link by link, from emissions to the air to the warming.'],
@@ -4102,12 +4519,13 @@ const FIN = (function () {
   const SAMPLE_STD = {
     del: { t: 'A delegate', view: 'terrasen', steps: [
       { t: 'Your nation', b: 2, cap: 'Each student is dealt into one of five nations. The card shows the nation’s economy, its emissions and what warming threatens.' },
-      { t: 'The ballot', b: 4, cap: 'Every eight years, delegates choose their nation’s direction on five platforms: energy, industry, farms and forests, transportation, and buildings. Under each option: what it does to that sector’s emissions and to the nation’s income. The panel on the right adds up the whole ballot.' },
-      { t: 'The count', b: 6, cap: 'Each summit opens with the delegate’s own nation’s count: the ballots drop into three trays (theirs is gold), platform by platform, and the winning direction is stamped. Then the vote board for all five nations.' },
+      { t: 'The ballot', b: 4, cap: 'At three elections, delegates choose their nation’s direction on five platforms (more appear later): energy, industry, farms and forests, transportation, and buildings. Under each option: what it does to that sector’s emissions and to the nation’s income. The panel on the right adds up the whole ballot.' },
+      { t: 'Election night', b: 6, cap: 'Each election cuts to a live newscast: every nation’s results are called race by race, with flips flagged and the delegate’s own ballot marked. Their own nation is called last.' },
+      { t: 'The climate desk', b: 6, x: '&summit=desk', cap: 'Then an analyst explains what the results mean, with three animated panels: emissions by the next election, the warming path to 2066, and growth and climate losses for each nation.' },
       { t: 'The chain', b: 6, x: '&summit=chain', cap: 'From choices to climate: each platform sets one sector’s emissions; the nations’ emissions add up in the air; the air sets the warming; the warming reaches every economy.' },
       { t: 'The years', b: 9, cap: 'The years run on a living map. The side panel follows the student’s own nation; the Sectors chart shows its emissions, sector by sector.' },
       { t: 'Your impact', b: 12, cap: 'The Impact chart: the world as chosen, the path if today’s choices hold, and the worlds where every nation goes fossil-first or every nation acts. The shaded band is how far your nation alone could move 2066.' },
-      { t: 'The second session', b: 16, cap: 'In 2034 the delegates choose again, knowing what eight years of their choices did.' },
+      { t: 'The second election', b: 16, cap: 'In 2040 the delegates choose again, knowing what fourteen years of their choices did, and a new platform appears: protecting their people from the damage.' },
       { t: 'Where it landed', b: 35, cap: 'In 2066: where the world landed, against the published climate pathways.' },
       { t: 'Two worlds', b: 36, cap: 'The 2066 map drawn twice: the world the class made and the world where every nation went fossil-first, with a handle to drag between them and a tally of what the difference cost.' },
       { t: 'Choices to climate', b: 37, cap: 'Forty years, link by link: the nation’s choices, its emissions, the world’s emissions, the CO₂ in the air, the warming and the economy.' },
@@ -4119,7 +4537,8 @@ const FIN = (function () {
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
       { t: 'A session', b: 4, cap: 'While the nations vote, the projector shows how many delegates of each nation have voted.' },
-      { t: 'The votes', b: 6, cap: 'The vote board: every platform and every nation, counted one nation at a time.' },
+      { t: 'Election night', b: 6, cap: 'The projector’s newscast: all five nations side by side, every race called across the board, then the map of how they voted.' },
+      { t: 'The climate desk', b: 6, x: '&summit=desk', cap: 'The analysis: emissions, warming and the economy under tonight’s results.' },
       { t: 'The chain', b: 6, x: '&summit=chain', cap: 'From choices to climate, for the whole world: where the five nations stand on each platform, the world’s emissions by sector, the air, the warming and the economy.' },
       { t: 'The years', b: 9, cap: 'The years run on the map: indicators, the nations’ choices, breaking news, and charts.' },
       { t: 'Where it landed', b: 35, cap: 'The world in 2066.' },
@@ -4133,11 +4552,12 @@ const FIN = (function () {
   const SAMPLE = {
     del: { t: 'A delegate', view: 'terrasen', steps: [
       { t: 'Your nation', b: 2, cap: 'Each student is dealt into one of five nations. The card shows the nation’s economy, its emissions and what warming threatens.' },
-      { t: 'The ballot', b: 4, cap: 'Every eight years, delegates vote on their own nation’s laws. Under each law, a small chart shows whether it pays now and costs later, or costs now and pays later. The panel on the right previews the whole package.' },
-      { t: 'The count', b: 6, cap: 'Each summit opens with the delegate’s own nation’s count: every ballot drops into Yes or No (theirs is gold), law by law, and each law is stamped PASSED or FAILED. Then the vote board for all five nations, what changed, and a gauge of where it puts the world in 2066.' },
+      { t: 'The ballot', b: 4, cap: 'At three elections, delegates vote on their own nation’s laws. Under each law, a small chart shows whether it pays now and costs later, or costs now and pays later. The panel on the right previews the whole package.' },
+      { t: 'Election night', b: 6, cap: 'Each election cuts to a live newscast: every nation’s results are called race by race, with flips flagged and the delegate’s own ballot marked. Their own nation is called last.' },
+      { t: 'The climate desk', b: 6, x: '&summit=desk', cap: 'Then an analyst explains what the results mean, with three animated panels: emissions by the next election, the warming path to 2066, and growth and climate losses for each nation.' },
       { t: 'The years', b: 9, cap: 'The years run on a living map: plants open and close, forests fall or regrow, the ice shrinks, coasts flood, storms strike. The side panel follows the student’s own nation.' },
       { t: 'Your impact', b: 12, cap: 'The Impact chart: the world as voted, the path if today’s laws hold, and the worlds where every nation goes fossil-first or every nation acts. The shaded band is how far your nation alone could move 2066.' },
-      { t: 'The second session', b: 16, cap: 'In 2034 the delegates vote again, knowing what eight years of their laws did.' },
+      { t: 'The second election', b: 16, cap: 'In 2040 the delegates vote again, knowing what fourteen years of their laws did. Adaptation and climate aid join the ballot.' },
       { t: 'Where it landed', b: 35, cap: 'In 2066: where the world landed, against the published climate pathways.' },
       { t: 'Two worlds', b: 36, cap: 'The 2066 map drawn twice: the world the class made and the world where every nation went fossil-first, with a handle to drag between them and a tally of what the difference cost.' },
       { t: 'The climate', b: 37, cap: 'What the laws did to the climate: your world against the alternatives, how much each nation’s laws cooled the world, and what was avoided.' },
@@ -4148,7 +4568,8 @@ const FIN = (function () {
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
       { t: 'A session', b: 4, cap: 'While the nations vote, the projector shows how many delegates of each nation have voted.' },
-      { t: 'The votes', b: 6, cap: 'The vote board: every law and every nation, counted one nation at a time, then what changed.' },
+      { t: 'Election night', b: 6, cap: 'The projector’s newscast: all five nations side by side, every race called across the board, then the map of how they voted.' },
+      { t: 'The climate desk', b: 6, x: '&summit=desk', cap: 'The analysis: emissions, warming and the economy under tonight’s results.' },
       { t: 'The years', b: 9, cap: 'The years run on the map: indicators, the nations’ laws, breaking news, and charts.' },
       { t: 'Where it landed', b: 35, cap: 'The world in 2066.' },
       { t: 'Two worlds', b: 36, cap: 'The world the class made against the world of inaction.' },
