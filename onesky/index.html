@@ -3400,7 +3400,7 @@ const UI = (function () {
           'Warming starts at <b>+1.36 °C</b>, the human-caused warming estimated for 2024 (Forster et al.).',
           'The world starts at <b>41.6 Gt of CO₂ a year</b>, the 2024 total (37.4 from fossil fuels and cement, 4.2 from land use), and about <b>380 Mt of methane</b> from people.',
           'CO₂ in the air starts at <b>429 ppm</b>: Mauna Loa averaged 424.6 ppm in 2024 and rises about 2.5 ppm a year.',
-          'Warming per tonne of CO₂: <b>0.45 °C per 1,000 Gt</b>, the IPCC’s best estimate. Fed the IPCC’s own emissions pathways, the game’s climate lands within about 0.1 °C of the IPCC’s central warming for 2041 to 2060 (low, middle and high pathways).',
+          'Warming per tonne of CO₂: <b>0.45 °C per 1,000 Gt</b>, the IPCC’s best estimate. Fed approximations of the IPCC’s low, middle and high emissions pathways (SSP1-2.6, SSP2-4.5, SSP5-8.5; the emissions are approximate, read off the published scenarios rather than taken from the official dataset), the game’s climate lands within about 0.1 °C of the IPCC’s central warming for 2041 to 2060.',
           'The <b>carbon budget</b> bar starts from the published budgets: 130 Gt left for 1.5 °C, 490 Gt for 1.7 °C and 1,050 Gt for 2 °C from the start of 2025 (50% chance).',
           'Disasters become more frequent at the rates in the IPCC’s Figure SPM.6: severe heat waves about 1.8 times as often at 1.5 °C as at 1 °C, heavy rain and farm droughts more slowly.',
           'Harvests fall about <b>5.5% per °C</b> of warming without adaptation (the average of wheat, maize, rice and soybean in Zhao et al. 2017).',
@@ -3422,7 +3422,7 @@ const UI = (function () {
         <li>IRENA (2024). <i>Renewable Power Generation Costs in 2023</i>. <span>Solar and wind costs.</span></li>
         <li>Nordhaus, W. D. (2017). Revisiting the social cost of carbon. <i>PNAS</i> 114(7), 1518–1523. <span>The DICE model’s damage curve (the “low” setting).</span></li>
         <li>Burke, M., Hsiang, S. M., and Miguel, E. (2015). Global non-linear effect of temperature on economic production. <i>Nature</i> 527, 235–239. <span>The “high” damage setting.</span></li></ol>
-        <p class="os-mnote">Everything not listed here is a game design choice, described on the previous tab. The check against the IPCC pathways is in the game’s source (calib_ssp.html).</p>`,
+        <p class="os-mnote">Everything not listed here is a game design choice, described on the previous tab. The check against the IPCC pathways, with the approximate emissions it uses, is in the game’s source (calib_ssp.html).</p>`,
     };
     let on = box.dataset.tab || 'chain';
     const draw = () => {
