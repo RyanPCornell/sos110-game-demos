@@ -1097,6 +1097,37 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .os .os-wrow{grid-template-columns:110px repeat(5,minmax(0,1fr))}}
 .os .os-tvleft .os-tvmap{max-height:42vh;width:auto;max-width:100%;margin:0 auto}
 .os .os-tvbig .os-tvmap{max-height:52vh;width:auto;max-width:100%;margin:0 auto}
+.os .os-budget{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:12px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:6px 12px}
+.os .os-bud{display:grid;grid-template-columns:auto 1fr;gap:2px 7px;align-items:center;font-size:11.5px}
+.os .os-bud>span{font:900 12.5px Merriweather,serif}
+.os .os-bud i{display:block;height:8px;border-radius:4px;background:#efe6d0;overflow:hidden}
+.os .os-bud i b{display:block;height:100%;border-radius:4px;background:#5a8a6a;transition:width .8s}
+.os .os-bud em{grid-column:1/-1;font-style:normal;color:var(--muted);white-space:nowrap}
+.os .os-bud.low i b{background:#c8783a}
+.os .os-bud.gone>span{color:#a8483f;text-decoration:line-through}
+.os .os-bud.gone em{color:#a8483f;font-weight:800}
+.os .os-life{margin-top:6px;border-top:1px dotted #e3d7b8;padding-top:5px}
+.os .os-lifeg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:3px}
+.os .os-lifeg div{background:#fffaf0;border:1px solid #ece2c8;border-radius:7px;padding:3px 6px;display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:0 4px}
+.os .os-lifeg span{grid-column:1/-1;font-size:10px;color:var(--muted);line-height:1.2}
+.os .os-lifeg b{font:900 15px Merriweather,serif}
+.os .os-lifeg em{font-style:normal;font:800 10px Inter}
+.os .os-lifeg em.up{color:var(--grn)}
+.os .os-lifeg em.dn{color:var(--red)}
+.os .os-lifeg em.same{color:#9a8d70;font-weight:600}
+.os .os-report{background:#fffaf0;border:1px solid var(--gold);border-left:6px solid var(--gold);border-radius:12px;padding:10px 14px}
+.os .os-rpl{margin:.3rem 0;font-size:13.5px;line-height:1.5}
+.os .os-rpl small{color:var(--muted)}
+.os .os-rpl.small{font-size:12.5px;color:var(--muted);margin-bottom:0}
+.os .os-rpl b{color:var(--ink)}
+.os .os-rps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:6px 0}
+.os .os-rp{background:var(--paper);border:1px solid #e8dcc0;border-radius:8px;padding:5px 8px;display:flex;flex-direction:column}
+.os .os-rp span{font-size:10.5px;color:var(--muted)}
+.os .os-rp b{font:900 17px Merriweather,serif}
+.os .os-rp b.up{color:var(--grn)}
+.os .os-rp b.dn{color:var(--red)}
+.os .os-rp em{font-style:normal;font-size:10.5px;color:var(--muted)}
+@media (max-width:1100px){.os .os-rps{grid-template-columns:repeat(2,1fr)}}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -1375,7 +1406,9 @@ const SIM = (function () {
   const Y0 = 2026, YN = 2066, SESSIONS = [2026, 2040, 2054];
   // the year of the next election (or the end): what every preview looks ahead to
   const horizon = si => si + 1 < SESSIONS.length ? SESSIONS[si + 1] : YN;
-  const T0 = 1.36, PPM0 = 429, TCRE = 0.00048;
+  const T0 = 1.36, PPM0 = 429, TCRE = 0.00045;   // °C per Gt CO2: the IPCC AR6 best estimate (0.45 per 1,000 Gt)
+  // the published remaining carbon budgets from 1 Jan 2025 (Forster et al. 2025, 50% chance), Gt CO2; 2025 itself used ~42
+  const BUDGETS = [[1.5, 130], [1.7, 490], [2.0, 1050]], E2025 = 42;
   const hash = s => { let h = 2166136261; for (const c of String(s)) h = Math.imul(h ^ c.charCodeAt(0), 16777619); h ^= h >>> 15; h = Math.imul(h, 2246822507); h ^= h >>> 13; return h >>> 0; };
   const rk = (C, key) => rng(hash(C.seed + ':' + key));
 
@@ -1399,6 +1432,24 @@ const SIM = (function () {
       D: 2000, coal: .60, gas: .15, Gt: { power: 1.6, transport: .8, industry: 1.2, buildings: .5, land: 1.1 }, evMid: 2047, exposure: 'sea-level rise, floods and deadly heat',
       blurb: 'Young, poor and growing fast, on a delta just above the sea. It burned the least carbon and has the most to lose.' },
   ];
+  // the sector figures above are shares of the world; scaled so the five nations emit the world's 41.6 Gt of CO2 in 2024
+  // (Global Carbon Budget 2024: 37.4 from fossil fuels and cement, 4.2 from land use)
+  const CO2_SCALE = 41.6 / NATIONS.reduce((a, N) => a + Object.values(N.Gt).reduce((x, y) => x + y, 0), 0);
+  for (const N of NATIONS) for (const k of Object.keys(N.Gt)) N.Gt[k] *= CO2_SCALE;
+  // the other pollutants, in 2026 (Mt a year). Methane: ~380 Mt from people (Global Methane Assessment 2021), split
+  // coal mines 40, oil and gas 80, farms 150, landfills 75, other 35. Sulfur dioxide (the source of most cooling aerosols): ~80 Mt.
+  const NONCO2 = [
+    { coal: 2.55, og: 16.9, ag: 15, waste: 7.3, so2: 9 },     // Cairhien: its power plants are mostly scrubbed
+    { coal: 18.7, og: 13.2, ag: 28, waste: 11.9, so2: 34 },   // Andor
+    { coal: 1.7, og: 36.7, ag: 7, waste: 4.0, so2: 7 },       // Saldaea: oil and gas fields leak methane
+    { coal: 10.2, og: 8.5, ag: 55, waste: 19.9, so2: 17 },    // Terrasen: cattle and rice
+    { coal: 6.8, og: 4.7, ag: 45, waste: 31.9, so2: 13 },     // Erid
+  ];
+  const CH4_OTHER = 35;
+  // days above 35 °C in each capital today (illustrative; a hot-summer harbor city, an inland heartland, the cold north,
+  // the farm belt, the tropical delta)
+  const HEAT_DAYS = [8, 20, 2, 32, 48];
+  const sect0 = s => s.sect;
   const NI = Object.fromEntries(NATIONS.map((n, i) => [n.id, i]));
   const SECTORS = ['power', 'transport', 'industry', 'buildings', 'land'];
 
@@ -1623,9 +1674,16 @@ const SIM = (function () {
   }
 
   // ── a new world ──
-  function newWorld(seed, assign, mode) {
-    const C = { seed, mode: mode === 'std' ? 'std' : 'adv', year: Y0, members: Object.entries(assign || {}).map(([pk, n]) => ({ pk, n })), hist: [], news: [], sessions: [], cum: 0, T: T0, ppm: PPM0, slr: 0,
-      X: 0, rdMult: 1, permafrost: 0, tips: {}, events: [] };
+  // damages: how much of its income an economy loses per (°C)² of warming, three published readings (see DAMAGE)
+  // low = Nordhaus's DICE-2016R (0.236% of income per °C²); high = matched to Burke, Hsiang & Miguel (2015), about 23% of
+  // world income by 2100 at roughly 4.3 °C; central = between the two. Each nation's exposure scales its share.
+  const DAMAGE = { low: .00236, central: .006, high: .0124 };
+  const VULN_AVG = NATIONS.reduce((a, N) => a + N.vuln * N.gdp, 0) / NATIONS.reduce((a, N) => a + N.gdp, 0);
+  function newWorld(seed, assign, mode, dmg) {
+    const C = { seed, mode: mode === 'std' ? 'std' : 'adv', dmg: DAMAGE[dmg] ? dmg : 'high', year: Y0, members: Object.entries(assign || {}).map(([pk, n]) => ({ pk, n })), hist: [], news: [], sessions: [], cum: 0, T: T0, ppm: PPM0, slr: 0,
+      X: 0, rdMult: 1, permafrost: 0, tips: {}, events: [],
+      // the short-lived and other gases, as multiples of their 2026 levels, and the warming they add (or take away)
+      ch4: 1, n2o: 1, Tnc: 0, Tco2: 0, Tch4: 0, Taer: 0, Tn2o: 0 };
     C.nat = NATIONS.map((N, i) => {
       const gt = Object.values(N.Gt).reduce((a, b) => a + b, 0);
       return { i, Ypot: N.gdp, Y: N.gdp, pop: N.pop, k: N.coal, g: N.gas, c: 1 - N.coal - N.gas, ev: .03, evSales: .06,
@@ -1637,13 +1695,40 @@ const SIM = (function () {
     // laws already in force on day one start their clocks in 2026, as if just passed (Saldaea's drilling boom and
     // its later costs depend on this)
     C.nat.forEach(s => { for (const k of Object.keys(s.laws)) if (s.laws[k]) { s.since[k] = Y0; if (k === 'coal') s.coalAt = s.k; if (k === 'cap') s.capBase = s.sect.power + s.sect.industry; } });
-    C.X0 = C.nat.reduce((a, s) => a + NATIONS[s.i].D * s.c, 0) * 10; C.X = C.X0;
+    C.X0 = C.nat.reduce((a, s) => a + NATIONS[s.i].D * s.c, 0) * 10; C.X = C.X0; C.cc0 = cleanCost(C);
     C.fossil0 = fossilUse(C);
     C.world0 = { Y: C.nat.reduce((a, s) => a + s.Y, 0), E: C.nat.reduce((a, s) => a + s.emis, 0) };
+    // each nation's other pollutants in 2026, and what drives them (for the year model's ratios)
+    C.nat.forEach((s, i) => { const N = NATIONS[i]; s.base = { coalGen: N.D * N.coal, gasUse: N.Gt.transport + N.Gt.buildings + N.D * N.gas / 1000, ind: N.Gt.industry, tr: N.Gt.transport };
+      s.ch4 = NONCO2[i].coal + NONCO2[i].og + NONCO2[i].ag + NONCO2[i].waste; s.so2 = NONCO2[i].so2;
+      s.life0 = null; });
+    C.ch40 = C.nat.reduce((a, s) => a + s.ch4, 0) + CH4_OTHER; C.so20 = C.nat.reduce((a, s) => a + s.so2, 0);
     return C;
   }
   function fossilUse(C) { return C.nat.reduce((a, s) => a + s.sect.power + s.sect.transport + s.sect.industry + s.sect.buildings, 0); }
-  const cleanCost = C => Math.max(30, 68 * Math.pow(C.X / C.X0, -.22) * C.rdMult);           // $/MWh, wind + solar + firming
+  // ── the price of clean power, $/MWh ──
+  // Wind and solar get cheaper as the world builds them (Wright's law: about 20% cheaper per doubling for solar, 12% for
+  // onshore wind), from IRENA's 2023 world averages ($44 solar, $33 wind, falling since). Firming them (storage, backup,
+  // grids) costs more the larger the clean share; storage gets cheaper with experience too. Research shaves the lot.
+  const cleanBase = C => { const x = C.X / C.X0; return (.5 * 40 * Math.pow(x, -.322) + .5 * 34 * Math.pow(x, -.184)) * C.rdMult; };
+  const firming = (C, share) => (6 + 38 * share * share) * Math.pow(C.X / C.X0, -.29);
+  const cleanAt = (C, share) => Math.max(18, cleanBase(C) + firming(C, share));
+  const cleanCost = C => cleanAt(C, C.wclean == null ? .33 : C.wclean);
+  // ── the climate: CO2 by its cumulative total; methane, nitrous oxide and aerosols by their levels ──
+  // co2 = this year's net CO2 (Gt), ch4 = methane (Mt), n2o = nitrous oxide as a multiple of 2026, so2 = sulfur dioxide (Mt)
+  // Warming per tonne of CO2 is the IPCC's TCRE; methane lasts about 12 years, nitrous oxide about 110; aerosols wash out
+  // within a year, so cutting coal smoke briefly uncovers warming it was hiding. Coefficients checked against the IPCC
+  // pathways in calib_ssp.html.
+  const CLIM = { aCH4: .5, aN2O: .1, aAER: .42, lag: 4 };
+  function climateStep(C, co2, ch4, n2o, so2) {
+    C.cum += co2;
+    C.ch4 += (ch4 / C.ch40 - C.ch4) / 11.8;
+    C.n2o += (n2o - C.n2o) / 109;
+    const aer = CLIM.aAER * (1 - so2 / C.so20), nc = CLIM.aCH4 * (C.ch4 - 1) + CLIM.aN2O * (C.n2o - 1) + aer;
+    C.Tnc += (nc - C.Tnc) / CLIM.lag;
+    C.Tco2 = TCRE * C.cum; C.Tch4 = CLIM.aCH4 * (C.ch4 - 1); C.Taer = aer;
+    C.T = T0 + C.Tco2 + C.Tnc;
+  }
 
   // apply a session's laws to a nation (the clock starts on phase-outs and caps when they pass)
   function enact(C, n, laws) {
@@ -1683,16 +1768,17 @@ const SIM = (function () {
       // ── electricity: new plants go to whatever is cheapest; laws tilt the race ──
       const D = N.D * Math.pow(scale, .8) * Math.pow(.993, t) * (1 + .25 * s.ev) * (1 + (L.beff >= 2 ? .1 * Math.max(0, 1 - s.bInt) : 0));
       const coalC = 62 + .95 * P - (L.drill ? 8 : 0) - (L.subs ? 12 : 0), gasC = 72 + .42 * P - (L.drill ? 8 : 0) - (L.subs ? 12 : 0) + (C.gasShock || 0);
-      const myClean = cc - (L.solar ? 10 : 0);
+      const myClean = cleanAt(C, s.c) - (L.solar ? 10 : 0);
       const fos = Math.min(coalC, gasC), sNew = 1 / (1 + Math.exp((myClean - fos) / 8));
       const kNew = 1 / (1 + Math.exp((coalC - gasC) / 6));
       const Dprev = s.D || N.D, add = Math.max(0, D - Dprev * .955), ret = .045;
       let cG = s.c * Dprev * (1 - ret * .3), kG = s.k * Dprev * (1 - ret), gG = s.g * Dprev * (1 - ret);
       const cleanAdd = add * sNew, fosAdd = add - cleanAdd;
+      s.cleanAdd = cleanAdd;
       cG += cleanAdd; kG += fosAdd * kNew * (L.drill ? 1.2 : 1); gG += fosAdd * (1 - kNew);
       // public build-out and aid money put up clean plants that push out the dirtiest first
       const buildPct = LI.build.opts[L.build || 0] / 100 + (N.id === 'erid' ? s.aidIn / Math.max(1, s.Y) * .6 : 0);
-      if (buildPct > 0) { const extra = D * buildPct * 4.2 * (68 / cc) ** .5; cG += extra; const fromK = Math.min(kG, extra * .7); kG -= fromK; gG = Math.max(0, gG - (extra - fromK)); }
+      if (buildPct > 0) { const extra = D * buildPct * 4.2 * (C.cc0 / cc) ** .5; cG += extra; const fromK = Math.min(kG, extra * .7); kG -= fromK; gG = Math.max(0, gG - (extra - fromK)); }
       // coal phase-out: a straight line to zero over ten years from the vote
       if (L.coal && s.since.coal != null) { const lim = (s.coalAt || s.k) * Math.max(0, 1 - (y - s.since.coal) / 10) * D; if (kG > lim) { const d = kG - lim; kG = lim; cG += d * .75; gG += d * .25; } }
       const tot = cG + kG + gG;
@@ -1730,6 +1816,14 @@ const SIM = (function () {
       const ramp = k => s.since[k] != null ? Math.min(1, (y - s.since[k]) / 10) : 0;
       s.removal = (L.refor ? .009 * s.Ypot * ramp('refor') : 0) + (L.dac ? .03 * s.Ypot * ramp('dac') : 0);
       s.emis = SECTORS.reduce((a, k) => a + sect[k], 0) - s.removal;
+      // ── the other pollutants ──
+      const X0 = NONCO2[s.i], b = s.base, ramp2 = k => s.since[k] != null ? Math.min(1, (y - s.since[k]) / 8) : 0;
+      const rCoal = D * s.k / b.coalGen, rGas = (D * s.g / 1000 + sect.buildings + sect.transport) / b.gasUse;
+      const og = N.id === 'saldaea' ? X0.og * (.82 * (C.fossilR || 1) + .18 * rGas) : X0.og * rGas;
+      const ag = X0.ag * Math.pow(scale, .25) * (L.fexp ? 1 + .2 * ramp2('fexp') : 1) * (L.farm ? 1 - .35 * ramp2('farm') : 1) * (1 - .0006 * Math.min(P, 250));
+      s.ch4 = X0.coal * rCoal + og * (L.drill ? 1.15 : 1) + ag + X0.waste * Math.pow(.995, t) * (s.pop / N.pop);
+      s.agR = ag / X0.ag;
+      s.so2 = X0.so2 * (.5 * rCoal + .3 * sect.industry / b.ind + .2 * sect.transport / b.tr) * Math.pow(N.id === 'cairhien' ? .98 : .985, t);
       if (L.rd) rdCount++;
       if (L.aid && N.id !== 'erid') aidPool += s.Y * .005;
     }
@@ -1737,8 +1831,10 @@ const SIM = (function () {
     const avgP = nat.reduce((a, s) => a + s.P, 0) / 5;
     // ── the shared atmosphere ──
     const worldE = nat.reduce((a, s) => a + s.emis, 0) + C.permafrost;
-    C.cum += worldE;
-    C.T = T0 + TCRE * C.cum;
+    const ch4 = nat.reduce((a, s) => a + s.ch4, 0) + CH4_OTHER, so2 = nat.reduce((a, s) => a + s.so2, 0);
+    const agR = nat.reduce((a, s) => a + s.agR * NONCO2[s.i].ag, 0) / 150, fosR = fossilUse(C) / C.fossil0;
+    climateStep(C, worldE, ch4, .7 * agR + .3 * fosR, so2);
+    C.fossilR = fosR;
     C.ppm += .47 * worldE / 7.82;
     C.slr += (3.9 + 1.6 * (C.T - T0) * 4) / 10;          // cm: today's 3.9 mm/yr, rising with warming
     C.X += cleanGen;
@@ -1750,12 +1846,13 @@ const SIM = (function () {
     if (C.T > 2.0 && !C.tips.reef) { C.tips.reef = y; rec.news.push(['tip', 'Erid’s coral reefs are bleaching beyond recovery; its fisheries collapse']); }
     const fossilNow = fossilUse(C);
     const worldClean = nat.reduce((a, s) => a + s.c * s.D, 0) / nat.reduce((a, s) => a + s.D, 0);
+    C.wclean = worldClean;
     // ── each nation's economy: trend, minus damage, minus what its policies cost, plus what they earn ──
     for (const s of nat) {
       const N = NATIONS[s.i], L = s.laws, t = y - Y0;
       // climate damage (DICE-style, relative to today) and this year's disasters
       const adapt = L.adapt ? .6 : L.adaptL ? .8 : 1;
-      let dmg = N.vuln * .0095 * (C.T * C.T - T0 * T0) * adapt;
+      let dmg = N.vuln / VULN_AVG * DAMAGE[C.dmg] * (C.T * C.T - T0 * T0) * adapt;
       if (N.id === 'saldaea') dmg -= .006 * Math.min(.6, Math.max(0, C.T - T0));       // longer summers, for a while
       if (C.tips.reef && N.id === 'erid') dmg += .003;
       if (C.tips.perma && N.id === 'saldaea') dmg += .002;
@@ -1763,7 +1860,7 @@ const SIM = (function () {
       s.shock = s.shock * .45 + ev.cost;             // most of a disaster's loss is recovered within a few years
       for (const e of ev.list) rec.events.push(e);
       // what the laws cost (share of GDP, net of the carbon dividend) …
-      const intens = (s.emis / s.Y) / (C.world0.E / C.world0.Y), cm = Math.min(1.2, cleanCost(C) / 68);
+      const intens = (s.emis / s.Y) / (C.world0.E / C.world0.Y), cm = Math.min(1.2, cleanCost(C) / C.cc0);
       let cost = .011 * Math.pow(s.P / 100, 1.45) * Math.min(2, intens) * (.55 + .45 * cm);
       if (L.coal && s.since.coal != null && y - s.since.coal <= 10) cost += .0032 * (s.coalAt || 0) / .4 * (.6 + .4 * cm);
       if (L.gascar) cost += .0016 * Math.max(0, 1 - t / 14);
@@ -1792,7 +1889,8 @@ const SIM = (function () {
       if (gap < -20) cost -= .00002 * -gap;                       // dirty industry moves in
       if (s.P < 25) cost += .0016 * nat.filter(o => o !== s && o.laws.bta && o.P > s.P + 25).length;
       // … and what cheap clean power earns: electricity cheaper than today's grid raises everyone's output
-      const lcoe = s.c * (cleanCost(C) - (L.solar ? 10 : 0)) + s.k * (62 - (L.subs ? 12 : 0)) + s.g * (72 - (L.subs ? 12 : 0));
+      const lcoe = s.c * (cleanAt(C, s.c) - (L.solar ? 10 : 0)) + s.k * (62 - (L.subs ? 12 : 0)) + s.g * (72 - (L.subs ? 12 : 0));
+      s.lcoe = lcoe;
       if (s.lcoe0 == null) s.lcoe0 = lcoe;
       cost -= .016 * (1 - lcoe / s.lcoe0);
       // a petrostate lives on the world's fossil fuel habit
@@ -1805,15 +1903,33 @@ const SIM = (function () {
         if (N.id === 'saldaea') cost -= .025 * crisis; else cost += .022 * crisis * fosShare;
       }
       s.cost = cost; s.dmg = dmg;
+      // ── life in the nation: what people would notice ──
+      // heat: days above 35 °C in the capital, scaled like the IPCC's 10-year hot extremes (illustrative starting counts);
+      // harvests: about 5.5% lower per °C of global warming without adaptation (Zhao et al. 2017), less with it, and a bad
+      // drought or fire year on top; power bills: the grid's cost plus any carbon price and fuel shock; fuel: pump prices;
+      // jobs: work in fossil fuels and in clean energy, as indexes of 2026
+      const crisisF = crisis ? 1 : 0, droughtHit = ev.list.filter(e => e.kind === 'drought' || e.kind === 'fire').reduce((a, e) => a + e.sev, 0);
+      const life = {
+        heat: HEAT_DAYS[s.i] * AR6x('heat10', C.T) / AR6x('heat10', T0),
+        crop: 1 - .055 * (C.T - T0) * (L.adapt ? .7 : L.adaptL ? .85 : 1) - droughtHit * 2.5,
+        power: 40 + s.lcoe + s.P * (.95 * s.k + .42 * s.g) + (C.gasShock || 0) * s.g,     // + about $40/MWh of wires and service
+        fuel: 1 + .8 * crisis + .0018 * s.P - (L.subs ? .15 : 0),
+        jobsF: s.D * (s.k + s.g) + 900 * (sect0(s).transport + s.sect.buildings),
+        jobsC: s.D * s.c + 8 * (s.cleanAdd || 0),
+      };
+      if (!s.life0) s.life0 = { ...life };
+      s.life = { heat: life.heat, crop: life.crop, power: life.power / s.life0.power, fuel: life.fuel / s.life0.fuel, jobsF: life.jobsF / s.life0.jobsF, jobsC: life.jobsC / s.life0.jobsC };
+      void crisisF;
       const Yprev = s.Y;
       s.Y = s.Ypot * (1 - dmg) * (1 - s.shock) * (1 - cost) * (1 - petro);
       s.growth = s.Y / Yprev - 1;
       s.pop *= 1 + ({ erid: .012, terrasen: .007, cairhien: .002, andor: -.001, saldaea: -.002 })[N.id] * (1 - t / 80);
       s.cumE += s.emis;
-      rec.nat.push({ Y: s.Y, gdpPc: s.Y / s.pop, growth: s.growth, emis: s.emis, removal: s.removal || 0, sect: { ...s.sect }, clean: s.c, coal: s.k, ev: s.ev, P: s.P, permit: s.permit,
+      rec.nat.push({ life: { ...s.life }, Y: s.Y, gdpPc: s.Y / s.pop, growth: s.growth, emis: s.emis, removal: s.removal || 0, sect: { ...s.sect }, clean: s.c, coal: s.k, ev: s.ev, P: s.P, permit: s.permit,
         dmg: s.dmg, shock: s.shock, cost: s.cost, petro, laws: { ...s.laws } });
     }
-    Object.assign(rec, { T: C.T, ppm: C.ppm, worldE, slr: C.slr, cleanCost: cleanCost(C), Y: nat.reduce((a, s) => a + s.Y, 0),
+    rec.budget = BUDGETS.map(([t, b]) => [t, b - E2025 - C.cum]);
+    Object.assign(rec, { Tco2: C.Tco2, Tnc: C.Tnc, Tch4: C.Tch4, Taer: C.Taer, ch4, so2, T: C.T, ppm: C.ppm, worldE, slr: C.slr, cleanCost: cleanCost(C), Y: nat.reduce((a, s) => a + s.Y, 0),
       clean: nat.reduce((a, s) => a + s.c * s.D, 0) / nat.reduce((a, s) => a + s.D, 0),
       dmgShare: nat.reduce((a, s) => a + s.Y * (s.dmg + s.shock), 0) / nat.reduce((a, s) => a + s.Y, 0) });
     if (crisis === 1) rec.news.push(['crisis', 'Oil and gas prices double. Fuel-hungry economies stall; Saldaea’s exports boom']);
@@ -1837,12 +1953,19 @@ const SIM = (function () {
     storm: (N, b) => `A Category ${b > .018 ? 5 : 4} storm strikes ${N.name}`, flood: N => `Record floods swamp ${N.name}`, heat: N => `A deadly heat wave grips ${N.name}`,
     drought: N => `Drought withers ${N.name}’s harvest`, fire: N => `Wildfires sweep across ${N.name}`,
   };
+  // how much more often each kind of event happens at a warming level, relative to 1850-1900 (IPCC AR6 WG1, Figure SPM.6):
+  // heat = 50-year hot extremes, rain = 10-year heavy rain, drought = 10-year farm droughts in drying regions. Storms:
+  // AR6 projects a rising share of the most intense cyclones (about +10% at 1.5 °C, +13% at 2, +20% at 4). Fires: no
+  // AR6 figure; they follow drought here (an assumption).
+  const AR6 = { lv: [1, 1.5, 2, 4], heat: [4.8, 8.6, 13.9, 39.2], heat10: [2.8, 4.1, 5.6, 9.4], flood: [1.3, 1.5, 1.7, 2.7], drought: [1.7, 2.0, 2.4, 4.1], storm: [1.05, 1.1, 1.13, 1.2] };
+  const AR6x = (kind, T) => { const v = AR6[kind] || AR6.drought, L = AR6.lv; if (T <= L[0]) return v[0]; for (let i = 1; i < L.length; i++) if (T <= L[i]) return v[i - 1] + (v[i] - v[i - 1]) * (T - L[i - 1]) / (L[i] - L[i - 1]); return v[v.length - 1] + (v[v.length - 1] - v[v.length - 2]) * (T - 4) / 2; };
+  const hazKind = k => k === 'fire' ? 'drought' : k;
   function disasters(C, s, y, adapt) {
     const N = NATIONS[s.i], r = rk(C, 'haz:' + y + ':' + N.id), list = [];
     let cost = 0;
-    const f = Math.pow(Math.max(.5, C.T / T0), 3.2);
     for (const [k, p, c] of HAZ[N.id]) {
-      if (r() < p * f * .9) {
+      const f = AR6x(hazKind(k), C.T) / AR6x(hazKind(k), T0);      // today's odds, scaled by how much likelier warming makes it
+      if (r() < p * f) {
         const sev = c * (.6 + r() * .9) * (C.T / T0) * (adapt < 1 ? .5 : 1);
         cost += sev;
         list.push({ n: s.i, kind: k, sev, text: HAZT[k](N, sev) + ` · ${(sev * 100).toFixed(1)}% of GDP lost` });
@@ -1854,7 +1977,7 @@ const SIM = (function () {
   // ── the whole game, replayed from the frozen votes ──
   // I = { seed, assign: {pk: nation}, V: [votes0, votes1, …] }; runs to year `upto` (default: as far as the votes allow)
   function run(I, upto) {
-    const C = newWorld(I.seed, I.assign, I.mode);
+    const C = newWorld(I.seed, I.assign, I.mode, I.dmg);
     const V = I.V || [];
     const end = Math.min(upto == null ? YN : upto, YN);
     for (let si = 0; si < SESSIONS.length; si++) {
@@ -1885,7 +2008,7 @@ const SIM = (function () {
   const withMode = (I, f) => { const keep = MODE; MODE = I.mode === 'std' ? 'std' : 'adv'; try { return f(); } finally { MODE = keep; } };
   function whatIf(I, rule) {
     // rule(n, si, actual) → laws; the actual game's laws are passed in so a scenario can keep them
-    const A = run(I), C = newWorld(I.seed, I.assign, I.mode);
+    const A = run(I), C = newWorld(I.seed, I.assign, I.mode, I.dmg);
     for (let si = 0; si < SESSIONS.length; si++) {
       const act = A.sessions[si] ? A.sessions[si].res : null;
       session(C, si, null, n => rule(n, si, act ? act[n].laws : C.nat[n].laws));
@@ -1922,7 +2045,7 @@ const SIM = (function () {
   // Every world below replays the real votes for sessions 0..si, except where `force(n, sIdx)` returns laws for a nation;
   // after session si the laws are held as they are until 2066.
   function heldRun(I, si, force) {
-    const C = newWorld(I.seed, I.assign, I.mode), V = I.V || [];
+    const C = newWorld(I.seed, I.assign, I.mode, I.dmg), V = I.V || [];
     for (let s = 0; s <= si && s < SESSIONS.length; s++) {
       if (force) { const res = NATIONS.map((N, n) => { const f = force(n, s, C); return f ? { laws: f, tally: {}, real: 0, size: 0 } : decide(C, n, s, V[s] || {}); }); const before = C.nat.map(x => ({ ...x.laws })); res.forEach((r, n) => enact(C, n, r.laws)); C.sessions.push({ year: C.year, si: s, res, before }); }
       else session(C, s, V[s]);
@@ -2001,6 +2124,21 @@ const SIM = (function () {
     return clamp(s / C.hist.length / .96 + .1);
   }
 
+  // ── what a nation's last vote did, for the report at the next election ──
+  // the world as it happened since election s-1, against the same world where nation n kept the laws it had before that
+  // election (everyone else voting as they did)
+  function lastVote(I, s, n) {
+    return withMode(I, () => {
+      const s0 = s - 1, Ip = { ...I, V: (I.V || []).slice(0, s) };
+      const A = heldRun(Ip, s0), B = heldRun(Ip, s0, (k, ss, W) => ss === s0 && k === n ? { ...W.nat[k].laws } : null);
+      const y0 = SESSIONS[s0], y1 = SESSIONS[s], at = (W, y) => W.hist.find(r => r.year === y), span = W => W.hist.filter(r => r.year > y0 && r.year <= y1);
+      const a1 = at(A, y1), b1 = at(B, y1), cum = W => span(W).reduce((x, r) => x + r.nat[n].emis, 0);
+      return { y0, y1, e1: a1.nat[n].emis, eB: b1.nat[n].emis, cumA: cum(A), cumB: cum(B), inc: a1.nat[n].gdpPc, incB: b1.nat[n].gdpPc,
+        T1: a1.T, T1B: b1.T, T66: A.hist[A.hist.length - 1].T, T66B: B.hist[B.hist.length - 1].T,
+        lost: span(A).reduce((x, r) => x + r.nat[n].Y * (r.nat[n].dmg + r.nat[n].shock), 0), ev: span(A).flatMap(r => r.events.filter(e => e.n === n)),
+        before: A.sessions[s0].before[n], after: A.sessions[s0].res[n].laws, life0: at(A, y0 + 1) ? at(A, y0 + 1).nat[n].life : null, life1: a1.nat[n].life };
+    });
+  }
   // ── the temptation: four worlds for nation k, each nation keeping one plan from 2026 (act, or go fossil-first) ──
   // cells gg (k acts, the others act), bg (k fossil-first, the others act), gb, bb; each holds k's income, the others'
   // average income and the warming, in 2040, 2054 and 2066
@@ -2056,6 +2194,7 @@ const SIM = (function () {
   const at = (pts, y) => { for (let i = 1; i < pts.length; i++) if (y <= pts[i][0]) { const [a, va] = pts[i - 1], [b, vb] = pts[i]; return va + (vb - va) * (y - a) / (b - a); } return pts[pts.length - 1][1]; };
 
   return { Y0, YN, SESSIONS, NATIONS, NI, LAWS, LI, GROUPS, SECTORS, lawsFor, pack, parse, deal, packAssign, parseAssign, newWorld, run, step, session, decide, standIn,
+    lastVote, HEAT_DAYS, GREEN_ADV, BROWN_ADV, AR6, AR6x, BUDGETS, E2025, DAMAGE, CLIM, climateStep, NONCO2, CH4_OTHER, cleanAt,
     ledger, whatIf, effort, project, futures, heldRun, profiles, GREEN, BROWN, SSP, at, hash, cleanCost, emptyLaws, T0, PPM0,
     dealSplit, dilemma, DIL_Y, horizon, platsAt, PLATFORMS, PI, STD_START, stdLaws, platOf, ppack, pparse, standInStd, optionPreview, platProfiles };
 })();
@@ -2729,6 +2868,7 @@ const UI = (function () {
     el = host; R.host = !!o.host;
     el.innerHTML = `<div class="os-run">
       <div class="os-left"><div class="os-mapbox" id="osMap"></div>
+        <div class="os-budget" id="osBudget"></div>
         <div class="os-news" id="osNews"><span class="os-nlbl">● Breaking</span><span class="os-ntxt" id="osNtxt">The five nations meet for the first time. The sky is shared; the laws are not.</span><span class="os-nyr" id="osNyr"></span></div>
         <div class="os-harm" id="osHarm"></div></div>
       <aside class="os-side">
@@ -2778,12 +2918,12 @@ const UI = (function () {
       you.innerHTML = `<div class="os-yh">${crest(n, 26)}<div><div class="os-eb">YOUR NATION · ${del} ${del === 1 ? 'DELEGATE' : 'DELEGATES'}</div><b>${N.name}</b><span>${N.epithet}</span></div></div>` +
         (r ? `<div class="os-yrow"><span>Income per person</span><b>$${r.gdpPc.toFixed(1)}k <em class="${r.growth >= 0 ? 'up' : 'dn'}">${sgn(r.growth * 100)}%</em></b></div>
           <div class="os-yrow"><span>Emissions</span><b>${r.emis.toFixed(1)} Gt <em class="${first && r.emis < first.emis ? 'up' : 'dn'}">${first ? sgn((r.emis / first.emis - 1) * 100, 0) + '% since 2026' : ''}</em></b></div>
-          <div class="os-yrow"><span>Lost to climate this year</span><b class="${r.dmg + r.shock > .02 ? 'neg' : ''}">${pct(Math.max(0, r.dmg + r.shock), 1)} of GDP</b></div>` :
+          <div class="os-yrow"><span>Lost to climate this year</span><b class="${r.dmg + r.shock > .02 ? 'neg' : ''}">${pct(Math.max(0, r.dmg + r.shock), 1)} of GDP</b></div>` + lifeGrid(n, r) :
           `<div class="os-yrow"><span>Income per person</span><b>$${(N.gdp / N.pop).toFixed(1)}k</b></div><div class="os-yrow"><span>Emissions</span><b>${Object.values(N.Gt).reduce((a, b) => a + b, 0).toFixed(1)} Gt a year</b></div><div class="os-yrow"><span>Most at risk from</span><b>${N.exposure}</b></div>`);
     } else you.hidden = true;
     // KPI tiles
     const S = k => h.map(r => r[k]);
-    const w0 = C ? C.world0 : { Y: 98, E: 36.3 };
+    const w0 = C ? C.world0 : { Y: 98, E: 41.6 };
     const tiles = [
       ['Warming', rec ? '+' + rec.T.toFixed(2) + ' °C' : '+1.36 °C', 'since 1850–1900', S('T')],
       ['CO₂ in the air', rec ? Math.round(rec.ppm) + ' ppm' : '429 ppm', rec ? `+${Math.round(rec.ppm - 429)} since 2026` : 'Mauna Loa, 2026', S('ppm')],
@@ -2793,6 +2933,7 @@ const UI = (function () {
       ['Climate damage', rec ? pct(rec.dmgShare, 1) : '0.0%', 'of world GDP this year', S('dmgShare')],
     ];
     harm(C, h, rec);
+    budget(h, rec);
     $('#osKpis').innerHTML = tiles.map(([l, v, s, d]) => `<div class="os-kpi"><div class="os-kl">${l}</div><div class="os-kv">${v}</div><div class="os-ks">${s}</div>${spark(d)}</div>`).join('');
     // the nations
     $('#osNations').innerHTML = `<div class="os-nrow os-nhead"><span></span><span>Nation</span><span>Income</span><span>CO₂</span><span>${std() ? 'Choices' : 'Laws'}</span></div>` + N5.map((N, n) => {
@@ -2828,6 +2969,26 @@ const UI = (function () {
       <div class="os-hev">${ev.length ? ev.map(e => `<span style="--c:${N5[e.n].color}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">${HZ[e.kind] || ''}</svg>${HZN[e.kind] || e.kind} in <b>${N5[e.n].name}</b> <em>−${(e.sev * 100).toFixed(1)}% of GDP</em></span>`).join('') : '<span class="os-hquiet">No major disaster this year. The slow losses from heat, drought and rising seas continue.</span>'}</div>
       <div class="os-hwho" title="Share of each nation’s income lost to climate this year">${hit.map((v, n) => `<span style="--c:${N5[n].color}"><i style="height:${Math.max(4, v / mx * 100).toFixed(0)}%"></i><em>${(v * 100).toFixed(1)}</em></span>`).join('')}<small>% lost, by nation</small></div>
       <div class="os-hsum"><b>$${sum.toFixed(1)}T</b><em>lost since 2026 · ${nEv} disasters</em>${noneSum != null ? `<em class="os-hghost">Fossil-first world by now: <b>$${noneSum.toFixed(1)}T</b></em>` : ''}</div>`;
+  }
+  // ── the carbon budget: how much CO2 the world can still emit for each limit (Forster et al. 2025), draining live ──
+  function budget(h, rec) {
+    const box = $('#osBudget'); if (!box) return;
+    const B = rec ? rec.budget : SIM.BUDGETS.map(([t, b]) => [t, b - SIM.E2025]), E = rec ? rec.worldE : (R.C ? R.C.world0.E : 41.6);
+    const spent = t => { const r = h.find(x => x.budget.find(b => b[0] === t)[1] < 0); return r ? r.year : null; };
+    box.innerHTML = `<span class="os-hl">Carbon budget left</span>` + B.map(([t, left]) => { const full = SIM.BUDGETS.find(b => b[0] === t)[1] - SIM.E2025, f = clamp(left / full, 0, 1), sp = left < 0 ? (spent(t) || (rec ? rec.year : 2026)) : null;
+      return `<div class="os-bud${sp ? ' gone' : f < .25 ? ' low' : ''}"><span>${t.toFixed(1)} °C</span><i><b style="width:${(f * 100).toFixed(1)}%"></b></i><em>${sp ? `spent in ${sp}` : `${Math.round(left)} Gt · ${left / Math.max(1, E) < 1 ? 'under a year' : Math.round(left / Math.max(1, E)) + ' yr'} at this rate`}</em></div>`; }).join('');
+  }
+  // ── life in a nation: what its people would notice, against 2026 ──
+  function lifeGrid(n, r) {
+    const L = r && r.life; if (!L) return '';
+    const N = N5[n], v = (x, good) => { const d = (x - 1) * 100; return `<em class="${Math.abs(d) < .5 ? 'same' : (d > 0) === good ? 'up' : 'dn'}">${sgn(d, 0)}%</em>`; };
+    return `<div class="os-life"><div class="os-eb">LIFE IN ${N.name.toUpperCase()} · VS. 2026</div>
+      <div class="os-lifeg"><div><span>Days above 35 °C</span><b>${Math.round(L.heat)}</b><em class="${L.heat > SIM.HEAT_DAYS[n] + .5 ? 'dn' : 'same'}">${Math.round(SIM.HEAT_DAYS[n])} in 2026</em></div>
+        <div><span>Harvests</span><b>${Math.round(L.crop * 100)}</b>${v(L.crop, true)}</div>
+        <div><span>Power costs</span><b>${Math.round(L.power * 100)}</b>${v(L.power, false)}</div>
+        <div><span>Fuel prices</span><b>${Math.round(L.fuel * 100)}</b>${v(L.fuel, false)}</div>
+        <div><span>Fossil-fuel jobs</span><b>${Math.round(L.jobsF * 100)}</b>${v(L.jobsF, true)}</div>
+        <div><span>Clean-energy jobs</span><b>${Math.round(L.jobsC * 100)}</b>${v(L.jobsC, true)}</div></div></div>`;
   }
   function spark(d) {
     if (!d || d.length < 2) return '<svg class="os-spark" viewBox="0 0 100 22"></svg>';
@@ -3033,7 +3194,7 @@ const UI = (function () {
       <div class="os-sgrid"><div><b>${E.toFixed(1)} Gt</b><span>a year, ${Math.round(E / wE * 100)}% of the world’s emissions</span></div><div><b>$${(r ? r.gdpPc : N.gdp / N.pop).toFixed(1)}k</b><span>income per person</span></div>
         <div><b>${rec ? '$' + lost.toFixed(2) + 'T' : '$0'}</b><span>lost to climate since 2026</span></div><div><b class="os-sexp">${N.exposure}</b><span>most at risk from</span></div></div>
       ${SC ? `<div class="os-ssect"><i>${sect.map(k => `<b style="width:${(S[k] / E * 100).toFixed(1)}%;background:${SC[k][1]}"></b>`).join('')}</i><span>Biggest source: <b>${names[big]}</b>, ${S[big].toFixed(1)} Gt a year</span></div>` : ''}
-      <div class="os-eb" style="margin-top:6px">${std() ? 'ITS DIRECTION TODAY' : 'ITS LAWS TODAY'}</div>${dirn}</div>`;
+      <div class="os-eb" style="margin-top:6px">${std() ? 'ITS DIRECTION TODAY' : 'ITS LAWS TODAY'}</div>${dirn}${r ? lifeGrid(n, r) : ''}</div>`;
   }
   // the summit: each nation's new laws, revealed one nation at a time
   function showSummit(sess, o) {
@@ -3208,7 +3369,7 @@ const UI = (function () {
         if ($('#osLchart')) laterChart($('#osLchart'), L);
         if ($('#osIchart')) { const keepF = R.fut; R.fut = o.fut; impactChart($('#osIchart'), null, true); R.fut = keepF; }
         const b = $('#osBack'); if (b) b.onclick = () => { pg--; draw(); };
-        const hw = $('[data-how2]'); if (hw) hw.onclick = () => showModel(R.mode);
+        const hw = $('[data-how2]'); if (hw) hw.onclick = () => showModel(R.mode, R.C && R.C.dmg);
       }, 'wide');
       if (pg === pages.length - 1) wire(o); else $('#osGo').onclick = () => { pg++; draw(); };
     };
@@ -3221,40 +3382,47 @@ const UI = (function () {
     R.tab = keep;
   }
   // ── how the model works: the chain, what is measured and what is invented, and the sources ──
-  function showModel(mode) {
+  function showModel(mode, dmg) {
     const root = el.closest('.os') || el; let box = root.querySelector('.os-model');
     if (!box) { box = document.createElement('div'); box.className = 'os-model'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', 'How this model works'); root.appendChild(box); }
     const S = mode === 'std', tabs = [['chain', 'How a year works'], ['real', 'What is real, what is simplified'], ['src', 'Sources']];
     const li = a => `<ul>${a.map(x => `<li>${x}</li>`).join('')}</ul>`;
+    const DL = { low: 'Low (DICE)', central: 'Central', high: 'High (Burke et al.)' }[dmg] || 'High (Burke et al.)';
     const body = {
       chain: `<p class="os-mlead">Every year of the game runs the same chain, for all five nations at once.</p><ol class="os-msteps">
-        <li><b>Choices.</b> ${S ? 'Each of the five platforms steers one part of a nation’s economy: energy steers electricity, industry steers factories, and so on. A cleaner direction cuts that sector’s emissions year after year; a fossil direction grows them.' : 'Each law changes prices, rules or public spending: a carbon price makes fossil fuels dearer, phase-outs set deadlines, the build-out pays for clean power.'}</li>
-        <li><b>Emissions.</b> Each nation has five sources: electricity, transportation, industry, buildings, and farms and forests. Economies grow, which pushes emissions up unless choices push them down. New power plants go to whatever is cheapest, and clean power gets cheaper the more the world builds.</li>
-        <li><b>The air.</b> A little under half of each year’s CO₂ stays in the air; oceans and forests take up the rest. So CO₂ in the air keeps rising as long as the world emits much at all, even while emissions are falling.</li>
-        <li><b>The warming.</b> Warming follows the total CO₂ ever emitted: about 0.48 °C for every 1,000 billion tonnes. That is why warming only stops rising when emissions get close to zero. Past 1.75, 1.85 and 2.0 °C, tipping events (lost Arctic summer ice, thawing permafrost, dying reefs) add damage or extra emissions.</li>
-        <li><b>The economy.</b> Each nation’s income grows with its own trend, minus what its choices cost, plus what cheap clean power saves, minus climate damage. Damage rises with the square of the warming and with how exposed the nation is, and storms, floods, heat, droughts and fires strike more often as it warms.</li>
+        <li><b>Choices.</b> ${S ? 'Each of the five platforms steers one part of a nation’s economy: energy steers electricity, industry steers factories, and so on. A cleaner direction cuts that sector’s emissions year after year; a fossil direction grows them. Two more platforms join at later elections: protecting people from the damage, and pulling carbon back out of the sky.' : 'Each law changes prices, rules or public spending: a carbon price makes fossil fuels dearer, phase-outs set deadlines, the build-out pays for clean power. Adaptation, climate aid and carbon-removal machines join the ballot at later elections.'}</li>
+        <li><b>Emissions.</b> Each nation emits CO₂ from five sources (electricity, transportation, industry, buildings, and farms and forests), plus methane (coal mines, oil and gas leaks, cattle and rice, landfills), nitrous oxide (fertilizer) and sulfur from coal smoke. Economies grow, which pushes emissions up unless choices push them down. New power plants go to whatever is cheapest, and clean power gets cheaper the more the world builds.</li>
+        <li><b>The air.</b> A little under half of each year’s CO₂ stays in the air; oceans and forests take up the rest. So CO₂ in the air keeps rising as long as the world emits much at all, even while emissions are falling. Methane is different: it breaks down in about 12 years, so cutting it cools the world within a decade or two.</li>
+        <li><b>The warming.</b> CO₂ warming follows the total ever emitted: about 0.45 °C for every 1,000 billion tonnes, so it only stops rising when emissions get close to zero. Methane and nitrous oxide add warming in proportion to how much of them is in the air. Coal smoke does the opposite: its haze reflects sunlight and hides some warming, so closing coal plants uncovers a little extra warming for a few years. Past 1.75, 1.85 and 2.0 °C, tipping events (lost Arctic summer ice, thawing permafrost, dying reefs) add damage or extra emissions.</li>
+        <li><b>The economy.</b> Each nation’s income grows with its own trend, minus what its choices cost, plus what cheap clean power saves, minus climate damage. Damage rises with the square of the warming and with how exposed the nation is. Heat waves, floods, droughts, fires and storms strike more often as it warms, at the rates the IPCC projects.</li>
         <li><b>The commons.</b> A nation pays for its own choices in its own income, but the cooling is shared by everyone. That is the tragedy the game is built around.</li></ol>`,
       real: `<div class="os-mcols"><div><h5>Anchored to measurements</h5>${li([
           'Warming starts at <b>+1.36 °C</b>, the human-caused warming estimated for 2024 (Forster et al.).',
+          'The world starts at <b>41.6 Gt of CO₂ a year</b>, the 2024 total (37.4 from fossil fuels and cement, 4.2 from land use), and about <b>380 Mt of methane</b> from people.',
           'CO₂ in the air starts at <b>429 ppm</b>: Mauna Loa averaged 424.6 ppm in 2024 and rises about 2.5 ppm a year.',
-          'Warming per tonne: <b>0.48 °C per 1,000 Gt</b> of CO₂, inside the IPCC’s likely range (0.27 to 0.63, best estimate 0.45).',
-          'About <b>47%</b> of each year’s CO₂ stays in the air, close to the long-run share measured by the Global Carbon Budget.',
-          'Seas start rising about <b>4 mm a year</b> and speed up with warming (IPCC: 3.7 mm a year over 2006 to 2018).',
-          'The Warming chart’s SSP lines are approximate IPCC pathways, for comparison.'])}</div>
+          'Warming per tonne of CO₂: <b>0.45 °C per 1,000 Gt</b>, the IPCC’s best estimate. Fed the IPCC’s own emissions pathways, the game’s climate lands within about 0.1 °C of the IPCC’s central warming for 2041 to 2060 (low, middle and high pathways).',
+          'The <b>carbon budget</b> bar starts from the published budgets: 130 Gt left for 1.5 °C, 490 Gt for 1.7 °C and 1,050 Gt for 2 °C from the start of 2025 (50% chance).',
+          'Disasters become more frequent at the rates in the IPCC’s Figure SPM.6: severe heat waves about 1.8 times as often at 1.5 °C as at 1 °C, heavy rain and farm droughts more slowly.',
+          'Harvests fall about <b>5.5% per °C</b> of warming without adaptation (the average of wheat, maize, rice and soybean in Zhao et al. 2017).',
+          'Wind and solar start at the IRENA 2023 world averages ($44 and $33 per MWh) and get cheaper as the world builds them: about 20% per doubling for solar, 12% for onshore wind.'])}</div>
         <div><h5>Simplified or invented</h5>${li([
           'The <b>five nations</b> are invented composites: a rich trading coast, an industrial coal power, a petrostate, a farming exporter and a poor, fast-growing delta. Together they stand in for the whole world.',
-          'The world starts at about <b>36 Gt of CO₂ a year</b>, a little below the real 41.6 Gt in 2024 (37.4 from fossil fuels and cement, 4.2 from land use). Methane and other gases, about a quarter of today’s greenhouse emissions, are not modeled separately.',
-          'What each choice <b>costs</b>, how fast clean energy gets cheaper, the <b>odds and costs of disasters</b>, the tipping thresholds and the two energy crises are <b>set for the game</b>, so the trade-offs point the right way. They are not estimates.',
-          'Damage follows the <b>shape</b> used in Nordhaus’s DICE model (rising with the square of warming), but its <b>size</b> is set larger than DICE’s and scaled by each nation’s exposure.',
+          `<b>Damages</b> follow the shape of Nordhaus’s DICE model (rising with the square of warming). The instructor picks the size: low (DICE itself), central, or high (matched to Burke, Hsiang and Miguel 2015, about 23% of world income lost by 2100 if warming goes unchecked). This game uses: <b>${DL}</b>. Economists disagree about this more than about anything else in the model.`,
+          'What each choice <b>costs</b>, the price of storage and backup for clean power, the odds and size of each nation’s disasters today, the tipping thresholds and the two energy crises are <b>set for the game</b>, so the trade-offs point the right way. They are not estimates.',
+          'Days above 35 °C start from illustrative counts for each capital and rise with the IPCC’s hot-extreme rates. Power costs, fuel prices and jobs are indexes the game computes from its own energy mix.',
           'Delegates who do not vote are filled in by stand-ins who lean the way their nation’s economy does.'])}</div></div>
         <p class="os-mnote"><b>How to read the results:</b> trust the direction and rough size of the trade-offs (who pays, who gains, now versus later, alone versus together). Do not quote the game’s incomes, dates or temperatures as forecasts.</p>`,
       src: `<ol class="os-msrc">
-        <li>Forster, P. M., et al. (2025). Indicators of Global Climate Change 2024. <i>Earth System Science Data</i> 17, 2641–2680. doi:10.5194/essd-17-2641-2025. <span>Human-caused warming of 1.36 °C in 2024.</span></li>
+        <li>Forster, P. M., et al. (2025). Indicators of Global Climate Change 2024. <i>Earth System Science Data</i> 17, 2641–2680. doi:10.5194/essd-17-2641-2025. <span>Human-caused warming of 1.36 °C in 2024; the remaining carbon budgets.</span></li>
         <li>Friedlingstein, P., et al. (2025). Global Carbon Budget 2024. <i>Earth System Science Data</i> 17, 965. doi:10.5194/essd-17-965-2025. <span>CO₂ emissions of 41.6 Gt in 2024; the share of CO₂ that stays in the air.</span></li>
         <li>NOAA Global Monitoring Laboratory. Trends in atmospheric carbon dioxide, Mauna Loa annual means. gml.noaa.gov/ccgg/trends. <span>424.6 ppm in 2024.</span></li>
-        <li>IPCC (2021). <i>Climate Change 2021: The Physical Science Basis</i>, Summary for Policymakers. Contribution of Working Group I to the Sixth Assessment Report. <span>Warming per 1,000 Gt of CO₂; the SSP pathways; sea-level rise.</span></li>
-        <li>Nordhaus, W. D. (2017). Revisiting the social cost of carbon. <i>Proceedings of the National Academy of Sciences</i> 114(7), 1518–1523. <span>The DICE model’s damage curve.</span></li></ol>
-        <p class="os-mnote">Everything not listed here is a game design choice, described on the previous tab.</p>`,
+        <li>IPCC (2021). <i>Climate Change 2021: The Physical Science Basis</i>, Summary for Policymakers (incl. Figure SPM.6). Contribution of Working Group I to the Sixth Assessment Report. <span>Warming per 1,000 Gt of CO₂; the SSP pathways; how often extremes occur at each warming level; sea-level rise.</span></li>
+        <li>UNEP and Climate and Clean Air Coalition (2021). <i>Global Methane Assessment</i>. <span>Methane from people; cutting it 45% avoids nearly 0.3 °C by the 2040s.</span></li>
+        <li>Zhao, C., et al. (2017). Temperature increase reduces global yields of major crops in four independent estimates. <i>PNAS</i> 114(35), 9326–9331. <span>Harvest losses per °C.</span></li>
+        <li>IRENA (2024). <i>Renewable Power Generation Costs in 2023</i>. <span>Solar and wind costs.</span></li>
+        <li>Nordhaus, W. D. (2017). Revisiting the social cost of carbon. <i>PNAS</i> 114(7), 1518–1523. <span>The DICE model’s damage curve (the “low” setting).</span></li>
+        <li>Burke, M., Hsiang, S. M., and Miguel, E. (2015). Global non-linear effect of temperature on economic production. <i>Nature</i> 527, 235–239. <span>The “high” damage setting.</span></li></ol>
+        <p class="os-mnote">Everything not listed here is a game design choice, described on the previous tab. The check against the IPCC pathways is in the game’s source (calib_ssp.html).</p>`,
     };
     let on = box.dataset.tab || 'chain';
     const draw = () => {
@@ -3269,7 +3437,7 @@ const UI = (function () {
     draw(); box.hidden = false;
   }
   const kit = { overlay, close, act, wire, head, at, $: s => $(s), $$: s => $$(s), chart, legend, impactChart, impactPage, finalChart, laterChart };
-  return { mount, setGame, arrive, news, paint, glyph, crest, lawShort, esc, sgn, pct, kit, showModel, show: { deal: showDeal, progress: showProgress, summit: showSummit, final: showFinal, close, card: (html, o, cls) => { overlay(html + act(o, 'Continue ▸'), null, cls); wire(o); } }, isOpen, R };
+  return { mount, setGame, arrive, news, paint, glyph, crest, lawShort, esc, sgn, pct, kit, showModel, lifeGrid, show: { deal: showDeal, progress: showProgress, summit: showSummit, final: showFinal, close, card: (html, o, cls) => { overlay(html + act(o, 'Continue ▸'), null, cls); wire(o); } }, isOpen, R };
 })();
 
 // ONE SKY · THE STANDARD GAME. Instead of fourteen laws, each nation chooses a direction on five platforms (energy,
@@ -3615,7 +3783,7 @@ const STD = (function () {
   // the run view's "Sectors" chart: a nation's (or the world's) emissions by sector, stacked
   function sectorChart(box, C, you) {
     const h = C ? C.hist : [], v = (r, k) => you >= 0 ? r.nat[you].sect[k] : r.nat.reduce((a, x) => a + x.sect[k], 0);
-    const tot = h.map(r => SIM.SECTORS.reduce((a, k) => a + v(r, k), 0)), base = you >= 0 ? Object.values(N5[you].Gt).reduce((a, b) => a + b, 0) : 36.3;
+    const tot = h.map(r => SIM.SECTORS.reduce((a, k) => a + v(r, k), 0)), base = you >= 0 ? Object.values(N5[you].Gt).reduce((a, b) => a + b, 0) : 41.6;
     K.chart(box, { title: you >= 0 ? `${N5[you].name}’s emissions by sector` : 'World emissions by sector', unit: 'Gt CO₂e/yr', yMin: 0, yMax: Math.max(base, ...tot) * 1.1, dec: 0,
       stack: SIM.SECTORS.map(k => ({ name: SECT[k][0], color: SECT[k][1], pts: h.map(r => [r.year, v(r, k)]) })) });
   }
@@ -3831,7 +3999,7 @@ const NEWS = (function () {
     const yr = sess.si != null ? sess.year : SIM.Y0, you = UI.R.you, D = o.data();
     const order = you >= 0 ? [0, 1, 2, 3, 4].filter(n => n !== you).concat(you) : [0, 1, 2, 3, 4];
     const T0 = D.a.T, E0 = D.a.worldE;
-    const tick0 = [`Polls have closed in all five nations`, `Warming so far: +${f2(T0)} °C`, `World emissions: ${f1(E0)} Gt a year`, `CO₂ in the air: ${Math.round(D.a.ppm)} ppm`, sess.si ? 'New on the ballot tonight: ' + (D.newItems || []).join(', ') : 'The first election of the new climate era'].filter(Boolean).join('  ·  ');
+    const tick0 = [`Polls have closed in all five nations`, `Warming so far: +${f2(T0)} °C`, `World emissions: ${f1(E0)} Gt a year`, `CO₂ in the air: ${Math.round(D.a.ppm)} ppm`, ...(D.budget || []).map(([t, b]) => b < 0 ? `The ${t.toFixed(1)} °C carbon budget is spent` : `Carbon budget left for ${t.toFixed(1)} °C: ${Math.round(b)} Gt`), sess.si ? 'New on the ballot tonight: ' + (D.newItems || []).join(', ') : 'The first election of the new climate era'].filter(Boolean).join('  ·  ');
     // the night's changes, worked out up front so every shot's ticker can carry them
     const allRaces = N5.map((N, n) => races(sess, n, null));
     const changes = allRaces.flatMap((R, n) => R.filter(x => x.was != null && x.was !== x.win && x.opts[x.was]).map(x => `${N5[n].name}: ${x.title}, ${x.opts[x.was].lab} → ${x.opts[x.win].lab}`));
@@ -4013,7 +4181,7 @@ const NEWS = (function () {
   const CG = window.__cg;
   function QS0() { return new URLSearchParams(location.search); }
   CG.trapKeys(root);
-  { const hb = root.querySelector('[data-how]'); if (hb) hb.onclick = () => UI.showModel(state.mode === 'std' || (!state.mode && phase() === 'idle' && (q('[data-mode]') || {}).value !== 'adv') ? 'std' : 'adv'); }
+  { const hb = root.querySelector('[data-how]'); if (hb) hb.onclick = () => UI.showModel(state.mode === 'std' || (!state.mode && phase() === 'idle' && (q('[data-mode]') || {}).value !== 'adv') ? 'std' : 'adv', DMG()); }
   const QS = new URLSearchParams(location.search);
   const AS = QS.get('as');
   // ?demo plays a scripted class on the browser-local backend (never Firestore); ?view=projector|cairhien|andor|… picks the screen
@@ -4033,8 +4201,11 @@ const NEWS = (function () {
   const pace = () => +state.pace || 5;
   // the version being played: 'std' (five platforms) or 'adv' (fourteen laws); a game opened before versions existed is advanced
   const MODE = () => state.mode === 'std' ? 'std' : 'adv', STDM = () => MODE() === 'std';
-  const II = V => ({ seed: seed(), assign: assign(), V, mode: MODE() });
+  // the damage reading the instructor picked (low = DICE, central, high = Burke et al.); games opened before it existed use high
+  const DMG = () => ['low', 'central', 'high'].includes(state.dmg) ? state.dmg : 'high';
+  const II = V => ({ seed: seed(), assign: assign(), V, mode: MODE(), dmg: DMG() });
   const LW = () => STDM() ? 'choices' : 'laws';
+  const pickDmg = () => { try { const v = localStorage.getItem('os-dmg'); return ['low', 'central', 'high'].includes(v) ? v : 'high'; } catch (e) { return 'high'; } };
   const pickMode = () => { try { return localStorage.getItem('os-mode') === 'adv' ? 'adv' : 'std'; } catch (e) { return 'std'; } };
 
   // ── who is in which nation ──
@@ -4050,7 +4221,7 @@ const NEWS = (function () {
     const ph = phase(), s = si();
     const nV = ph === 'vote' || ph === 'deal' ? s : s + 1;
     const upto = ph === 'run' ? yr() : ph === 'final' ? SIM.YN : SIM.SESSIONS[s];
-    const sig = MODE() + gid() + '|' + (state.assign || '') + '|' + nV + '|' + upto + '|' + JSON.stringify(votesUpTo(nV));
+    const sig = MODE() + DMG() + gid() + '|' + (state.assign || '') + '|' + nV + '|' + upto + '|' + JSON.stringify(votesUpTo(nV));
     if (sig !== cMemo.sig) cMemo = { sig, C: SIM.run(II(votesUpTo(nV)), upto) };
     return cMemo.C;
   }
@@ -4058,7 +4229,7 @@ const NEWS = (function () {
   let fMemo = { sig: '', F: null };
   function futAt(sIdx, k) {
     if (sIdx < 0) return null;
-    const sig = MODE() + gid() + '|' + (state.assign || '') + '|' + sIdx + '|' + k + '|' + JSON.stringify(votesUpTo(sIdx + 1));
+    const sig = MODE() + DMG() + gid() + '|' + (state.assign || '') + '|' + sIdx + '|' + k + '|' + JSON.stringify(votesUpTo(sIdx + 1));
     if (sig !== fMemo.sig) fMemo = { sig, F: SIM.futures(II(votesUpTo(sIdx + 1)), sIdx, k) };
     return fMemo.F;
   }
@@ -4103,11 +4274,12 @@ const NEWS = (function () {
     for (const [pk, n] of Object.entries(a)) { const v = players[pk] && players[pk].s5; if (v !== '' && v != null && isFinite(+v)) { sums[n] += +v; ns[n]++; } }
     const s5m = sums.map((s, n) => ns[n] ? (s / ns[n]).toFixed(1) : '').join(',') + '|' + ns.join(',');
     const extra = { phase: 'deal', gameId: g, round: 1, assign: SIM.packAssign(a), s5m, sp: D.hi + ',' + D.lo, si: 0, yr: SIM.Y0, F: {}, in: {}, deadline: null, cnt: null, hostId: HOSTID };
-    backend.setDoc('polls', GID, { ...extra, mode: MODE(), players: Object.fromEntries(Object.keys(players).map(k => [k, { t: 1, s5: players[k].s5 || '' }])), pace: state.pace || 5 });
+    backend.setDoc('polls', GID, { ...extra, mode: MODE(), dmg: DMG(), players: Object.fromEntries(Object.keys(players).map(k => [k, { t: 1, s5: players[k].s5 || '' }])), pace: state.pace || 5 });
   }
   function hostBar() {
     const bar = q('[data-hostbar]'); bar.hidden = false; slide.classList.add('os-host');
     bar.innerHTML = `<span class="os-hl">Instructor</span>
+      <label class="os-set" data-dmgwrap title="How much income warming costs: low = Nordhaus’s DICE model, high = Burke, Hsiang and Miguel (2015)">Damages <select data-dmg><option value="high">High · Burke et al.</option><option value="central">Central</option><option value="low">Low · DICE</option></select></label>
       <label class="os-set" data-modewrap>Version <select data-mode><option value="std">Standard · five platforms</option><option value="adv">Advanced · fourteen laws</option></select></label>
       <button class="os-b go" data-open>Open the lobby</button>
       <button class="os-b go" data-start hidden>Deal the nations</button>
@@ -4119,8 +4291,10 @@ const NEWS = (function () {
       <span class="os-hs" data-hs></span>
       <button class="os-b ghost" data-reset>Reset</button>`;
     const ms = bar.querySelector('[data-mode]'); ms.value = pickMode();
+    const ds = bar.querySelector('[data-dmg]'); ds.value = pickDmg();
+    ds.onchange = () => { try { localStorage.setItem('os-dmg', ds.value); } catch (e) { } if (phase() === 'lobby') backend.mergeDoc('polls', GID, { dmg: ds.value }); };
     ms.onchange = () => { try { localStorage.setItem('os-mode', ms.value); } catch (e) { } if (phase() === 'lobby') backend.mergeDoc('polls', GID, { mode: ms.value }); };
-    bar.querySelector('[data-open]').onclick = () => backend.setDoc('polls', GID, { phase: 'lobby', players: {}, gameId: Date.now() % 100000 + 1, pace: 5, hostId: HOSTID, round: 1, mode: ms.value });
+    bar.querySelector('[data-open]').onclick = () => backend.setDoc('polls', GID, { phase: 'lobby', players: {}, gameId: Date.now() % 100000 + 1, pace: 5, hostId: HOSTID, round: 1, mode: ms.value, dmg: ds.value });
     bar.querySelector('[data-start]').onclick = () => { if (!Object.keys(state.players || {}).length && !confirm('Nobody has joined yet. Deal a class of stand-ins?')) return; deal(); };
     bar.querySelector('[data-skip]').onclick = () => { if (phase() === 'vote') advance(); else if (phase() === 'run') { const nx = SIM.SESSIONS[si() + 1] || SIM.YN; if (confirm(`Jump ahead to ${nx}?`)) backend.mergeDoc('polls', GID, { yr: nx - 1, deadline: Date.now() + 300, paused: 0 }); } };
     bar.querySelector('[data-pace]').onchange = e => backend.mergeDoc('polls', GID, { pace: +e.target.value });
@@ -4132,7 +4306,7 @@ const NEWS = (function () {
   function paintHostBar() {
     const bar = q('[data-hostbar]'), ph = phase(), n = Object.keys(state.players || {}).length;
     const show = (sel, on) => { const e = bar.querySelector(sel); if (e) e.hidden = !on; };
-    show('[data-open]', ph === 'idle'); show('[data-samplebtn]', ph === 'idle' || ph === 'lobby'); show('[data-modewrap]', ph === 'idle' || ph === 'lobby');
+    show('[data-open]', ph === 'idle'); show('[data-samplebtn]', ph === 'idle' || ph === 'lobby'); show('[data-modewrap]', ph === 'idle' || ph === 'lobby'); show('[data-dmgwrap]', ph === 'idle' || ph === 'lobby');
     if (ph === 'lobby' && state.mode) { const m = bar.querySelector('[data-mode]'); if (m.value !== state.mode) m.value = state.mode; } show('[data-start]', ph === 'lobby'); show('[data-skip]', ph === 'vote' || ph === 'run');
     show('[data-pacewrap]', ['run', 'summit'].includes(ph)); show('[data-pause]', ph === 'run'); show('[data-take]', !clockMine() && ph !== 'idle');
     bar.querySelector('[data-pause]').textContent = state.paused ? 'Resume' : 'Pause';
@@ -4187,6 +4361,7 @@ const NEWS = (function () {
     box.innerHTML = `<div class="os-ballot"><div class="os-bills">
       <div class="os-bhead" style="--c:${N.color}">${UI.crest(n, 30)}<div><div class="os-eb">THE ASSEMBLY OF ${N.name.toUpperCase()} · SESSION OF ${SIM.SESSIONS[s]}</div><h3>${s === 0 ? 'Write your nation’s first laws' : 'Keep, change or repeal your nation’s laws'}</h3>
         <p>${dele} ${dele === 1 ? 'delegate votes' : 'delegates vote'} for ${N.name}. The carbon tax and the build-out are set by the middle vote; every other law needs a majority. A tie keeps the law as it is. Marked <span class="os-nowtag">now</span> = the law today.</p><div class="os-plegend"><span><i></i>Under each law: its effect on ${N.name}’s income, year by year</span><span><i class="d"></i>and on the whole world’s</span><span>(each law on its own, added to today’s laws)</span></div></div></div>
+      ${s > 0 ? '<div class="os-report" id="osReport"><span class="os-wait">Working out what your last vote did…</span></div>' : ''}
       ${SIM.GROUPS.map(([g, t]) => `<div class="os-grp"><div class="os-eb">${t}</div>${laws.filter(l => l.group === g).map(card).join('')}</div>`).join('')}</div>
       <aside class="os-bside"><div class="os-eb">${N.name.toUpperCase()} TODAY</div><div id="osBnow"></div><div class="os-eb" style="margin-top:6px">WHAT YOUR CHOICES WOULD DO</div><div id="osProj" class="os-proj"><span class="os-wait">Working it out…</span></div>
         <div class="os-bcount" id="osBcount"></div>
@@ -4194,7 +4369,7 @@ const NEWS = (function () {
     const rec = C.hist[C.hist.length - 1];
     const nr = rec ? rec.nat[n] : null;
     q('#osBnow').innerHTML = nr ? `<div class="os-yrow"><span>Income per person</span><b>$${nr.gdpPc.toFixed(1)}k</b></div><div class="os-yrow"><span>Growth last year</span><b>${UI.sgn(nr.growth * 100)}%</b></div><div class="os-yrow"><span>Emissions</span><b>${nr.emis.toFixed(1)} Gt · ${(nr.emis / rec.worldE * 100).toFixed(0)}% of the world</b></div><div class="os-yrow"><span>Lost to climate</span><b>${UI.pct(Math.max(0, nr.dmg + nr.shock), 1)} of GDP</b></div><div class="os-yrow"><span>World warming</span><b>+${rec.T.toFixed(2)} °C</b></div>`
-      : `<div class="os-yrow"><span>Income per person</span><b>$${(N.gdp / N.pop).toFixed(1)}k</b></div><div class="os-yrow"><span>Emissions</span><b>${Object.values(N.Gt).reduce((a, b) => a + b, 0).toFixed(1)} Gt · ${Math.round(Object.values(N.Gt).reduce((a, b) => a + b, 0) / 36.3 * 100)}% of the world</b></div><div class="os-yrow"><span>Most at risk from</span><b>${N.exposure}</b></div><div class="os-yrow"><span>World warming</span><b>+1.36 °C</b></div>`;
+      : `<div class="os-yrow"><span>Income per person</span><b>$${(N.gdp / N.pop).toFixed(1)}k</b></div><div class="os-yrow"><span>Emissions</span><b>${Object.values(N.Gt).reduce((a, b) => a + b, 0).toFixed(1)} Gt · ${Math.round(Object.values(N.Gt).reduce((a, b) => a + b, 0) / 41.6 * 100)}% of the world</b></div><div class="os-yrow"><span>Most at risk from</span><b>${N.exposure}</b></div><div class="os-yrow"><span>World warming</span><b>+1.36 °C</b></div>`;
     paintCount();
     box.querySelectorAll('[data-l]').forEach(b => b.onclick = () => {
       if ((mine(k) || {}).locked) return;
@@ -4208,6 +4383,7 @@ const NEWS = (function () {
     };
     // the projection and each law's now-versus-later chart run a beat later so clicking stays snappy
     clearTimeout(projT);
+    if (s > 0) setTimeout(() => report(s, n), 30);
     projT = setTimeout(() => {
       // each law alone, added to today's laws (a level law at the level you picked)
       const picks = { tax: v.tax, build: v.build }, pk = gid() + s + n + v.tax + ':' + v.build;
@@ -4238,6 +4414,7 @@ const NEWS = (function () {
     box.innerHTML = `<div class="os-ballot std"><div class="os-bills">
       <div class="os-bhead" style="--c:${N.color}">${UI.crest(n, 30)}<div><div class="os-eb">THE ASSEMBLY OF ${N.name.toUpperCase()} · SESSION OF ${SIM.SESSIONS[s]}</div><h3>${s === 0 ? 'Choose your nation’s direction' : 'Keep or change your nation’s direction'}</h3>
         <p>${dele} ${dele === 1 ? 'delegate votes' : 'delegates vote'} for ${N.name}. Pick one direction on each platform. The direction with the most votes wins; a tie keeps today’s direction. Under each option: what it does by the next election (the tick marks today), and ${N.name}’s income compared with keeping today’s direction.</p></div></div>
+      ${s > 0 ? '<div class="os-report" id="osReport"><span class="os-wait">Working out what your last vote did…</span></div>' : ''}
       ${STD.ballotRows(ctx)}</div>
       <aside class="os-bside"><div class="os-eb">${N.name.toUpperCase()} TODAY</div><div id="osBnow"></div>
         <div class="os-eb" style="margin-top:6px">YOUR EMISSIONS, SECTOR BY SECTOR</div><div id="osSbars"><span class="os-wait">Working it out…</span></div>
@@ -4246,7 +4423,7 @@ const NEWS = (function () {
         <div class="os-glock"><div class="os-lockst">${m.locked ? 'Votes cast. You can change them until time runs out.' : ''}</div><button class="os-b go big" data-cast>${m.locked ? 'Change my votes' : 'Cast my votes'}</button></div></aside></div>`;
     const nr = rec ? rec.nat[n] : null;
     q('#osBnow').innerHTML = nr ? `<div class="os-yrow"><span>Income per person</span><b>$${nr.gdpPc.toFixed(1)}k</b></div><div class="os-yrow"><span>Emissions</span><b>${nr.emis.toFixed(1)} Gt · ${(nr.emis / rec.worldE * 100).toFixed(0)}% of the world</b></div><div class="os-yrow"><span>Lost to climate</span><b>${UI.pct(Math.max(0, nr.dmg + nr.shock), 1)} of GDP</b></div><div class="os-yrow"><span>World warming</span><b>+${rec.T.toFixed(2)} °C</b></div>`
-      : `<div class="os-yrow"><span>Income per person</span><b>$${(N.gdp / N.pop).toFixed(1)}k</b></div><div class="os-yrow"><span>Emissions</span><b>${emis0.toFixed(1)} Gt · ${Math.round(emis0 / 36.3 * 100)}% of the world</b></div><div class="os-yrow"><span>Most at risk from</span><b>${N.exposure}</b></div><div class="os-yrow"><span>World warming</span><b>+1.36 °C</b></div>`;
+      : `<div class="os-yrow"><span>Income per person</span><b>$${(N.gdp / N.pop).toFixed(1)}k</b></div><div class="os-yrow"><span>Emissions</span><b>${emis0.toFixed(1)} Gt · ${Math.round(emis0 / 41.6 * 100)}% of the world</b></div><div class="os-yrow"><span>Most at risk from</span><b>${N.exposure}</b></div><div class="os-yrow"><span>World warming</span><b>+1.36 °C</b></div>`;
     paintCount();
     box.querySelectorAll('[data-p]').forEach(b => b.onclick = () => {
       if ((mine(k) || {}).locked) return;
@@ -4259,6 +4436,7 @@ const NEWS = (function () {
       ballotSig = ''; paintBallotStd(C);
     };
     clearTimeout(projT);
+    if (s > 0) setTimeout(() => report(s, n), 30);
     projT = setTimeout(() => {
       const pk = gid() + s + n + SIM.ppack(v);
       if (pvMemo.k !== pk) pvMemo = { k: pk, P: SIM.optionPreview(II(votesUpTo(s)), s, n, v) };
@@ -4273,6 +4451,33 @@ const NEWS = (function () {
         <div class="os-prow2"><span>Your income per person in 2066</span><b>$${a.gdpPc.toFixed(1)}k</b>${d(a.gdpPc / b.gdpPc * 100, 100, x => UI.sgn(x, 2) + '%', true)}</div>
         <div class="os-prow2"><span>World warming in 2066</span><b>+${a.T.toFixed(2)} °C</b>${d(a.T, b.T, x => UI.sgn(x, 3) + ' °C', false)}</div>`;
     }, 60);
+  }
+  // ── what your last vote did: the world since the last election against the one where your nation kept its old laws ──
+  let lvMemo = { k: '', R: null };
+  function report(s, n) {
+    const el = q('#osReport'); if (!el) return;
+    const key = MODE() + DMG() + gid() + s + n + JSON.stringify(votesUpTo(s));
+    if (lvMemo.k !== key) lvMemo = { k: key, R: SIM.lastVote(II(votesUpTo(s)), s, n) };
+    const R = lvMemo.R, N = SIM.NATIONS[n], st = STDM();
+    // what the nation changed, and how the delegate's own ballot compares
+    let changed = [], mineLine = '';
+    if (st) {
+      const a = SIM.platOf(R.before), b = SIM.platOf(R.after), my = SIM.pparse((mine('V' + (s - 1)) || {}).v || '');
+      changed = SIM.platsAt(s - 1).filter(P => a[P.id] !== b[P.id]).map(P => `${P.title}: <b>${P.opts[b[P.id]].s}</b> <small>(was ${P.opts[a[P.id]].s})</small>`);
+      const ps = SIM.platsAt(s - 1).filter(P => my[P.id] != null), agree = ps.filter(P => my[P.id] === b[P.id]).length;
+      if (ps.length) mineLine = `Your own ballot matched ${N.name}’s result on <b>${agree} of ${ps.length}</b> platforms.`;
+    } else {
+      changed = SIM.lawsFor(n, s - 1).filter(l => (R.before[l.id] || 0) !== (R.after[l.id] || 0)).map(l => l.kind === 'yn' ? `${R.after[l.id] ? 'Passed' : 'Ended'}: <b>${l.title}</b>` : `${l.title}: <b>${l.id === 'tax' ? '$' + R.after.tax : SIM.LI.build.opts[R.after.build] + '%'}</b>`);
+    }
+    const dE = R.e1 - R.eB, cum = R.cumB - R.cumA, dT = R.T66B - R.T66, dI = (R.inc / R.incB - 1) * 100;
+    const t = (lbl, v, sub, good) => `<div class="os-rp"><span>${lbl}</span><b class="${good == null ? '' : good ? 'up' : 'dn'}">${v}</b><em>${sub}</em></div>`;
+    el.innerHTML = `<div class="os-eb">WHAT ${N.name.toUpperCase()}’S LAST VOTE DID · ${R.y0} → ${R.y1}</div>
+      <p class="os-rpl">${changed.length ? `In ${R.y0}, ${N.name} changed ${changed.length === 1 ? 'one thing' : changed.length + ' things'}: ${changed.join(' · ')}.` : `In ${R.y0}, ${N.name} kept everything as it was, so nothing below changed because of that vote.`} ${mineLine}</p>
+      ${changed.length ? `<div class="os-rps">${t(`Emissions in ${R.y1}`, `${R.e1.toFixed(1)} Gt`, `${UI.sgn(dE, 1)} Gt a year vs. no change`, dE <= 0)}
+        ${t('CO₂ kept out of the sky', `${Math.max(0, cum).toFixed(0)} Gt`, cum >= 0 ? `since ${R.y0}` : `${(-cum).toFixed(0)} Gt more emitted`, cum >= 0)}
+        ${t('Warming in 2066', `${dT >= 0 ? '−' : '+'}${Math.abs(dT).toFixed(3)} °C`, 'from that vote alone', dT >= 0)}
+        ${t(`Income per person, ${R.y1}`, `${UI.sgn(dI, 2)}%`, 'vs. no change', dI >= 0)}</div>` : ''}
+      <p class="os-rpl small">Since ${R.y0}, ${N.name} lost <b>$${R.lost.toFixed(1)}T</b> to climate, in ${R.ev.length} ${R.ev.length === 1 ? 'disaster' : 'disasters'} and the slow damage of a warmer world.</p>`;
   }
   let profMemo = { k: '', P: {} };
   // a law's effect on your nation's income (solid) and the world's (dashed), year by year, against leaving it off
@@ -4361,7 +4566,7 @@ const NEWS = (function () {
     const lean = score.map(v => v > .7 ? 'Cutting emissions' : v > .4 ? 'In between' : 'Fossil and growth first');
     const newItems = STDM() ? SIM.PLATFORMS.filter(P => P.from === s).map(P => P.title) : SIM.LAWS.filter(l => (l.from || 0) === s && s > 0).map(l => l.title);
     return { a, y0: now, y1, E0: a.worldE, E1: r1.worldE, nat, hist: C.hist.length ? T(C) : [[now, a.T]], held: T(A).filter(p => p[0] >= now), prev: s > 0 ? T(B).filter(p => p[0] >= now) : null,
-      none: T(F.noneC), all: T(F.allC), score, lean, newItems };
+      none: T(F.noneC), all: T(F.allC), score, lean, newItems, budget: C.hist.length ? C.hist[C.hist.length - 1].budget : SIM.BUDGETS.map(([t, b]) => [t, b - SIM.E2025]) };
   }
   function progress(C, first) {
     const s = si(), rows = [0, 1, 2, 3, 4].map(n => [n, cntFor(n), Object.values(assign()).filter(x => x === n).length]);
@@ -4432,7 +4637,7 @@ const NEWS = (function () {
       if (you && a[PK] !== want) { const swap = Object.keys(a).find(k => k !== PK && a[k] === want); a[swap] = a[PK]; a[PK] = want; }
       const sums = [0, 0, 0, 0, 0], ns = [0, 0, 0, 0, 0];
       for (const [pk, n] of Object.entries(a)) { const v = players[pk].s5; if (v !== '' && isFinite(+v)) { sums[n] += +v; ns[n]++; } }
-      backend.setDoc('polls', GID, { phase: 'deal', gameId: SEED, round: 1, assign: SIM.packAssign(a), sp: D.hi + ',' + D.lo, s5m: sums.map((x, n) => ns[n] ? (x / ns[n]).toFixed(1) : '').join(',') + '|' + ns.join(','), si: 0, yr: SIM.Y0, F: {}, in: {}, players, pace: 3.5, hostId: HOSTID, mode: DMODE });
+      backend.setDoc('polls', GID, { phase: 'deal', gameId: SEED, round: 1, assign: SIM.packAssign(a), sp: D.hi + ',' + D.lo, s5m: sums.map((x, n) => ns[n] ? (x / ns[n]).toFixed(1) : '').join(',') + '|' + ns.join(','), si: 0, yr: SIM.Y0, F: {}, in: {}, players, pace: 3.5, hostId: HOSTID, mode: DMODE, dmg: 'high' });
     }
     // the bots vote the way their nation's mood leans (greener as the damage arrives); `part` of them first
     function botsVote(part) {
