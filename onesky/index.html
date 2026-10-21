@@ -4253,6 +4253,13 @@ const POLLS = (function () {
       return { aud: m, frac: .6, q: `Is ${N5[m].name} doing enough to protect its people from storms, floods and heat?`, opts: ['Yes', 'No', 'Not sure'],
         head: (c, t) => `${pct(c[1] / t)} of ${N5[m].name}’s delegates say it is not doing enough to protect its people. Warming has reached +${r.T.toFixed(2)} °C.`,
         lean: () => x.laws.adapt ? [.6, .25, .15] : x.laws.adaptL ? [.4, .4, .2] : [.2, .65, .15] }; } },
+    // two for fun, between the serious ones
+    { y: 2027, make: () => ({ aud: 'world', q: 'Does pineapple belong on pizza?', opts: ['Yes', 'No', 'I refuse to answer'],
+      head: (c, t) => `${pct(c[0] / t)} of delegates say pineapple belongs on pizza; ${pct(c[1] / t)} say it does not. The five nations remain divided. Talks continue.`,
+      lean: () => [.45, .45, .1] }) },
+    { y: 2055, make: () => ({ aud: 'world', q: 'Do you think you could outrun a bear?', opts: ['Yes', 'No', 'Depends on the bear'],
+      head: (c, t) => `${pct(c[0] / t)} of delegates think they could outrun a bear. Spoiler: they can’t. A grizzly can run about 35 mph; the fastest human ever, Usain Bolt, topped out near 28 mph.`,
+      lean: () => [.2, .6, .2] }) },
   ];
   const key = (i, gid) => 'p' + i + '_' + gid;
   // the poll that opened at spec i, built from the world at its year (null until that year has run)
