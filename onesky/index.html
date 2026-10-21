@@ -1139,6 +1139,15 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .os .os-watch span{flex:0 0 auto;font:900 10px Inter;letter-spacing:.18em;text-transform:uppercase;color:#fff;background:var(--gold);border-radius:5px;padding:3px 7px}
 .os .os-watch p{margin:0;font-size:13.5px;line-height:1.4}
 .os .os-watch b{font-weight:800}
+.os .os-pollc{position:absolute;left:16px;bottom:16px;z-index:5;width:min(380px,60%);display:flex;flex-direction:column;gap:6px;background:rgba(251,245,230,.97);border:1px solid var(--gold);border-left:5px solid #2668a8;border-radius:12px;padding:10px 14px;box-shadow:0 10px 28px rgba(30,20,8,.28);animation:osup .45s both}
+.os .os-pk{font:900 10px Inter;letter-spacing:.16em;text-transform:uppercase;color:#2668a8}
+.os .os-pollc b{font:italic 900 16px/1.3 Merriweather,serif;color:var(--ink)}
+.os .os-pollc em{font-style:normal;font-size:11.5px;color:var(--muted)}
+.os .os-popts{display:flex;flex-wrap:wrap;gap:6px}
+.os .os-popts .os-b{flex:1 1 auto;font-size:12.5px;padding:6px 10px}
+.os .os-popts .os-b:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.os .os-news.poll{border-color:#2668a8;background:#eef3f7}
+.os .os-news.poll .os-nlbl{color:#2668a8}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -2915,9 +2924,11 @@ const UI = (function () {
     if (tip) news(tip[1], rec.year, tip[0] === 'tip');
     if (typeof FIN !== 'undefined') FIN.moment(rec);
   }
-  function news(t, y, big) {
+  function news(t, y, big, kind) {
     const n = $('#osNtxt'); if (!n) return;
     n.textContent = t; $('#osNyr').textContent = y || '';
+    const lb = el.querySelector('.os-nlbl'); if (lb) lb.textContent = kind === 'poll' ? '● Poll' : '● Breaking';
+    $('#osNews').classList.toggle('poll', kind === 'poll');
     const b = $('#osNews'); b.classList.remove('flash'); void b.offsetWidth; b.classList.add('flash'); b.classList.toggle('big', !!big);
   }
   const STEPS = [['deal', 'Nations'], ...SIM.SESSIONS.map((y, i) => ['s' + i, String(y)]), ['end', '2066']];
@@ -4206,6 +4217,60 @@ const NEWS = (function () {
   return { show, races };
 })();
 
+// ONE SKY · LIVE POLLS. Six quick polls pop up while the years run, two in each stretch between elections. Some go to every
+// delegate; others to a sample of one nation's delegates. A poll stays open for a few game years; then the host's screen
+// counts the answers and the result runs in the news bar for everyone, worded from what is happening in the game.
+// Every poll is written from the world as it stood the year it opened, so every screen agrees on what was asked.
+'use strict';
+const POLLS = (function () {
+  const N5 = SIM.NATIONS, OPEN = 3;     // a poll stays open three game years
+  const pct = v => Math.round(v * 100) + '%';
+  const at = (C, y) => C.hist.find(r => r.year === y);
+  // the nation hit hardest so far, and the one hit least
+  const losses = r => r.nat.map((x, n) => [n, Math.max(0, x.dmg + x.shock)]).sort((a, b) => b[1] - a[1]);
+
+  // each spec: (record of the year it opens, the world) → { aud: 'world' | nation, frac, q, opts, head(counts, total) }
+  const SPECS = [
+    { y: 2031, make: r => ({ aud: 'world', q: 'Is the world doing enough about climate change?', opts: ['Yes', 'Not yet', 'It is doing too much'],
+      head: (c, t) => `${pct(c[1] / t)} of delegates say the world is not doing enough yet; ${pct(c[0] / t)} say it is. Warming stands at +${r.T.toFixed(2)} °C.`,
+      lean: () => [.25, .6, .15] }) },
+    { y: 2035, make: r => { const n = r.nat.map((x, k) => [k, x.growth]).sort((a, b) => b[1] - a[1])[0][0], x = r.nat[n];
+      return { aud: n, frac: .6, q: `Is ${N5[n].name}’s economy doing well?`, opts: ['Yes', 'No', 'Not sure'],
+        head: (c, t) => `${pct(c[0] / t)} of ${N5[n].name}’s delegates say its economy is doing well. It grew ${(x.growth * 100).toFixed(1)}% last year, and it emits ${x.emis.toFixed(1)} Gt of CO₂ a year.`,
+        lean: () => x.growth > .02 ? [.7, .15, .15] : [.35, .45, .2] }; } },
+    { y: 2044, make: r => { const L = losses(r), m = L[0][0], n = L.filter(([k]) => k !== m)[L.length - 2][0];
+      return { aud: n, frac: .6, q: `Are you concerned about the climate damage in ${N5[m].name}?`, opts: ['Very concerned', 'A little', 'Not really'],
+        head: (c, t) => `${pct((c[0] + c[1]) / t)} of ${N5[n].name}’s delegates are concerned about the damage in ${N5[m].name}, which lost ${(L[0][1] * 100).toFixed(1)}% of its income to climate this year. ${N5[n].name} lost ${(r.nat[n].dmg + r.nat[n].shock > 0 ? (r.nat[n].dmg + r.nat[n].shock) * 100 : 0).toFixed(1)}%.`,
+        lean: () => [.35, .4, .25] }; } },
+    { y: 2049, make: r => { const n = SIM.NI.saldaea, x = r.nat[n];
+      return { aud: n, frac: .6, q: 'Should Saldaea keep selling oil and gas for as long as the world will buy it?', opts: ['Yes', 'No', 'Only for now'],
+        head: (c, t) => `${pct(c[0] / t)} of Saldaea’s delegates want to keep selling oil and gas for as long as the world will buy it. ${pct(c[2] / t)} say only for now.`,
+        lean: () => x.petro < -.01 ? [.35, .25, .4] : [.55, .15, .3] }; } },
+    { y: 2058, make: r => ({ aud: 'world', q: 'Would you accept higher energy prices to cut emissions faster?', opts: ['Yes', 'No', 'Depends how much'],
+      head: (c, t) => `${pct(c[0] / t)} of delegates would accept higher energy prices to cut emissions faster; ${pct(c[2] / t)} say it depends how much. The world now emits ${r.worldE.toFixed(1)} Gt a year.`,
+      lean: () => [.4, .25, .35] }) },
+    { y: 2062, make: r => { const m = losses(r)[0][0], x = r.nat[m];
+      return { aud: m, frac: .6, q: `Is ${N5[m].name} doing enough to protect its people from storms, floods and heat?`, opts: ['Yes', 'No', 'Not sure'],
+        head: (c, t) => `${pct(c[1] / t)} of ${N5[m].name}’s delegates say it is not doing enough to protect its people. Warming has reached +${r.T.toFixed(2)} °C.`,
+        lean: () => x.laws.adapt ? [.6, .25, .15] : x.laws.adaptL ? [.4, .4, .2] : [.2, .65, .15] }; } },
+  ];
+  const key = (i, gid) => 'p' + i + '_' + gid;
+  // the poll that opened at spec i, built from the world at its year (null until that year has run)
+  function spec(i, C) { const S = SPECS[i], r = at(C, S.y); if (!r) return null; return { i, y: S.y, close: S.y + OPEN, ...S.make(r, C) }; }
+  // who is asked: everyone, or a sample of one nation's delegates (at least two, when there are two)
+  function asked(P, assign, gid) {
+    const all = Object.keys(assign).filter(pk => P.aud === 'world' || assign[pk] === P.aud);
+    if (P.aud === 'world') return new Set(all);
+    const m = Math.min(all.length, Math.max(2, Math.ceil(all.length * P.frac)));
+    return new Set(all.sort((a, b) => SIM.hash(a + ':' + key(P.i, gid)) - SIM.hash(b + ':' + key(P.i, gid))).slice(0, m));
+  }
+  // the poll open in year yr, if any
+  const openAt = (C, yr) => { for (let i = 0; i < SPECS.length; i++) if (yr >= SPECS[i].y && yr < SPECS[i].y + OPEN) return spec(i, C); return null; };
+  const closingAt = yr => SPECS.map((S, i) => [S, i]).filter(([S]) => S.y + OPEN === yr).map(([, i]) => i);
+  const pack = c => c.join(','), unpack = s => String(s || '').split(',').map(Number);
+  return { SPECS, OPEN, key, spec, asked, openAt, closingAt, pack, unpack };
+})();
+
 // LIVE: the class plays One Sky on laptops. Rides the deck's live backend (window.__deckLiveReady: sharded Firestore
 // writes, ?host = the projected copy). Phases (main doc):
 //   idle → lobby → deal → vote (timed, session 0) → summit → run (years tick) → vote (session 1) → summit → run → …
@@ -4294,11 +4359,65 @@ const NEWS = (function () {
     lastAdv = { tag, at: Date.now() };
     if (ph === 'vote') setPhase('summit', null, { F: { ['V' + s]: collect('V' + s) } });
     else if (ph === 'run') {
-      const n = yr() + 1, next = SIM.SESSIONS[s + 1];
-      if (n >= SIM.YN) setPhase('final', null, { yr: SIM.YN });
-      else if (next && n >= next) setPhase('vote', SECS.vote, { yr: n, si: s + 1 });
-      else setPhase('run', state.held ? null : pace(), { yr: n });
+      const n = yr() + 1, next = SIM.SESSIONS[s + 1], pr = pollResults(n), x = pr ? { pr } : {};
+      if (n >= SIM.YN) setPhase('final', null, { yr: SIM.YN, ...x });
+      else if (next && n >= next) setPhase('vote', SECS.vote, { yr: n, si: s + 1, ...x });
+      else setPhase('run', state.held ? null : pace(), { yr: n, ...x });
     }
+  }
+  // ── live polls: the host counts each poll as it closes (its answers sit in the shards) and publishes the count ──
+  function pollResults(n) {
+    const C = worldNow(), out = {}, done = state.pr || {};
+    POLLS.SPECS.forEach((S, i) => {
+      const k = POLLS.key(i, gid());
+      if (S.y + POLLS.OPEN > n || done[k] || S.y > yr()) return;
+      const P = POLLS.spec(i, C); if (!P) return;
+      const who = POLLS.asked(P, assign(), gid()), raw = (state.pv && state.pv[k]) || {}, c = P.opts.map(() => 0);
+      for (const pk of who) {
+        let v = raw[pk] != null ? +raw[pk] : pk === PK && mine('poll' + i) != null ? +mine('poll' + i) : null;
+        // the demo's bots answer the way their nation leans
+        if (v == null && DEMO_ON && pk.startsWith('bot')) { const L = P.lean(), r = (SIM.hash(pk + k) % 1000) / 1000; v = r < L[0] ? 0 : r < L[0] + L[1] ? 1 : 2; }
+        if (v != null && c[v] != null) c[v]++;
+      }
+      out[k] = POLLS.pack(c);
+    });
+    return Object.keys(out).length ? out : null;
+  }
+  // the poll card on the map: a question for the delegates who were asked, a live count for the projector
+  let pollShown = new Set();
+  function paintPoll(C) {
+    const host = q('#osMap'); if (!host) return;
+    let card = host.querySelector('.os-pollc');
+    const ph = phase(), P = ph === 'run' ? POLLS.openAt(C, yr()) : null;
+    if (!P) { if (card) card.remove(); return; }
+    const k = POLLS.key(P.i, gid()), who = POLLS.asked(P, assign(), gid()), me = who.has(PK) && !HOST, my = mine('poll' + P.i);
+    const aud = P.aud === 'world' ? 'Every delegate' : `${who.size} of ${SIM.NATIONS[P.aud].name}’s delegates`;
+    if (!HOST && !me) { if (card) card.remove(); return; }
+    const sig = k + yr() + (my != null ? 'a' + my : '') + (HOST ? Object.keys((state.pv && state.pv[k]) || {}).length : '');
+    if (card && card.dataset.sig === sig) return;
+    if (!card) { card = document.createElement('div'); card.className = 'os-pollc'; host.appendChild(card); }
+    card.dataset.sig = sig;
+    const left = Math.max(0, P.close - yr());
+    if (HOST) {
+      const n = [...who].filter(pk => state.pv && state.pv[k] && state.pv[k][pk] != null).length;
+      card.innerHTML = `<span class="os-pk">Live poll · ${esc(aud)}</span><b>${esc(P.q)}</b><em>${n} of ${who.size} answered · results in the news in ${left} ${left === 1 ? 'year' : 'years'}</em>`;
+    } else if (my != null) {
+      card.innerHTML = `<span class="os-pk">Quick poll · you answered</span><b>${esc(P.q)}</b><em>“${esc(P.opts[my])}”. The result will be in the news soon.</em>`;
+    } else {
+      card.innerHTML = `<span class="os-pk">Quick poll · ${P.aud === 'world' ? 'for every delegate' : `for some of ${SIM.NATIONS[P.aud].name}’s delegates`}</span><b>${esc(P.q)}</b>
+        <div class="os-popts">${P.opts.map((o, j) => `<button class="os-b" data-pv="${j}">${esc(o)}</button>`).join('')}</div><em>Anonymous. The result runs in the news.</em>`;
+      card.querySelectorAll('[data-pv]').forEach(b => b.onclick = () => { setMine('poll' + P.i, +b.dataset.pv); if (backend) backend.mergeDocShard('polls', GID, { pv: { [k]: { [PK]: String(b.dataset.pv) } } }); card.dataset.sig = ''; paintPoll(C); });
+    }
+  }
+  // a published result runs in the news once, on every screen
+  function pollNews(C) {
+    const pr = state.pr || {};
+    POLLS.SPECS.forEach((S, i) => {
+      const k = POLLS.key(i, gid()); if (!pr[k] || pollShown.has(k)) return;
+      pollShown.add(k);
+      const P = POLLS.spec(i, C), c = POLLS.unpack(pr[k]), t = c.reduce((a, b) => a + b, 0);
+      if (P && t >= 2) UI.news(P.head(c, t), S.y + POLLS.OPEN, false, 'poll');
+    });
   }
   const go = {
     first: () => setPhase('vote', SECS.vote0, { si: 0, yr: SIM.Y0 }),
@@ -4561,6 +4680,7 @@ const NEWS = (function () {
     const newYear = recY !== lastYear;
     UI.setGame(C, { you: myN(), step, si: s, flash: ph === 'run' && newYear && lastYear !== -1, gid: gid(), fut: futNow() });
     if (ph === 'run' && newYear && lastYear !== -1 && h.length) UI.arrive(h[h.length - 1]);
+    paintPoll(C); pollNews(C);
     lastYear = recY;
     const sig = gid() + ph + s + (ph === 'final' ? '' : '');
     const first = sig !== ovSig;
