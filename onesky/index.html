@@ -4896,7 +4896,8 @@ const SPECIAL = (function () {
       <div class="os-lr"><div class="os-count"><b>${n}</b><span>${n === 1 ? 'delegate' : 'delegates'} joined</span></div><div class="os-dots">${dots}</div>
       ${!HOST && ph === 'lobby' ? (joined() ? '<div class="os-in">You are in.</div>' : '<button class="os-b go big" data-join>Join the game</button>') : ''}</div></div>`;
     const j = box.querySelector('[data-join]');
-    if (j) j.onclick = () => { if (!backend) return; backend.mergeDocShard('polls', GID, { players: { [PK]: { t: Date.now(), s5: slide5() } } }); j.disabled = true; j.textContent = 'Joining…'; };
+    // a large class joins at once: spread the writes over a second and a half so no shard doc takes them all in the same instant
+    if (j) j.onclick = () => { if (!backend) return; j.disabled = true; j.textContent = 'Joining…'; const s5 = slide5(); setTimeout(() => backend.mergeDocShard('polls', GID, { players: { [PK]: { t: Date.now(), s5 } } }), DEMO_ON ? 0 : Math.random() * 1500); };
   }
 
   // ── the ballot ──
@@ -5426,9 +5427,12 @@ const SPECIAL = (function () {
       if (mode === 'full') keepPlayers = d.players || {}; else d.players = { ...keepPlayers, ...(d.players || {}) };
       const was = gid(); state = d;
       if (gid() !== was) { cMemo = { sig: '', C: null }; ballotSig = ''; ovSig = ''; lastYear = -1; }
-      render();
+      // the projector of a large class gets a burst of snapshots when everyone votes at once: draw at most ~12 times a second
+      if (HOST && !DEMO_ON) { if (!drawT) drawT = setTimeout(() => { drawT = 0; render(); }, 80); }
+      else render();
       const m = wantMode(); if (m !== subMode) listen(m);
     }
+    let drawT = 0;
     function listen(m) {
       if (unsub) { try { unsub(); } catch (e) { } }
       subMode = m;
