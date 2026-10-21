@@ -1128,6 +1128,17 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .os .os-rp b.dn{color:var(--red)}
 .os .os-rp em{font-style:normal;font-size:10.5px;color:var(--muted)}
 @media (max-width:1100px){.os .os-rps{grid-template-columns:repeat(2,1fr)}}
+.os .os-fmore{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:10px;padding:8px 12px;background:#fffaf0;border:1px solid var(--line);border-radius:10px;font-size:13px}
+.os .os-fmore span{font:800 10.5px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.os .os-run.lite:not(.open) .os-harm,.os .os-run.lite:not(.open) .os-ntab,.os .os-run.lite:not(.open) .os-chartbox,.os .os-run.lite:not(.open) .os-life{display:none}
+.os .os-run.lite:not(.open) .os-kpi:nth-child(2),.os .os-run.lite:not(.open) .os-kpi:nth-child(4),.os .os-run.lite:not(.open) .os-kpi:nth-child(5),.os .os-run.lite:not(.open) .os-kpi:nth-child(6){display:none}
+.os .os-run.lite:not(.open) .os-kpis{grid-template-columns:1fr 1fr}
+.os .os-more{font:700 12px Inter;color:var(--gold);background:var(--paper);border:1px dashed var(--gold);border-radius:9px;padding:7px 10px;cursor:pointer;text-align:left}
+.os .os-more:hover{border-style:solid}
+.os .os-watch{display:flex;align-items:center;gap:10px;background:#fbf1dc;border:1px solid var(--gold);border-radius:10px;padding:6px 12px}
+.os .os-watch span{flex:0 0 auto;font:900 10px Inter;letter-spacing:.18em;text-transform:uppercase;color:#fff;background:var(--gold);border-radius:5px;padding:3px 7px}
+.os .os-watch p{margin:0;font-size:13.5px;line-height:1.4}
+.os .os-watch b{font-weight:800}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -2866,8 +2877,11 @@ const UI = (function () {
   // ── the run view ──
   function mount(host, o = {}) {
     el = host; R.host = !!o.host;
-    el.innerHTML = `<div class="os-run">
+    // a student's laptop starts with the essentials; "More detail" opens the full dashboard (the projector always has it)
+    let open = false; try { open = localStorage.getItem('os-detail') === '1'; } catch (e) { }
+    el.innerHTML = `<div class="os-run${R.host ? '' : ' lite'}${open ? ' open' : ''}">
       <div class="os-left"><div class="os-mapbox" id="osMap"></div>
+        <div class="os-watch" id="osWatch" hidden></div>
         <div class="os-budget" id="osBudget"></div>
         <div class="os-news" id="osNews"><span class="os-nlbl">● Breaking</span><span class="os-ntxt" id="osNtxt">The five nations meet for the first time. The sky is shared; the laws are not.</span><span class="os-nyr" id="osNyr"></span></div>
         <div class="os-harm" id="osHarm"></div></div>
@@ -2875,12 +2889,16 @@ const UI = (function () {
         <div class="os-yearbox"><div><div class="os-eb" id="osPhase">The world in</div><div class="os-year" id="osYear">2026</div></div><ol class="os-steps" id="osSteps"></ol></div>
         <div class="os-you" id="osYou" hidden></div>
         <div class="os-kpis" id="osKpis"></div>
+        ${R.host ? '' : '<button class="os-more" id="osMore" type="button"></button>'}
         <div class="os-ntab" id="osNations"></div>
         <div class="os-chartbox"><div class="os-tabs" role="tablist" id="osTabs"></div><div id="osChart"></div><div class="os-legend" id="osLegend"></div></div>
       </aside></div>
       <div class="os-ov" id="osOv" hidden><div class="os-card" id="osCard" role="dialog" aria-modal="false"></div></div>
       <div class="os-tip" id="osTip" hidden></div>`;
     WORLD.mount($('#osMap'));
+    const mb = $('#osMore'), run = $('.os-run'), lbl = () => { if (mb) mb.textContent = run.classList.contains('open') ? 'Less detail ▴' : 'More detail: the nations, charts, damage and life in your nation ▾'; };
+    if (mb) mb.onclick = () => { run.classList.toggle('open'); try { localStorage.setItem('os-detail', run.classList.contains('open') ? '1' : '0'); } catch (e) { } lbl(); drawTab(); };
+    lbl();
     paint();
   }
   // C = the replayed world; o.you = viewer's nation; o.step = which step we're on
@@ -2934,6 +2952,7 @@ const UI = (function () {
     ];
     harm(C, h, rec);
     budget(h, rec);
+    watch(rec);
     $('#osKpis').innerHTML = tiles.map(([l, v, s, d]) => `<div class="os-kpi"><div class="os-kl">${l}</div><div class="os-kv">${v}</div><div class="os-ks">${s}</div>${spark(d)}</div>`).join('');
     // the nations
     $('#osNations').innerHTML = `<div class="os-nrow os-nhead"><span></span><span>Nation</span><span>Income</span><span>CO₂</span><span>${std() ? 'Choices' : 'Laws'}</span></div>` + N5.map((N, n) => {
@@ -2969,6 +2988,17 @@ const UI = (function () {
       <div class="os-hev">${ev.length ? ev.map(e => `<span style="--c:${N5[e.n].color}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">${HZ[e.kind] || ''}</svg>${HZN[e.kind] || e.kind} in <b>${N5[e.n].name}</b> <em>−${(e.sev * 100).toFixed(1)}% of GDP</em></span>`).join('') : '<span class="os-hquiet">No major disaster this year. The slow losses from heat, drought and rising seas continue.</span>'}</div>
       <div class="os-hwho" title="Share of each nation’s income lost to climate this year">${hit.map((v, n) => `<span style="--c:${N5[n].color}"><i style="height:${Math.max(4, v / mx * 100).toFixed(0)}%"></i><em>${(v * 100).toFixed(1)}</em></span>`).join('')}<small>% lost, by nation</small></div>
       <div class="os-hsum"><b>$${sum.toFixed(1)}T</b><em>lost since 2026 · ${nEv} disasters</em>${noneSum != null ? `<em class="os-hghost">Fossil-first world by now: <b>$${noneSum.toFixed(1)}T</b></em>` : ''}</div>`;
+  }
+  // ── "Watch for": one thing to look at while the years run, different in each stretch between elections ──
+  function watch(rec) {
+    const box = $('#osWatch'); if (!box) return;
+    if (!rec || R.step === 'deal' || R.step === 'end') { box.hidden = true; return; }
+    const b = k => rec.budget.find(x => x[0] === k)[1], E = Math.max(1, rec.worldE), N = R.you >= 0 ? N5[R.you] : null;
+    let t;
+    if (R.si === 0) t = b(1.5) > 0 ? `the 1.5 °C carbon budget under the map. At this rate it runs out around <b>${rec.year + Math.ceil(b(1.5) / E)}</b>.` : b(1.7) > 0 ? `the carbon budget. The 1.5 °C budget is already spent; at this rate the 1.7 °C one runs out around <b>${rec.year + Math.ceil(b(1.7) / E)}</b>.` : `the carbon budget: the 1.5 °C and 1.7 °C budgets are both spent.`;
+    else if (R.si === 1) t = N ? `${N.name}’s losses to climate on your nation’s card, and the map: the ice, the coasts and the forests change as the world warms.` : `the map: the ice, the coasts and the forests change as the world warms, and disasters strike more often.`;
+    else t = b(2) > 0 ? `whether the world stays under 2 °C. It is at <b>+${rec.T.toFixed(2)} °C</b> now, with ${Math.round(b(2))} Gt left in the 2 °C budget.` : `the warming: the 2 °C budget is spent, and the world is at <b>+${rec.T.toFixed(2)} °C</b>.`;
+    box.hidden = false; box.innerHTML = `<span>Watch for</span><p>${t}</p>`;
   }
   // ── the carbon budget: how much CO2 the world can still emit for each limit (Forster et al. 2025), draining live ──
   function budget(h, rec) {
@@ -3358,20 +3388,29 @@ const UI = (function () {
     }
     // 3. the twist (round 2 only)
     if (o.twist) add('twist', o.twist);
-    let pg = Math.min(pages.length - 1, R.fpg || 0); R.fpg = 0;
+    // four core pages in order; the rest wait behind "More from 2066" on the last core page
+    const CORE = ['world', 'earths', 'tempt', 'ledger', 'twist'], idx = kinds.map((k, i) => i);
+    const core = idx.filter(i => CORE.includes(kinds[i])), extra = idx.filter(i => !CORE.includes(kinds[i]));
+    const XL = { chain: 'From choices to climate', impact: `What did your ${W()} do to the climate?`, later: 'Now or later?' };
+    let at = Math.min(core.length - 1, R.fpg || 0), side = null; R.fpg = 0;
     const draw = () => {
-      overlay(pages[pg] + (pg === pages.length - 1 ? `<p class="os-fhow">Where do these numbers come from? <button class="os-linkb" data-how2>How this model works, and its sources</button></p>` : '') + `<div class="os-fnav">${pages.map((_, i) => `<i class="${i === pg ? 'on' : ''}"></i>`).join('')}</div>` +
-        act(pg < pages.length - 1 ? { onGo: () => { pg++; draw(); }, goLabel: { earths: 'Two worlds ▸', tempt: 'The temptation ▸', chain: 'From choices to climate ▸', later: 'Now or later? ▸', impact: `What did your ${W()} do? ▸`, ledger: 'Who paid, who gained? ▸', twist: 'One more thing… ▸' }[kinds[pg + 1]] || 'Next ▸' } : o, 'Close', pg ? '<button class="os-btn ghost" id="osBack">◂ Back</button>' : ''), () => {
-        if (pg === 0) finalChart($('#osFchart'));
+      const pg = side != null ? side : core[at], last = side == null && at === core.length - 1;
+      const more = last && extra.length ? `<div class="os-fmore"><span>More from 2066:</span>${extra.map(i => `<button class="os-linkb" data-x="${i}">${XL[kinds[i]] || 'More'}</button>`).join('')}</div>` : '';
+      overlay(pages[pg] + more + (last || side != null ? `<p class="os-fhow">Where do these numbers come from? <button class="os-linkb" data-how2>How this model works, and its sources</button></p>` : '') +
+        (side == null ? `<div class="os-fnav">${core.map((_, i) => `<i class="${i === at ? 'on' : ''}"></i>`).join('')}</div>` : '') +
+        act(side == null && !last ? { onGo: () => { at++; draw(); }, goLabel: { earths: 'Two worlds ▸', tempt: 'The temptation ▸', ledger: 'Who paid, who gained? ▸', twist: 'One more thing… ▸' }[kinds[core[at + 1]]] || 'Next ▸' } : o, 'Close',
+          side != null ? '<button class="os-btn ghost" id="osBack">◂ Back to the ledger</button>' : at ? '<button class="os-btn ghost" id="osBack">◂ Back</button>' : ''), () => {
+        if (kinds[pg] === 'world') finalChart($('#osFchart'));
         if (kinds[pg] === 'chain' && chainD) STD.mountChain(chainD, true);
         if (kinds[pg] === 'earths') FIN.mountEarths(L);
         if (kinds[pg] === 'tempt') FIN.mountTempt(o.I);
         if ($('#osLchart')) laterChart($('#osLchart'), L);
         if ($('#osIchart')) { const keepF = R.fut; R.fut = o.fut; impactChart($('#osIchart'), null, true); R.fut = keepF; }
-        const b = $('#osBack'); if (b) b.onclick = () => { pg--; draw(); };
+        const b = $('#osBack'); if (b) b.onclick = () => { if (side != null) side = null; else at--; draw(); };
+        $$('[data-x]').forEach(x => x.onclick = () => { side = +x.dataset.x; draw(); });
         const hw = $('[data-how2]'); if (hw) hw.onclick = () => showModel(R.mode, R.C && R.C.dmg);
       }, 'wide');
-      if (pg === pages.length - 1) wire(o); else $('#osGo').onclick = () => { pg++; draw(); };
+      if (side == null && !last) $('#osGo').onclick = () => { at++; draw(); }; else wire(o);
     };
     draw();
   }
@@ -3945,7 +3984,7 @@ const FIN = (function () {
 //   cold open → the calls, one nation at a time (vote bars count up, each race is CALLED, flips flagged) → the map of
 //   how the five nations voted → THE CLIMATE DESK, an analyst's three panels (emissions, warming, the economy) with
 //   captions written from the projections → the game's own summary (the chain, or the change cards), with "Run the years".
-// A delegate's own nation is called last, and their own ballot is marked on every race.
+// On a delegate's laptop only their own nation is called (their own ballot marked on every race); the projector calls all five.
 'use strict';
 const NEWS = (function () {
   const N5 = SIM.NATIONS, K = UI.kit, esc = UI.esc, sgn = UI.sgn, G = GEO;
@@ -3997,7 +4036,8 @@ const NEWS = (function () {
   // o: { mine, onGo, goLabel, note, foot, chain(), data() } as the summit receives them, plus o.end(o) for the game's summary
   function show(sess, o) {
     const yr = sess.si != null ? sess.year : SIM.Y0, you = UI.R.you, D = o.data();
-    const order = you >= 0 ? [0, 1, 2, 3, 4].filter(n => n !== you).concat(you) : [0, 1, 2, 3, 4];
+    // a delegate's laptop calls only their own nation (the map of the night shows the rest); the projector shows all five
+    const order = you >= 0 ? [you] : [0, 1, 2, 3, 4];
     const T0 = D.a.T, E0 = D.a.worldE;
     const tick0 = [`Polls have closed in all five nations`, `Warming so far: +${f2(T0)} °C`, `World emissions: ${f1(E0)} Gt a year`, `CO₂ in the air: ${Math.round(D.a.ppm)} ppm`, ...(D.budget || []).map(([t, b]) => b < 0 ? `The ${t.toFixed(1)} °C carbon budget is spent` : `Carbon budget left for ${t.toFixed(1)} °C: ${Math.round(b)} Gt`), sess.si ? 'New on the ballot tonight: ' + (D.newItems || []).join(', ') : 'The first election of the new climate era'].filter(Boolean).join('  ·  ');
     // the night's changes, worked out up front so every shot's ticker can carry them
@@ -4046,7 +4086,7 @@ const NEWS = (function () {
         <div class="os-rlbl">${x.opts.map((op, k) => op.v || k === x.win ? `<span data-k="${k}" style="--c:${op.col}">${esc(op.lab)} <em>0%</em>${x.me === k ? '<b class="os-ryou">YOU</b>' : ''}</span>` : '').join('')}</div>
         <div class="os-rcall"></div></div>`;
       K.overlay(frame(yr, `<div class="os-tvcall${adv ? ' adv' : ''}"><div class="os-tvleft">${tvMap(k => k === n ? N.color : '#26364a', n)}
-          <div class="os-tvnat" style="--c:${N.color}">${UI.crest(n, 34)}<div><span>${mine ? 'YOUR NATION · ' : ''}RESULTS ${i + 1} OF 5</span><b>${N.name}</b><em>${r.real} of ${r.size} delegates voted${r.real < r.size ? ' · stand-ins for the rest' : ''} · ${Math.round(emis / E0 * 100)}% of the world’s emissions</em></div></div></div>
+          <div class="os-tvnat" style="--c:${N.color}">${UI.crest(n, 34)}<div><span>${mine ? 'YOUR NATION · THE RESULTS' : `RESULTS ${i + 1} OF 5`}</span><b>${N.name}</b><em>${r.real} of ${r.size} delegates voted${r.real < r.size ? ' · stand-ins for the rest' : ''} · ${Math.round(emis / E0 * 100)}% of the world’s emissions</em></div></div></div>
         <div class="os-tvraces">${R.map(row).join('')}</div></div>${skip()}`, { ticker: called.length ? called.join('  ·  ') : tick0, tag: called.length ? 'CALLED' : 'HEADLINES' }), () => {
         wireSkip();
         const step = adv ? 300 : 620;
@@ -4198,7 +4238,7 @@ const NEWS = (function () {
   const clockMine = () => !state.hostId || state.hostId === HOSTID;
   const phase = () => state.phase || 'idle', si = () => state.si || 0, yr = () => state.yr || SIM.Y0;
   const gid = () => String(state.gameId || 0), seed = () => +state.gameId || 1;
-  const pace = () => +state.pace || 5;
+  const pace = () => +state.pace || 8;
   // the version being played: 'std' (five platforms) or 'adv' (fourteen laws); a game opened before versions existed is advanced
   const MODE = () => state.mode === 'std' ? 'std' : 'adv', STDM = () => MODE() === 'std';
   // the damage reading the instructor picked (low = DICE, central, high = Burke et al.); games opened before it existed use high
@@ -4274,7 +4314,7 @@ const NEWS = (function () {
     for (const [pk, n] of Object.entries(a)) { const v = players[pk] && players[pk].s5; if (v !== '' && v != null && isFinite(+v)) { sums[n] += +v; ns[n]++; } }
     const s5m = sums.map((s, n) => ns[n] ? (s / ns[n]).toFixed(1) : '').join(',') + '|' + ns.join(',');
     const extra = { phase: 'deal', gameId: g, round: 1, assign: SIM.packAssign(a), s5m, sp: D.hi + ',' + D.lo, si: 0, yr: SIM.Y0, F: {}, in: {}, deadline: null, cnt: null, hostId: HOSTID };
-    backend.setDoc('polls', GID, { ...extra, mode: MODE(), dmg: DMG(), players: Object.fromEntries(Object.keys(players).map(k => [k, { t: 1, s5: players[k].s5 || '' }])), pace: state.pace || 5 });
+    backend.setDoc('polls', GID, { ...extra, mode: MODE(), dmg: DMG(), players: Object.fromEntries(Object.keys(players).map(k => [k, { t: 1, s5: players[k].s5 || '' }])), pace: state.pace || 8 });
   }
   function hostBar() {
     const bar = q('[data-hostbar]'); bar.hidden = false; slide.classList.add('os-host');
@@ -4284,7 +4324,7 @@ const NEWS = (function () {
       <button class="os-b go" data-open>Open the lobby</button>
       <button class="os-b go" data-start hidden>Deal the nations</button>
       <button class="os-b" data-skip hidden>Close the session now</button>
-      <label class="os-set" data-pacewrap hidden>Pace <select data-pace><option value="7">Slow · 7 s a year</option><option value="5" selected>Normal · 5 s</option><option value="3.5">Fast · 3.5 s</option><option value="2.2">Faster · 2.2 s</option></select></label>
+      <label class="os-set" data-pacewrap hidden>Pace <select data-pace><option value="10">Slow · 10 s a year</option><option value="8" selected>Normal · 8 s</option><option value="5">Fast · 5 s</option><option value="3.5">Faster · 3.5 s</option><option value="2.2">Fastest · 2.2 s</option></select></label>
       <button class="os-b" data-pause hidden>Pause</button>
       <button class="os-b" data-take hidden>Run the clock from this screen</button>
       <button class="os-b" data-samplebtn hidden>Sample student screen</button>
@@ -4294,7 +4334,7 @@ const NEWS = (function () {
     const ds = bar.querySelector('[data-dmg]'); ds.value = pickDmg();
     ds.onchange = () => { try { localStorage.setItem('os-dmg', ds.value); } catch (e) { } if (phase() === 'lobby') backend.mergeDoc('polls', GID, { dmg: ds.value }); };
     ms.onchange = () => { try { localStorage.setItem('os-mode', ms.value); } catch (e) { } if (phase() === 'lobby') backend.mergeDoc('polls', GID, { mode: ms.value }); };
-    bar.querySelector('[data-open]').onclick = () => backend.setDoc('polls', GID, { phase: 'lobby', players: {}, gameId: Date.now() % 100000 + 1, pace: 5, hostId: HOSTID, round: 1, mode: ms.value, dmg: ds.value });
+    bar.querySelector('[data-open]').onclick = () => backend.setDoc('polls', GID, { phase: 'lobby', players: {}, gameId: Date.now() % 100000 + 1, pace: 8, hostId: HOSTID, round: 1, mode: ms.value, dmg: ds.value });
     bar.querySelector('[data-start]').onclick = () => { if (!Object.keys(state.players || {}).length && !confirm('Nobody has joined yet. Deal a class of stand-ins?')) return; deal(); };
     bar.querySelector('[data-skip]').onclick = () => { if (phase() === 'vote') advance(); else if (phase() === 'run') { const nx = SIM.SESSIONS[si() + 1] || SIM.YN; if (confirm(`Jump ahead to ${nx}?`)) backend.mergeDoc('polls', GID, { yr: nx - 1, deadline: Date.now() + 300, paused: 0 }); } };
     bar.querySelector('[data-pace]').onchange = e => backend.mergeDoc('polls', GID, { pace: +e.target.value });
@@ -4663,10 +4703,10 @@ const NEWS = (function () {
       [3400, () => { go.first(); botsVote('half'); }, DSTD ? (you ? 'The first session: your nation’s delegates choose its direction on five platforms.' : 'The first session opens. Each nation chooses its direction on five platforms; the projector counts the votes.') : you ? 'The first session: your nation’s delegates vote on its own laws.' : 'The first session opens. Each nation votes on its own laws; the projector counts the votes.'],
       [2800, () => { draft(); botsVote('all'); }, DSTD ? (you ? 'Under every option: what it would do to that sector’s emissions, and to your nation’s income. The panel on the right adds up the whole ballot.' : 'Delegates are casting their votes.') : you ? 'Every choice updates the preview: what your laws would do to your own growth, and to the whole world’s warming.' : 'Delegates are casting their votes.'],
       [2600, cast, you ? 'You cast your votes. Nobody sees them until the summit.' : 'The session closes when time runs out, or when the instructor closes it.'],
-      [2400, adv(1), you ? `Election night: the newscast calls each nation’s results, ${nm} last, then the climate desk explains what they mean.` : 'Election night: the newscast calls all five nations side by side, then the climate desk explains what the results mean for emissions, the climate and the economy.'],
+      [2400, adv(1), you ? `Election night: the newscast calls ${nm}’s results race by race, shows how all five nations voted, then the climate desk explains what it means.` : 'Election night: the newscast calls all five nations side by side, then the climate desk explains what the results mean for emissions, the climate and the economy.'],
       [you ? 62000 : 44000, go.run, 'The years begin. The map follows every nation’s choices.'],
       ...years(4, 'A year passes.'),
-      [2200, () => { R0.tab = 'impact'; adv(1)(); }, you ? 'The Impact chart: the world as voted, against every nation going fossil-first and every nation acting. The shaded band is how far your nation alone could swing it.' : 'The Impact chart: where the world is heading, against every nation going fossil-first and every nation acting.'],
+      [2200, () => { R0.tab = 'impact'; const run = root.querySelector('.os-run.lite'); if (run && !run.classList.contains('open')) run.classList.add('open'); adv(1)(); }, you ? 'The Impact chart: the world as voted, against every nation going fossil-first and every nation acting. The shaded band is how far your nation alone could swing it.' : 'The Impact chart: where the world is heading, against every nation going fossil-first and every nation acting.'],
       [2400, adv(3), 'Fourteen years pass between elections, time to watch what the choices do.'],
       [2400, adv(3), ''],
       [2400, adv(3), 'Year 2040: the second election.'],
@@ -4684,16 +4724,8 @@ const NEWS = (function () {
       [2400, () => { }, ''],
       [2400, () => { }, ''],
       [12000, goBtn, 'Two worlds: drag across the map from the world the class made to the world where every nation went fossil-first.'],
-      ...(DSTD ? [
-        [12000, goBtn, 'From choices to climate: forty years of choices, link by link, from emissions to the air to the warming.'],
-        [12000, goBtn, 'What did the nations’ choices do to the climate? Their world, against the alternatives, and where the cooling came from.'],
-        [14000, goBtn, 'The temptation: going fossil-first pays each nation more, whatever the others do. If all five take that deal, all five lose.'],
-        [12000, goBtn, 'Now or later? Every clean direction costs first. Some pay the nation back; others mostly help the world.'],
-        [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own choices, but the cooling was shared.']] : [
-        [12000, goBtn, 'What did the nations’ laws do to the climate? Their world, against the alternatives, and where the cooling came from.'],
-        [14000, goBtn, 'The temptation: going fossil-first pays each nation more, whatever the others do. If all five take that deal, all five lose.'],
-        [12000, goBtn, 'Now or later? Some laws pay first and cost later; others cost first and pay later.'],
-        [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own laws, but the cooling was shared.']]),
+      [14000, goBtn, 'The temptation: going fossil-first pays each nation more, whatever the others do. If all five take that deal, all five lose.'],
+      [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own choices, but the cooling was shared. More pages from 2066 wait behind “More from 2066”.'],
     ];
     const bar = document.createElement('div'); bar.className = 'os-demobar';
     const views = [['projector', 'Projector'], ...SIM.NATIONS.map(N => [N.id, N.name])];
@@ -4725,19 +4757,16 @@ const NEWS = (function () {
     del: { t: 'A delegate', view: 'terrasen', steps: [
       { t: 'Your nation', b: 2, cap: 'Each student is dealt into one of five nations. The card shows the nation’s economy, its emissions and what warming threatens.' },
       { t: 'The ballot', b: 4, cap: 'At three elections, delegates choose their nation’s direction on five platforms (more appear later): energy, industry, farms and forests, transportation, and buildings. Under each option: what it does to that sector’s emissions and to the nation’s income. The panel on the right adds up the whole ballot.' },
-      { t: 'Election night', b: 6, cap: 'Each election cuts to a live newscast: every nation’s results are called race by race, with flips flagged and the delegate’s own ballot marked. Their own nation is called last.' },
+      { t: 'Election night', b: 6, cap: 'Each election cuts to a live newscast: the delegate’s own nation’s results are called race by race, with flips flagged and their own ballot marked, then a map of how all five nations voted.' },
       { t: 'The climate desk', b: 6, x: '&summit=desk', cap: 'Then an analyst explains what the results mean, with three animated panels: emissions by the next election, the warming path to 2066, and growth and climate losses for each nation.' },
       { t: 'The chain', b: 6, x: '&summit=chain', cap: 'From choices to climate: each platform sets one sector’s emissions; the nations’ emissions add up in the air; the air sets the warming; the warming reaches every economy.' },
-      { t: 'The years', b: 9, cap: 'The years run on a living map. The side panel follows the student’s own nation; the Sectors chart shows its emissions, sector by sector.' },
-      { t: 'Your impact', b: 12, cap: 'The Impact chart: the world as chosen, the path if today’s choices hold, and the worlds where every nation goes fossil-first or every nation acts. The shaded band is how far your nation alone could move 2066.' },
+      { t: 'The years', b: 9, cap: 'The years run on a living map, eight seconds a year. A student’s laptop shows the essentials: warming, emissions, their own nation, the carbon budget, and one thing to watch for in each stretch.' },
+      { t: 'Your impact', b: 12, cap: 'On a laptop the years start with the essentials; “More detail” opens the full dashboard, like this Impact chart: the world as chosen, the path if today’s choices hold, and the worlds where every nation goes fossil-first or every nation acts.' },
       { t: 'The second election', b: 16, cap: 'In 2040 the delegates choose again, knowing what fourteen years of their choices did, and a new platform appears: protecting their people from the damage.' },
       { t: 'Where it landed', b: 35, cap: 'In 2066: where the world landed, against the published climate pathways.' },
       { t: 'Two worlds', b: 36, cap: 'The 2066 map drawn twice: the world the class made and the world where every nation went fossil-first, with a handle to drag between them and a tally of what the difference cost.' },
-      { t: 'Choices to climate', b: 37, cap: 'Forty years, link by link: the nation’s choices, its emissions, the world’s emissions, the CO₂ in the air, the warming and the economy.' },
-      { t: 'The climate', b: 38, cap: 'What the choices did to the climate: your world against the alternatives, and how much each nation’s choices cooled the world.' },
-      { t: 'The temptation', b: 39, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
-      { t: 'Now or later?', b: 40, cap: 'Every clean direction costs first. Some pay the nation back later (cheap clean power, efficient buildings); others mostly help the world.' },
-      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own choices did for itself and for its neighbors.' }] },
+      { t: 'The temptation', b: 37, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
+      { t: 'The ledger', b: 38, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own choices did for itself and for its neighbors.' }] },
     host: { t: 'The projector', view: 'projector', steps: [
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
@@ -4748,27 +4777,22 @@ const NEWS = (function () {
       { t: 'The years', b: 9, cap: 'The years run on the map: indicators, the nations’ choices, breaking news, and charts.' },
       { t: 'Where it landed', b: 35, cap: 'The world in 2066.' },
       { t: 'Two worlds', b: 36, cap: 'The world the class made against the world of inaction.' },
-      { t: 'Choices to climate', b: 37, cap: 'Forty years, link by link.' },
-      { t: 'The climate', b: 38, cap: 'What the choices did to the climate, nation by nation.' },
-      { t: 'The temptation', b: 39, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
-      { t: 'Now or later?', b: 40, cap: 'Costs now, pays later, or costs the nation and helps the world.' },
-      { t: 'The ledger', b: 41, cap: 'Who paid, and who gained.' }] },
+      { t: 'The temptation', b: 37, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
+      { t: 'The ledger', b: 38, cap: 'Who paid, and who gained.' }] },
   };
   const SAMPLE = {
     del: { t: 'A delegate', view: 'terrasen', steps: [
       { t: 'Your nation', b: 2, cap: 'Each student is dealt into one of five nations. The card shows the nation’s economy, its emissions and what warming threatens.' },
       { t: 'The ballot', b: 4, cap: 'At three elections, delegates vote on their own nation’s laws. Under each law, a small chart shows whether it pays now and costs later, or costs now and pays later. The panel on the right previews the whole package.' },
-      { t: 'Election night', b: 6, cap: 'Each election cuts to a live newscast: every nation’s results are called race by race, with flips flagged and the delegate’s own ballot marked. Their own nation is called last.' },
+      { t: 'Election night', b: 6, cap: 'Each election cuts to a live newscast: the delegate’s own nation’s results are called race by race, with flips flagged and their own ballot marked, then a map of how all five nations voted.' },
       { t: 'The climate desk', b: 6, x: '&summit=desk', cap: 'Then an analyst explains what the results mean, with three animated panels: emissions by the next election, the warming path to 2066, and growth and climate losses for each nation.' },
       { t: 'The years', b: 9, cap: 'The years run on a living map: plants open and close, forests fall or regrow, the ice shrinks, coasts flood, storms strike. The side panel follows the student’s own nation.' },
       { t: 'Your impact', b: 12, cap: 'The Impact chart: the world as voted, the path if today’s laws hold, and the worlds where every nation goes fossil-first or every nation acts. The shaded band is how far your nation alone could move 2066.' },
       { t: 'The second election', b: 16, cap: 'In 2040 the delegates vote again, knowing what fourteen years of their laws did. Adaptation and climate aid join the ballot.' },
       { t: 'Where it landed', b: 35, cap: 'In 2066: where the world landed, against the published climate pathways.' },
       { t: 'Two worlds', b: 36, cap: 'The 2066 map drawn twice: the world the class made and the world where every nation went fossil-first, with a handle to drag between them and a tally of what the difference cost.' },
-      { t: 'The climate', b: 37, cap: 'What the laws did to the climate: your world against the alternatives, how much each nation’s laws cooled the world, and what was avoided.' },
-      { t: 'The temptation', b: 38, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
-      { t: 'Now or later?', b: 39, cap: 'Which laws pay now and cost later (subsidies, drilling) and which cost now and pay later (carbon prices, clean energy, adaptation), against the world’s income over forty years.' },
-      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own laws did for itself and for its neighbors.' }] },
+      { t: 'The temptation', b: 37, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
+      { t: 'The ledger', b: 38, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own laws did for itself and for its neighbors.' }] },
     host: { t: 'The projector', view: 'projector', steps: [
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
@@ -4778,10 +4802,8 @@ const NEWS = (function () {
       { t: 'The years', b: 9, cap: 'The years run on the map: indicators, the nations’ laws, breaking news, and charts.' },
       { t: 'Where it landed', b: 35, cap: 'The world in 2066.' },
       { t: 'Two worlds', b: 36, cap: 'The world the class made against the world of inaction.' },
-      { t: 'The climate', b: 37, cap: 'What the laws did to the climate, nation by nation.' },
-      { t: 'The temptation', b: 38, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
-      { t: 'Now or later?', b: 39, cap: 'Pays now, costs later, or the other way around.' },
-      { t: 'The ledger', b: 40, cap: 'Who paid, and who gained.' }] },
+      { t: 'The temptation', b: 37, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
+      { t: 'The ledger', b: 38, cap: 'Who paid, and who gained.' }] },
   };
   const sampleBase = () => /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? '/game-demos-web/onesky/' : 'https://ryanpcornell.github.io/sos110-game-demos/onesky/';
   let sR = 'del', sAt = 0;
@@ -8997,8 +9019,40 @@ show(start);
   // Firestore carries ONLY {open, session, n} — never a name or an email. Student
   // PII is POSTed straight from their browser to the Apps Script endpoint, because
   // the Firestore rules for this project are world-readable.
+  // ---- daily attendance code (opt-in per slide: data-at-code) -------------
+  // Derived from the local date only, so the host screen and every student laptop agree
+  // without a server. Words are easy to read off a projector; the number makes guessing slow.
+  function atDayCode(d){
+    const W=['SAGUARO','MESQUITE','OCOTILLO','CHOLLA','PALOVERDE','CREOSOTE','JAVELINA','ROADRUNNER',
+      'GILA','HAWK','COYOTE','QUAIL','MONSOON','ARROYO','CANYON','MESA','BUTTE','TORTOISE','BOBCAT',
+      'CACTUS','YUCCA','AGAVE','IRONWOOD','SYCAMORE','COTTONWOOD','WILLOW','HERON','FALCON','OWL',
+      'WREN','LIZARD','BEETLE','SPRING','RIVER','DELTA','DUNE','BASIN','RIDGE','CLOUD','THUNDER',
+      'RAIN','SUNSET','DAWN','EMBER','CEDAR','JUNIPER','PINYON','ASPEN','POPPY','LUPINE','SAGE',
+      'FERN','MOSS','LICHEN','CORAL','OTTER','BISON','ELK','LARK'];
+    const key=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(), str='sos110|attend|'+key+'|ocotillo';
+    let h=2166136261;
+    for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619); }
+    h=h>>>0; return W[h%W.length]+'-'+(10+Math.floor(h/W.length)%90);
+  }
+  function atNorm(c){ return String(c||'').toUpperCase().replace(/[^A-Z0-9]/g,''); }
+  if(HOST && attends.some(function(sec){ return sec.dataset.atCode==='1'; }) && !document.querySelector('.at-codepill')){
+    const pill=document.createElement('button'), big=document.createElement('div');
+    pill.type='button'; pill.className='at-codepill'; pill.title='Click to show the code full-screen';
+    big.className='at-codebig'; big.hidden=true;
+    function paint(){
+      const c=atDayCode(new Date());
+      pill.innerHTML='<span>Today&rsquo;s code</span><b>'+c+'</b>';
+      big.innerHTML='<span>Today&rsquo;s attendance code</span><b>'+c+'</b><em>Enter it in the attendance pop-up. Click anywhere to close.</em>';
+    }
+    paint(); setInterval(paint, 60000);
+    pill.addEventListener('click', function(e){ e.stopPropagation(); big.hidden=false; });
+    big.addEventListener('click', function(e){ e.stopPropagation(); big.hidden=true; });
+    document.body.appendChild(pill); document.body.appendChild(big);
+  }
+
   attends.forEach(function(sec){
     const id=sec.dataset.atId, CHAPTER=sec.dataset.atChapter;
+    const NEEDCODE=sec.dataset.atCode==='1';
     const URL_=(window.ATTENDANCE_URL||'').trim();
     // Students submit through a Google Form when one is configured (fast, and
     // Forms does the writing); ATTENDANCE_URL is still what the INSTRUCTOR's
@@ -9041,6 +9095,10 @@ show(start);
           '<label class="at-field"><span class="at-lbl">ASU email</span>'+
             '<input class="at-input" type="email" data-at-email autocomplete="email" '+
             'placeholder="asurite@asu.edu"></label>'+
+          (NEEDCODE ? '<label class="at-field"><span class="at-lbl">Today&rsquo;s code</span>'+
+            '<input class="at-input at-codein" type="text" data-at-code autocomplete="off" autocapitalize="characters" '+
+            'spellcheck="false" placeholder="e.g. SAGUARO-42"></label>'+
+            '<div class="at-hint">Shown in the upper-right corner of the presentation screen.</div>' : '')+
           '<button class="at-submit" type="button" data-at-send>Submit</button>'+
           '<div class="at-msg" data-at-msg></div>'+
         '</div>'+
@@ -9056,6 +9114,7 @@ show(start);
     const firstEl=modal.querySelector('[data-at-first]');
     const lastEl=modal.querySelector('[data-at-last]');
     const mailEl=modal.querySelector('[data-at-email]');
+    const codeEl=modal.querySelector('[data-at-code]');
     const sendBtn=modal.querySelector('[data-at-send]');
     const msgEl=modal.querySelector('[data-at-msg]');
     const formBox=modal.querySelector('[data-at-form]');
@@ -9085,6 +9144,20 @@ show(start);
                           : !ln ? 'Please enter your last name.'
                                 : 'Please use your ASU email address — it must end in @asu.edu.';
         return;
+      }
+      // the daily code only gates Submit: it is checked here and never sent or stored
+      if(codeEl){
+        const ok = atNorm(codeEl.value)!=='' && atNorm(codeEl.value)===atNorm(atDayCode(new Date()));
+        if(!ok){
+          const typed=!!atNorm(codeEl.value);
+          codeEl.value=''; codeEl.classList.add('bad');
+          msgEl.className='at-msg err';
+          msgEl.textContent=(typed ? 'That code is incorrect. ' : 'Please enter today\u2019s code. ')
+            +'Find the correct code in the upper right-hand corner of the presentation screen, then enter it again.';
+          setTimeout(function(){ try{ codeEl.focus(); }catch(e){} }, 30);
+          return;
+        }
+        codeEl.classList.remove('bad');
       }
       sendBtn.disabled=true; sendBtn.textContent='Sending…';
       msgEl.className='at-msg'; msgEl.textContent='';
@@ -9203,6 +9276,7 @@ show(start);
           formBox.hidden=false; doneBox.hidden=true;
           sendBtn.disabled=false; sendBtn.textContent='Submit';
           msgEl.textContent=''; msgEl.className='at-msg';
+          if(codeEl){ codeEl.value=''; codeEl.classList.remove('bad'); }
           modal.hidden=false;
           setTimeout(function(){ try{ firstEl.focus(); }catch(e){} }, 60);
         } else if(!open && !doneBox.hidden===false){ /* leave a finished card up */ }
