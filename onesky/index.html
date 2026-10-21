@@ -4778,26 +4778,21 @@ const SPECIAL = (function () {
     });
     return Object.keys(out).length ? out : null;
   }
-  // the poll card on the map: a question for the delegates who were asked, a live count for the projector
+  // the poll card on the map, for the delegates who were asked (the projector shows only the result, in the news)
   let pollShown = new Set();
   function paintPoll(C) {
     const host = q('#osMap'); if (!host) return;
     let card = host.querySelector('.os-pollc');
     const ph = phase(), P = ph === 'run' ? POLLS.openAt(C, yr()) : null;
-    if (!P) { if (card) card.remove(); return; }
-    const k = POLLS.key(P.i, gid()), who = POLLS.asked(P, assign(), gid()), me = who.has(PK) && !HOST, my = mine('poll' + P.i);
-    const aud = P.aud === 'world' ? 'Every delegate' : `${who.size} of ${SIM.NATIONS[P.aud].name}’s delegates`;
+    if (!P || HOST) { if (card) card.remove(); return; }
+    const k = POLLS.key(P.i, gid()), who = POLLS.asked(P, assign(), gid()), me = who.has(PK), my = mine('poll' + P.i);
     // optional: a delegate who would rather not answer can wave the card away
-    if (!HOST && (!me || (my == null && mine('pollskip' + P.i)))) { if (card) card.remove(); return; }
-    const sig = k + yr() + (my != null ? 'a' + my : '') + (HOST ? Object.keys((state.pv && state.pv[k]) || {}).length : '');
+    if (!me || (my == null && mine('pollskip' + P.i))) { if (card) card.remove(); return; }
+    const sig = k + yr() + (my != null ? 'a' + my : '');
     if (card && card.dataset.sig === sig) return;
     if (!card) { card = document.createElement('div'); card.className = 'os-pollc'; host.appendChild(card); }
     card.dataset.sig = sig;
-    const left = Math.max(0, P.close - yr());
-    if (HOST) {
-      const n = [...who].filter(pk => state.pv && state.pv[k] && state.pv[k][pk] != null).length;
-      card.innerHTML = `<span class="os-pk">Live poll · ${esc(aud)}</span><b>${esc(P.q)}</b><em>${n} of ${who.size} answered · results in the news in ${left} ${left === 1 ? 'year' : 'years'}</em>`;
-    } else if (my != null) {
+    if (my != null) {
       card.innerHTML = `<span class="os-pk">Quick poll · you answered</span><b>${esc(P.q)}</b><em>“${esc(P.opts[my])}”. The result will be in the news soon.</em>`;
     } else {
       card.innerHTML = `<span class="os-pk">Quick poll · ${P.aud === 'world' ? 'for every delegate' : `for some of ${SIM.NATIONS[P.aud].name}’s delegates`}</span><b>${esc(P.q)}</b>
