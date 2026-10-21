@@ -1256,30 +1256,6 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .os .os-sptxt .os-sppoll{font-size:14px;color:#c9d6e2;border-left:3px solid #c9a34a;padding-left:10px}
 .os .os-sp.done{transition:none}
 .os .os-sp.done .os-spin2{transition:none;opacity:1}
-.os .os-ej{position:relative;margin-top:10px;background:#fffaf0;border:1px solid var(--line);border-radius:12px;padding:10px 14px;overflow:hidden}
-.os .os-ejc{transition:filter .9s,opacity .9s}
-.os .os-ej:not(.rev) .os-ejc{filter:blur(14px) grayscale(.6);opacity:.45;pointer-events:none;user-select:none}
-.os .os-ejlock{position:absolute;inset:0;display:grid;place-items:center;transition:opacity .5s}
-.os .os-ejlock span{font:800 12px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);background:var(--paper);border:1px dashed var(--gold);border-radius:999px;padding:7px 16px}
-.os .os-ej.rev .os-ejlock{opacity:0;pointer-events:none}
-.os .os-ejt{font:800 11px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.os .os-ejsvg{width:100%;height:auto;display:block}
-.os .os-ejh{font:800 12px Inter}
-.os .os-ejl{font:600 13px Inter;fill:var(--ink)}
-.os .os-ejl.b{font-weight:900}
-.os .os-ejv{font:800 12px Inter;fill:var(--ink)}
-.os .os-ejbar{transform-box:fill-box;transform-origin:left center;transform:scaleX(0)}
-.os .os-ej.rev .os-ejbar{animation:osejgrow 1.1s cubic-bezier(.3,.8,.3,1) var(--d,0ms) both}
-@keyframes osejgrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.os .os-ejtake{margin:0;font-size:16px;line-height:1.6}
-.os .os-ejtake b{font-weight:900}
-.os .os-ejq{margin:.6rem 0 0;font:italic 600 15px/1.5 Merriweather,serif;color:var(--muted)}
-.os .os-ejq b{color:var(--ink);font-style:normal}
-.os .os-ejsrc{margin:.5rem 0 0;font-size:11px;color:var(--muted)}
-.os .os-realst{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
-.os .os-realst div{background:#fffaf0;border:1px solid var(--line);border-top:4px solid #a8483f;border-radius:10px;padding:8px 12px}
-.os .os-realst b{display:block;font:900 26px Merriweather,serif}
-.os .os-realst span{font-size:12px;color:var(--muted)}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -4175,47 +4151,14 @@ const FIN = (function () {
     clearTimeout(box._t); box._t = setTimeout(() => { box.innerHTML = ''; }, tip ? 6500 : 4500);
   }
 
-  // ── WHO POLLUTED, WHO PAID: the game's own numbers, then the real world ──
-  // Not in the game's finale: Chapter 11's Climate Justice slide (ch11_ej.py) shows them, from the class's game, each chart
-  // blurred until the instructor clicks Reveal.
-  const lock = (k, host, inner) => `<div class="os-ej" data-ej="${k}"><div class="os-ejc">${inner}</div><div class="os-ejlock">${host ? `<button class="os-btn go" data-ejr="${k}">Reveal ▸</button>` : '<span>Your instructor will reveal this</span>'}</div></div>`;
-  // paired horizontal bars: rows = [label, color, a, b, highlight]; a and b in % on their own scales
-  function pairs(rows, la, lb, ca, cb, fa, fb) {
-    const W = 760, L = 150, gap = 40, w = (W - L - gap) / 2 - 50, rh = 34, H = 30 + rows.length * rh;
-    const ma = Math.max(...rows.map(r => r[2])) || 1, mb = Math.max(...rows.map(r => r[3])) || 1, x2 = L + w + 50 + gap;
-    let s = `<text x="${L}" y="16" class="os-ejh" fill="${ca}">${la}</text><text x="${x2}" y="16" class="os-ejh" fill="${cb}">${lb}</text>`;
-    rows.forEach(([lab, col, a, b, hi], i) => { const y = 28 + i * rh;
-      s += `${hi ? `<rect x="0" y="${y - 3}" width="${W}" height="${rh - 2}" rx="6" fill="#f6e3a8" opacity=".45"/>` : ''}<rect x="4" y="${y + 6}" width="10" height="10" rx="2" fill="${col}"/><text x="20" y="${y + 16}" class="os-ejl${hi ? ' b' : ''}">${lab}</text>
-        <rect class="os-ejbar" style="--d:${i * 90}ms" x="${L}" y="${y + 3}" width="${(a / ma * w).toFixed(1)}" height="18" rx="3" fill="${ca}"/><text x="${(L + a / ma * w + 6).toFixed(1)}" y="${y + 16}" class="os-ejv">${fa(a)}</text>
-        <rect class="os-ejbar" style="--d:${300 + i * 90}ms" x="${x2}" y="${y + 3}" width="${(b / mb * w).toFixed(1)}" height="18" rx="3" fill="${cb}"/><text x="${(x2 + b / mb * w + 6).toFixed(1)}" y="${y + 16}" class="os-ejv">${fb(b)}</text>`; });
-    return `<svg class="os-ejsvg" viewBox="0 0 ${W} ${H}">${s}</svg>`;
-  }
+  // ── WHO POLLUTED, WHO PAID: each nation's share of emissions and of its own income lost to climate, 2026–2066. Shown on
+  // Chapter 11's Climate Justice slide (ch11_ej.py, through window.__os.FIN), not in the finale.
   function ejData(C) {
     const h = C.hist, sum = f => h.reduce((a, r) => a + f(r), 0), wE = sum(r => r.worldE);
     return N5.map((N, n) => { const E = sum(r => r.nat[n].emis), pop = sum(r => C.hist.length ? r.nat[n].Y / r.nat[n].gdpPc : 0) / h.length;
       return { n, eShare: E / wE * 100, loss: sum(r => r.nat[n].Y * (r.nat[n].dmg + r.nat[n].shock)) / sum(r => r.nat[n].Y) * 100, perPerson: E / h.length / Math.max(.01, pop) }; });
   }
-  // D = ejData(C) (or a saved copy of it); sub = the line under the title
-  function ejPage(D, host, sub) {
-    const you = UI.R.you, low = D.slice().sort((a, b) => a.eShare - b.eShare)[0], top = D.slice().sort((a, b) => b.eShare - a.eShare)[0];
-    const hurt = D.slice().sort((a, b) => b.loss - a.loss)[0], safe = D.slice().sort((a, b) => a.loss - b.loss)[0];
-    const rows = D.map(d => [N5[d.n].name, N5[d.n].color, d.eShare, d.loss, d.n === hurt.n || d.n === you]);
-    const pp = D.map(d => [N5[d.n].name, N5[d.n].color, d.perPerson, d.eShare, d.n === hurt.n]);
-    const take = `<b>${N5[hurt.n].name}</b> produced <b>${hurt.eShare.toFixed(0)}%</b> of the world’s emissions from 2026 to 2066, yet lost <b>${hurt.loss.toFixed(1)}%</b> of its income to climate, ${(hurt.loss / Math.max(.05, safe.loss)).toFixed(1)} times the share lost by ${N5[safe.n].name}. ${N5[top.n].name}, the largest emitter (${top.eShare.toFixed(0)}%), lost ${top.loss.toFixed(1)}%. ${hurt.n !== low.n ? '' : `${N5[hurt.n].name} emitted the least of all five nations. `}Each of ${N5[hurt.n].name}’s people emitted about ${hurt.perPerson.toFixed(1)} tonnes a year; each of ${N5[top.n].name}’s, ${top.perPerson.toFixed(1)}.`;
-    return K.head('2066 · WHO POLLUTED, WHO PAID?', 'The ones who emitted least lost the most', sub || 'Climate change is a story of shared air but unequal harm. Here is how it played out in your world, nation by nation.') +
-      lock('a', host, `<div class="os-ejt">Emissions and damage, 2026–2066</div>${pairs(rows, 'Share of the world’s emissions', 'Share of its own income lost to climate', '#6d6a8c', '#a8483f', v => v.toFixed(0) + '%', v => v.toFixed(1) + '%')}`) +
-      lock('b', host, `<p class="os-ejtake">${take}</p><p class="os-ejq">This pattern has a name: <b>environmental justice</b>. The nations and people who contributed least to a problem often suffer its worst consequences. Does it hold in the real world?</p>`);
-  }
-  // the real world: Our World in Data (Global Carbon Budget 2025; UN population 2023)
-  const REAL = [['United States', '#2668a8', 4.2, 23.5], ['European Union', '#5a6f9a', 5.6, 16.3], ['China', '#b8432f', 17.6, 15.4], ['Russia', '#8a4fa8', 1.8, 6.6], ['India', '#c08a2a', 17.8, 3.6], ['All of Africa', '#2f8545', 18.3, 2.9], ['Pakistan', '#a8761a', 3.1, .31]];
-  function realPage(host) {
-    return K.head('THE REAL WORLD · PAKISTAN, 2022', 'A third of a country under water', 'In the summer of 2022, record monsoon rains flooded about a third of Pakistan.') +
-      `<div class="os-realst"><div><b>33 million</b><span>people affected</span></div><div><b>1,730+</b><span>people killed</span></div><div><b>$30 billion+</b><span>in damage and economic losses</span></div></div>` +
-      lock('c', host, `<div class="os-ejt">Who has caused climate change? Share of the world’s people, and of all CO₂ ever emitted (1750–2024)</div>${pairs(REAL.map(r => [r[0], r[1], r[2], r[3], r[0] === 'Pakistan']), 'Share of the world’s people', 'Share of all CO₂ ever emitted', '#7a6d50', '#3b3222', v => v.toFixed(1) + '%', v => (v < 1 ? v.toFixed(2) : v.toFixed(1)) + '%')}
-        <p class="os-ejsrc">Sources: Our World in Data (Global Carbon Budget 2025, territorial CO₂; UN population, 2023); Government of Pakistan, World Bank, ADB, EU and UNDP, <i>Pakistan Floods 2022 Post-Disaster Needs Assessment</i>.</p>`) +
-      lock('d', host, `<p class="os-ejtake">Pakistan is home to <b>3%</b> of the world’s people but has emitted about <b>0.3%</b> of all the CO₂ ever released. The United States, with about 4% of the world’s people, has emitted nearly a quarter. The 2022 floods cost Pakistan more than <b>$30 billion</b>, about 8% of its economy that year.</p><p class="os-ejq">Who should pay for damage like this? At the 2022 UN climate summit (COP27), nations agreed to create a fund for “loss and damage” in the countries hit hardest. How much should go in it, and who should pay, is still being argued.</p>`);
-  }
-  return { earthsPage, mountEarths, temptPage, mountTempt, moment, ejData, ejPage, realPage };
+  return { earthsPage, mountEarths, temptPage, mountTempt, moment, ejData };
 })();
 
 // ONE SKY · ELECTION NIGHT. The summit is staged as a live newscast, for the standard and the advanced game alike:
