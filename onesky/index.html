@@ -4236,7 +4236,7 @@ const NEWS = (function () {
     const open = () => {
       K.overlay(frame(yr, `<div class="os-tvopen"><div class="os-tvsweep"></div><span class="os-tvkick">ONE SKY NEWS · SPECIAL COVERAGE</span><h2>Election Night <em>${yr}</em></h2>
         <p>${sess.si === 0 ? 'Five nations choose how they will power, build, farm and travel for the years ahead.' : `Year ${yr}. The world is at +${f2(T0)} °C. Five nations decide whether to change course.`}</p>
-        <div class="os-tvopenn">${N5.map((N, k) => `<span style="--c:${N.color}">${UI.crest(k, 20)}${N.name}</span>`).join('')}</div></div>${skip()}`, { ticker: tick0 }), () => { wireSkip(); sfx('sting'); K.at(4200, () => you >= 0 ? call(0) : wall()); }, 'wide tv');
+        <div class="os-tvopenn">${N5.map((N, k) => `<span style="--c:${N.color}">${UI.crest(k, 20)}${N.name}</span>`).join('')}</div></div>${skip()}`, { ticker: tick0 }), () => { wireSkip(); sfx('sting', true); K.at(4200, () => you >= 0 ? call(0) : wall()); }, 'wide tv');
     };
     // 2a. the projector: all five nations side by side, called race by race across the board
     const wall = () => {
@@ -4497,13 +4497,22 @@ const SPECIAL = (function () {
     } catch (e) { /* no audio: the red alarm alone */ }
   }
   // the breaking-news sting: a low hit, then three brass-like stabs rising to a held chord (D minor), as the broadcast opens
-  function sting() {
+  // long = election night's opening (about 4.8 s): the same opening phrase, then a second, rising one before the held chord
+  function sting(long) {
     note(130, 0, .7, { vol: .22, slide: .5 });                                  // the drum hit (high enough for laptop speakers)
     const brass = { type: 'sawtooth', vol: .06, cut: 2200 };
     chord([293.7, 349.2, 440], 0, .22, brass); chord([293.7, 349.2, 440], .2, .22, brass);
     chord([293.7, 392, 466.2], .4, .22, brass);
-    chord([146.8, 293.7, 349.2, 440, 587.3], .62, 1.8, { ...brass, vol: .05 });
-    note(1174.7, .62, 1.4, { vol: .04 });                                       // a bright edge on top
+    let at = .62;
+    if (long) {
+      chord([146.8, 293.7, 349.2, 440], .62, .55, { ...brass, vol: .045 });
+      note(130, 1.2, .7, { vol: .2, slide: .5 });
+      chord([349.2, 440, 523.3], 1.2, .22, brass); chord([349.2, 440, 523.3], 1.4, .22, brass);
+      chord([349.2, 466.2, 587.3], 1.6, .22, brass); chord([392, 523.3, 659.3], 1.82, .26, brass);
+      at = 2.1;
+    }
+    chord([146.8, 293.7, 349.2, 440, 587.3], at, long ? 2.7 : 1.8, { ...brass, vol: .05 });
+    note(1174.7, at, long ? 2.3 : 1.4, { vol: .04 });                          // a bright edge on top
   }
   // the results: a chime as each nation's result is called (rising if aid is approved, falling if not), and a closing chord
   function call(yes) {
