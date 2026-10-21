@@ -3060,6 +3060,9 @@ const UI = (function () {
       `<path d="M4,12 q3.5,-3 7,0 t7,0 M4,16 q3.5,-3 7,0 t7,0" stroke="#fbf5e6" stroke-width="1.6" fill="none"/><circle cx="11" cy="7" r="2.2" fill="#fbf5e6"/>`][n] + `</svg>`;
 
   // ── the run view ──
+  // the projector puts the chart above the nations table; a student's laptop the other way round
+  const NTAB = '<div class="os-ntab" id="osNations"></div>',
+    CHART = '<div class="os-chartbox"><div class="os-tabs" role="tablist" id="osTabs"></div><div id="osChart"></div><div class="os-legend" id="osLegend"></div></div>';
   function mount(host, o = {}) {
     el = host; R.host = !!o.host;
     // a student's laptop starts with the essentials; "More detail" opens the full dashboard (the projector always has it)
@@ -3074,8 +3077,7 @@ const UI = (function () {
         <div class="os-you" id="osYou" hidden></div>
         <div class="os-kpis" id="osKpis"></div>
         ${R.host ? '' : '<button class="os-more" id="osMore" type="button"></button>'}
-        <div class="os-ntab" id="osNations"></div>
-        <div class="os-chartbox"><div class="os-tabs" role="tablist" id="osTabs"></div><div id="osChart"></div><div class="os-legend" id="osLegend"></div></div>
+        ${R.host ? CHART + NTAB : NTAB + CHART}
       </aside></div>
       <div class="os-ov" id="osOv" hidden><div class="os-card" id="osCard" role="dialog" aria-modal="false"></div></div>
       <div class="os-tip" id="osTip" hidden></div>`;
@@ -4023,7 +4025,7 @@ const FIN = (function () {
     const h = C.hist, last = h[h.length - 1];
     const erid = last.nat[4];
     return {
-      T: last.T, ppm: last.ppm, slr: last.slr, share: last.dmgShare, lost: sumH(h, r => r.Y * r.dmgShare), ev: sumH(h, r => r.events.length),
+      T: last.T, ppm: last.ppm, slr: last.slr, share: last.dmgShare, lost: sumH(h, r => r.Y * r.dmgShare),
       ice: C.tips.ice || 0, reef: C.tips.reef || 0, perma: C.tips.perma || 0, eridLost: Math.max(0, erid.dmg + erid.shock), E: last.worldE,
       worst: h.filter(r => r.year > 2060).flatMap(r => r.events).sort((a, b) => b.sev - a.sev).slice(0, 5),
     };
@@ -4077,7 +4079,6 @@ const FIN = (function () {
       ['Warming in 2066', `+${a.T.toFixed(2)} °C`, `+${b.T.toFixed(2)} °C`, b.T - a.T, v => `${sgn(v, 2)} °C`],
       ['Lost to climate in 2066', `${(a.share * 100).toFixed(1)}%`, `${(b.share * 100).toFixed(1)}%`, b.share - a.share, v => `${sgn(v * 100, 1)} pts of world income`],
       ['Lost to climate, 2026–2066', `$${a.lost.toFixed(0)}T`, `$${b.lost.toFixed(0)}T`, b.lost - a.lost, v => `${v >= 0 ? '+' : '−'}$${Math.abs(v).toFixed(0)}T`],
-      ['Storms, floods, heat waves, droughts and fires', `${a.ev}`, `${b.ev}`, b.ev - a.ev, v => `${sgn(v, 0)}`],
       ['Seas higher than 2026', `${a.slr.toFixed(0)} cm`, `${b.slr.toFixed(0)} cm`, b.slr - a.slr, v => `${sgn(v, 0)} cm`],
       ['Erid’s income lost to climate, 2066', `${(a.eridLost * 100).toFixed(1)}%`, `${(b.eridLost * 100).toFixed(1)}%`, b.eridLost - a.eridLost, v => `${sgn(v * 100, 1)} pts`],
     ];
@@ -4477,6 +4478,9 @@ const SPECIAL = (function () {
     o.connect(lp); lp.connect(g); g.connect(A.destination); o.start(t); o.stop(t + dur + .05);
   }
   const chord = (fs, at, dur, o) => fs.forEach(f => note(f, at, dur, o));
+  // browsers (Safari above all) only let a page make sound once it has been clicked or a key pressed, and only if the audio
+  // was started during that click: so start it on the instructor's first click or key press, long before the disaster
+  ['pointerdown', 'keydown'].forEach(t => document.addEventListener(t, () => { if (!AC || AC.state !== 'running') ac(); }, true));
   // the siren: a two-tone wail under the red alarm
   function siren(ms) {
     const A = ac(); if (!A) return;
@@ -4779,7 +4783,7 @@ const SPECIAL = (function () {
     return Object.keys(out).length ? out : null;
   }
   // the poll card on the map, for the delegates who were asked (the projector shows only the result, in the news)
-  let pollShown = new Set();
+  let pollShown = new Set(), pollQ = 0;   // results waiting their turn in the news bar
   function paintPoll(C) {
     const host = q('#osMap'); if (!host) return;
     let card = host.querySelector('.os-pollc');
@@ -4808,7 +4812,7 @@ const SPECIAL = (function () {
       const k = POLLS.key(i, gid()); if (!pr[k] || pollShown.has(k)) return;
       pollShown.add(k);
       const P = POLLS.spec(i, C), c = POLLS.unpack(pr[k]), t = c.reduce((a, b) => a + b, 0);
-      if (P && t >= 2) UI.news(P.head(c, t), S.y + POLLS.OPEN, false, 'poll');
+      if (P && t >= 1) { const at = pollQ++ * 5000; setTimeout(() => { pollQ = Math.max(0, pollQ - 1); UI.news(P.head(c, t), S.y + POLLS.OPEN, false, 'poll'); }, at); }
     });
   }
   const go = {
@@ -5152,7 +5156,7 @@ const SPECIAL = (function () {
       counts: () => SIM.NATIONS.map((N, n) => { const who = Object.entries(assign()).filter(([, x]) => x === n).map(([pk]) => pk); return { n, size: who.length, real: who.filter(pk => typeof raw()[pk] === 'string').length }; }) };
     // the early concern poll, if it ran with enough answers: "earlier polls found…"
     const ci = POLLS.SPECS.findIndex(S => S.id === 'concern'), ck = (state.pr || {})[POLLS.key(ci, gid())], cP = ck && POLLS.spec(ci, C);
-    if (cP) { const c = POLLS.unpack(ck), t = c.reduce((a, b) => a + b, 0); if (t >= 2) spD.poll = { y: cP.y, n: cP.m, pct: Math.round((c[0] + c[1]) / t * 100) }; }
+    if (cP) { const c = POLLS.unpack(ck), t = c.reduce((a, b) => a + b, 0); if (t >= 1) spD.poll = { y: cP.y, n: cP.m, pct: Math.round((c[0] + c[1]) / t * 100) }; }
     SPECIAL.story(root, spD);
   }
   function showSpecialRes(C) {
