@@ -4172,6 +4172,8 @@ const NEWS = (function () {
   const N5 = SIM.NATIONS, K = UI.kit, esc = UI.esc, sgn = UI.sgn, G = GEO;
   const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2);
   const YES = '#5aa36a', NO = '#c0614f';
+  // the night's sounds (special.js), on the projector only
+  const sfx = (k, ...a) => { if (UI.R.host && typeof SPECIAL !== 'undefined') SPECIAL.sfx[k](...a); };
 
   // ── the races on one nation's ballot ──
   function races(sess, n, mine) {
@@ -4234,7 +4236,7 @@ const NEWS = (function () {
     const open = () => {
       K.overlay(frame(yr, `<div class="os-tvopen"><div class="os-tvsweep"></div><span class="os-tvkick">ONE SKY NEWS · SPECIAL COVERAGE</span><h2>Election Night <em>${yr}</em></h2>
         <p>${sess.si === 0 ? 'Five nations choose how they will power, build, farm and travel for the years ahead.' : `Year ${yr}. The world is at +${f2(T0)} °C. Five nations decide whether to change course.`}</p>
-        <div class="os-tvopenn">${N5.map((N, k) => `<span style="--c:${N.color}">${UI.crest(k, 20)}${N.name}</span>`).join('')}</div></div>${skip()}`, { ticker: tick0 }), () => { wireSkip(); K.at(4200, () => you >= 0 ? call(0) : wall()); }, 'wide tv');
+        <div class="os-tvopenn">${N5.map((N, k) => `<span style="--c:${N.color}">${UI.crest(k, 20)}${N.name}</span>`).join('')}</div></div>${skip()}`, { ticker: tick0 }), () => { wireSkip(); sfx('sting'); K.at(4200, () => you >= 0 ? call(0) : wall()); }, 'wide tv');
     };
     // 2a. the projector: all five nations side by side, called race by race across the board
     const wall = () => {
@@ -4246,6 +4248,7 @@ const NEWS = (function () {
         const step = rows > 8 ? 900 : 1500;
         for (let j = 0; j < rows; j++) {
           K.at(400 + j * step, () => { const r = K.$(`.os-wrow[data-row="${j}"]`); if (r) r.classList.add('in'); });
+          K.at(400 + j * step + 1000, () => sfx('race', all.some(R => R[j] && R[j].was != null && R[j].was !== R[j].win)));
           all.forEach((R, n) => { const x = R[j]; if (!x) return; const el = K.$(`.os-wcell[data-n="${n}"][data-j="${j}"]`), tot = x.opts.reduce((a, op) => a + op.v, 0) || 1;
             K.at(400 + j * step + n * 120, () => el.querySelectorAll('.os-rbar i').forEach(b => { b.style.flexGrow = (x.opts[+b.dataset.k].v / tot * 100).toFixed(1); }));
             K.at(400 + j * step + n * 120 + 1000, () => {
@@ -4297,6 +4300,7 @@ const NEWS = (function () {
     };
     // 3. the map of the night
     const map = () => {
+      sfx('finish', true);
       const score = n => D.score[n];
       const col = v => `hsl(${18 + v * 112}, ${38 + v * 10}%, ${36 + v * 8}%)`;
       K.overlay(frame(yr, `<div class="os-tvmapshot"><div class="os-tvbig">${tvMap(k => col(score(k)), -1)}</div><div class="os-tvsum"><span class="os-tvkick">THE NIGHT AT A GLANCE</span><h3>How the five nations voted</h3>
@@ -4508,6 +4512,11 @@ const SPECIAL = (function () {
     if (yes) { note(659.3, .02, .9, { vol: .07 }); note(880, .14, 1.2, { vol: .07 }); }
     else { note(587.3, .02, .9, { vol: .06 }); note(440, .14, 1.2, { vol: .06 }); }
   }
+  // election night (news.js): a chime as each row of races is called, brighter when a nation changes course
+  function race(flip) {
+    if (flip) { note(587.3, 0, .5, { type: 'triangle', vol: .07 }); note(740, .09, .5, { type: 'triangle', vol: .07 }); note(880, .18, .9, { type: 'triangle', vol: .07 }); }
+    else { note(523.3, 0, .5, { vol: .06 }); note(784, .1, .8, { vol: .06 }); }
+  }
   const finish = any => any ? chord([261.6, 329.6, 392, 523.3], 0, 2.2, { type: 'triangle', vol: .045 }) : chord([196, 233.1, 293.7], 0, 2.2, { type: 'triangle', vol: .04 });
   // ── the layer: after the alarm, grows out of the news bar to the size of the newscast card, over a dimmed game ──
   // (the card's place is set in CSS, .os-sp.card, so it holds when the window is resized)
@@ -4661,7 +4670,9 @@ const SPECIAL = (function () {
       else { const p = document.createElement('p'); p.className = 'os-spnote'; p.textContent = 'The years resume in a moment.'; box.appendChild(p); }
     });
   }
-  return { story, results, close, isOpen, clock, money };
+  // the sounds, for election night (news.js; projector only)
+  const sfx = { sting, race, finish };
+  return { story, results, close, isOpen, clock, money, sfx };
 })();
 
 // LIVE: the class plays One Sky on laptops. Rides the deck's live backend (window.__deckLiveReady: sharded Firestore
