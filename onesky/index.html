@@ -3585,12 +3585,9 @@ const UI = (function () {
           `<div class="os-lnote">Its emissions since 2026 added <b class="dn">+${r.addedT.toFixed(3)} °C</b> to the world’s warming.<br>Compared with ${std() ? 'the middle direction on every platform' : 'keeping its 2026 laws'}, its own ${W()} ${Math.abs(r.vsMid) < .0005 ? 'made almost no difference to the warming' : r.vsMid > 0 ? `<b class="up">cooled the world ${r.vsMid.toFixed(3)} °C</b>` : `<b class="dn">warmed the world ${(-r.vsMid).toFixed(3)} °C</b>`}.<br>Compared with ${std() ? 'fossil fuels and growth first everywhere' : 'drilling and building'}, they changed its own income <b class="${r.ownGain >= 0 ? 'up' : 'dn'}">${sgn(r.ownGain * 100)}%</b>, and the other nations’ by <b class="${r.othersGain >= 0 ? 'up' : 'dn'}">${sgn(r.othersGain * 100)}%</b> on average.</div></div>`).join('')}</div>`);
     }
     // 3. the twist (round 2 only)
-    // who polluted, who paid: the game's numbers, then the real world (charts held back until the instructor releases them)
-    if (L) add('ej', FIN.ejPage(C, !!o.onReveal));
-    add('real', FIN.realPage(!!o.onReveal));
     if (o.twist) add('twist', o.twist);
     // four core pages in order; the rest wait behind "More from 2066" on the last core page
-    const CORE = ['world', 'earths', 'tempt', 'ledger', 'ej', 'real', 'twist'], idx = kinds.map((k, i) => i);
+    const CORE = ['world', 'earths', 'tempt', 'ledger', 'twist'], idx = kinds.map((k, i) => i);
     const core = idx.filter(i => CORE.includes(kinds[i])), extra = idx.filter(i => !CORE.includes(kinds[i]));
     const XL = { chain: 'From choices to climate', impact: `What did your ${W()} do to the climate?`, later: 'Now or later?' };
     let at = Math.min(core.length - 1, R.fpg || 0), side = null; R.fpg = 0;
@@ -3599,13 +3596,12 @@ const UI = (function () {
       const more = last && extra.length ? `<div class="os-fmore"><span>More from 2066:</span>${extra.map(i => `<button class="os-linkb" data-x="${i}">${XL[kinds[i]] || 'More'}</button>`).join('')}</div>` : '';
       overlay(pages[pg] + more + (last || side != null ? `<p class="os-fhow">Where do these numbers come from? <button class="os-linkb" data-how2>How this model works, and its sources</button></p>` : '') +
         (side == null ? `<div class="os-fnav">${core.map((_, i) => `<i class="${i === at ? 'on' : ''}"></i>`).join('')}</div>` : '') +
-        act(side == null && !last ? { onGo: () => { at++; draw(); }, goLabel: { earths: 'Two worlds ▸', tempt: 'The temptation ▸', ledger: 'Who paid, who gained? ▸', ej: 'Who polluted, who paid? ▸', real: 'The real world ▸', twist: 'One more thing… ▸' }[kinds[core[at + 1]]] || 'Next ▸' } : o, 'Close',
+        act(side == null && !last ? { onGo: () => { at++; draw(); }, goLabel: { earths: 'Two worlds ▸', tempt: 'The temptation ▸', ledger: 'Who paid, who gained? ▸', twist: 'One more thing… ▸' }[kinds[core[at + 1]]] || 'Next ▸' } : o, 'Close',
           side != null ? '<button class="os-btn ghost" id="osBack">◂ Back to the ledger</button>' : at ? '<button class="os-btn ghost" id="osBack">◂ Back</button>' : ''), () => {
         if (kinds[pg] === 'world') finalChart($('#osFchart'));
         if (kinds[pg] === 'chain' && chainD) STD.mountChain(chainD, true);
         if (kinds[pg] === 'earths') FIN.mountEarths(L);
         if (kinds[pg] === 'tempt') FIN.mountTempt(o.I);
-        FIN.ejSync(o.ejr ? o.ejr() : '', o.onReveal);
         if ($('#osLchart')) laterChart($('#osLchart'), L);
         if ($('#osIchart')) { const keepF = R.fut; R.fut = o.fut; impactChart($('#osIchart'), null, true); R.fut = keepF; }
         const b = $('#osBack'); if (b) b.onclick = () => { if (side != null) side = null; else at--; draw(); };
@@ -4180,7 +4176,8 @@ const FIN = (function () {
   }
 
   // ── WHO POLLUTED, WHO PAID: the game's own numbers, then the real world ──
-  // Each chart stays blurred until the instructor releases it (state.ejr on the main doc); every screen follows.
+  // Not in the game's finale: Chapter 11's Climate Justice slide (ch11_ej.py) shows them, from the class's game, each chart
+  // blurred until the instructor clicks Reveal.
   const lock = (k, host, inner) => `<div class="os-ej" data-ej="${k}"><div class="os-ejc">${inner}</div><div class="os-ejlock">${host ? `<button class="os-btn go" data-ejr="${k}">Reveal ▸</button>` : '<span>Your instructor will reveal this</span>'}</div></div>`;
   // paired horizontal bars: rows = [label, color, a, b, highlight]; a and b in % on their own scales
   function pairs(rows, la, lb, ca, cb, fa, fb) {
@@ -4198,13 +4195,14 @@ const FIN = (function () {
     return N5.map((N, n) => { const E = sum(r => r.nat[n].emis), pop = sum(r => C.hist.length ? r.nat[n].Y / r.nat[n].gdpPc : 0) / h.length;
       return { n, eShare: E / wE * 100, loss: sum(r => r.nat[n].Y * (r.nat[n].dmg + r.nat[n].shock)) / sum(r => r.nat[n].Y) * 100, perPerson: E / h.length / Math.max(.01, pop) }; });
   }
-  function ejPage(C, host) {
-    const D = ejData(C), you = UI.R.you, low = D.slice().sort((a, b) => a.eShare - b.eShare)[0], top = D.slice().sort((a, b) => b.eShare - a.eShare)[0];
+  // D = ejData(C) (or a saved copy of it); sub = the line under the title
+  function ejPage(D, host, sub) {
+    const you = UI.R.you, low = D.slice().sort((a, b) => a.eShare - b.eShare)[0], top = D.slice().sort((a, b) => b.eShare - a.eShare)[0];
     const hurt = D.slice().sort((a, b) => b.loss - a.loss)[0], safe = D.slice().sort((a, b) => a.loss - b.loss)[0];
     const rows = D.map(d => [N5[d.n].name, N5[d.n].color, d.eShare, d.loss, d.n === hurt.n || d.n === you]);
     const pp = D.map(d => [N5[d.n].name, N5[d.n].color, d.perPerson, d.eShare, d.n === hurt.n]);
     const take = `<b>${N5[hurt.n].name}</b> produced <b>${hurt.eShare.toFixed(0)}%</b> of the world’s emissions from 2026 to 2066, yet lost <b>${hurt.loss.toFixed(1)}%</b> of its income to climate, ${(hurt.loss / Math.max(.05, safe.loss)).toFixed(1)} times the share lost by ${N5[safe.n].name}. ${N5[top.n].name}, the largest emitter (${top.eShare.toFixed(0)}%), lost ${top.loss.toFixed(1)}%. ${hurt.n !== low.n ? '' : `${N5[hurt.n].name} emitted the least of all five nations. `}Each of ${N5[hurt.n].name}’s people emitted about ${hurt.perPerson.toFixed(1)} tonnes a year; each of ${N5[top.n].name}’s, ${top.perPerson.toFixed(1)}.`;
-    return K.head('2066 · WHO POLLUTED, WHO PAID?', 'The ones who emitted least lost the most', 'Climate change is a story of shared air but unequal harm. Here is how it played out in your world, nation by nation.') +
+    return K.head('2066 · WHO POLLUTED, WHO PAID?', 'The ones who emitted least lost the most', sub || 'Climate change is a story of shared air but unequal harm. Here is how it played out in your world, nation by nation.') +
       lock('a', host, `<div class="os-ejt">Emissions and damage, 2026–2066</div>${pairs(rows, 'Share of the world’s emissions', 'Share of its own income lost to climate', '#6d6a8c', '#a8483f', v => v.toFixed(0) + '%', v => v.toFixed(1) + '%')}`) +
       lock('b', host, `<p class="os-ejtake">${take}</p><p class="os-ejq">This pattern has a name: <b>environmental justice</b>. The nations and people who contributed least to a problem often suffer its worst consequences. Does it hold in the real world?</p>`);
   }
@@ -4217,13 +4215,7 @@ const FIN = (function () {
         <p class="os-ejsrc">Sources: Our World in Data (Global Carbon Budget 2025, territorial CO₂; UN population, 2023); Government of Pakistan, World Bank, ADB, EU and UNDP, <i>Pakistan Floods 2022 Post-Disaster Needs Assessment</i>.</p>`) +
       lock('d', host, `<p class="os-ejtake">Pakistan is home to <b>3%</b> of the world’s people but has emitted about <b>0.3%</b> of all the CO₂ ever released. The United States, with about 4% of the world’s people, has emitted nearly a quarter. The 2022 floods cost Pakistan more than <b>$30 billion</b>, about 8% of its economy that year.</p><p class="os-ejq">Who should pay for damage like this? At the 2022 UN climate summit (COP27), nations agreed to create a fund for “loss and damage” in the countries hit hardest. How much should go in it, and who should pay, is still being argued.</p>`);
   }
-  // reveal what the instructor has released, and wire the projector's buttons
-  function ejSync(rev, onReveal) {
-    const on = new Set(String(rev || '').split(',').filter(Boolean));
-    document.querySelectorAll('.os [data-ej]').forEach(b => b.classList.toggle('rev', on.has(b.dataset.ej)));
-    if (onReveal) document.querySelectorAll('.os [data-ejr]').forEach(b => b.onclick = () => onReveal(b.dataset.ejr));
-  }
-  return { earthsPage, mountEarths, temptPage, mountTempt, moment, ejPage, realPage, ejSync };
+  return { earthsPage, mountEarths, temptPage, mountTempt, moment, ejData, ejPage, realPage };
 })();
 
 // ONE SKY · ELECTION NIGHT. The summit is staged as a live newscast, for the standard and the advanced game alike:
@@ -4515,7 +4507,7 @@ const POLLS = (function () {
 })();
 
 // ONE SKY · THE SPECIAL ELECTION. Once a game, after a major climate disaster, the game stops: the Breaking News bar grows
-// (after a few seconds of red alarm and a siren on the projector) into a broadcast the size of the newscast card about the nation hit, the debate in each nation (two campaign signs, each argued with numbers
+// (after a few seconds of red alarm and a siren on the projector, then a news sting) into a broadcast the size of the newscast card about the nation hit, the debate in each nation (two campaign signs, each argued with numbers
 // from the game: the share of the damage your nation's emissions account for, against what the aid would cost at home),
 // a special election in every nation (send aid, or not; the stricken nation chooses how to use it), and the results.
 // The aid is real in the engine (SIM.specialDecide / step): SIM.SP_SHARE (0.2%) of a donor's income a year for ten years.
@@ -4529,18 +4521,47 @@ const SPECIAL = (function () {
   const later = (ms, f) => timers.push(setTimeout(f, ms));
   const clear = () => { timers.forEach(clearTimeout); timers = []; };
 
-  // ── the siren: a synthesized two-tone wail, projector only (a room of laptops wailing at once would be chaos) ──
+  // ── sound, synthesized with Web Audio, projector only (a room of laptops sounding at once would be chaos) ──
+  let AC = null;
+  const ac = () => { try { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); return AC; } catch (e) { return null; } };
+  // one note: an oscillator through a low-pass filter, with a quick attack and an exponential fade
+  function note(f, at, dur, { type = 'sine', vol = .08, cut = 2400, slide = 0 } = {}) {
+    const A = ac(); if (!A) return;
+    const t = A.currentTime + at, o = A.createOscillator(), lp = A.createBiquadFilter(), g = A.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(f * slide, t + dur);
+    lp.type = 'lowpass'; lp.frequency.value = cut;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.0005, t + dur);
+    o.connect(lp); lp.connect(g); g.connect(A.destination); o.start(t); o.stop(t + dur + .05);
+  }
+  const chord = (fs, at, dur, o) => fs.forEach(f => note(f, at, dur, o));
+  // the siren: a two-tone wail under the red alarm
   function siren(ms) {
+    const A = ac(); if (!A) return;
     try {
-      const A = new (window.AudioContext || window.webkitAudioContext)(), t0 = A.currentTime, T = ms / 1000;
-      const o = A.createOscillator(), f = A.createBiquadFilter(), g = A.createGain();
+      const t0 = A.currentTime, T = ms / 1000, o = A.createOscillator(), f = A.createBiquadFilter(), g = A.createGain();
       o.type = 'sawtooth'; f.type = 'lowpass'; f.frequency.value = 1800;
       for (let t = 0; t < T; t += 1.1) { o.frequency.setValueAtTime(560, t0 + t); o.frequency.linearRampToValueAtTime(880, t0 + t + .55); o.frequency.linearRampToValueAtTime(560, t0 + t + 1.1); }
       g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(.07, t0 + .3); g.gain.setValueAtTime(.07, t0 + T - .5); g.gain.linearRampToValueAtTime(0, t0 + T);
       o.connect(f); f.connect(g); g.connect(A.destination); o.start(t0); o.stop(t0 + T + .05);
-      setTimeout(() => A.close(), ms + 400);
     } catch (e) { /* no audio: the red alarm alone */ }
   }
+  // the breaking-news sting: a low hit, then three brass-like stabs rising to a held chord (D minor), as the broadcast opens
+  function sting() {
+    note(70, 0, .9, { vol: .16, slide: .5 });                                   // the drum hit
+    const brass = { type: 'sawtooth', vol: .035, cut: 1500 };
+    chord([293.7, 349.2, 440], 0, .22, brass); chord([293.7, 349.2, 440], .2, .22, brass);
+    chord([293.7, 392, 466.2], .4, .22, brass);
+    chord([146.8, 293.7, 349.2, 440, 587.3], .62, 1.8, { ...brass, vol: .03 });
+    note(1174.7, .62, 1.4, { vol: .025 });                                       // a bright edge on top
+  }
+  // the results: a chime as each nation's result is called (rising if aid is approved, falling if not), and a closing chord
+  function call(yes) {
+    if (yes == null) { chord([523.3, 784], 0, 1.1, { vol: .05 }); return; }
+    note(140, 0, .35, { vol: .1, slide: .6 });
+    if (yes) { note(659.3, .02, .9, { vol: .07 }); note(880, .14, 1.2, { vol: .07 }); }
+    else { note(587.3, .02, .9, { vol: .06 }); note(440, .14, 1.2, { vol: .06 }); }
+  }
+  const finish = any => any ? chord([261.6, 329.6, 392, 523.3], 0, 2.2, { type: 'triangle', vol: .045 }) : chord([196, 233.1, 293.7], 0, 2.2, { type: 'triangle', vol: .04 });
   // ── the layer: after the alarm, grows out of the news bar to the size of the newscast card, over a dimmed game ──
   // (the card's place is set in CSS, .os-sp.card, so it holds when the window is resized)
   function open(root, html, grow, alarm) {
@@ -4558,6 +4579,7 @@ const SPECIAL = (function () {
         const w = Math.min(1240, R.width - 32), h = R.height - 32;
         if (b && b.width) Object.assign(L0.style, { left: (b.left - R.left) + 'px', top: (b.top - R.top) + 'px', width: b.width + 'px', height: b.height + 'px' });
         L0.style.visibility = ''; bd.classList.add('on'); void L0.offsetWidth;
+        if (alarm === 'siren') sting();
         setTimeout(() => { if (!L0.isConnected) return; Object.assign(L0.style, { left: (R.width - w) / 2 + 'px', top: '16px', width: w + 'px', height: h + 'px' }); L0.classList.add('full'); setTimeout(() => L0.isConnected && card(), 1400); }, 40);
       };
       if (alarm) {
@@ -4678,10 +4700,11 @@ const SPECIAL = (function () {
         <div class="os-spsum" data-spsum></div></div></div>`;
     const L = open(root, html, false);
     const rows = [...L.querySelectorAll('.os-spr')];
-    rows.forEach((r, i) => later(500 + i * 1500, () => r.classList.add('in')));
+    rows.forEach((r, i) => later(500 + i * 1500, () => { r.classList.add('in'); if (R.host) call(r.classList.contains('to') ? null : sp.give.includes(+r.dataset.n)); }));
     later(500 + rows.length * 1500 + 600, () => {
       const box = L.querySelector('[data-spsum]'); if (!box) return;
       const total = R.imp.pool || 0, n = sp.give.length;
+      if (R.host) finish(n > 0);
       box.innerHTML = n ? `<div class="os-spbig"><b>${money(total)}</b><span>a year for ten years, from ${sp.give.map(k => N5[k].name).join(', ').replace(/, ([^,]*)$/, ' and $1')}</span></div>
           <div class="os-spimp"><div><span>${esc(V.name)}’s income per person in 2066</span><b class="up">${UI.sgn((R.imp.inc / R.imp.incB - 1) * 100, 1)}%</b><em>compared with no aid</em></div>
             <div><span>${esc(V.name)}’s climate losses after ${R.T.y}</span><b class="${R.imp.lost <= R.imp.lostB ? 'up' : 'dn'}">${UI.sgn((R.imp.lost / Math.max(1e-9, R.imp.lostB) - 1) * 100, 0)}%</b><em>${R.imp.lost <= R.imp.lostB ? 'less damage' : 'a bigger economy has more to lose'}</em></div>
@@ -5128,7 +5151,7 @@ const SPECIAL = (function () {
       if (DEMO && QS0().get('summit') === 'chain') o.end(o); else { if (DEMO && QS0().get('summit') === 'desk') o.start = 'desk'; NEWS.show(sess, o); } } }
     else if (ph === 'special') { if (first) showSpecial(C); else if (spD && spD.refresh) spD.refresh(); }
     else if (ph === 'specialres') { if (first) showSpecialRes(C); }
-    else if (ph === 'final') { if (first) finale(C); else FIN.ejSync(state.ejr, HOST ? ejReveal : null); }
+    else if (ph === 'final') { if (first) finale(C); }
     else if (UI.isOpen()) UI.show.close();
     ovSig = sig;
   }
@@ -5198,15 +5221,13 @@ const SPECIAL = (function () {
     SPECIAL.results(root, { T, tally: SIM.specialTally(I.special, C.members), imp: SIM.specialImpact(I, si()), F: SIM.NATIONS.map((N, n) => SIM.specialFacts(C, T, n)),
       host: HOST, onGo: HOST ? () => { lastAdv = { tag: '', at: 0 }; advance(); } : null });
   }
-  // the instructor releases a held-back chart; every screen follows
-  function ejReveal(k) { const on = new Set(String(state.ejr || '').split(',').filter(Boolean)); on.add(k); backend.mergeDoc('polls', GID, { ejr: [...on].join(',') }); }
   function finale(C) {
+    // the projector keeps the class's emissions-and-damage numbers for Chapter 11's Climate Justice slide (ch11_ej.py)
+    if (HOST && !DEMO_ON) try { localStorage.setItem('os-ej-last', JSON.stringify({ at: Date.now(), D: FIN.ejData(C) })); } catch (e) { }
     const I = II(votesUpTo(SIM.SESSIONS.length));
     const L = SIM.ledger(I);
     const o = HOST ? { onGo: () => { if (confirm('Close the game for everyone?')) backend.setDoc('polls', GID, { phase: 'idle' }); }, goLabel: 'Close the game' } : { note: 'Thanks for playing.' };
     o.fut = futAt(SIM.SESSIONS.length - 1, myN()); o.I = I;
-    o.ejr = () => state.ejr || '';
-    if (HOST) o.onReveal = ejReveal;
     UI.show.final(L, o);
   }
   // ── render ──
