@@ -1150,6 +1150,110 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .os .os-news.poll .os-nlbl{color:#2668a8}
 .os .os-pskip{margin-left:6px;font:700 11.5px Inter;color:var(--muted);background:none;border:0;border-bottom:1px dotted var(--muted);padding:0;cursor:pointer}
 .os .os-pskip:hover{color:var(--ink)}
+.os .os-sp{position:absolute;z-index:65;overflow:hidden;border-radius:10px;background:#0c141e;box-shadow:0 30px 80px rgba(0,0,0,.55);transition:left 1.15s cubic-bezier(.65,0,.25,1),top 1.15s cubic-bezier(.65,0,.25,1),width 1.15s cubic-bezier(.65,0,.25,1),height 1.15s cubic-bezier(.65,0,.25,1),border-radius 1.15s}
+.os .os-sp.full{border-radius:16px}
+.os .os-spin2{height:100%;opacity:0;transition:opacity .6s ease .95s;overflow:auto}
+.os .os-sp.full .os-spin2{opacity:1}
+.os .os-tv.sp{min-height:100%;height:auto}
+.os .os-spgrid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:22px;align-items:center}
+.os .os-spimg{position:relative;border-radius:12px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.45);animation:ostvin .7s 1.1s both}
+.os .os-spscene{width:100%;height:auto;display:block}
+.os .os-spcap{position:absolute;left:10px;bottom:10px;font:900 11px Inter;letter-spacing:.18em;text-transform:uppercase;color:#fff;background:rgba(184,50,42,.9);border-radius:4px;padding:3px 8px}
+.os .os-sptxt h2{margin:.3rem 0 .7rem;font:italic 900 40px/1.1 Merriweather,serif;color:#fff;animation:ostvin .7s 1.3s both}
+.os .os-sptxt p{font-size:16px;line-height:1.55;color:#dfe6ee;animation:ostvin .7s 2.2s both}
+.os .os-sptxt p b{color:#f6d38a}
+.os .os-spstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.os .os-spstats div{background:rgba(20,32,46,.9);border:1px solid #2c3c50;border-top:3px solid #c0614f;border-radius:9px;padding:8px 10px;animation:ostvin .6s both}
+.os .os-spstats div:nth-child(1){animation-delay:1.6s}
+.os .os-spstats div:nth-child(2){animation-delay:1.8s}
+.os .os-spstats div:nth-child(3){animation-delay:2s}
+.os .os-spstats b{display:block;font:900 22px Merriweather,serif;color:#fff}
+.os .os-spstats span{font-size:11.5px;color:#9fb3c8}
+.os .os-sp .sp-rain{animation:osrain .6s linear infinite}
+@keyframes osrain{to{transform:translate(-9px,22px)}}
+.os .os-sp .sp-wave{animation:oswave 3.5s ease-in-out infinite alternate}
+@keyframes oswave{to{transform:translateX(-20px)}}
+.os .os-sp .sp-bolt{animation:osbolt 4s infinite;opacity:0}
+@keyframes osbolt{0%,86%,100%{opacity:0}88%,92%{opacity:1}90%{opacity:.2}}
+.os .os-sp .sp-flame{transform-box:fill-box;transform-origin:50% 100%;animation:osflk .5s ease-in-out infinite alternate}
+.os .os-sp .sp-haze{animation:ospulse 3s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.os .os-sp .sp-shim{animation:oswave 2.2s ease-in-out infinite alternate}
+.os .os-spdeb{margin-top:16px}
+.os .os-spdh h3{margin:.25rem 0 .6rem;font:italic 900 28px Merriweather,serif;color:#fff}
+.os .os-signs{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.os .os-sign{display:grid;grid-template-columns:200px 1fr;gap:14px;align-items:center;animation:ossign .7s cubic-bezier(.2,1.4,.4,1) both}
+.os .os-sign:nth-child(2){animation-delay:.35s}
+@keyframes ossign{from{opacity:0;transform:translateY(40px) rotate(-4deg)}to{opacity:1;transform:none}}
+.os .os-placard{width:100%;height:auto;filter:drop-shadow(0 8px 12px rgba(0,0,0,.45))}
+.os .os-slog{font-family:Inter,sans-serif;font-weight:900;letter-spacing:.02em}
+.os .os-sarg{font-size:14px;line-height:1.5;color:#dfe6ee;border-left:4px solid var(--sc);padding-left:12px}
+.os .os-sarg b{color:#fff}
+.os .os-sarg q{display:block;margin-top:6px;font:italic 700 15px/1.4 Merriweather,serif;color:#f3efe4;quotes:"“" "”"}
+.os .os-spvote{margin-top:14px;padding:12px 14px;background:rgba(20,32,46,.9);border:1px solid #2c3c50;border-radius:12px}
+.os .os-spvote>div{display:flex;gap:10px;margin:8px 0}
+.os .os-spvote em{font-style:normal;font-size:12.5px;color:#9fb3c8}
+.os .os-spbtn{flex:1;font:900 16px Inter;padding:14px;border-radius:10px;cursor:pointer;border:2px solid #3b5068;background:#16222f;color:#fff;transition:background .2s,border-color .2s,transform .1s}
+.os .os-spbtn:hover{transform:translateY(-1px)}
+.os .os-spbtn.y:hover,.os .os-spbtn.y.on{background:#2f7a40;border-color:#7cc08b}
+.os .os-spbtn.n:hover,.os .os-spbtn.n.on{background:#8a3a2a;border-color:#e08a78}
+.os .os-spbtn.r:hover,.os .os-spbtn.r.on{background:#8a6a1f;border-color:#f0d27a}
+.os .os-spbtn.p:hover,.os .os-spbtn.p.on{background:#2668a8;border-color:#9fc3e8}
+.os .os-spproj{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:18px;align-items:start}
+.os .os-spcount{background:rgba(20,32,46,.9);border:1px solid #2c3c50;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.os .os-spcr{display:grid;grid-template-columns:18px 1fr;gap:2px 7px;align-items:center;font-size:12px;color:#dfe6ee}
+.os .os-spcr b{font-weight:800}
+.os .os-spcr i{grid-column:1/-1;height:6px;border-radius:3px;background:#1b2838;overflow:hidden}
+.os .os-spcr i span{display:block;height:100%;background:var(--c);transition:width .5s}
+.os .os-spcr em{grid-column:1/-1;font-style:normal;font-size:11px;color:#9fb3c8}
+.os .os-spgo{position:absolute;right:18px;bottom:46px;z-index:4}
+.os .os-sprh{margin:.3rem 0 1rem;font:italic 900 34px Merriweather,serif;color:#fff}
+.os .os-sprs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.os .os-spr{display:flex;flex-direction:column;gap:8px;background:rgba(20,32,46,.9);border:1px solid #2c3c50;border-top:4px solid var(--c);border-radius:12px;padding:12px;opacity:.2;transform:translateY(12px);transition:opacity .5s,transform .5s}
+.os .os-spr.in{opacity:1;transform:none}
+.os .os-sprn{display:grid;grid-template-columns:28px 1fr;gap:0 8px;align-items:center}
+.os .os-sprn b{font:italic 900 18px Merriweather,serif;color:#fff}
+.os .os-sprn em{grid-column:2;font-style:normal;font-size:11px;color:#9fb3c8}
+.os .os-sprbar{display:flex;height:16px;border-radius:5px;overflow:hidden;background:#1b2838;gap:2px}
+.os .os-sprbar i{width:0;transition:width 1.1s cubic-bezier(.3,.8,.3,1) .2s}
+.os .os-sprbar i.y{background:#5aa36a}
+.os .os-sprbar i.n{background:#c0614f}
+.os .os-spr.in .os-sprbar i{width:var(--w)}
+.os .os-sprl{display:flex;justify-content:space-between;font-size:12px;color:#c5d0dc}
+.os .os-sprl b{color:#fff}
+.os .os-sprst{text-align:center;border:3px solid;border-radius:8px;padding:6px 4px;opacity:0;transform:scale(1.6) rotate(-6deg);transition:opacity .3s 1.2s,transform .45s cubic-bezier(.2,1.6,.4,1) 1.2s}
+.os .os-spr.in .os-sprst{opacity:1;transform:rotate(-4deg)}
+.os .os-sprst b{display:block;font:900 15px Inter;letter-spacing:.06em}
+.os .os-sprst span{font-size:11.5px}
+.os .os-sprst.yes{color:#7cc08b;border-color:#7cc08b}
+.os .os-sprst.no{color:#e08a78;border-color:#e08a78}
+.os .os-sprst.use{color:#f0d27a;border-color:#f0d27a;margin-top:auto}
+.os .os-spsum{margin-top:16px;min-height:120px}
+.os .os-spbig{display:flex;align-items:baseline;gap:14px;animation:ostvin .6s both}
+.os .os-spbig b{font:900 46px Merriweather,serif;color:#7cc08b}
+.os .os-spbig span{font-size:16px;color:#dfe6ee}
+.os .os-spbig.none b{color:#e08a78}
+.os .os-spimp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px;animation:ostvin .6s .4s both}
+.os .os-spimp div{background:rgba(20,32,46,.9);border:1px solid #2c3c50;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column}
+.os .os-spimp span{font-size:12px;color:#9fb3c8}
+.os .os-spimp b{font:900 26px Merriweather,serif}
+.os .os-spimp b.up{color:#7cc08b}
+.os .os-spimp b.dn{color:#e08a78}
+.os .os-spimp em{font-style:normal;font-size:11.5px;color:#9fb3c8}
+.os .os-spnote{margin-top:10px;font-size:13px;color:#9fb3c8}
+@media (max-width:1100px){.os .os-spgrid,.os .os-signs,.os .os-spproj{grid-template-columns:1fr}
+.os .os-sprs{grid-template-columns:repeat(2,1fr)}
+.os .os-sign{grid-template-columns:150px 1fr}}
+.os .os-tv.sp.deb .os-spgrid{grid-template-columns:200px minmax(0,1fr);gap:16px}
+.os .os-tv.sp.deb .os-spimg{animation:none}
+.os .os-tv.sp.deb .os-spcap{display:none}
+.os .os-tv.sp.deb .os-sptxt h2{font-size:26px;margin:.1rem 0 .4rem;animation:none}
+.os .os-tv.sp.deb .os-spstats{margin:0}
+.os .os-tv.sp.deb .os-spstats div{padding:5px 8px;animation:none}
+.os .os-tv.sp.deb .os-spstats b{font-size:17px}
+.os .os-tv.sp.deb .os-sptxt p{display:none}
+.os .os-tv.sp.deb .os-spdeb{margin-top:12px;animation:ostvin .6s both}
+.os .os-sp.done{transition:none}
+.os .os-sp.done .os-spin2{transition:none;opacity:1}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -1701,11 +1805,12 @@ const SIM = (function () {
   // world income by 2100 at roughly 4.3 °C; central = between the two. Each nation's exposure scales its share.
   const DAMAGE = { low: .00236, central: .006, high: .0124 };
   const VULN_AVG = NATIONS.reduce((a, N) => a + N.vuln * N.gdp, 0) / NATIONS.reduce((a, N) => a + N.gdp, 0);
-  function newWorld(seed, assign, mode, dmg) {
+  function newWorld(seed, assign, mode, dmg, special) {
     const C = { seed, mode: mode === 'std' ? 'std' : 'adv', dmg: DAMAGE[dmg] ? dmg : 'high', year: Y0, members: Object.entries(assign || {}).map(([pk, n]) => ({ pk, n })), hist: [], news: [], sessions: [], cum: 0, T: T0, ppm: PPM0, slr: 0,
       X: 0, rdMult: 1, permafrost: 0, tips: {}, events: [],
       // the short-lived and other gases, as multiples of their 2026 levels, and the warming they add (or take away)
-      ch4: 1, n2o: 1, Tnc: 0, Tco2: 0, Tch4: 0, Taer: 0, Tn2o: 0 };
+      ch4: 1, n2o: 1, Tnc: 0, Tco2: 0, Tch4: 0, Taer: 0, Tn2o: 0,
+      spIn: special || null, sp: null };
     C.nat = NATIONS.map((N, i) => {
       const gt = Object.values(N.Gt).reduce((a, b) => a + b, 0);
       return { i, Ypot: N.gdp, Y: N.gdp, pop: N.pop, k: N.coal, g: N.gas, c: 1 - N.coal - N.gas, ev: .03, evSales: .06,
@@ -1765,13 +1870,15 @@ const SIM = (function () {
   // ── one year ──
   function step(C) {
     const y = C.year + 1, nat = C.nat, cc = cleanCost(C);
+    if (C.spIn && !C.sp && y > C.spIn.y) C.sp = specialDecide(C.spIn, C.members);
+    const SP = C.sp && y > C.sp.y && y <= C.sp.y + SP_YEARS ? C.sp : null;
     // two oil-and-gas price shocks: fossil importers pay, the exporter cashes in
     const crisis = ENERGY_CRISES[y] || 0;
     C.gasShock = crisis * 30;
     const rec = { year: y, nat: [], events: [], news: [] };
     // the average carbon price elsewhere (for leakage and tariffs)
     const Pof = s => Math.max(s.laws.tax || 0, s.permit || 0);
-    let cleanGen = 0, rdCount = 0, aidPool = 0;
+    let cleanGen = 0, rdCount = 0, aidPool = 0, spPool = 0;
     for (const s of nat) {
       const N = NATIONS[s.i], L = s.laws, t = y - Y0, P = Pof(s);
       s.P = P;
@@ -1799,7 +1906,7 @@ const SIM = (function () {
       s.cleanAdd = cleanAdd;
       cG += cleanAdd; kG += fosAdd * kNew * (L.drill ? 1.2 : 1); gG += fosAdd * (1 - kNew);
       // public build-out and aid money put up clean plants that push out the dirtiest first
-      const buildPct = LI.build.opts[L.build || 0] / 100 + (N.id === 'erid' ? s.aidIn / Math.max(1, s.Y) * .6 : 0);
+      const buildPct = LI.build.opts[L.build || 0] / 100 + (N.id === 'erid' ? s.aidIn / Math.max(1, s.Y) * .6 : 0) + (s.spIn || 0) / Math.max(1, s.Y) * .3;
       if (buildPct > 0) { const extra = D * buildPct * 4.2 * (C.cc0 / cc) ** .5; cG += extra; const fromK = Math.min(kG, extra * .7); kG -= fromK; gG = Math.max(0, gG - (extra - fromK)); }
       // coal phase-out: a straight line to zero over ten years from the vote
       if (L.coal && s.since.coal != null) { const lim = (s.coalAt || s.k) * Math.max(0, 1 - (y - s.since.coal) / 10) * D; if (kG > lim) { const d = kG - lim; kG = lim; cG += d * .75; gG += d * .25; } }
@@ -1848,6 +1955,7 @@ const SIM = (function () {
       s.so2 = X0.so2 * (.5 * rCoal + .3 * sect.industry / b.ind + .2 * sect.transport / b.tr) * Math.pow(N.id === 'cairhien' ? .98 : .985, t);
       if (L.rd) rdCount++;
       if (L.aid && N.id !== 'erid') aidPool += s.Y * .005;
+      if (SP && SP.give.includes(s.i)) spPool += s.Y * SP_SHARE;
     }
     // leakage: industry leaves a nation that prices carbon far above its neighbors (unless it has a border tariff)
     const avgP = nat.reduce((a, s) => a + s.P, 0) / 5;
@@ -1919,6 +2027,17 @@ const SIM = (function () {
       let petro = 0;
       if (N.id === 'saldaea') petro = .10 * (1 - fossilNow / C.fossil0) * (1 - .5 * s.c);
       // Erid receives the climate aid
+      // the special election's aid: donors pay 0.7% of their income; the stricken nation rebuilds now, or prepares for the next disaster
+      s.spIn = 0;
+      if (SP && SP.give.includes(s.i)) cost += SP_SHARE;
+      if (SP && SP.to === s.i && spPool > 0) {
+        s.spIn = spPool; const f = spPool / Math.max(1, s.Y);
+        // rebuilding: relief now, and a quarter of the money becomes lasting roads, homes and businesses
+        if (SP.use === 'rebuild') { cost -= f * .8; s.Ypot += spPool * .25; }
+        // preparing: less relief now, but sea walls and defenses that keep cutting the damage after the aid ends
+        else { cost -= f * .35; s.prep = Math.min(.35, (s.prep || 0) + f * 1.2); }
+      }
+      if (s.prep) { dmg *= 1 - s.prep; s.shock *= 1 - s.prep * .6; }
       if (N.id === 'erid') { s.aidIn = aidPool; cost -= aidPool / Math.max(1, s.Y) * .5; s.adaptLvl = Math.min(1, aidPool / Math.max(1, s.Y) / .02); dmg *= 1 - .25 * s.adaptLvl; }
       if (crisis) {
         const fosShare = (s.k * .4 + s.g * .9) * .6 + (1 - s.ev) * .4 * (L.transit ? .7 : 1) + (L.bcheap ? .1 : 0);        // how much of the economy runs on oil and gas
@@ -1947,7 +2066,7 @@ const SIM = (function () {
       s.growth = s.Y / Yprev - 1;
       s.pop *= 1 + ({ erid: .012, terrasen: .007, cairhien: .002, andor: -.001, saldaea: -.002 })[N.id] * (1 - t / 80);
       s.cumE += s.emis;
-      rec.nat.push({ life: { ...s.life }, Y: s.Y, gdpPc: s.Y / s.pop, growth: s.growth, emis: s.emis, removal: s.removal || 0, sect: { ...s.sect }, clean: s.c, coal: s.k, ev: s.ev, P: s.P, permit: s.permit,
+      rec.nat.push({ spIn: s.spIn || 0, life: { ...s.life }, Y: s.Y, gdpPc: s.Y / s.pop, growth: s.growth, emis: s.emis, removal: s.removal || 0, sect: { ...s.sect }, clean: s.c, coal: s.k, ev: s.ev, P: s.P, permit: s.permit,
         dmg: s.dmg, shock: s.shock, cost: s.cost, petro, laws: { ...s.laws } });
     }
     rec.budget = BUDGETS.map(([t, b]) => [t, b - E2025 - C.cum]);
@@ -1999,7 +2118,7 @@ const SIM = (function () {
   // ── the whole game, replayed from the frozen votes ──
   // I = { seed, assign: {pk: nation}, V: [votes0, votes1, …] }; runs to year `upto` (default: as far as the votes allow)
   function run(I, upto) {
-    const C = newWorld(I.seed, I.assign, I.mode, I.dmg);
+    const C = newWorld(I.seed, I.assign, I.mode, I.dmg, I.special);
     const V = I.V || [];
     const end = Math.min(upto == null ? YN : upto, YN);
     for (let si = 0; si < SESSIONS.length; si++) {
@@ -2030,7 +2149,7 @@ const SIM = (function () {
   const withMode = (I, f) => { const keep = MODE; MODE = I.mode === 'std' ? 'std' : 'adv'; try { return f(); } finally { MODE = keep; } };
   function whatIf(I, rule) {
     // rule(n, si, actual) → laws; the actual game's laws are passed in so a scenario can keep them
-    const A = run(I), C = newWorld(I.seed, I.assign, I.mode, I.dmg);
+    const A = run(I), C = newWorld(I.seed, I.assign, I.mode, I.dmg, I.special);
     for (let si = 0; si < SESSIONS.length; si++) {
       const act = A.sessions[si] ? A.sessions[si].res : null;
       session(C, si, null, n => rule(n, si, act ? act[n].laws : C.nat[n].laws));
@@ -2067,7 +2186,7 @@ const SIM = (function () {
   // Every world below replays the real votes for sessions 0..si, except where `force(n, sIdx)` returns laws for a nation;
   // after session si the laws are held as they are until 2066.
   function heldRun(I, si, force) {
-    const C = newWorld(I.seed, I.assign, I.mode, I.dmg), V = I.V || [];
+    const C = newWorld(I.seed, I.assign, I.mode, I.dmg, I.special), V = I.V || [];
     for (let s = 0; s <= si && s < SESSIONS.length; s++) {
       if (force) { const res = NATIONS.map((N, n) => { const f = force(n, s, C); return f ? { laws: f, tally: {}, real: 0, size: 0 } : decide(C, n, s, V[s] || {}); }); const before = C.nat.map(x => ({ ...x.laws })); res.forEach((r, n) => enact(C, n, r.laws)); C.sessions.push({ year: C.year, si: s, res, before }); }
       else session(C, s, V[s]);
@@ -2146,6 +2265,59 @@ const SIM = (function () {
     return clamp(s / C.hist.length / .96 + .1);
   }
 
+  // ── the special election: once a game, after a major disaster, every nation votes on sending aid to the nation hit ──
+  // The trigger is the first single disaster after the 2040 election that costs a nation at least 1.5% of its income;
+  // if none comes by 2051, the nation hit hardest that year. Aid = 0.7% of a donor's income a year (the UN's long-standing
+  // aid target) for ten years. The stricken nation's delegates choose how to use it: rebuild now, or prepare.
+  const SP_YEARS = 10, SP_SHARE = .007, SP_FROM = 2042, SP_LAST = 2051, SP_SEV = .015;
+  function specialTrigger(C) {
+    for (const r of C.hist) {
+      if (r.year < SP_FROM) continue;
+      const big = r.events.filter(e => e.sev >= SP_SEV).sort((a, b) => b.sev - a.sev)[0];
+      if (big) return { y: r.year, to: big.n, ev: big };
+      if (r.year >= SP_LAST) { const n = r.nat.map((x, k) => [k, x.dmg + x.shock]).sort((a, b) => b[1] - a[1])[0][0]; return { y: r.year, to: n, ev: r.events.filter(e => e.n === n).sort((a, b) => b.sev - a.sev)[0] || null }; }
+    }
+    return null;
+  }
+  // stand-ins lean the way their nation's situation pushes them (rich and exposed nations more willing)
+  const SP_LEAN = [.62, .42, .3, .5, .55];
+  function specialDecide(sp, members) {
+    const give = [], v = sp.v || {};
+    let use = 'prepare';
+    NATIONS.forEach((N, n) => {
+      const del = members.filter(m => m.n === n), ballots = [];
+      for (const m of del) { const x = v[m.pk]; ballots.push(x != null ? x : n === sp.to ? ((hash(m.pk + ':use') % 100) < 50 ? 'r' : 'p') : ((hash(m.pk + ':aid') % 100) < SP_LEAN[n] * 100 ? 'y' : 'n')); }
+      if (!ballots.length) for (let k = 0; k < 3; k++) ballots.push(n === sp.to ? (k ? 'p' : 'r') : ((hash(sp.y + ':' + n + ':' + k) % 100) < SP_LEAN[n] * 100 ? 'y' : 'n'));
+      if (n === sp.to) { const r = ballots.filter(b => b === 'r').length; use = r * 2 > ballots.length ? 'rebuild' : 'prepare'; return; }
+      const y = ballots.filter(b => b === 'y').length; if (y * 2 > ballots.length) give.push(n);
+    });
+    return { y: sp.y, to: sp.to, give, use, none: false, ...(sp.none ? { give: [] } : {}) };
+  }
+  // the tallies, for the announcement
+  function specialTally(sp, members) {
+    const v = sp.v || {};
+    return NATIONS.map((N, n) => { const del = members.filter(m => m.n === n); let a = 0, b = 0, real = 0;
+      for (const m of del) { const x = v[m.pk] != null ? v[m.pk] : n === sp.to ? ((hash(m.pk + ':use') % 100) < 50 ? 'r' : 'p') : ((hash(m.pk + ':aid') % 100) < SP_LEAN[n] * 100 ? 'y' : 'n'); if (v[m.pk] != null) real++; if (x === 'y' || x === 'r') a++; else b++; }
+      return { n, a, b, real, size: del.length }; });
+  }
+  // what the debate in nation x can say: x's share of the world's emissions since 2026, the stricken nation's climate losses
+  // since 2026 (so the share of them x's emissions account for), x's own losses, and what the aid would cost x each year
+  function specialFacts(C, sp, x) {
+    const h = C.hist.filter(r => r.year <= sp.y), sum = f => h.reduce((a, r) => a + f(r), 0);
+    const share = sum(r => r.nat[x].emis) / Math.max(1, sum(r => r.worldE)), lostTo = sum(r => r.nat[sp.to].Y * (r.nat[sp.to].dmg + r.nat[sp.to].shock));
+    const last = h[h.length - 1];
+    return { share, lostTo, owed: share * lostTo, ownLost: sum(r => r.nat[x].Y * (r.nat[x].dmg + r.nat[x].shock)), aid: last.nat[x].Y * SP_SHARE,
+      yearLoss: last.nat[sp.to].Y * (last.nat[sp.to].dmg + last.nat[sp.to].shock), yearPct: last.nat[sp.to].dmg + last.nat[sp.to].shock };
+  }
+  // what the aid does: the stricken nation and the donors in 2066, against the same world with no aid
+  function specialImpact(I, si) {
+    return withMode(I, () => {
+      const A = heldRun(I, si), B = heldRun({ ...I, special: { ...I.special, none: true } }, si), a = A.hist[A.hist.length - 1], b = B.hist[B.hist.length - 1], to = I.special.to;
+      const span = W => W.hist.filter(r => r.year > I.special.y), lost = (W, n) => span(W).reduce((x, r) => x + r.nat[n].Y * (r.nat[n].dmg + r.nat[n].shock), 0);
+      return { sp: A.sp, inc: a.nat[to].gdpPc, incB: b.nat[to].gdpPc, lost: lost(A, to), lostB: lost(B, to), pool: (A.hist.find(r => r.year === I.special.y + 1) || a).nat[to].spIn,
+        donors: NATIONS.map((N, n) => ({ n, inc: a.nat[n].gdpPc, incB: b.nat[n].gdpPc })) };
+    });
+  }
   // ── what a nation's last vote did, for the report at the next election ──
   // the world as it happened since election s-1, against the same world where nation n kept the laws it had before that
   // election (everyone else voting as they did)
@@ -2216,7 +2388,7 @@ const SIM = (function () {
   const at = (pts, y) => { for (let i = 1; i < pts.length; i++) if (y <= pts[i][0]) { const [a, va] = pts[i - 1], [b, vb] = pts[i]; return va + (vb - va) * (y - a) / (b - a); } return pts[pts.length - 1][1]; };
 
   return { Y0, YN, SESSIONS, NATIONS, NI, LAWS, LI, GROUPS, SECTORS, lawsFor, pack, parse, deal, packAssign, parseAssign, newWorld, run, step, session, decide, standIn,
-    lastVote, HEAT_DAYS, GREEN_ADV, BROWN_ADV, AR6, AR6x, BUDGETS, E2025, DAMAGE, CLIM, climateStep, NONCO2, CH4_OTHER, cleanAt,
+    specialTrigger, specialDecide, specialTally, specialFacts, specialImpact, SP_YEARS, SP_SHARE, lastVote, HEAT_DAYS, GREEN_ADV, BROWN_ADV, AR6, AR6x, BUDGETS, E2025, DAMAGE, CLIM, climateStep, NONCO2, CH4_OTHER, cleanAt,
     ledger, whatIf, effort, project, futures, heldRun, profiles, GREEN, BROWN, SSP, at, hash, cleanCost, emptyLaws, T0, PPM0,
     dealSplit, dilemma, DIL_Y, horizon, platsAt, PLATFORMS, PI, STD_START, stdLaws, platOf, ppack, pparse, standInStd, optionPreview, platProfiles };
 })();
@@ -4280,6 +4452,156 @@ const POLLS = (function () {
   return { SPECS, OPEN, key, spec, asked, openAt, closingAt, pack, unpack };
 })();
 
+// ONE SKY · THE SPECIAL ELECTION. Once a game, after a major climate disaster, the game stops: the Breaking News bar grows
+// into a full-screen broadcast about the nation hit, the debate in each nation (two campaign signs, each argued with numbers
+// from the game: the share of the damage your nation's emissions account for, against what the aid would cost at home),
+// a special election in every nation (send aid, or not; the stricken nation chooses how to use it), and the results.
+// The aid is real in the engine (SIM.specialDecide / step): 0.7% of a donor's income a year for ten years.
+'use strict';
+const SPECIAL = (function () {
+  const N5 = SIM.NATIONS, esc = UI.esc;
+  const money = t => t >= 1 ? `$${t.toFixed(1)} trillion` : `$${Math.round(t * 1000)} billion`;
+  const KIND = { flood: 'Catastrophic floods devastate', storm: 'A superstorm devastates', heat: 'A killing heat wave devastates', drought: 'Drought and failed harvests devastate', fire: 'Wildfires devastate' };
+  let layer = null, timers = [];
+  const later = (ms, f) => timers.push(setTimeout(f, ms));
+  const clear = () => { timers.forEach(clearTimeout); timers = []; };
+
+  // ── the layer: grows out of the news bar to fill the game ──
+  function open(root, html, grow) {
+    clear();
+    if (!layer || !layer.isConnected) { layer = document.createElement('div'); layer.className = 'os-sp'; root.appendChild(layer); }
+    layer.innerHTML = `<div class="os-spin2">${html}</div>`;
+    if (grow) {
+      const bar = root.querySelector('#osNews'), R = root.getBoundingClientRect(), b = bar ? bar.getBoundingClientRect() : null;
+      layer.classList.remove('full', 'done'); layer.classList.add('grow');
+      if (b && b.width) Object.assign(layer.style, { left: (b.left - R.left) + 'px', top: (b.top - R.top) + 'px', width: b.width + 'px', height: b.height + 'px' });
+      void layer.offsetWidth;
+      const L0 = layer; setTimeout(() => { if (!L0.isConnected) return; Object.assign(L0.style, { left: '0px', top: '0px', width: '100%', height: '100%' }); L0.classList.add('full'); setTimeout(() => L0.classList.add('done'), 1400); }, 40);
+    } else { Object.assign(layer.style, { left: '0px', top: '0px', width: '100%', height: '100%' }); layer.classList.add('full', 'grow'); }
+    return layer;
+  }
+  function close() { clear(); if (layer) { layer.remove(); layer = null; } }
+  const isOpen = () => !!(layer && layer.isConnected);
+
+  // ── the scene: the stricken nation's capital, in the kind of disaster that struck ──
+  function scene(kind, col) {
+    const W = 640, H = 360, rnd = SIM.hash(kind) % 97;
+    const sky = { flood: ['#27313d', '#4a5866'], storm: ['#1b232d', '#3e4b59'], heat: ['#7a3a1e', '#d9894a'], drought: ['#8a5a2a', '#d9b06a'], fire: ['#3a1a12', '#b8502a'] }[kind] || ['#27313d', '#4a5866'];
+    let s = `<defs><linearGradient id="spSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky[0]}"/><stop offset="1" stop-color="${sky[1]}"/></linearGradient>
+      <linearGradient id="spWater" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f6f84" stop-opacity=".95"/><stop offset="1" stop-color="#25384a"/></linearGradient></defs>
+      <rect width="${W}" height="${H}" fill="url(#spSky)"/>`;
+    // the town: houses and towers on the delta
+    let town = '';
+    for (let i = 0; i < 16; i++) { const x = 18 + i * 39 + ((i * 37 + rnd) % 13), h = 40 + ((i * 53) % 70), w = 26 + ((i * 17) % 14);
+      town += i % 4 === 1 ? `<rect x="${x}" y="${250 - h - 30}" width="${w - 6}" height="${h + 30}" fill="#14191f"/>${[0, 1, 2, 3].map(r => `<rect x="${x + 5}" y="${250 - h - 22 + r * 18}" width="4" height="6" fill="#d8b860" opacity="${(i + r) % 3 ? .15 : .7}"/>`).join('')}`
+        : `<path d="M${x},250 V${250 - h * .6} L${x + w / 2},${250 - h * .6 - 18} L${x + w},${250 - h * .6} V250 Z" fill="#171d24"/><rect x="${x + w / 2 - 3}" y="${250 - h * .4}" width="6" height="8" fill="#d8b860" opacity="${i % 3 ? .12 : .6}"/>`; }
+    if (kind === 'flood' || kind === 'storm') {
+      s += `<g class="sp-rain">${Array.from({ length: 70 }, (_, i) => `<path d="M${(i * 47) % W},${(i * 29) % H} l-9,22" stroke="#9fb3c8" stroke-width="1.1" opacity=".45"/>`).join('')}</g>`;
+      if (kind === 'storm') s += `<path class="sp-bolt" d="M420,20 l-22,62 h16 l-26,70" stroke="#f3f0e0" stroke-width="3" fill="none"/>`;
+      s += town + `<rect y="226" width="${W}" height="${H - 226}" fill="url(#spWater)"/>` +
+        [0, 1, 2].map(k => `<path class="sp-wave" style="animation-delay:${k * .7}s" d="M0,${234 + k * 22} ${Array.from({ length: 17 }, (_, i) => `q20,-7 40,0`).join(' ')}" stroke="#a9c3d3" stroke-width="1.6" fill="none" opacity=".55"/>`).join('') +
+        `<g opacity=".8">${[90, 300, 510].map((x, i) => `<path d="M${x},${262 + i * 8} h34 v-10 h-34 Z" fill="#14191f"/><path d="M${x + 4},${252 + i * 8} l13,-11 l13,11" fill="#14191f"/>`).join('')}</g>`;
+    } else if (kind === 'heat' || kind === 'drought') {
+      s += `<circle cx="470" cy="90" r="46" fill="#ffd68a" opacity=".85"/><circle class="sp-haze" cx="470" cy="90" r="90" fill="#ffd68a" opacity=".2"/>` + town +
+        `<rect y="250" width="${W}" height="${H - 250}" fill="#6a4a2a"/>` + Array.from({ length: 26 }, (_, i) => `<path d="M${(i * 61) % W},${262 + (i * 23) % 90} l${12 + i % 9},${6 - i % 7} l${8 + i % 5},${-9 + i % 6}" stroke="#3a2a18" stroke-width="1.3" fill="none"/>`).join('') +
+        `<g class="sp-shim">${[0, 1, 2].map(k => `<path d="M0,${232 - k * 9} ${Array.from({ length: 17 }, () => 'q20,-4 40,0').join(' ')}" stroke="#ffe0a8" stroke-width="1" fill="none" opacity=".35"/>`).join('')}</g>`;
+    } else {
+      s += town + `<rect y="250" width="${W}" height="${H - 250}" fill="#2a1a12"/>` + Array.from({ length: 9 }, (_, i) => `<path class="sp-flame" style="animation-delay:${i * .17}s" d="M${40 + i * 70},250 q-18,-30 0,-70 q8,26 20,20 q10,30 -20,50 Z" fill="#e8743a" opacity=".85"/>`).join('') +
+        `<rect width="${W}" height="140" fill="#3a2a22" opacity=".45"/>`;
+    }
+    s += `<rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="${col}" stroke-width="6"/>`;
+    return `<svg class="os-spscene" viewBox="0 0 ${W} ${H}" role="img" aria-label="The disaster">${s}</svg>`;
+  }
+
+  // ── a campaign sign: a placard on a stick, and the argument under it ──
+  function sign(side, slogan, args, quote) {
+    const col = side === 'yes' ? '#2f7a40' : side === 'no' ? '#a8483f' : side === 'r' ? '#b8902f' : '#2668a8';
+    const words = slogan.split(' '), lines = [];
+    for (const w of words) { const L = lines[lines.length - 1]; if (L && (L + ' ' + w).length <= 10) lines[lines.length - 1] = L + ' ' + w; else lines.push(w); }
+    const fs = lines.length > 3 ? 28 : 34;
+    return `<div class="os-sign ${side}"><svg viewBox="0 0 300 250" class="os-placard" aria-hidden="true">
+        <rect x="143" y="150" width="14" height="100" fill="#8a6a42" stroke="#3b3222"/>
+        <g transform="rotate(${side === 'yes' || side === 'r' ? -3 : 3} 150 85)"><rect x="18" y="12" width="264" height="150" rx="4" fill="#fbf7ec" stroke="${col}" stroke-width="7"/>
+        ${lines.map((l, i) => `<text x="150" y="${88 - (lines.length - 1) * fs * .55 + i * fs * 1.1}" text-anchor="middle" class="os-slog" fill="${col}" font-size="${fs}">${esc(l)}</text>`).join('')}</g></svg>
+      <div class="os-sarg" style="--sc:${col}">${args}${quote ? `<q>${quote}</q>` : ''}</div></div>`;
+  }
+
+  // ── the story and the debate ──
+  // D = { T: {y,to,ev}, F: facts per nation (SIM.specialFacts), T66?, you, warm, host, counts(), mine, onVote(c) }
+  function story(root, D) {
+    const V = N5[D.T.to], kind = D.T.ev ? D.T.ev.kind : 'flood', f0 = D.F[(D.T.to + 1) % 5];
+    const head = `${KIND[kind] || 'Disaster strikes'} ${V.name}`;
+    const html = `<div class="os-tv sp"><div class="os-tvbar"><span class="os-tvbug">ONE SKY <b>NEWS</b></span><span class="os-tvlive"><i></i>LIVE</span><span class="os-tvshow">BREAKING · ${D.T.y}</span><span class="os-tvclock" data-spclock></span></div>
+      <div class="os-tvbody"><div class="os-spgrid"><div class="os-spimg">${scene(kind, V.color)}<span class="os-spcap">${esc(V.name)} · ${D.T.y}</span></div>
+        <div class="os-sptxt"><span class="os-tvkick">BREAKING NEWS</span><h2>${esc(head)}</h2>
+          <div class="os-spstats"><div><b>${money(f0.yearLoss)}</b><span>lost this year, ${(f0.yearPct * 100).toFixed(1)}% of ${esc(V.name)}’s income</span></div>
+            <div><b>${money(f0.lostTo)}</b><span>lost to climate since 2026</span></div><div><b>+${D.warm.toFixed(2)} °C</b><span>world warming</span></div></div>
+          <p>${esc(V.name)} appeals to the world for help. <b>Special elections have been called in all five nations.</b></p></div></div>
+        <div class="os-spdeb" data-spdeb></div></div>
+      <div class="os-tvticker"><b>SPECIAL ELECTIONS</b><div class="os-tvcrawl"><span>Should your nation send aid to ${esc(V.name)}? 0.7% of its income a year, for ten years  ·  ${esc(V.name)}’s delegates decide how any aid is spent  ·  The polls close when the clock runs out</span><span aria-hidden="true">Should your nation send aid to ${esc(V.name)}? 0.7% of its income a year, for ten years  ·  ${esc(V.name)}’s delegates decide how any aid is spent  ·  The polls close when the clock runs out</span></div></div></div>`;
+    const L = open(root, html, !D.again);
+    const deb = () => {
+      const box = L.querySelector('[data-spdeb]'); if (!box) return;
+      const tv = L.querySelector('.os-tv'); if (tv) tv.classList.add('deb');
+      const one = n => {
+        const N = N5[n], f = D.F[n];
+        if (n === D.T.to) return `<div class="os-spone"><div class="os-spdh"><span class="os-tvkick">THE DEBATE IN ${N.name.toUpperCase()}</span><h3>If aid comes, how should ${esc(N.name)} spend it?</h3></div>
+          <div class="os-signs">${sign('r', 'REBUILD OUR HOMES NOW', `Rebuild homes, roads and businesses as fast as possible.`, 'Families need roofs and jobs this year, not in ten.')}
+            ${sign('p', 'BUILD FOR THE NEXT STORM', `Sea walls, drainage, heat shelters and drought-proof farms. Slower to recover, but far less damage next time.`, 'This will happen again. Be ready.')}</div></div>`;
+        return `<div class="os-spone"><div class="os-spdh"><span class="os-tvkick">THE DEBATE IN ${N.name.toUpperCase()}</span><h3>Should ${esc(N.name)} send aid to ${esc(V.name)}?</h3></div>
+          <div class="os-signs">${sign('yes', 'WE HELPED CAUSE THIS', `${esc(N.name)} has emitted <b>${Math.round(f.share * 100)}%</b> of the world’s CO₂ since 2026. One Sky’s climate model puts that share of ${esc(V.name)}’s climate losses at about <b>${money(f.owed)}</b>.`, `We helped fill the sky. It is only fair that we help pay.`)}
+            ${sign('no', 'OUR MONEY OUR PEOPLE', `Aid would cost ${esc(N.name)} <b>${money(f.aid)} a year</b> (0.7% of its income) for ten years. ${esc(N.name)} has lost <b>${money(f.ownLost)}</b> to climate itself since 2026.`, `Spend it at home: on our own sea walls, schools and hospitals.`)}</div></div>`;
+      };
+      if (D.host) {
+        // the projector: each nation's debate in turn, and the count
+        const order = [0, 1, 2, 3, 4]; let k = 0;
+        const show = () => { box.innerHTML = `<div class="os-spproj">${one(order[k % 5])}<div class="os-spcount" data-spcount></div></div>`; count(); k++; };
+        const count = () => { const c = box.querySelector('[data-spcount]'); if (!c) return; const t = D.counts(); c.innerHTML = `<span class="os-tvkick">VOTES IN</span>${t.map(r => `<div class="os-spcr" style="--c:${N5[r.n].color}">${UI.crest(r.n, 16)}<b>${N5[r.n].name}</b><i><span style="width:${r.size ? Math.round(r.real / r.size * 100) : 100}%"></span></i><em>${r.size ? `${r.real} of ${r.size}` : 'stand-ins'}</em></div>`).join('')}`; };
+        show(); const iv = setInterval(() => { if (!L.isConnected) return clearInterval(iv); show(); }, 9000); timers.push(iv);
+        D.refresh = count;
+      } else if (D.you >= 0) {
+        const me = D.you === D.T.to, opts = me ? [['r', 'Rebuild now'], ['p', 'Prepare for the next one']] : [['y', `Send aid to ${V.name}`], ['n', 'Don’t send aid']];
+        box.innerHTML = one(D.you) + `<div class="os-spvote"><span class="os-tvkick">YOUR VOTE · SPECIAL ELECTION IN ${N5[D.you].name.toUpperCase()}</span><div>${opts.map(([v, t]) => `<button class="os-spbtn ${v}${D.mine === v ? ' on' : ''}" data-spv="${v}">${esc(t)}</button>`).join('')}</div><em>${D.mine ? 'Vote cast. You can change it until the polls close.' : 'Secret ballot. The polls close when the clock runs out.'}</em></div>`;
+        box.querySelectorAll('[data-spv]').forEach(b => b.onclick = () => { D.onVote(b.dataset.spv); box.querySelectorAll('[data-spv]').forEach(x => x.classList.toggle('on', x === b)); box.querySelector('.os-spvote em').textContent = 'Vote cast. You can change it until the polls close.'; });
+      } else box.innerHTML = one((D.T.to + 1) % 5);
+    };
+    if (D.again) deb(); else later(7500, deb);
+    if (D.host && D.onGo) later(D.again ? 0 : 8000, () => { const b = document.createElement('button'); b.className = 'os-btn go os-spgo'; b.textContent = 'Close the polls now ▸'; b.onclick = D.onGo; L.querySelector('.os-tv').appendChild(b); });
+  }
+  function clock(t) { if (layer) { const c = layer.querySelector('[data-spclock]'); if (c) c.textContent = t; } }
+
+  // ── the results ──
+  // R = { T, tally (SIM.specialTally), imp (SIM.specialImpact), F, you, host, onGo }
+  function results(root, R) {
+    const V = N5[R.T.to], sp = R.imp.sp, donors = [0, 1, 2, 3, 4].filter(n => n !== R.T.to);
+    const html = `<div class="os-tv sp"><div class="os-tvbar"><span class="os-tvbug">ONE SKY <b>NEWS</b></span><span class="os-tvlive"><i></i>LIVE</span><span class="os-tvshow">SPECIAL ELECTIONS · THE RESULTS</span></div>
+      <div class="os-tvbody"><span class="os-tvkick">THE WORLD DECIDES</span><h2 class="os-sprh">Will the world help ${esc(V.name)}?</h2>
+        <div class="os-sprs">${donors.map(n => { const t = R.tally[n], tot = (t.a + t.b) || 1, yes = sp.give.includes(n);
+          return `<div class="os-spr" data-n="${n}" style="--c:${N5[n].color}"><div class="os-sprn">${UI.crest(n, 26)}<b>${N5[n].name}</b><em>${t.real} of ${t.size} voted</em></div>
+            <div class="os-sprbar"><i class="y" style="--w:${(t.a / tot * 100).toFixed(1)}%"></i><i class="n" style="--w:${(t.b / tot * 100).toFixed(1)}%"></i></div>
+            <div class="os-sprl"><span>Send aid <b>${t.a}</b></span><span>Don’t <b>${t.b}</b></span></div>
+            <div class="os-sprst ${yes ? 'yes' : 'no'}"><b>${yes ? 'AID APPROVED' : t.a === t.b ? 'TIED · NO AID' : 'AID REJECTED'}</b><span>${yes ? money(R.F[n].aid) + ' a year' : t.a === t.b ? 'a tie sends nothing' : 'nothing sent'}</span></div></div>`; }).join('')}
+          <div class="os-spr to" data-n="${R.T.to}" style="--c:${V.color}"><div class="os-sprn">${UI.crest(R.T.to, 26)}<b>${V.name}</b><em>decides how to spend it</em></div>
+            <div class="os-sprst use"><b>${sp.use === 'rebuild' ? 'REBUILD NOW' : 'PREPARE FOR THE NEXT ONE'}</b><span>${sp.use === 'rebuild' ? 'homes, roads, businesses' : 'sea walls, shelters, drought-proof farms'}</span></div></div></div>
+        <div class="os-spsum" data-spsum></div></div></div>`;
+    const L = open(root, html, false);
+    const rows = [...L.querySelectorAll('.os-spr')];
+    rows.forEach((r, i) => later(500 + i * 1500, () => r.classList.add('in')));
+    later(500 + rows.length * 1500 + 600, () => {
+      const box = L.querySelector('[data-spsum]'); if (!box) return;
+      const total = R.imp.pool || 0, n = sp.give.length;
+      box.innerHTML = n ? `<div class="os-spbig"><b>${money(total)}</b><span>a year for ten years, from ${sp.give.map(k => N5[k].name).join(', ').replace(/, ([^,]*)$/, ' and $1')}</span></div>
+          <div class="os-spimp"><div><span>${esc(V.name)}’s income per person in 2066</span><b class="up">${UI.sgn((R.imp.inc / R.imp.incB - 1) * 100, 1)}%</b><em>compared with no aid</em></div>
+            <div><span>${esc(V.name)}’s climate losses after ${R.T.y}</span><b class="${R.imp.lost <= R.imp.lostB ? 'up' : 'dn'}">${UI.sgn((R.imp.lost / Math.max(1e-9, R.imp.lostB) - 1) * 100, 0)}%</b><em>${R.imp.lost <= R.imp.lostB ? 'less damage' : 'a bigger economy has more to lose'}</em></div>
+            <div><span>What the donors give up</span><b class="dn">0.7%</b><em>of their income each year until ${R.T.y + SIM.SP_YEARS}</em></div></div>`
+        : `<div class="os-spbig none"><b>No aid</b><span>No nation voted to send aid. ${esc(V.name)} recovers on its own.</span></div>`;
+      if (R.host && R.onGo) { const b = document.createElement('button'); b.className = 'os-btn go os-spgo'; b.textContent = 'Resume the years ▸'; b.onclick = R.onGo; L.querySelector('.os-tv').appendChild(b); }
+      else { const p = document.createElement('p'); p.className = 'os-spnote'; p.textContent = 'The years resume in a moment.'; box.appendChild(p); }
+    });
+  }
+  return { story, results, close, isOpen, clock, money };
+})();
+
 // LIVE: the class plays One Sky on laptops. Rides the deck's live backend (window.__deckLiveReady: sharded Firestore
 // writes, ?host = the projected copy). Phases (main doc):
 //   idle → lobby → deal → vote (timed, session 0) → summit → run (years tick) → vote (session 1) → summit → run → …
@@ -4306,7 +4628,7 @@ const POLLS = (function () {
   const q = s => root.querySelector(s);
   const esc = UI.esc;
   const visible = () => slide.classList.contains('active') || !slide.classList.contains('slide');
-  const SECS = { vote0: 200, vote: 170 };
+  const SECS = { vote0: 200, vote: 170, special: 150 };
   let backend = null, HOST = false, state = {}, unsub = null, subMode = '';
   const HOSTID = (() => { try { let v = sessionStorage.getItem('os-host'); if (!v) { v = Math.random().toString(36).slice(2, 10); sessionStorage.setItem('os-host', v); } return v; } catch (e) { return Math.random().toString(36).slice(2, 10); } })();
   const clockMine = () => !state.hostId || state.hostId === HOSTID;
@@ -4317,7 +4639,9 @@ const POLLS = (function () {
   const MODE = () => state.mode === 'std' ? 'std' : 'adv', STDM = () => MODE() === 'std';
   // the damage reading the instructor picked (low = DICE, central, high = Burke et al.); games opened before it existed use high
   const DMG = () => ['low', 'central', 'high'].includes(state.dmg) ? state.dmg : 'high';
-  const II = V => ({ seed: seed(), assign: assign(), V, mode: MODE(), dmg: DMG() });
+  // the special election, once it has been called: its year, the nation hit, and (once the polls close) the frozen votes
+  const spState = () => { if (!state.spx) return null; const [y, to] = String(state.spx).split(':').map(Number); return { y, to, v: (state.F && state.F.SA) || {} }; };
+  const II = V => ({ seed: seed(), assign: assign(), V, mode: MODE(), dmg: DMG(), special: spState() });
   const LW = () => STDM() ? 'choices' : 'laws';
   const pickDmg = () => { try { const v = localStorage.getItem('os-dmg'); return ['low', 'central', 'high'].includes(v) ? v : 'high'; } catch (e) { return 'high'; } };
   const pickMode = () => { try { return localStorage.getItem('os-mode') === 'adv' ? 'adv' : 'std'; } catch (e) { return 'std'; } };
@@ -4334,8 +4658,8 @@ const POLLS = (function () {
   function worldNow() {
     const ph = phase(), s = si();
     const nV = ph === 'vote' || ph === 'deal' ? s : s + 1;
-    const upto = ph === 'run' ? yr() : ph === 'final' ? SIM.YN : SIM.SESSIONS[s];
-    const sig = MODE() + DMG() + gid() + '|' + (state.assign || '') + '|' + nV + '|' + upto + '|' + JSON.stringify(votesUpTo(nV));
+    const upto = ['run', 'special', 'specialres'].includes(ph) ? yr() : ph === 'final' ? SIM.YN : SIM.SESSIONS[s];
+    const sig = MODE() + DMG() + (state.spx || '') + JSON.stringify((state.F || {}).SA || 0) + gid() + '|' + (state.assign || '') + '|' + nV + '|' + upto + '|' + JSON.stringify(votesUpTo(nV));
     if (sig !== cMemo.sig) cMemo = { sig, C: SIM.run(II(votesUpTo(nV)), upto) };
     return cMemo.C;
   }
@@ -4343,7 +4667,7 @@ const POLLS = (function () {
   let fMemo = { sig: '', F: null };
   function futAt(sIdx, k) {
     if (sIdx < 0) return null;
-    const sig = MODE() + DMG() + gid() + '|' + (state.assign || '') + '|' + sIdx + '|' + k + '|' + JSON.stringify(votesUpTo(sIdx + 1));
+    const sig = MODE() + DMG() + (state.spx || '') + JSON.stringify((state.F || {}).SA || 0) + gid() + '|' + (state.assign || '') + '|' + sIdx + '|' + k + '|' + JSON.stringify(votesUpTo(sIdx + 1));
     if (sig !== fMemo.sig) fMemo = { sig, F: SIM.futures(II(votesUpTo(sIdx + 1)), sIdx, k) };
     return fMemo.F;
   }
@@ -4366,6 +4690,10 @@ const POLLS = (function () {
     const ph = phase(), s = si(), tag = ph + ':' + s + ':' + yr() + ':' + gid();
     if (tag === lastAdv.tag && Date.now() - lastAdv.at < 3000) return;
     lastAdv = { tag, at: Date.now() };
+    // the special election: called the year a major disaster strikes (once a game), closed by the clock, then resumed
+    if (ph === 'run' && !state.spx) { const T = SIM.specialTrigger(worldNow()); if (T && T.y <= yr()) { setPhase('special', SECS.special, { spx: T.y + ':' + T.to }); return; } }
+    if (ph === 'special') { setPhase('specialres', null, { F: { SA: collect('SA') } }); return; }
+    if (ph === 'specialres') { setPhase('run', state.held ? null : pace(), {}); return; }
     if (ph === 'vote') setPhase('summit', null, { F: { ['V' + s]: collect('V' + s) } });
     else if (ph === 'run') {
       const n = yr() + 1, next = SIM.SESSIONS[s + 1], pr = pollResults(n), x = pr ? { pr } : {};
@@ -4466,7 +4794,7 @@ const POLLS = (function () {
     ms.onchange = () => { try { localStorage.setItem('os-mode', ms.value); } catch (e) { } if (phase() === 'lobby') backend.mergeDoc('polls', GID, { mode: ms.value }); };
     bar.querySelector('[data-open]').onclick = () => backend.setDoc('polls', GID, { phase: 'lobby', players: {}, gameId: Date.now() % 100000 + 1, pace: 8, hostId: HOSTID, round: 1, mode: ms.value, dmg: ds.value });
     bar.querySelector('[data-start]').onclick = () => { if (!Object.keys(state.players || {}).length && !confirm('Nobody has joined yet. Deal a class of stand-ins?')) return; deal(); };
-    bar.querySelector('[data-skip]').onclick = () => { if (phase() === 'vote') advance(); else if (phase() === 'run') { const nx = SIM.SESSIONS[si() + 1] || SIM.YN; if (confirm(`Jump ahead to ${nx}?`)) backend.mergeDoc('polls', GID, { yr: nx - 1, deadline: Date.now() + 300, paused: 0 }); } };
+    bar.querySelector('[data-skip]').onclick = () => { if (phase() === 'vote' || phase() === 'special' || phase() === 'specialres') advance(); else if (phase() === 'run') { const nx = SIM.SESSIONS[si() + 1] || SIM.YN; if (confirm(`Jump ahead to ${nx}?`)) backend.mergeDoc('polls', GID, { yr: nx - 1, deadline: Date.now() + 300, paused: 0 }); } };
     bar.querySelector('[data-pace]').onchange = e => backend.mergeDoc('polls', GID, { pace: +e.target.value });
     bar.querySelector('[data-pause]').onclick = () => state.paused ? backend.mergeDoc('polls', GID, { paused: 0, deadline: Date.now() + pace() * 1000 }) : backend.mergeDoc('polls', GID, { paused: 1, deadline: null });
     bar.querySelector('[data-take]').onclick = () => backend.mergeDoc('polls', GID, { hostId: HOSTID });
@@ -4477,7 +4805,7 @@ const POLLS = (function () {
     const bar = q('[data-hostbar]'), ph = phase(), n = Object.keys(state.players || {}).length;
     const show = (sel, on) => { const e = bar.querySelector(sel); if (e) e.hidden = !on; };
     show('[data-open]', ph === 'idle'); show('[data-samplebtn]', ph === 'idle' || ph === 'lobby'); show('[data-modewrap]', ph === 'idle' || ph === 'lobby'); show('[data-dmgwrap]', ph === 'idle' || ph === 'lobby');
-    if (ph === 'lobby' && state.mode) { const m = bar.querySelector('[data-mode]'); if (m.value !== state.mode) m.value = state.mode; } show('[data-start]', ph === 'lobby'); show('[data-skip]', ph === 'vote' || ph === 'run');
+    if (ph === 'lobby' && state.mode) { const m = bar.querySelector('[data-mode]'); if (m.value !== state.mode) m.value = state.mode; } show('[data-start]', ph === 'lobby'); show('[data-skip]', ['vote', 'run', 'special', 'specialres'].includes(ph));
     show('[data-pacewrap]', ['run', 'summit'].includes(ph)); show('[data-pause]', ph === 'run'); show('[data-take]', !clockMine() && ph !== 'idle');
     bar.querySelector('[data-pause]').textContent = state.paused ? 'Resume' : 'Pause';
     const ps = bar.querySelector('[data-pace]'); if (state.pace && ps.value !== String(state.pace)) ps.value = String(state.pace);
@@ -4494,6 +4822,7 @@ const POLLS = (function () {
     const chip = n >= 0 ? `<span class="os-role" style="--c:${SIM.NATIONS[n].color}">${UI.crest(n, 14)}<b>${SIM.NATIONS[n].name}</b></span>` : '';
     const ck = clockText();
     const say = ph === 'lobby' ? (joined() ? 'You are in. Waiting for the deal…' : 'Join the game.') : ph === 'deal' ? 'Meet your nation.' : ph === 'vote' ? (n >= 0 ? ((mine('V' + si()) || {}).locked ? 'Votes cast. You can change them until time runs out.' : `Session of ${SIM.SESSIONS[si()]}: ${STDM() ? 'choose your nation’s direction' : 'vote on your nation’s laws'}.`) : 'The nations are voting.') :
+      ph === 'special' ? 'Special election: should your nation send aid?' : ph === 'specialres' ? 'The special election results.' :
       ph === 'summit' ? `The summit: every nation’s new ${LW()}.` : ph === 'run' ? 'The years are passing. Watch your nation and the sky.' : ph === 'final' ? '2066.' : '';
     q('[data-status]').innerHTML = `${chip}<span class="os-say">${esc(say)}</span>${ck ? `<span class="os-clock${state.deadline - Date.now() < 20000 ? ' low' : ''}">${ck}</span>` : ''}`;
   }
@@ -4683,6 +5012,7 @@ const POLLS = (function () {
   // ── the run view and its cards ──
   let ovSig = '', lastYear = -1, mounted = false;
   function paintRun(C) {
+    if (!['special', 'specialres'].includes(phase()) && SPECIAL.isOpen()) SPECIAL.close();
     screen('run');
     if (!mounted) { UI.mount(q('#osRunHost'), { host: HOST }); WORLD.setVisible(() => isOn('run')); mounted = true; }
     const ph = phase(), s = si();
@@ -4704,6 +5034,8 @@ const POLLS = (function () {
       o.data = () => newsData(C, sess);
       o.end = oo => STDM() ? STD.summit(sess, { ...oo, start: 'chain' }) : UI.show.summit(sess, { ...oo, start: 'changes' });
       if (DEMO && QS0().get('summit') === 'chain') o.end(o); else { if (DEMO && QS0().get('summit') === 'desk') o.start = 'desk'; NEWS.show(sess, o); } } }
+    else if (ph === 'special') { if (first) showSpecial(C); else if (spD && spD.refresh) spD.refresh(); }
+    else if (ph === 'specialres') { if (first) showSpecialRes(C); }
     else if (ph === 'final') { if (first) finale(C); }
     else if (UI.isOpen()) UI.show.close();
     ovSig = sig;
@@ -4752,6 +5084,25 @@ const POLLS = (function () {
     });
     if (HOST) publishCounts();
   }
+  // ── the special election on screen ──
+  let spD = null;
+  function spT(C) {
+    const [y, to] = String(state.spx).split(':').map(Number), r = C.hist.find(h => h.year === y);
+    return { y, to, ev: r ? r.events.filter(e => e.n === to).sort((a, b) => b.sev - a.sev)[0] || null : null, T: r ? r.T : C.T };
+  }
+  function showSpecial(C) {
+    if (UI.isOpen()) UI.show.close();
+    const T = spT(C), raw = () => (state.in && state.in.SA) || {};
+    spD = { T, F: SIM.NATIONS.map((N, n) => SIM.specialFacts(C, T, n)), warm: T.T, you: HOST ? -1 : myN(), host: HOST, mine: (mine('SA') || {}).v,
+      onVote: v => submit('SA', v), onGo: HOST ? () => { lastAdv = { tag: '', at: 0 }; advance(); } : null,
+      counts: () => SIM.NATIONS.map((N, n) => { const who = Object.entries(assign()).filter(([, x]) => x === n).map(([pk]) => pk); return { n, size: who.length, real: who.filter(pk => typeof raw()[pk] === 'string').length }; }) };
+    SPECIAL.story(root, spD);
+  }
+  function showSpecialRes(C) {
+    const T = spT(C), I = II(votesUpTo(si() + 1));
+    SPECIAL.results(root, { T, tally: SIM.specialTally(I.special, C.members), imp: SIM.specialImpact(I, si()), F: SIM.NATIONS.map((N, n) => SIM.specialFacts(C, T, n)),
+      host: HOST, onGo: HOST ? () => { lastAdv = { tag: '', at: 0 }; advance(); } : null });
+  }
   function finale(C) {
     const I = II(votesUpTo(SIM.SESSIONS.length));
     const L = SIM.ledger(I);
@@ -4789,6 +5140,7 @@ const POLLS = (function () {
     }
     if (!visible()) return;
     if (ph !== 'idle' && ph !== 'lobby') paintTop();
+    if (ph === 'special') SPECIAL.clock(clockText());
     if (ph === 'vote') { if (root.dataset.on === 'run') progress(cMemo.C || worldNow(), false); else paintCount(); }
   }
   setInterval(tick, 250);
@@ -4823,7 +5175,9 @@ const POLLS = (function () {
       else { const v = { ...C.nat[want].laws, ...(PLAN[s] || PLAN[2]) }; setMine('V' + s, { draft: SIM.pack(v), touched: 1 }); }
       ballotSig = ''; render(); }
     function cast() { if (!you) return; const k = 'V' + si(), m = mine(k); if (m && m.draft) submit(k, m.draft); ballotSig = ''; render(); }
-    const adv = n => () => { for (let i = 0; i < n; i++) { lastAdv = { tag: '', at: 0 }; advance(); } };
+    // n years forward; a special election along the way is stepped through in a frozen frame, and played out live otherwise
+    const adv = n => () => { for (let i = 0, g = 0; i < n && g < n + 6; g++) { const ph0 = phase(); lastAdv = { tag: '', at: 0 }; advance();
+      if (['special', 'specialres'].includes(phase())) { if (FREEZE >= 0) continue; break; } if (ph0 === 'run') i++; } };
     const years = (n, cap) => Array.from({ length: n }, () => [2200, adv(1), cap]);
     // turn the finale's page; a click that comes before the finale is on screen is queued (UI.R.fpg) so frozen frames land right
     const goBtn = () => { const g = document.getElementById('osGo'); if (g && root.querySelector('.os-fnav')) { g.disabled = false; g.click(); } else UI.R.fpg = (UI.R.fpg || 0) + 1; };
@@ -4852,8 +5206,8 @@ const POLLS = (function () {
       [2400, adv(4), ''],
       [2400, adv(4), ''],
       [2400, adv(4), '2066: where did the world land?'],
-      [2400, () => { }, ''],
-      [2400, () => { }, ''],
+      [2400, adv(2), ''],
+      [2400, adv(2), ''],
       [12000, goBtn, 'Two worlds: drag across the map from the world the class made to the world where every nation went fossil-first.'],
       [14000, goBtn, 'The temptation: going fossil-first pays each nation more, whatever the others do. If all five take that deal, all five lose.'],
       [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own choices, but the cooling was shared. More pages from 2066 wait behind “More from 2066”.'],
@@ -4873,7 +5227,21 @@ const POLLS = (function () {
     if (FROM > 0) { for (let i = 0; i < FROM; i++) { try { S[i][1](); } catch (e) { console.error(e); } } step = FROM; const lastCap = S.slice(0, FROM).reverse().find(x => x[2]); if (lastCap) txt.textContent = lastCap[2]; left = 600; }
     const dwell = i => Math.max((S[i + 1] ? S[i + 1][0] : 8000) * 1.5, 2400 + 60 * (S[i][2] || '').length);
     const pb = bar.querySelector('.os-dpause'); pb.onclick = () => { paused = !paused; pb.textContent = paused ? '▶ Play' : '❚❚ Pause'; };
+    // the special election, played out live: the bots vote, you vote, the polls close, the results, then the years resume
+    let spAt = 0, spPh = '', spDone = {};
+    const spHold = () => {
+      const ph = phase(); if (!['special', 'specialres'].includes(ph)) { spPh = ''; return false; }
+      if (ph !== spPh) { spPh = ph; spAt = Date.now(); txt.textContent = ph === 'special' ? 'A disaster stops the clock: special elections in every nation on sending aid. Each side argues with numbers from the game.' : 'The results, and what the aid will do.'; }
+      const t = Date.now() - spAt, a = assign(), sp = String(state.spx).split(':').map(Number);
+      if (ph === 'special') {
+        if (t > 9000 && !spDone.bots) { spDone.bots = 1; const o = {}; Object.keys(a).filter(k => k.startsWith('bot')).forEach(k => { const n = a[k], r = SIM.hash(k + ':aid') % 100; o[k] = n === sp[1] ? (r < 50 ? 'r' : 'p') : (r < [62, 42, 30, 50, 55][n] ? 'y' : 'n'); }); shard({ in: { SA: o } }); }
+        if (you && t > 16000 && !spDone.me) { spDone.me = 1; submit('SA', want === sp[1] ? 'p' : 'y'); if (spD) { spD.mine = want === sp[1] ? 'p' : 'y'; } }
+        if (t > 42000) { lastAdv = { tag: '', at: 0 }; advance(); }
+      } else if (t > 26000) { lastAdv = { tag: '', at: 0 }; advance(); }
+      return true;
+    };
     const iv = setInterval(() => {
+      if (!paused && spHold()) return;
       if (paused || (left -= 100) > 0) return;
       if (step >= S.length) { clearInterval(iv); pb.hidden = true; return; }
       const i = step++; if (S[i][2]) txt.textContent = S[i][2];
