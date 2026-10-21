@@ -3107,6 +3107,8 @@ const UI = (function () {
     const lb = el.querySelector('.os-nlbl'); if (lb) lb.textContent = kind === 'poll' ? '● Poll' : '● Breaking';
     $('#osNews').classList.toggle('poll', kind === 'poll');
     const b = $('#osNews'); b.classList.remove('flash'); void b.offsetWidth; b.classList.add('flash'); b.classList.toggle('big', !!big);
+    // the projector chimes with each headline (SPECIAL loads after this file)
+    if (R.host && typeof SPECIAL !== 'undefined') SPECIAL.ding(kind === 'poll' ? 'poll' : big ? 'tip' : 'news');
   }
   const STEPS = [['deal', 'Nations'], ...SIM.SESSIONS.map((y, i) => ['s' + i, String(y)]), ['end', '2066']];
   function paint() {
@@ -4494,12 +4496,12 @@ const SPECIAL = (function () {
   }
   // the breaking-news sting: a low hit, then three brass-like stabs rising to a held chord (D minor), as the broadcast opens
   function sting() {
-    note(70, 0, .9, { vol: .16, slide: .5 });                                   // the drum hit
-    const brass = { type: 'sawtooth', vol: .035, cut: 1500 };
+    note(130, 0, .7, { vol: .22, slide: .5 });                                  // the drum hit (high enough for laptop speakers)
+    const brass = { type: 'sawtooth', vol: .06, cut: 2200 };
     chord([293.7, 349.2, 440], 0, .22, brass); chord([293.7, 349.2, 440], .2, .22, brass);
     chord([293.7, 392, 466.2], .4, .22, brass);
-    chord([146.8, 293.7, 349.2, 440, 587.3], .62, 1.8, { ...brass, vol: .03 });
-    note(1174.7, .62, 1.4, { vol: .025 });                                       // a bright edge on top
+    chord([146.8, 293.7, 349.2, 440, 587.3], .62, 1.8, { ...brass, vol: .05 });
+    note(1174.7, .62, 1.4, { vol: .04 });                                       // a bright edge on top
   }
   // the results: a chime as each nation's result is called (rising if aid is approved, falling if not), and a closing chord
   function call(yes) {
@@ -4507,6 +4509,16 @@ const SPECIAL = (function () {
     note(140, 0, .35, { vol: .1, slide: .6 });
     if (yes) { note(659.3, .02, .9, { vol: .07 }); note(880, .14, 1.2, { vol: .07 }); }
     else { note(587.3, .02, .9, { vol: .06 }); note(440, .14, 1.2, { vol: .06 }); }
+  }
+  // the news bar during the years: a short bulletin chime for a headline (a fuller one for a tipping point), a soft
+  // two-note ping for a poll result; at most one every 12 s, so a busy stretch of years doesn't turn into a jingle
+  let lastDing = 0;
+  function ding(kind) {
+    const now = Date.now(); if (kind !== 'tip' && now - lastDing < 12000) return; lastDing = now;
+    if (kind === 'poll') { note(659.3, 0, .5, { vol: .06 }); note(987.8, .13, .8, { vol: .06 }); return; }
+    if (kind === 'tip') { note(130, 0, .5, { vol: .18, slide: .5 }); chord([293.7, 349.2, 440], 0, .25, { type: 'sawtooth', vol: .045, cut: 2000 }); }
+    const t0 = kind === 'tip' ? .22 : 0, o = { type: 'triangle', vol: .08 };
+    note(587.3, t0, .18, o); note(698.5, t0 + .11, .18, o); note(880, t0 + .22, .9, o); note(1174.7, t0 + .22, .9, { vol: .03 });
   }
   const finish = any => any ? chord([261.6, 329.6, 392, 523.3], 0, 2.2, { type: 'triangle', vol: .045 }) : chord([196, 233.1, 293.7], 0, 2.2, { type: 'triangle', vol: .04 });
   // ── the layer: after the alarm, grows out of the news bar to the size of the newscast card, over a dimmed game ──
@@ -4661,7 +4673,7 @@ const SPECIAL = (function () {
       else { const p = document.createElement('p'); p.className = 'os-spnote'; p.textContent = 'The years resume in a moment.'; box.appendChild(p); }
     });
   }
-  return { story, results, close, isOpen, clock, money };
+  return { story, results, close, isOpen, clock, money, ding };
 })();
 
 // LIVE: the class plays One Sky on laptops. Rides the deck's live backend (window.__deckLiveReady: sharded Firestore
