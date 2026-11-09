@@ -1256,6 +1256,46 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .os .os-sptxt .os-sppoll{font-size:14px;color:#c9d6e2;border-left:3px solid #c9a34a;padding-left:10px}
 .os .os-sp.done{transition:none}
 .os .os-sp.done .os-spin2{transition:none;opacity:1}
+.os .os-chl{display:flex;flex-wrap:wrap;gap:8px 18px;margin:2px 0 8px;min-height:0}
+.os .os-chl span{display:flex;align-items:baseline;gap:8px;padding:6px 12px;background:#fffaf0;border:1px solid var(--line);border-radius:10px;font-size:13.5px}
+.os .os-chl span.good{border-left:4px solid var(--grn)}
+.os .os-chl span.bad{border-left:4px solid var(--red)}
+.os .os-chl em{font:800 10px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-style:normal}
+.os .os-cdt{width:100%;border-collapse:separate;border-spacing:3px;font-size:13px}
+.os .os-cdt th{font:800 10.5px Inter;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:center;vertical-align:bottom;padding:2px 6px 5px;line-height:1.25}
+.os .os-cdt th:first-child{text-align:left}
+.os .os-cdt td{text-align:center;font:800 13.5px Inter;font-variant-numeric:tabular-nums;color:var(--ink);background:#fffaf0;border-radius:6px;padding:5px 6px;white-space:nowrap}
+.os .os-cdt td.dk{color:#fffaf0}
+.os .os-cdt td.z{color:#a8997a;font-weight:600}
+.os .os-cdt td.os-it{text-align:left;white-space:normal;background:transparent;padding:4px 8px 4px 10px;border-left:3px solid var(--c,var(--line));border-radius:0;min-width:15rem;max-width:24rem}
+.os .os-cdt td.os-it b{display:flex;align-items:center;gap:6px;font:italic 900 14.5px Merriweather,serif}
+.os .os-cdt td.os-it span{display:block;font:500 11.5px Inter;color:var(--muted);line-height:1.35;margin-top:1px}
+.os .os-cdt td.os-it u{text-decoration:none;font:900 9.5px Inter;letter-spacing:.12em;color:var(--paper);background:var(--gold);border-radius:4px;padding:1px 5px}
+.os .os-cdt tr.mine td.os-it{background:linear-gradient(90deg,rgba(138,106,47,.16),rgba(138,106,47,0))}
+.os .os-cdt tr.mine td:not(.os-it){box-shadow:inset 0 0 0 1.5px var(--gold)}
+.os .os-cdt tr.all td.os-it b{font-style:normal;font:800 13px Inter;letter-spacing:.02em}
+.os .os-cdt tr.os-ih td{text-align:left;background:none;padding:10px 4px 2px;font:800 11px Inter;letter-spacing:.17em;text-transform:uppercase;color:var(--gold);border-bottom:1.5px solid var(--line);border-radius:0}
+.os .os-idb{margin-top:4px;font:700 11.5px Inter;color:var(--ink);background:var(--paper);border:1.5px solid #cdb98d;border-radius:999px;padding:2px 10px;cursor:pointer}
+.os .os-idb:hover{border-color:var(--ink)}
+.os .os-cdt td.os-wait{animation:osblink 1s ease-in-out infinite}
+@keyframes osblink{50%{opacity:.4}}
+.os .os-iun{margin:6px 0 0;font-size:11.5px;color:var(--muted);line-height:1.45}
+.os .os-imod .os-icard{width:min(1180px,96%)}
+.os .os-cdt.det td.os-tg{text-align:left;font:800 13px Inter;border:1px solid var(--line);padding:5px 9px;white-space:normal;min-width:10rem}
+.os .os-cdt.det td.os-tg span{display:block;font:600 10px Inter;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.os .os-cdt.det td.os-tg.gd{color:var(--grn);border-left:4px solid var(--grn)}
+.os .os-cdt.det td.os-tg.bd{color:var(--red);border-left:4px solid var(--red)}
+.os .os-cdt.det td.os-tg.z{color:#8a7f6a;font-weight:600}
+@media (prefers-reduced-motion:reduce){.os .os-cdt td.os-wait{animation:none}}
+.os .os-chw{overflow-x:auto}
+.os .os-cdt td.os-it{min-width:12.5rem}
+.os .os-cdt th{min-width:5.2rem}
+.os .os-ctabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:2px solid var(--line);margin:4px 0 6px}
+.os .os-ctabs button{font:700 13px Inter;color:var(--muted);background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-2px;padding:6px 12px;cursor:pointer}
+.os .os-ctabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--ink)}
+.os .os-cdt td.os-it{width:31%}
+.os .os-cdt td.os-it .os-idb{margin:0 0 0 auto;font-style:normal;font-family:Inter;white-space:nowrap}
+.os .os-cdt td.os-it{max-width:none}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -2293,7 +2333,9 @@ const SIM = (function () {
       if (n === sp.to) { const r = ballots.filter(b => b === 'r').length; use = r * 2 > ballots.length ? 'rebuild' : 'prepare'; return; }
       const y = ballots.filter(b => b === 'y').length; if (y * 2 > ballots.length) give.push(n);
     });
-    return { y: sp.y, to: sp.to, give, use, none: false, ...(sp.none ? { give: [] } : {}) };
+    // what-ifs for the finale: drop = donors whose aid is undone; flip = the stricken nation chose the other use
+    const g2 = sp.none ? [] : sp.drop ? give.filter(n => !sp.drop.includes(n)) : give;
+    return { y: sp.y, to: sp.to, give: g2, use: sp.flip ? (use === 'rebuild' ? 'prepare' : 'rebuild') : use, none: false };
   }
   // the tallies, for the announcement
   function specialTally(sp, members) {
@@ -2318,6 +2360,40 @@ const SIM = (function () {
       const span = W => W.hist.filter(r => r.year > I.special.y), lost = (W, n) => span(W).reduce((x, r) => x + r.nat[n].Y * (r.nat[n].dmg + r.nat[n].shock), 0);
       return { sp: A.sp, inc: a.nat[to].gdpPc, incB: b.nat[to].gdpPc, lost: lost(A, to), lostB: lost(B, to), pool: (A.hist.find(r => r.year === I.special.y + 1) || a).nat[to].spIn,
         donors: NATIONS.map((N, n) => ({ n, inc: a.nat[n].gdpPc, incB: b.nat[n].gdpPc })) };
+    });
+  }
+  // ── what your choices did (finale): the world as voted, against the same world with some choices undone ──
+  // undo = [{n, s, ids}]: nation n's choices at election s on `ids` (law ids; platform ids in the standard game) go back
+  // to what they were before that election, and so do later elections that simply kept the choice. Every other choice
+  // is held exactly as it happened (no stand-in re-votes), so a row measures that choice alone. sp = what-if for the
+  // special election ({none}, {drop: [n]} or {flip: 1}).
+  let urMemo = { sig: '', A: null };
+  function undoRun(I, undo, sp) {
+    return withMode(I, () => {
+      const sig = JSON.stringify(I);
+      if (urMemo.sig !== sig) urMemo = { sig, A: run(I) };
+      const A = urMemo.A, std = A.mode === 'std', last = SESSIONS.length - 1;
+      const val = (S, n, which) => std ? (which ? S.res[n].plat : platOf(S.before[n])) : (which ? S.res[n].laws : S.before[n]);
+      const J = sp ? { ...I, special: { ...I.special, ...sp } } : I;
+      return heldRun(J, last, (n, s) => {
+        const S = A.sessions[s]; if (!S) return null;
+        const v = { ...val(S, n, 1) };
+        for (const u of undo || []) if (u.n === n && u.s <= s && A.sessions[u.s]) {
+          const S0 = A.sessions[u.s], was = val(S0, n, 0), now = val(S0, n, 1);
+          for (const id of u.ids) if (u.s === s || v[id] === now[id]) v[id] = was[id];
+        }
+        return std ? stdLaws(v) : v;
+      });
+    });
+  }
+  // what changed at election s for nation n: [{id, from, to}] (platforms in the standard game, laws in the advanced one)
+  function changesAt(I, s, n) {
+    return withMode(I, () => {
+      const sig = JSON.stringify(I);
+      if (urMemo.sig !== sig) urMemo = { sig, A: run(I) };
+      const S = urMemo.A.sessions[s]; if (!S) return [];
+      if (urMemo.A.mode === 'std') { const a = platOf(S.before[n]), b = S.res[n].plat; return platsAt(s).filter(P => b[P.id] != null && a[P.id] !== b[P.id]).map(P => ({ id: P.id, from: a[P.id], to: b[P.id] })); }
+      return lawsFor(n, s).filter(l => (S.before[n][l.id] || 0) !== (S.res[n].laws[l.id] || 0)).map(l => ({ id: l.id, from: S.before[n][l.id] || 0, to: S.res[n].laws[l.id] || 0 }));
     });
   }
   // ── what a nation's last vote did, for the report at the next election ──
@@ -2392,7 +2468,7 @@ const SIM = (function () {
   return { Y0, YN, SESSIONS, NATIONS, NI, LAWS, LI, GROUPS, SECTORS, lawsFor, pack, parse, deal, packAssign, parseAssign, newWorld, run, step, session, decide, standIn,
     specialTrigger, specialDecide, specialTally, specialFacts, specialImpact, SP_YEARS, SP_SHARE, lastVote, HEAT_DAYS, GREEN_ADV, BROWN_ADV, AR6, AR6x, BUDGETS, E2025, DAMAGE, CLIM, climateStep, NONCO2, CH4_OTHER, cleanAt,
     ledger, whatIf, effort, project, futures, heldRun, profiles, GREEN, BROWN, SSP, at, hash, cleanCost, emptyLaws, T0, PPM0,
-    dealSplit, dilemma, DIL_Y, horizon, platsAt, PLATFORMS, PI, STD_START, stdLaws, platOf, ppack, pparse, standInStd, optionPreview, platProfiles };
+    dealSplit, dilemma, DIL_Y, undoRun, changesAt, horizon, platsAt, PLATFORMS, PI, STD_START, stdLaws, platOf, ppack, pparse, standInStd, optionPreview, platProfiles };
 })();
 
 // ONE SKY: the continent. A seeded heightmap (fractal noise under an oval falloff) gives the land, the islands,
@@ -3541,6 +3617,8 @@ const UI = (function () {
       `<div class="os-fin"><div class="os-fchart" id="osFchart"></div><div class="os-awards">${aw.map(([t, r, f]) => `<div class="os-aw" style="--c:${N5[r.n].color}">${crest(r.n, 22)}<div><span>${t}</span><b>${N5[r.n].name}</b><em>${f(r)}</em></div></div>`).join('')}</div></div>` + MODEL_NOTE);
     // the two worlds: the class's 2066 against the world of inaction
     if (L) add('earths', FIN.earthsPage(L));
+    // what each nation's choices at each election did (a side page under "More from 2066")
+    if (L && o.I) add('choices', FIN.choicesPage());
     // (standard game) the chain, 2026 to 2066
     let chainD = null;
     if (std() && L) {
@@ -3549,8 +3627,7 @@ const UI = (function () {
     }
     // 2. what the laws did to the climate
     if (L && o.fut) add('impact', impactPage(L, o.fut));
-    // the temptation: why every nation is drawn to fossil-first, and where that leads
-    if (o.I) add('tempt', FIN.temptPage());
+    // (the four-worlds "temptation" page was retired Oct 21 at Ryan's request; FIN.temptPage is kept but unused)
     // 3. now or later: which laws pay off first and cost later, and the other way around
     if (L && o.I) add('later', std() ? STD.laterPage(o) : laterPage(L, o));
     // 4. who paid, who gained (the commons)
@@ -3564,21 +3641,22 @@ const UI = (function () {
     }
     // 3. the twist (round 2 only)
     if (o.twist) add('twist', o.twist);
-    // four core pages in order; the rest wait behind "More from 2066" on the last core page
-    const CORE = ['world', 'earths', 'tempt', 'ledger', 'twist'], idx = kinds.map((k, i) => i);
-    const core = idx.filter(i => CORE.includes(kinds[i])), extra = idx.filter(i => !CORE.includes(kinds[i]));
-    const XL = { chain: 'From choices to climate', impact: `What did your ${W()} do to the climate?`, later: 'Now or later?' };
+    // the core pages in this order (now-or-later, the "acting pays off from" chart, closes the run); the rest wait behind "More from 2066"
+    const CORE = ['world', 'earths', 'ledger', 'later', 'twist'], idx = kinds.map((k, i) => i);
+    const core = idx.filter(i => CORE.includes(kinds[i])).sort((a, b) => CORE.indexOf(kinds[a]) - CORE.indexOf(kinds[b])), extra = idx.filter(i => !CORE.includes(kinds[i]));
+    const XL = { choices: 'What your choices did', chain: 'From choices to climate', impact: `What did your ${W()} do to the climate?`, later: 'Now or later?' };
     let at = Math.min(core.length - 1, R.fpg || 0), side = null; R.fpg = 0;
     const draw = () => {
       const pg = side != null ? side : core[at], last = side == null && at === core.length - 1;
       const more = last && extra.length ? `<div class="os-fmore"><span>More from 2066:</span>${extra.map(i => `<button class="os-linkb" data-x="${i}">${XL[kinds[i]] || 'More'}</button>`).join('')}</div>` : '';
       overlay(pages[pg] + more + (last || side != null ? `<p class="os-fhow">Where do these numbers come from? <button class="os-linkb" data-how2>How this model works, and its sources</button></p>` : '') +
         (side == null ? `<div class="os-fnav">${core.map((_, i) => `<i class="${i === at ? 'on' : ''}"></i>`).join('')}</div>` : '') +
-        act(side == null && !last ? { onGo: () => { at++; draw(); }, goLabel: { earths: 'Two worlds ▸', tempt: 'The temptation ▸', ledger: 'Who paid, who gained? ▸', twist: 'One more thing… ▸' }[kinds[core[at + 1]]] || 'Next ▸' } : o, 'Close',
+        act(side == null && !last ? { onGo: () => { at++; draw(); }, goLabel: { earths: 'Two worlds ▸', ledger: 'Who paid, who gained? ▸', later: 'Now or later? ▸', twist: 'One more thing… ▸' }[kinds[core[at + 1]]] || 'Next ▸' } : o, 'Close',
           side != null ? '<button class="os-btn ghost" id="osBack">◂ Back to the ledger</button>' : at ? '<button class="os-btn ghost" id="osBack">◂ Back</button>' : ''), () => {
         if (kinds[pg] === 'world') finalChart($('#osFchart'));
         if (kinds[pg] === 'chain' && chainD) STD.mountChain(chainD, true);
         if (kinds[pg] === 'earths') FIN.mountEarths(L);
+        if (kinds[pg] === 'choices') FIN.mountChoices(o.I, R.you);
         if (kinds[pg] === 'tempt') FIN.mountTempt(o.I);
         if ($('#osLchart')) laterChart($('#osLchart'), L);
         if ($('#osIchart')) { const keepF = R.fut; R.fut = o.fut; impactChart($('#osIchart'), null, true); R.fut = keepF; }
@@ -4134,6 +4212,177 @@ const FIN = (function () {
     K.at(12000, () => { if (auto) { y = 2066; draw(); } });
   }
 
+  // ── WHAT YOUR CHOICES DID ──
+  // Each row undoes one set of choices (one nation at one election, back to the laws it had before; later elections that
+  // simply kept them are undone too), holds every other choice exactly as it was, and re-runs the forty years. A cell is
+  // how much those choices moved the world by 2066. "See what each one did" splits a row into its single choices.
+  const SECTN = { power: 'electricity', transport: 'transportation', industry: 'industry', buildings: 'buildings', land: 'farm and forest' };
+  const lastR = C => C.hist[C.hist.length - 1];
+  const lossOf = (C, n, from) => C.hist.reduce((a, r) => a + (from && r.year <= from ? 0 : r.nat[n].Y * (r.nat[n].dmg + r.nat[n].shock)), 0);
+  const COLS = [
+    { k: 'T', t: 'Warming in 2066', v: C => lastR(C).T, f: d => `${sgn(d, 3)} °C`, dp: 3, g: -1 },
+    { k: 'E', t: 'World emissions, 2066', v: C => lastR(C).worldE, f: d => `${sgn(d, 2)} Gt`, dp: 2, g: -1 },
+    { k: 'Y', t: 'World income, 2066', v: C => lastR(C).Y, rel: 1, f: d => `${sgn(d, 2)}%`, dp: 2, g: 1 },
+    { k: 'own', t: 'That nation’s income per person, 2066', v: (C, n) => n == null ? null : lastR(C).nat[n].gdpPc, rel: 1, f: d => `${sgn(d, 2)}%`, dp: 2, g: 1 },
+    { k: 'D', t: 'Climate damage to the world, 2026–2066', v: C => C.hist.reduce((a, r) => a + r.Y * r.dmgShare, 0), f: d => `${d >= 0 ? '+' : '−'}$${Math.abs(d).toFixed(2)}T`, dp: 2, g: -1 },
+  ];
+  const diff = (m, A, B, n) => { const a = m.v(A, n), b = m.v(B, n); if (a == null || b == null) return null; return m.rel ? (a / b - 1) * 100 : a - b; };
+  // the words for one change
+  function changeText(c, std) {
+    if (std) { const P = SIM.PI[c.id]; return `${P.title}: ${P.opts[c.from].s} → ${P.opts[c.to].s}`; }
+    if (c.id === 'tax') return `Carbon tax: $${c.from} → $${c.to}`;
+    if (c.id === 'build') return `Clean-energy build-out: ${SIM.LI.build.opts[c.from]}% → ${SIM.LI.build.opts[c.to]}% of GDP`;
+    return `${SIM.LI[c.id].title}: ${c.to ? 'passed' : 'repealed'}`;
+  }
+  // what one change was aimed at: [label, value(C), decimals, better (+1 higher, -1 lower), unit]
+  function aimOf(c, n, std) {
+    const own = N5[n].name;
+    const sect = k => [`${own}’s ${SECTN[k]} emissions, 2026–2066`, C => C.hist.reduce((a, r) => a + r.nat[n].sect[k], 0), 1, -1, ' Gt'];
+    const tot = [`${own}’s emissions, 2026–2066`, C => C.hist.reduce((a, r) => a + r.nat[n].emis, 0), 1, -1, ' Gt'];
+    const loss = [`${own}’s climate damage, 2026–2066`, C => lossOf(C, n), 2, -1, '$T'];
+    const rem = [`CO₂ ${own} pulls from the air, 2066`, C => lastR(C).nat[n].removal || 0, 2, 1, ' Gt'];
+    if (std) { const P = SIM.PI[c.id]; return P.id === 'protect' ? loss : P.id === 'removal' ? rem : sect(P.sector); }
+    return { tax: tot, cap: tot, bta: tot, drill: tot, subs: tot, build: sect('power'), solar: sect('power'), rd: sect('power'), coal: sect('power'), ev: sect('transport'), gascar: sect('transport'),
+      forest: sect('land'), adapt: loss, dac: rem, aid: ['Erid’s climate damage, 2026–2066', C => lossOf(C, 4), 2, -1, '$T'] }[c.id] || tot;
+  }
+  const fmtAim = (a, d) => a[4] === '$T' ? `${d >= 0 ? '+' : '−'}$${Math.abs(d).toFixed(a[2])}T` : a[4] === '%rel' ? `${sgn(d, 2)}%` : `${sgn(d, a[2])}${a[4]}`;
+
+  let chMemo = { sig: '', R: {} };
+  const runFor = (I, key, undo, sp) => {
+    const sig = JSON.stringify(I); if (chMemo.sig !== sig) chMemo = { sig, R: {} };
+    return chMemo.R[key] || (chMemo.R[key] = SIM.undoRun(I, undo, sp));
+  };
+  function choiceRows(I, you) {
+    const std = I.mode === 'std', rows = [];
+    SIM.SESSIONS.forEach((y, s) => {
+      const per = N5.map((N, n) => ({ n, ch: SIM.changesAt(I, s, n) }));
+      const all = per.filter(x => x.ch.length);
+      rows.push({ head: `The ${y} election`, g: s });
+      rows.push({ g: s, key: `all${s}`, t: 'All five nations', sub: all.length ? `every change made in ${y}, together` : 'no nation changed anything', undo: all.map(x => ({ n: x.n, s, ids: x.ch.map(c => c.id) })), none: !all.length, all: 1 });
+      per.forEach(({ n, ch }) => {
+        const words = ch.map(c => changeText(c, std));
+        rows.push({ g: s, key: `n${s}.${n}`, n, s, t: N5[n].name, mine: n === you, sub: ch.length ? words.slice(0, std ? 3 : 2).join(' · ') + (words.length > (std ? 3 : 2) ? ` · and ${words.length - (std ? 3 : 2)} more` : '') : (std ? 'kept every direction' : 'kept every law'),
+          undo: [{ n, s, ids: ch.map(c => c.id) }], none: !ch.length, det: ch.length > 1 ? `n${s}.${n}` : '', ch });
+      });
+    });
+    if (I.special && I.special.y) {
+      const A = runFor(I, 'base', []), sp = A.sp, to = I.special.to;
+      if (sp) {
+        const give = sp.give || [];
+        rows.push({ head: `The special election, ${I.special.y}`, g: 9 });
+        rows.push({ g: 9, key: 'sp', n: to, t: `Aid to ${N5[to].name}`, mine: give.includes(you) || to === you, sub: give.length ? `sent by ${give.map(n => N5[n].name).join(', ')} for ${SIM.SP_YEARS} years · ${N5[to].name} chose to ${sp.use}` : 'no nation voted to send aid',
+          sp: { none: true }, undo: [], none: !give.length, det: give.length ? 'sp' : '' });
+      }
+    }
+    return rows;
+  }
+  function choicesPage() {
+    return K.head('2066 · WHAT YOUR CHOICES DID', 'Which choices moved the world?', 'Each row re-runs the forty years with <b>one</b> set of choices undone and every other choice kept exactly as it was. Each cell is how much those choices changed the world by 2066.') +
+      `<div class="os-chl" id="osChLead"></div><div class="os-chw" id="osChoices"></div>`;
+  }
+  const shade = (d, m, mx) => {
+    if (d == null || Math.abs(d) < Math.pow(10, -m.dp) / 2) return ['', 'z', '·'];
+    const good = m.g > 0 ? d > 0 : d < 0, t = Math.min(1, Math.sqrt(Math.abs(d) / (mx || 1e-9)));
+    return [`background:rgba(${good ? '47,122,64' : '168,72,63'},${(.1 + .5 * t).toFixed(2)})`, t > .72 ? 'dk' : '', m.f(d)];
+  };
+  const colMax = (rows, A) => { const mx = {}; COLS.forEach(m => { mx[m.k] = Math.max(1e-9, ...rows.filter(x => x.R && !x.all).map(x => Math.abs(diff(m, A, x.R, x.n) || 0))); }); return mx; };
+  function choiceTable(rows, A, g) {
+    const mx = colMax(rows, A);
+    const cell = (m, x) => {
+      if (x.none) return '<td class="z">·</td>';
+      if (!x.R) return '<td class="z os-wait">…</td>';
+      const [st, cls, txt] = shade(diff(m, A, x.R, x.n), m, mx[m.k]);
+      return `<td style="${st}" class="${cls}">${txt}</td>`;
+    };
+    return `<table class="os-cdt"><thead><tr><th>Choices undone</th>${COLS.map(m => `<th>${m.t}</th>`).join('')}</tr></thead><tbody>` +
+      rows.filter(x => !x.head && x.g === g).map(x =>
+        `<tr class="${x.mine ? 'mine' : ''}${x.all ? ' all' : ''}"${x.n != null ? ` style="--c:${N5[x.n].color}"` : ''}><td class="os-it"><b>${x.n != null ? UI.crest(x.n, 15) : ''}${esc(x.t)}${x.mine ? '<u>YOU</u>' : ''}${x.det ? `<button class="os-idb" data-cdet="${x.det}">See what each one did ▸</button>` : ''}</b><span>${esc(x.sub)}</span></td>${COLS.map(m => cell(m, x)).join('')}</tr>`).join('') +
+      `</tbody></table><p class="os-iun">Warming in °C · emissions in billions of tonnes of CO₂ a year · income compared with the world without those choices · damage in trillions of dollars, added up over the forty years. Green: better for the world (or for that nation’s income). Red: worse. Darker: a bigger effect.</p>`;
+  }
+  let chRun = 0;
+  function mountChoices(I, you) {
+    const box = K.$('#osChoices'); if (!box) return;
+    const my = ++chRun, A = runFor(I, 'base', []), rows = choiceRows(I, you);
+    rows.forEach(x => { if (!x.head && !x.none && chMemo.R[x.key]) x.R = chMemo.R[x.key]; });
+    let tab = 0;
+    const paint = () => {
+      const tabs = rows.filter(x => x.head);
+      box.innerHTML = `<div class="os-ctabs" role="tablist">${tabs.map(x => `<button role="tab" aria-selected="${x.g === tab}" data-ctab="${x.g}">${x.head}</button>`).join('')}</div>` + choiceTable(rows, A, tab);
+      box.querySelectorAll('[data-ctab]').forEach(b => b.onclick = () => { tab = +b.dataset.ctab; paint(); });
+      // the lead: the single nation-election that cooled the world most, and the one that warmed it most, once every row is in
+      const nat = rows.filter(x => x.R && x.s != null);
+      if (rows.every(x => x.head || x.none || x.R) && nat.length) {
+        const dT = x => diff(COLS[0], A, x.R, x.n), cool = nat.slice().sort((a, b) => dT(a) - dT(b))[0], warm = nat.slice().sort((a, b) => dT(b) - dT(a))[0];
+        const one = (x, w) => `<span class="${w}"><em>${w === 'good' ? 'Cooled the world most' : 'Warmed the world most'}</em><b>${N5[x.n].name}’s ${SIM.SESSIONS[x.s]} ${I.mode === 'std' ? 'choices' : 'laws'}</b> ${sgn(dT(x), 3)} °C by 2066</span>`;
+        const lead = K.$('#osChLead'); if (lead) lead.innerHTML = (dT(cool) < -.0005 ? one(cool, 'good') : '') + (dT(warm) > .0005 ? one(warm, 'bad') : '');
+      }
+      box.querySelectorAll('[data-cdet]').forEach(b => b.onclick = () => openChoiceDetail(I, rows.find(x => x.det === b.dataset.cdet), A, you));
+    };
+    paint();
+    const next = () => {
+      if (my !== chRun || !document.body.contains(box)) return;
+      // the open tab's rows first, then the rest
+      const todo = x => !x.head && !x.none && !x.R, x = rows.find(r => todo(r) && r.g === tab) || rows.find(todo);
+      if (!x) return;
+      x.R = runFor(I, x.key, x.undo, x.sp); paint(); setTimeout(next, 16);
+    };
+    setTimeout(next, 60);
+  }
+  // the pop-up: one row split into its single choices (opened only by its button)
+  let detRun = 0;
+  function openChoiceDetail(I, row, A, you) {
+    if (!row) return;
+    const card = K.$('#osCard'), root = (card && card.closest('.os')) || document.body, std = I.mode === 'std';
+    let m = root.querySelector('.os-imod');
+    if (!m) { m = document.createElement('div'); m.className = 'os-model os-imod'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-label', 'What each choice did'); root.appendChild(m);
+      m.onclick = ev => { if (ev.target === m) m.hidden = true; };
+      document.addEventListener('keydown', ev => { if (!m.hidden && ev.key === 'Escape') m.hidden = true; }); }
+    m.hidden = false;
+    let det, title, intro, first;
+    if (row.key === 'sp') {
+      const sp = A.sp, to = I.special.to, R = N5[to].name;
+      det = sp.give.map(n => ({ key: `spd${n}`, t: `${N5[n].name}’s aid`, sub: `${(SIM.SP_SHARE * 100).toFixed(1)}% of ${N5[n].name}’s income each year, ${I.special.y + 1} to ${I.special.y + SIM.SP_YEARS}`, n, mine: n === you,
+        sp: { drop: [n] }, aim: [`${R}’s income per person, 2066`, C => lastR(C).nat[to].gdpPc, 2, 1, '%rel'] }));
+      det.push({ key: 'spflip', t: `${R} chose to ${sp.use}`, sub: sp.use === 'prepare' ? 'instead of rebuilding after the disaster' : 'instead of preparing for the next one', n: to, mine: to === you,
+        sp: { flip: 1 }, aim: [`${R}’s climate damage after ${I.special.y}`, C => lossOf(C, to, I.special.y), 2, -1, '$T'] });
+      title = `What the aid to ${R} did`; first = 'Choice undone';
+      intro = `Each row takes back one nation’s aid (or has ${R} use the money the other way), keeps everything else, and re-runs the years to 2066.`;
+    } else {
+      const N = N5[row.n];
+      det = row.ch.map(c => ({ key: `${row.key}.${c.id}`, t: changeText(c, std), sub: '', n: row.n, undo: [{ n: row.n, s: row.s, ids: [c.id] }], aim: aimOf(c, row.n, std) }));
+      title = `What ${N.name}’s ${SIM.SESSIONS[row.s]} ${std ? 'choices' : 'laws'} did`; first = std ? 'Choice undone' : 'Law undone';
+      intro = `Each row undoes one of ${N.name}’s ${SIM.SESSIONS[row.s]} ${std ? 'choices' : 'votes'} (and later elections that kept it), keeps everything else, and re-runs the forty years. Numbers are how much that one change moved the world by 2066.`;
+    }
+    det.forEach(x => { if (chMemo.R[x.key]) x.R = chMemo.R[x.key]; });
+    const my = ++detRun;
+    const paint = () => {
+      const mx = colMax(det, A);
+      const aimCell = x => {
+        if (!x.R) return '<td class="z os-wait">…</td>';
+        const a = x.aim, va = a[1](A), vb = a[1](x.R), d = a[4] === '%rel' ? (va / vb - 1) * 100 : va - vb;
+        if (Math.abs(d) < Math.pow(10, -a[2]) / 2) return `<td class="os-tg z"><span>${a[0]}</span>no change</td>`;
+        const good = a[3] > 0 ? d > 0 : d < 0;
+        return `<td class="os-tg ${good ? 'gd' : 'bd'}"><span>${a[0]}</span>${fmtAim(a, d)}</td>`;
+      };
+      const cell = (c, x) => { if (!x.R) return '<td class="z os-wait">…</td>'; const [st, cls, txt] = shade(diff(c, A, x.R, x.n), c, mx[c.k]); return `<td style="${st}" class="${cls}">${txt}</td>`; };
+      m.innerHTML = `<div class="os-mcard os-icard"><div class="os-mhead"><div><div class="os-eb">WHAT YOUR CHOICES DID</div><h3>${title}</h3></div><button class="os-b ghost" data-iclose>Close ×</button></div>
+        <p class="os-mlead">${intro}</p>
+        <table class="os-cdt det"><thead><tr><th>${first}</th><th>What it was aimed at</th>${COLS.map(c => `<th>${c.t}</th>`).join('')}</tr></thead><tbody>
+        ${det.map(x => `<tr class="${x.mine ? 'mine' : ''}" style="--c:${N5[x.n].color}"><td class="os-it"><b>${esc(x.t)}${x.mine ? '<u>YOU</u>' : ''}</b>${x.sub ? `<span>${esc(x.sub)}</span>` : ''}</td>${aimCell(x)}${COLS.map(c => cell(c, x)).join('')}</tr>`).join('')}</tbody></table>
+        ${row.key === 'sp' ? '' : `<p class="os-iun">Single choices do not always add up to the whole row: ${std ? 'some work together (electric cars cut more once the power they run on is clean) and some overlap (forests already protected leave less for a second choice to save)' : 'some work together (cheap clean power makes a carbon price bite harder) and some overlap (a cap already fixes the emissions that a second law would have cut)'}.</p>`}</div>`;
+      m.querySelector('[data-iclose]').onclick = () => { m.hidden = true; };
+    };
+    paint();
+    let i = 0;
+    const next = () => {
+      if (my !== detRun || m.hidden) return;
+      while (i < det.length && det[i].R) i++;
+      if (i >= det.length) return;
+      const x = det[i]; x.R = runFor(I, x.key, x.undo || [], x.sp); i++; paint(); setTimeout(next, 16);
+    };
+    setTimeout(next, 40);
+  }
+
   // ── MOMENTS: tipping points and the worst disasters, across the map ──
   const TIPS = [
     [/Arctic/, 'TIPPING POINT', 'Without its white summer ice, the Arctic soaks up more sunlight, and the warming speeds up.'],
@@ -4159,7 +4408,7 @@ const FIN = (function () {
     return N5.map((N, n) => { const E = sum(r => r.nat[n].emis), pop = sum(r => C.hist.length ? r.nat[n].Y / r.nat[n].gdpPc : 0) / h.length;
       return { n, eShare: E / wE * 100, loss: sum(r => r.nat[n].Y * (r.nat[n].dmg + r.nat[n].shock)) / sum(r => r.nat[n].Y) * 100, perPerson: E / h.length / Math.max(.01, pop) }; });
   }
-  return { earthsPage, mountEarths, temptPage, mountTempt, moment, ejData };
+  return { earthsPage, mountEarths, temptPage, mountTempt, moment, ejData, choicesPage, mountChoices };
 })();
 
 // ONE SKY · ELECTION NIGHT. The summit is staged as a live newscast, for the standard and the advanced game alike:
@@ -4710,7 +4959,7 @@ const SPECIAL = (function () {
   const q = s => root.querySelector(s);
   const esc = UI.esc;
   const visible = () => slide.classList.contains('active') || !slide.classList.contains('slide');
-  const SECS = { vote0: 200, vote: 170, special: 150 };
+  const SECS = { vote0: 180, vote: 90, special: 60 };   // first election 3 min, later elections 1.5 min, special election 1 min (Ryan, Oct 21)
   let backend = null, HOST = false, state = {}, unsub = null, subMode = '';
   const HOSTID = (() => { try { let v = sessionStorage.getItem('os-host'); if (!v) { v = Math.random().toString(36).slice(2, 10); sessionStorage.setItem('os-host', v); } return v; } catch (e) { return Math.random().toString(36).slice(2, 10); } })();
   const clockMine = () => !state.hostId || state.hostId === HOSTID;
@@ -5292,8 +5541,8 @@ const SPECIAL = (function () {
       [2400, adv(2), ''],
       [2400, adv(2), ''],
       [12000, goBtn, 'Two worlds: drag across the map from the world the class made to the world where every nation went fossil-first.'],
-      [14000, goBtn, 'The temptation: going fossil-first pays each nation more, whatever the others do. If all five take that deal, all five lose.'],
-      [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own choices, but the cooling was shared. More pages from 2066 wait behind “More from 2066”.'],
+      [12000, goBtn, 'Who paid, and who gained? Each nation paid for its own choices, but the cooling was shared.'],
+      [14000, goBtn, 'Now or later? Acting costs income at first; the chart marks the year acting starts to pay off. More pages from 2066 wait behind “More from 2066”.'],
     ];
     const bar = document.createElement('div'); bar.className = 'os-demobar';
     const views = [['projector', 'Projector'], ...SIM.NATIONS.map(N => [N.id, N.name])];
@@ -5347,8 +5596,8 @@ const SPECIAL = (function () {
       { t: 'The second election', b: 16, cap: 'In 2040 the delegates choose again, knowing what fourteen years of their choices did, and a new platform appears: protecting their people from the damage.' },
       { t: 'Where it landed', b: 35, cap: 'In 2066: where the world landed, against the published climate pathways.' },
       { t: 'Two worlds', b: 36, cap: 'The 2066 map drawn twice: the world the class made and the world where every nation went fossil-first, with a handle to drag between them and a tally of what the difference cost.' },
-      { t: 'The temptation', b: 37, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
-      { t: 'The ledger', b: 38, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own choices did for itself and for its neighbors.' }] },
+      { t: 'The ledger', b: 37, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own choices did for itself and for its neighbors.' },
+      { t: 'Now or later?', b: 38, cap: 'Now or later? World income against the world where every nation went fossil-first: acting costs at first, and the chart marks the year it starts to pay off.' }] },
     host: { t: 'The projector', view: 'projector', steps: [
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
@@ -5359,8 +5608,8 @@ const SPECIAL = (function () {
       { t: 'The years', b: 9, cap: 'The years run on the map: indicators, the nations’ choices, breaking news, and charts.' },
       { t: 'Where it landed', b: 35, cap: 'The world in 2066.' },
       { t: 'Two worlds', b: 36, cap: 'The world the class made against the world of inaction.' },
-      { t: 'The temptation', b: 37, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
-      { t: 'The ledger', b: 38, cap: 'Who paid, and who gained.' }] },
+      { t: 'The ledger', b: 37, cap: 'Who paid, and who gained.' },
+      { t: 'Now or later?', b: 38, cap: 'Now or later: the year acting starts to pay off.' }] },
   };
   const SAMPLE = {
     del: { t: 'A delegate', view: 'terrasen', steps: [
@@ -5373,8 +5622,8 @@ const SPECIAL = (function () {
       { t: 'The second election', b: 16, cap: 'In 2040 the delegates vote again, knowing what fourteen years of their laws did. Adaptation and climate aid join the ballot.' },
       { t: 'Where it landed', b: 35, cap: 'In 2066: where the world landed, against the published climate pathways.' },
       { t: 'Two worlds', b: 36, cap: 'The 2066 map drawn twice: the world the class made and the world where every nation went fossil-first, with a handle to drag between them and a tally of what the difference cost.' },
-      { t: 'The temptation', b: 37, cap: 'Four worlds for one nation: it acts or goes fossil-first, and so do the other four. Going fossil-first pays every nation more whatever the others do, until all five do it.' },
-      { t: 'The ledger', b: 38, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own laws did for itself and for its neighbors.' }] },
+      { t: 'The ledger', b: 37, cap: 'Who paid, and who gained: each nation’s income in 2066 in three worlds, and what its own laws did for itself and for its neighbors.' },
+      { t: 'Now or later?', b: 38, cap: 'Now or later? World income against the world where every nation went fossil-first: acting costs at first, and the chart marks the year it starts to pay off.' }] },
     host: { t: 'The projector', view: 'projector', steps: [
       { t: 'The lobby', b: 1, cap: 'Students join from the slide.' },
       { t: 'The nations', b: 2, cap: 'Five nations, five economies, one sky.' },
@@ -5384,8 +5633,8 @@ const SPECIAL = (function () {
       { t: 'The years', b: 9, cap: 'The years run on the map: indicators, the nations’ laws, breaking news, and charts.' },
       { t: 'Where it landed', b: 35, cap: 'The world in 2066.' },
       { t: 'Two worlds', b: 36, cap: 'The world the class made against the world of inaction.' },
-      { t: 'The temptation', b: 37, cap: 'Why every nation is drawn to fossil-first, and where it leads.' },
-      { t: 'The ledger', b: 38, cap: 'Who paid, and who gained.' }] },
+      { t: 'The ledger', b: 37, cap: 'Who paid, and who gained.' },
+      { t: 'Now or later?', b: 38, cap: 'Now or later: the year acting starts to pay off.' }] },
   };
   const sampleBase = () => /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? '/game-demos-web/onesky/' : 'https://ryanpcornell.github.io/sos110-game-demos/onesky/';
   let sR = 'del', sAt = 0;
@@ -5752,9 +6001,9 @@ show(start);
     myVote = (myVote===null||myVote==='') ? null : parseInt(myVote,10);
 
     function render(counts){
-      let total=0; for(let i=0;i<n;i++) total+=(counts[i]||0);
+      let total=0; for(let i=0;i<n;i++) total+=Math.max(0,counts[i]||0);   // clamp: a re-vote after a Reset can decrement a cleared count
       opts.forEach(function(b,i){
-        const c=counts[i]||0, pct=total?Math.round(c/total*100):0;
+        const c=Math.max(0,counts[i]||0), pct=total?Math.round(c/total*100):0;
         b.querySelector('.poll-opt-fill').style.width=(total?c/total*100:0)+'%';
         b.querySelector('.poll-opt-count').textContent=c+(c===1?' vote':' votes');
         b.querySelector('.poll-opt-pct').textContent=pct+'%';
@@ -6154,9 +6403,9 @@ show(start);
 
     function render(){
       const counts=state.counts||{}, released=!!state.released;
-      let total=0; for(let i=0;i<n;i++) total+=(counts[i]||0);
+      let total=0; for(let i=0;i<n;i++) total+=Math.max(0,counts[i]||0);   // clamp: a re-vote after a Reset can decrement a cleared count
       opts.forEach(function(b,i){
-        const c=counts[i]||0, pct=total?Math.round(c/total*100):0;
+        const c=Math.max(0,counts[i]||0), pct=total?Math.round(c/total*100):0;
         b.querySelector('.poll-opt-fill').style.width=(released&&total?c/total*100:0)+'%';
         b.querySelector('.poll-opt-count').textContent=c+(c===1?' vote':' votes');
         b.querySelector('.poll-opt-pct').textContent=pct+'%';
@@ -7008,6 +7257,16 @@ show(start);
     });
     if(ENTRY && !mine) submitBtn.disabled = true;   // type every answer before locking in
 
+    const submitLabel=submitBtn.textContent, hintLabel=hintEl.textContent;
+    let lastN=0;
+    // the host's Reset clears the class tally; a student who had locked in sees the count fall to zero and may answer again
+    function unlockAfterReset(){
+      mine=null; try{ localStorage.removeItem(doneKey); }catch(e){}
+      ranges.forEach(function(r){ r.disabled=false; });
+      submitBtn.textContent=submitLabel; hintEl.textContent=hintLabel;
+      submitBtn.disabled = ENTRY ? !allFilled() : (BUDGET ? sumRanges()<=0 : false);
+      updateBudget();
+    }
     function lockIfDone(){
       if(!mine) return;
       ranges.forEach(function(r,i){ if(mine[i]!==undefined){ r.value=mine[i]; if(nums[i]) nums[i].textContent=mine[i]; } r.disabled=true; });
@@ -7029,6 +7288,7 @@ show(start);
         cat.n+=cnt; cat.sum+=v*cnt; cat.vals.push([v,cnt]);
       });
       totalEl.textContent = perCat[0] ? perCat[0].n : 0;
+      { const n0 = perCat[0] ? perCat[0].n : 0; if(!HOST && mine && lastN>0 && n0===0) unlockAfterReset(); lastN = n0; }
       if(!HOST) return;
       // AX = axis maximum, BINW = histogram bin width. Fixed at GMAX for sliders;
       // for ENTRY mode it grows/shrinks to fit the largest guess (and, once the
@@ -7062,8 +7322,10 @@ show(start);
         let statsTxt='no guesses yet';
         if(cat.n){
           cat.vals.sort(function(a,b){return a[0]-b[0];});
-          let med=0, seen=0, half=(cat.n+1)/2;
-          for(const [v,cnt] of cat.vals){ seen+=cnt; if(seen>=half){ med=v; break; } }
+          // median: average the two middle guesses when the count is even (10 and 20 -> 15)
+          let lo=null, hi=null, seen=0; const kLo=Math.floor((cat.n-1)/2), kHi=Math.floor(cat.n/2);
+          for(const [v,cnt] of cat.vals){ if(lo===null && seen+cnt>kLo) lo=v; if(seen+cnt>kHi){ hi=v; break; } seen+=cnt; }
+          const med=(lo+hi)/2;
           statsTxt='n='+cat.n+' · median '+FMT(med)+' · mean '+FMT(cat.sum/cat.n);
         }
         sec.querySelectorAll('[data-gu-stats="'+c+'"]').forEach(function(e){ e.textContent=statsTxt; });
@@ -9494,7 +9756,9 @@ show(start);
     sec.addEventListener('keydown', e=>{ if(navKeys.indexOf(e.key)>-1) e.stopPropagation(); });
 
     const doneKey='sh-done:'+selfId;
-    let mine=null; try{ mine=JSON.parse(localStorage.getItem(doneKey)); }catch(e){ mine=null; }
+    // Saved as {s:<session>, v:[...]}; an instructor reset writes a new session, which clears a saved response
+    // (Nov 2 2026). Older saves are a bare array and count as session 0.
+    let mine=null, mineS=0; try{ const o=JSON.parse(localStorage.getItem(doneKey)); if(Array.isArray(o)){ mine=o; } else if(o&&o.v){ mine=o.v; mineS=o.s||0; } }catch(e){ mine=null; }
     let selfState={}, preState={};
 
     // aggregate a doc's counts into per-statement {n, mean, bins:[[v,cnt]]}
@@ -9541,6 +9805,7 @@ show(start);
           sec.querySelector('[data-sh-meanlbl="'+i+'"]').textContent=Math.round(cat.mean); }
         else meanEl.hidden=true;
         let st = cat.n ? ('n='+cat.n+' · avg '+Math.round(cat.mean)+'/100 · '+meanLabel(cat.mean)) : 'no responses';
+        if(phase==='post' && pre && pre[i].n) st = 'before n='+pre[i].n+', now '+st;
         statEl.textContent=st;
         // ghost + arrow + delta (post only)
         const ghostEl=sec.querySelector('[data-sh-ghost="'+i+'"]');
@@ -9557,7 +9822,7 @@ show(start);
           deltaEl.hidden=false;
           if(Math.abs(d)<2){ deltaEl.className='sh-delta flat'; deltaEl.textContent='↔ barely moved ('+(d>=0?'+':'')+Math.round(d)+')'; }
           else { deltaEl.className='sh-delta '+(d>0?'better':'worse');
-            deltaEl.textContent=(d>0?'→ ':'← ')+'moved '+Math.abs(Math.round(d))+' pts toward '+(d>0?RIGHT:LEFT); }
+            deltaEl.textContent=(d>0?'→ ':'← ')+'class average moved '+Math.abs(Math.round(d))+' pts toward '+(d>0?RIGHT:LEFT); }
         } else if(phase==='post'){ ghostEl.hidden=true; arrowEl.hidden=true; deltaEl.hidden=true; }
       }
     }
@@ -9583,20 +9848,25 @@ show(start);
 
     if(HOST){
       revealBtn.addEventListener('click', function(){ backend.mergeDoc('polls', selfId, {released:!selfState.released}); });
-      resetBtn.addEventListener('click', function(){ if(confirm('Reset the '+phase+' responses for this question?')) backend.reset('polls', selfId); });
+      resetBtn.addEventListener('click', function(){ if(confirm('Reset the '+phase+' responses for this question?'))
+        Promise.resolve(backend.reset('polls', selfId)).then(function(){ backend.mergeDoc('polls', selfId, {session:Date.now(), released:false}); }); });
     } else {
       if(mine!==null){ ranges.forEach((r,i)=>{ r.value=mine[i]; r.disabled=true; }); }
       submitBtn.addEventListener('click', function(){
         if(mine!==null) return;
         mine=ranges.map(r=>Math.max(0,Math.min(100, parseInt(r.value,10)||0)));
-        localStorage.setItem(doneKey, JSON.stringify(mine));
+        mineS=selfState.session||0; localStorage.setItem(doneKey, JSON.stringify({s:mineS, v:mine}));
         const upd={counts:{}}; mine.forEach((v,i)=>{ upd.counts[i+'_'+v]=backend.inc(1); });
         backend.mergeDocShard('polls', selfId, upd);
         ranges.forEach(r=>r.disabled=true); submitBtn.disabled=true; submitBtn.textContent='Locked in ✓';
         studentBox.hidden=true; render();
       });
     }
-    backend.subscribeDoc('polls', selfId, function(d){ selfState=d||{}; render(); });
+    backend.subscribeDoc('polls', selfId, function(d){ selfState=d||{};
+      if(!HOST && mine!==null && (selfState.session||0)!==mineS){   // the instructor reset this question: vote again
+        mine=null; try{ localStorage.removeItem(doneKey); }catch(e){}
+        ranges.forEach(r=>{ r.disabled=false; r.value=50; }); submitBtn.disabled=false; submitBtn.textContent='Lock in my responses'; studentBox.hidden=false; }
+      render(); });
     if(phase==='post') backend.subscribeDoc('polls', preId, function(d){ preState=d||{}; render(); });
   });
 
