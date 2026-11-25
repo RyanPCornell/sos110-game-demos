@@ -1851,7 +1851,9 @@ const SIM = (function () {
       rev += y.taxCost; permitRev += y.permitCost;
       workers += b.workers; output += y.rev; profit += y.profit;
       if (b.sec === 'power') { if (b.prod === 'coal') powerKt.coal += y.gen; else if (b.prod === 'gas') powerKt.gas += y.gen; else powerKt.clean += y.gen; }
-      if (b.cash < -.5 * b.cap) { b.open = false; C.news.push({ year, kind: 'close', text: `${b.name} closes its doors; ${b.workers} workers lose their jobs` }); }
+      // Nov 25 2026: closing needs debt past the line AND a loss this year (a profitable company gets refinanced); a company that
+      // made a big investment in the last five years has a deeper line (lenders carry new plants)
+      if (b.cash < (C.year - (b.invYear ?? -99) < 5 ? -1 : -.5) * b.cap && y.profit < 0) { b.open = false; C.news.push({ year, kind: 'close', text: `${b.name} closes its doors; ${b.workers} workers lose their jobs` }); }
       if (accident) C.news.push({ year, kind: 'acc', text: `Accident at ${b.name}${b.safe === 'cut' ? ' (safety corners had been cut)' : ''}` });
       rows.biz.push(b.last);
     }
@@ -2131,7 +2133,7 @@ const SIM = (function () {
       if (R() > .7 + .25 * b.concern) continue;
       if (C.pol.use === 'subsidies') { const full = bizCapex({ ...b, [c.k]: c.v }, b, C.year, null); C.pendingBizSubs = (C.pendingBizSubs || 0) + Math.max(0, full - c.capex); }
       changes.push([c.k, b[c.k], c.v]);
-      b[c.k] = c.v; b.cash -= c.capex; done.add(c.k);
+      b[c.k] = c.v; b.cash -= c.capex; done.add(c.k); if (c.capex >= .25 * b.cap) b.invYear = C.year;
       if (done.size >= 2) break;
     }
     return changes;
@@ -2158,6 +2160,7 @@ const SIM = (function () {
     b.fleet = r() < c * .4 ? 'ev' : 'diesel';
     b.safe = r() < .18 * (1 - c) ? 'cut' : r() < .25 ? 'plus' : 'code';
     b.cash = b.cap - bizCapex(b, b.base, C.year, C.pol);
+    if (b.cap - b.cash >= .25 * b.cap) b.invYear = C.year;
   }
   function initialChoices(C, given) {
     given = given || {};
@@ -2186,6 +2189,7 @@ const SIM = (function () {
     for (const k of CHOICE_KEYS_B) if (ch[k] !== b[k]) out.push([k, prev[k], ch[k]]);
     Object.assign(b, ch);
     b.cash = (start ? b.cap : b.cash) - capex;
+    if (capex >= .25 * b.cap) b.invYear = C.year;
     return out;
   }
   // an adjustment window: students' changes where given, stand-ins for everyone else
@@ -5671,7 +5675,8 @@ window.FIN56 = function (K) {
     return { html: head('2056 · THREE VALLEYS', 'The same class, three governments', `Replay the same thirty years with the same people, the same choices you locked in and the same luck, and change only the laws. <b>No climate laws</b> holds every law off for the whole game. <b>Strongest laws</b> passes every bill on the ballot from the first day: a $150 carbon tax, the cap, every rebate and standard, with the money returned as a dividend.`) +
       `<div class="fn-vheads">${W3.map(([l, W, c]) => card(l, W, c)).join('')}</div>
       <p class="fn-lede">${dT > .005 ? `Your laws kept <b>${dT.toFixed(2)} °C</b> of warming out of 2056 compared with no laws at all.` : 'Your laws made almost no difference to the warming compared with no laws at all.'} ${gap > .005 ? `The strongest laws would have kept out another <b>${gap.toFixed(2)} °C</b>.` : 'The strongest laws would not have done much better.'} What did each cost? Read the panels below, then turn the page.</p>
-      <div class="fn-grid">${MET.map(m => `<div class="fn-mini" id="fnV_${m[0]}"></div>`).join('')}</div>`,
+      <div class="fn-grid">${MET.map(m => `<div class="fn-mini" id="fnV_${m[0]}"></div>`).join('')}</div>
+      <p class="fn-small">Clean electricity moves in steps: the class has only a few power companies, each supplying a large share of the grid, so one of them switching fuels (or closing) moves the whole line at once. The other 40% of the grid (hydro, nuclear and older renewables) is clean throughout.</p>`,
       mount() {
         for (const [k, t, u, f, d] of MET) {
           const series = W3.map(([n, W, c]) => ({ name: n.split(' ')[0] === 'Your' ? 'You' : n.split(' ')[0] === 'No' ? 'No laws' : 'Strong', color: c, pts: W.hist.map(r => [r.year, f(r)]) }));
