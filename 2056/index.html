@@ -998,6 +998,143 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .c56 .em-tv.deb .em-img3 .f3-tag{display:block;font-size:10px}
 .c56 .em-you b.neg,.c56 .em-you b.pos{white-space:nowrap}
 .c56 .em-stamp{align-self:flex-start}
+.c56 .c56-names{margin:.5rem 0 .6rem;text-align:left}
+.c56 .c56-nopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px;margin-top:.35rem}
+.c56 .c56-nm{display:flex;flex-direction:column;gap:.1rem;text-align:left;padding:.45rem .6rem;border:1.5px solid #d9c9a3;border-radius:9px;background:#fffaf0;cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
+.c56 .c56-nm b{font:900 .95rem Merriweather,serif;color:var(--ink)}
+.c56 .c56-nm small{font:italic 500 .66rem/1.3 Merriweather,serif;color:#8a7d60}
+.c56 .c56-nm:hover{border-color:var(--gold)}
+.c56 .c56-nm.on{border-color:var(--ink);background:#fff;box-shadow:0 0 0 2px rgba(59,50,34,.15);transform:translateY(-1px)}
+.c56 .cx-how{display:inline-flex;align-items:center;gap:.3rem;margin-left:.2rem;padding:.16rem .55rem;border:1px solid var(--gold);border-radius:999px;background:#fffaf0;color:var(--gold);font:800 .66rem Inter;letter-spacing:.04em;cursor:pointer;vertical-align:baseline}
+.c56 .cx-how::before{content:'?';display:inline-grid;place-items:center;width:.95rem;height:.95rem;border-radius:50%;background:var(--gold);color:#fffaf0;font:900 .6rem Inter}
+.c56 .cx-how:hover{background:var(--gold);color:#fffaf0}
+.c56 .cx-read{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.c56 .cx-read div{font-size:.74rem;line-height:1.4;color:var(--muted);background:#fffaf0;border:1px solid #e2d5b6;border-radius:8px;padding:.45rem .6rem}
+.c56 .cx-read b{display:block;font:800 .62rem Inter;letter-spacing:.1em;text-transform:uppercase}
+.c56 .cx-ov{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:16px;background:rgba(40,30,15,.45);backdrop-filter:blur(2px)}
+.c56 .cx-ov[hidden]{display:none}
+.c56 .cx-card{position:relative;width:min(760px,100%);max-height:calc(100vh - 32px);overflow:auto;background:var(--paper,#fbf5e6);border:1px solid var(--gold,#8a6a2f);border-radius:14px;padding:20px 24px 16px;
+  box-shadow:0 20px 50px rgba(30,20,8,.35),inset 0 0 0 5px var(--paper,#fbf5e6),inset 0 0 0 6px #d9c9a3;animation:cxIn .3s cubic-bezier(.2,.9,.3,1) both;color:var(--ink,#3b3222)}
+@keyframes cxIn{from{opacity:0;transform:translateY(12px) scale(.985)}}
+.c56 .cx-x{position:absolute;top:10px;right:12px;border:0;background:none;font:800 1.3rem Inter;color:#8a7d60;cursor:pointer}
+.c56 .cx-eb{font:800 .64rem Inter;letter-spacing:.18em;color:var(--gold,#8a6a2f)}
+.c56 .cx-card h3{margin:.15rem 0 .4rem;font:italic 900 1.45rem Merriweather,serif}
+.c56 .cx-body{animation:cxFade .35s ease both}
+@keyframes cxFade{from{opacity:0}}
+.c56 .cx-body p{margin:0 0 .6rem;font-size:.88rem;line-height:1.55;color:var(--muted,#5e5340)}
+.c56 .cx-body p b{color:var(--ink,#3b3222)}
+.c56 .cx-svg{display:block;width:100%;height:auto;background:#fffaf0;border:1px solid #e2d5b6;border-radius:10px;padding:6px}
+.c56 .cx-ct{font:800 11px Inter;fill:#3b3222}
+.c56 .cx-ax{font:500 10px Inter;fill:#8a7d60}
+.c56 .cx-lab{font:800 11px Inter;fill:#3b3222}
+.c56 .cx-v{font:700 10.5px Inter;fill:#3b3222}
+.c56 .cx-halo{paint-order:stroke;stroke:#fffaf0;stroke-width:4px;stroke-linejoin:round}
+.c56 .cx-bar{animation:cxGrow .5s cubic-bezier(.2,.9,.3,1) both;transform-box:fill-box;transform-origin:bottom}
+@keyframes cxGrow{from{transform:scaleY(0)}}
+.c56 .cx-tk{animation:cxDrop .35s ease both}
+@keyframes cxDrop{from{opacity:0;transform:translateY(-14px)}}
+.c56 .cx-ctl{display:flex;align-items:center;gap:.8rem;margin:.6rem 0 .3rem}
+.c56 .cx-ctl label{font:700 .78rem Inter;white-space:nowrap}
+.c56 .cx-ctl label b{font:900 1.05rem Merriweather,serif;margin-left:.3rem}
+.c56 .cx-ctl input{flex:1;accent-color:#a8761a}
+.c56 .cx-verdict{font-size:.84rem;line-height:1.45;padding:.45rem .65rem;border-radius:8px;background:#fffaf0;border:1px solid #e2d5b6}
+.c56 .cx-verdict .ok{color:#2f8545}
+.c56 .cx-verdict .hi{color:#b8432f}
+.c56 .cx-save{margin-top:.45rem;font-size:.84rem;line-height:1.45;padding:.5rem .7rem;border-left:3px solid #2f8545;background:rgba(47,133,69,.08);border-radius:0 8px 8px 0;animation:cxFade .4s ease both}
+.c56 .cx-list{margin:.2rem 0 .6rem;padding-left:1.1rem;font-size:.86rem;line-height:1.5;color:var(--muted,#5e5340)}
+.c56 .cx-list li{margin:.3rem 0}
+.c56 .cx-list b{color:var(--ink,#3b3222)}
+.c56 .cx-real{font-style:italic;font-size:.8rem !important;border-top:1px solid #e6dcc4;padding-top:.5rem}
+.c56 .cx-nav{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.8rem;padding-top:.6rem;border-top:1px solid #e6dcc4}
+.c56 .cx-b{border:1px solid var(--ink,#3b3222);background:var(--ink,#3b3222);color:var(--paper,#fbf5e6);padding:.5rem .95rem;border-radius:8px;font:700 .84rem Inter;cursor:pointer}
+.c56 .cx-b.ghost{background:var(--paper,#fbf5e6);color:var(--ink,#3b3222);border-color:#cdb98d}
+.c56 .cx-b:disabled{opacity:.35;cursor:default}
+.c56 .cx-dots{display:flex;gap:.4rem}
+.c56 .cx-dots i{width:9px;height:9px;border-radius:50%;border:1.5px solid #a8761a;cursor:pointer}
+.c56 .cx-dots i.done{background:rgba(168,118,26,.45)}
+.c56 .cx-dots i.on{background:#a8761a;transform:scale(1.25)}
+.c56 .r-card.fn-card{width:min(1180px,100%)}
+.c56 .fn-nav{display:flex;flex-wrap:wrap;gap:4px;margin:-4px 0 10px;padding-bottom:8px;border-bottom:1px solid #e6dcc4}
+.c56 .fn-tab{border:1px solid #d9c9a3;background:#fffaf0;color:var(--muted);font:700 .7rem Inter;padding:.28rem .65rem;border-radius:999px;cursor:pointer}
+.c56 .fn-tab.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.c56 .fn-lede{font-size:.88rem;line-height:1.5;margin:.6rem 0 .7rem;color:var(--ink)}
+.c56 .fn-vheads{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.c56 .fn-vh{border:1px solid #e2d5b6;border-top:4px solid var(--c);border-radius:9px;background:#fffaf0;padding:.5rem .7rem;animation:cxFade .5s ease both}
+.c56 .fn-vh span{display:block;font:800 .6rem Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--c)}
+.c56 .fn-vh b{font:900 1.5rem Merriweather,serif}
+.c56 .fn-vh em{display:block;font:italic .72rem Merriweather,serif;color:#8a7d60}
+.c56 .fn-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.c56 .fn-mini{background:#fffaf0;border:1px solid #e2d5b6;border-radius:10px;padding:4px}
+.c56 .fn-key,.c56 .fn-lk{display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin:0 0 .5rem;font:700 .66rem Inter;color:var(--muted)}
+.c56 .fn-key i,.c56 .fn-lk i{display:inline-block;width:12px;height:8px;border-radius:2px;margin-right:.3rem;vertical-align:middle}
+.c56 .fn-key i.cool{background:#2f8545}
+.c56 .fn-key i.warm{background:#b8432f}
+.c56 .fn-key .gd,.c56 .fn-lk .gd{color:#2f8545}
+.c56 .fn-key .bd,.c56 .fn-lk .bd{color:#b8432f}
+.c56 .fn-laws{display:flex;flex-direction:column;gap:6px}
+.c56 .fn-law{display:grid;grid-template-columns:minmax(10rem,1.1fr) minmax(12rem,1.4fr) minmax(0,2fr) auto;gap:.4rem .9rem;align-items:center;padding:.5rem .7rem;background:#fffaf0;border:1px solid #e2d5b6;border-radius:9px;animation:cxFade .45s ease both}
+.c56 .fn-lname{font:900 .9rem Merriweather,serif}
+.c56 .fn-lname small{display:block;font:500 .66rem Inter;color:#8a7d60}
+.c56 .fn-lbar{position:relative;height:30px;background:repeating-linear-gradient(90deg,transparent 0 9.5%,#efe6d0 9.5% 10%)}
+.c56 .fn-lbar .fn-zero{position:absolute;left:50%;top:0;bottom:12px;width:1.5px;background:var(--ink)}
+.c56 .fn-lbar i{position:absolute;top:3px;height:12px;border-radius:2px;animation:fnBar .7s cubic-bezier(.2,.9,.3,1) both}
+.c56 .fn-lbar i.cool{background:#2f8545;transform-origin:right}
+.c56 .fn-lbar i.warm{background:#b8432f;transform-origin:left}
+@keyframes fnBar{from{transform:scaleX(0)}}
+.c56 .fn-lbar em{position:absolute;left:0;right:0;bottom:-2px;text-align:center;font:700 .64rem Inter;font-style:normal;color:var(--muted)}
+.c56 .fn-chips{display:flex;flex-wrap:wrap;gap:4px}
+.c56 .fn-chip{font:700 .66rem Inter;padding:.15rem .5rem;border-radius:999px;border:1px solid #d9c9a3;color:#8a7d60;background:#fff}
+.c56 .fn-chip.gd{color:#2f8545;border-color:rgba(47,133,69,.5);background:rgba(47,133,69,.06)}
+.c56 .fn-chip.bd{color:#b8432f;border-color:rgba(184,67,47,.45);background:rgba(184,67,47,.05)}
+.c56 .fn-why{border:1px solid var(--gold);background:#fffaf0;color:var(--gold);font:800 .68rem Inter;padding:.25rem .65rem;border-radius:999px;cursor:pointer}
+.c56 .fn-wbox{grid-column:1 / -1;font-size:.84rem;line-height:1.5;padding:.5rem .7rem;border-left:3px solid var(--gold);background:#fff;border-radius:0 8px 8px 0;animation:cxFade .35s ease both}
+.c56 .fn-wbox p{margin:.2rem 0}
+.c56 .fn-note{font-size:.72rem !important;color:#8a7d60;font-style:italic}
+.c56 .fn-chain{display:grid;grid-template-columns:repeat(11,auto);align-items:stretch;gap:0;overflow-x:auto;padding-bottom:4px}
+.c56 .fn-chain{grid-template-columns:1fr 18px 1fr 18px 1fr 18px 1fr 18px 1fr 18px 1fr}
+.c56 .fn-link{display:flex;flex-direction:column;gap:.25rem;min-width:0;padding:.6rem .6rem .7rem;background:#fffaf0;border:1px solid #e2d5b6;border-radius:10px;animation:fnLink .5s cubic-bezier(.2,.9,.3,1) both}
+@keyframes fnLink{from{opacity:0;transform:translateY(12px)}}
+.c56 .fn-lh{display:flex;align-items:center;gap:.35rem;font:800 .6rem Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.c56 .fn-big{font:900 1.35rem/1.1 Merriweather,serif}
+.c56 .fn-link p{margin:0;font-size:.72rem;line-height:1.45;color:var(--muted)}
+.c56 .fn-arrow{align-self:center;height:2px;background:var(--ink);position:relative;animation:fnArrow .4s ease both;transform-origin:left}
+.c56 .fn-arrow::after{content:'';position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid var(--ink);border-right:0}
+@keyframes fnArrow{from{transform:scaleX(0)}}
+.c56 .fn-stk{display:flex;align-items:center;gap:.3rem;margin-top:.2rem}
+.c56 .fn-stk small{font:700 .58rem Inter;color:#8a7d60;width:2rem}
+.c56 .fn-stk span{flex:1;display:flex;height:10px;background:#efe6d0;border-radius:2px;overflow:hidden}
+.c56 .fn-stk i{display:block;height:100%}
+.c56 .fn-sk{display:flex;flex-wrap:wrap;gap:.1rem .5rem;margin-top:.2rem}
+.c56 .fn-sk em{font:600 .56rem Inter;font-style:normal;color:#8a7d60}
+.c56 .fn-sk i{display:inline-block;width:7px;height:7px;border-radius:1px;margin-right:.2rem}
+.c56 .fn-ledger{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.c56 .fn-ledger section{background:#fffaf0;border:1px solid #e2d5b6;border-radius:10px;padding:.6rem .75rem}
+.c56 .fn-ledger section:nth-child(3){grid-column:1 / -1}
+.c56 .fn-ledger h4{display:flex;align-items:center;gap:.4rem;margin:0 0 .45rem;font:800 .66rem Inter;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.c56 .fn-lr{display:grid;grid-template-columns:7.5rem 1fr 1fr 5.5rem;gap:.5rem;align-items:center;padding:.22rem 0;border-bottom:1px dashed #e6dcc4}
+.c56 .fn-lr > span{font:700 .74rem Inter}
+.c56 .fn-lr em{font:800 .74rem Inter;font-style:normal;text-align:right}
+.c56 .fn-lr em.gd{color:#2f8545}
+.c56 .fn-lr em.bd{color:#b8432f}
+.c56 .fn-lb{display:flex;align-items:center;gap:.35rem}
+.c56 .fn-lb b{font:700 .7rem Inter;white-space:nowrap}
+.c56 .fn-hb{flex:1;height:9px;background:#efe6d0;border-radius:2px;overflow:hidden}
+.c56 .fn-hb i{display:block;height:100%;animation:fnBar .7s cubic-bezier(.2,.9,.3,1) both;transform-origin:left}
+.c56 .fn-small{margin:.45rem 0 0;font-size:.74rem;color:var(--muted)}
+.c56 .fn-gov{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.c56 .fn-gov div,.c56 .fn-ystats div{border:1px solid #e2d5b6;border-radius:9px;padding:.4rem .6rem;background:#fff}
+.c56 .fn-gov small,.c56 .fn-ystats small{display:block;font:800 .56rem Inter;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+.c56 .fn-gov b,.c56 .fn-ystats b{font:900 1.15rem Merriweather,serif}
+.c56 .fn-gov span,.c56 .fn-ystats span{display:block;font-size:.66rem;color:#8a7d60}
+.c56 .fn-you{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 15rem;gap:10px;align-items:start}
+.c56 .fn-ystats{display:flex;flex-direction:column;gap:6px}
+.c56 .fn-fict{font-style:italic}
+.c56 .fn-reopen{position:absolute;right:14px;top:14px;z-index:5;box-shadow:0 6px 16px rgba(30,20,8,.25)}
+@media(max-width:900px){.c56 .fn-grid,.c56 .fn-vheads,.c56 .cx-read{grid-template-columns:1fr}
+.c56 .fn-law{grid-template-columns:1fr}
+.c56 .fn-chain{grid-template-columns:1fr}
+.c56 .fn-arrow{display:none}
+.c56 .fn-ledger,.c56 .fn-you{grid-template-columns:1fr}}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -1269,6 +1406,59 @@ function fitBoxes(svg) {
 // fit once per drawing, as soon as it can be measured
 function fitWhenVisible(svg) { if (svg && !svg.dataset.fitted && fitBoxes(svg)) svg.dataset.fitted = '1'; }
 
+// FAMILY NAMES (Nov 25 2026, Ryan): surnames of well-loved fictional characters, mostly heroes and good-hearted families,
+// with the story each comes from. Every household is offered five (no two households share an offer) and picks one.
+// Kept clear of villains and of names with unfortunate meanings. Duplicates are dropped when the list loads.
+const FICT_NAMES = (() => {
+  const raw = `
+Baggins|The Hobbit;Gamgee|The Lord of the Rings;Took|The Lord of the Rings;Brandybuck|The Lord of the Rings;Cotton|The Lord of the Rings;Proudfoot|The Lord of the Rings;Underhill|The Lord of the Rings;Greenleaf|The Lord of the Rings;Bolger|The Lord of the Rings;Goodbody|The Lord of the Rings;
+Potter|Harry Potter;Weasley|Harry Potter;Granger|Harry Potter;Lovegood|Harry Potter;Longbottom|Harry Potter;Dumbledore|Harry Potter;McGonagall|Harry Potter;Lupin|Harry Potter;Tonks|Harry Potter;Diggory|Harry Potter;Shacklebolt|Harry Potter;Scamander|Harry Potter;Flitwick|Harry Potter;Sprout|Harry Potter;Pomfrey|Harry Potter;Finnigan|Harry Potter;Creevey|Harry Potter;Abbott|Harry Potter;Hagrid|Harry Potter;
+Skywalker|Star Wars;Solo|Star Wars;Kenobi|Star Wars;Organa|Star Wars;Calrissian|Star Wars;Antilles|Star Wars;Andor|Star Wars;Erso|Star Wars;Tano|Star Wars;Djarin|The Mandalorian;Windu|Star Wars;
+Kirk|Star Trek;Picard|Star Trek;Sulu|Star Trek;Uhura|Star Trek;McCoy|Star Trek;Riker|Star Trek;Crusher|Star Trek;La Forge|Star Trek;Troi|Star Trek;Janeway|Star Trek;Sisko|Star Trek;Archer|Star Trek;Pike|Star Trek;
+Holmes|Sherlock Holmes;Watson|Sherlock Holmes;Hudson|Sherlock Holmes;Lestrade|Sherlock Holmes;Poirot|Agatha Christie;Marple|Agatha Christie;Hastings|Agatha Christie;
+Bennet|Pride and Prejudice;Darcy|Pride and Prejudice;Bingley|Pride and Prejudice;Elliot|Persuasion;Wentworth|Persuasion;Woodhouse|Emma;Knightley|Emma;Dashwood|Sense and Sensibility;Ferrars|Sense and Sensibility;Tilney|Northanger Abbey;Morland|Northanger Abbey;Bertram|Mansfield Park;
+March|Little Women;Laurence|Little Women;Finch|To Kill a Mockingbird;Radley|To Kill a Mockingbird;Shirley|Anne of Green Gables;Cuthbert|Anne of Green Gables;Blythe|Anne of Green Gables;
+Pevensie|The Chronicles of Narnia;Tumnus|The Chronicles of Narnia;Scrubb|The Chronicles of Narnia;Darling|Peter Pan;Gale|The Wizard of Oz;Arable|Charlotte’s Web;Zuckerman|Charlotte’s Web;
+Wonka|Charlie and the Chocolate Factory;Bucket|Charlie and the Chocolate Factory;Honey|Matilda;Trotter|James and the Giant Peach;Fox|Fantastic Mr Fox;Poppins|Mary Poppins;Banks|Mary Poppins;Murry|A Wrinkle in Time;
+Jackson|Percy Jackson;Chase|Percy Jackson;Grace|Percy Jackson;Underwood|Percy Jackson;Everdeen|The Hunger Games;Mellark|The Hunger Games;Hawthorne|The Hunger Games;Abernathy|The Hunger Games;Odair|The Hunger Games;Prior|Divergent;
+Dent|The Hitchhiker’s Guide to the Galaxy;Prefect|The Hitchhiker’s Guide to the Galaxy;Copperfield|David Copperfield;Pickwick|The Pickwick Papers;Twist|Oliver Twist;Cratchit|A Christmas Carol;Fezziwig|A Christmas Carol;Nickleby|Nicholas Nickleby;Pirrip|Great Expectations;Dorrit|Little Dorrit;Peggotty|David Copperfield;Summerson|Bleak House;Brownlow|Oliver Twist;
+Sawyer|Tom Sawyer;Finn|Huckleberry Finn;Thatcher|Tom Sawyer;Starbuck|Moby-Dick;Eyre|Jane Eyre;Rivers|Jane Eyre;Valjean|Les Misérables;Dantès|The Count of Monte Cristo;Panza|Don Quixote;Fogg|Around the World in Eighty Days;Passepartout|Around the World in Eighty Days;
+Hawkins|Treasure Island;Livesey|Treasure Island;Trelawney|Treasure Island;Crusoe|Robinson Crusoe;Robinson|The Swiss Family Robinson;Lennox|The Secret Garden;Craven|The Secret Garden;Sowerby|The Secret Garden;Whittier|Pollyanna;Ingalls|Little House on the Prairie;
+Oak|Far from the Madding Crowd;Everdene|Far from the Madding Crowd;Brooke|Middlemarch;Garth|Middlemarch;Thornton|North and South;Hale|North and South;Rostov|War and Peace;Bolkonsky|War and Peace;Levin|Anna Karenina;
+Joad|The Grapes of Wrath;Trask|East of Eden;Hamilton|East of Eden;Milton|Of Mice and Men;Carraway|The Great Gatsby;Caulfield|The Catcher in the Rye;
+Drew|Nancy Drew;Hardy|The Hardy Boys;Quimby|Ramona;Hatcher|Tales of a Fourth Grade Nothing;Huggins|Henry Huggins;Little|Stuart Little;Penderwick|The Penderwicks;Vanderbeeker|The Vanderbeekers;Longstocking|Pippi Longstocking;
+Heffley|Diary of a Wimpy Kid;Frizzle|The Magic School Bus;Read|Arthur;Howard|Clifford the Big Red Dog;Baudelaire|A Series of Unfortunate Events;Quagmire|A Series of Unfortunate Events;Pullman|Wonder;Yelnats|Holes;Aarons|Bridge to Terabithia;Burke|Bridge to Terabithia;Robeson|Hatchet;Colman|Where the Red Fern Grows;Tuck|Tuck Everlasting;Johansen|Number the Stars;Rosen|Number the Stars;Buloni|Because of Winn-Dixie;Frisby|Mrs. Frisby and the Rats of NIMH;Cabret|The Invention of Hugo Cabret;
+Wiggin|Ender’s Game;Atreides|Dune;Idaho|Dune;Seldon|Foundation;Calvin|I, Robot;Weatherwax|Discworld;Ogg|Discworld;Vimes|Discworld;Watney|The Martian;Belacqua|His Dark Materials;Owens|The Graveyard Book;Jones|Coraline;
+Parr|The Incredibles;Lightyear|Toy Story;Davis|Toy Story;Fredricksen|Up;Rivera|Coco;Madrigal|Encanto;Linguini|Ratatouille;Sullivan|Monsters, Inc.;Wazowski|Monsters, Inc.;Hamada|Big Hero 6;Hopps|Zootopia;Wilde|Zootopia;Fitzherbert|Tangled;Pelekai|Lilo & Stitch;Paguro|Luca;Marcovaldo|Luca;Gardner|Soul;Lightfoot|Onward;Lumen|Elemental;Ripple|Elemental;DunBroch|Brave;Thatch|Atlantis: The Lost Empire;Radcliffe|101 Dalmatians;
+Von Trapp|The Sound of Music;Pond|Doctor Who;Tyler|Doctor Who;Noble|Doctor Who;Oswald|Doctor Who;Song|Doctor Who;Brown|Paddington;Crawley|Downton Abbey;Lasso|Ted Lasso;Higgins|Ted Lasso;Obisanya|Ted Lasso;Beard|Ted Lasso;
+Knope|Parks and Recreation;Swanson|Parks and Recreation;Perkins|Parks and Recreation;Wyatt|Parks and Recreation;Haverford|Parks and Recreation;Dwyer|Parks and Recreation;Traeger|Parks and Recreation;Halpert|The Office;Beesly|The Office;Schrute|The Office;
+Peralta|Brooklyn Nine-Nine;Santiago|Brooklyn Nine-Nine;Diaz|Brooklyn Nine-Nine;Holt|Brooklyn Nine-Nine;Jeffords|Brooklyn Nine-Nine;Boyle|Brooklyn Nine-Nine;Geller|Friends;Green|Friends;Bing|Friends;Tribbiani|Friends;Buffay|Friends;
+Gilmore|Gilmore Girls;Danes|Gilmore Girls;Tanner|Full House;Heeler|Bluey;Wheeler|Stranger Things;Byers|Stranger Things;Henderson|Stranger Things;Sinclair|Stranger Things;Hopper|Stranger Things;Harrington|Stranger Things;Mayfield|Stranger Things;
+Pritchett|Modern Family;Dunphy|Modern Family;Tucker|Modern Family;Shellstrop|The Good Place;Anagonye|The Good Place;Mendoza|The Good Place;Teagues|Abbott Elementary;Pearson|This Is Us;
+Pierce|M*A*S*H;Hunnicutt|M*A*S*H;O’Reilly|M*A*S*H;Taylor|The Andy Griffith Show;Brady|The Brady Bunch;Partridge|The Partridge Family;Cunningham|Happy Days;Fonzarelli|Happy Days;Winslow|Family Matters;Matthews|Boy Meets World;Feeny|Boy Meets World;
+Dinkley|Scooby-Doo;Blake|Scooby-Doo;Rogers|Scooby-Doo;Flintstone|The Flintstones;Rubble|The Flintstones;Jetson|The Jetsons;Pickles|Rugrats;Funnie|Doug;Flynn|Phineas and Ferb;Fletcher|Phineas and Ferb;Possible|Kim Possible;Stoppable|Kim Possible;Pines|Gravity Falls;
+McGuire|Lizzie McGuire;Baxter|That’s So Raven;Stewart|Hannah Montana;Shay|iCarly;Stevens|Even Stevens;Spellman|Sabrina the Teenage Witch;Russo|Wizards of Waverly Place;
+Winger|Community;Edison|Community;Barnes|Community;Perry|Community;Nadir|Community;Spencer|Psych;Guster|Psych;Monk|Monk;Castle|Castle;Beckett|Castle;Brennan|Bones;Booth|Bones;Columbo|Columbo;MacGyver|MacGyver;Magnum|Magnum, P.I.;
+Bartlet|The West Wing;Lyman|The West Wing;McGarry|The West Wing;Ziegler|The West Wing;Seaborn|The West Wing;Cregg|The West Wing;Moss|The West Wing;Adama|Battlestar Galactica;Roslin|Battlestar Galactica;Reynolds|Firefly;Washburne|Firefly;Frye|Firefly;Tam|Firefly;Holden|The Expanse;Nagata|The Expanse;Kamal|The Expanse;
+Parker|Spider-Man;Morales|Spider-Man: Into the Spider-Verse;Stark|Iron Man;Banner|The Avengers;Romanoff|The Avengers;Barton|The Avengers;Wilson|Captain America;Strange|Doctor Strange;Danvers|Captain Marvel;Lang|Ant-Man;Maximoff|WandaVision;Kent|Superman;Lane|Superman;Olsen|Superman;Wayne|Batman;Gordon|Batman;Pennyworth|Batman;Grayson|Batman;Prince|Wonder Woman;Allen|The Flash;Queen|Arrow;
+Ketchum|Pokémon;Croft|Tomb Raider;Drake|Uncharted;Freeman|Half-Life;Layton|Professor Layton;Wright|Phoenix Wright: Ace Attorney;Kusakabe|My Neighbor Totoro;
+Jones|Indiana Jones;McFly|Back to the Future;Grant|Jurassic Park;Sattler|Jurassic Park;Malcolm|Jurassic Park;Venkman|Ghostbusters;Stantz|Ghostbusters;Spengler|Ghostbusters;Zeddemore|Ghostbusters;Balboa|Rocky;LaRusso|The Karate Kid;Miyagi|The Karate Kid;Gump|Forrest Gump;Montoya|The Princess Bride;
+McCallister|Home Alone;Kringle|Miracle on 34th Street;Bailey|It’s a Wonderful Life;Walsh|The Goonies;Smalls|The Sandlot;Bombay|The Mighty Ducks;Hoggett|Babe;Lockwood|Singin’ in the Rain;Blaine|Casablanca;Laszlo|Casablanca;Brody|Jaws;Hooper|Jaws;
+Thermopolis|The Princess Diaries;Daley|Night at the Museum;Parrish|Jumanji;Banning|Hook;Hillard|Mrs. Doubtfire;Baskin|Big;Kinsella|Field of Dreams;
+Bean|Mr. Bean;Wallace|Wallace & Gromit;Haddock|The Adventures of Tintin;Calculus|The Adventures of Tintin;Puddleduck|The Tale of Jemima Puddle-Duck;Tittlemouse|The Tale of Mrs. Tittlemouse;Robin|Winnie-the-Pooh;Kishi|The Baby-Sitters Club;Spier|The Baby-Sitters Club;McGill|The Baby-Sitters Club;
+Rochester|Jane Eyre;Earnshaw|Wuthering Heights;Brandon|Sense and Sensibility;Price|Mansfield Park;Musgrove|Persuasion;Weston|Emma;Gardiner|Pride and Prejudice;Lucas|Pride and Prejudice;
+Hornblower|Horatio Hornblower;Aubrey|Master and Commander;Maturin|Master and Commander;Wimsey|Lord Peter Wimsey;Vane|Strong Poison;Campion|Albert Campion;Maigret|Maigret;Brown|Father Brown;Rumpole|Rumpole of the Bailey;Morse|Inspector Morse;Lewis|Inspector Morse;Frost|A Touch of Frost;Ramotswe|The No. 1 Ladies’ Detective Agency;Makutsi|The No. 1 Ladies’ Detective Agency;
+Herriot|All Creatures Great and Small;Farnon|All Creatures Great and Small;Dolittle|Doctor Dolittle;Stubbins|The Voyages of Doctor Dolittle;Pollifax|Mrs. Pollifax;Fletcher|Murder, She Wrote;Marlowe|The Big Sleep;Spade|The Maltese Falcon;Archer|The Moving Target;
+Kenton|The Remains of the Day;Stevens|The Remains of the Day;Lidenbrock|Journey to the Center of the Earth;Aronnax|Twenty Thousand Leagues Under the Seas;Land|Twenty Thousand Leagues Under the Seas;Harker|Dracula;Van Helsing|Dracula;Seward|Dracula;
+Barry|Anne of Green Gables;Lynde|Anne of Green Gables;Allan|Anne of Green Gables;Andrews|Anne of Green Gables;Lambchop|Flat Stanley;Kane|The Kane Chronicles;Grimm|The Sisters Grimm;Muldoon|The Mysterious Benedict Society;Wetherall|The Mysterious Benedict Society;
+Marchbanks|Harry Potter;Ollivander|Harry Potter;Slughorn|Harry Potter;Hooch|Harry Potter;Figg|Harry Potter;Doge|Harry Potter;Bagshot|Harry Potter;Clearwater|Harry Potter;Spinnet|Harry Potter;Bell|Harry Potter;Johnson|Harry Potter;Wood|Harry Potter;Jordan|Harry Potter;Patil|Harry Potter;Chang|Harry Potter;Macmillan|Harry Potter;Bones|Harry Potter;
+Cresta|The Hunger Games;Undersee|The Hunger Games;Trinket|The Hunger Games;
+Crane|Frasier;Moon|Frasier;Hooper|Sherlock`;
+  const seen = new Set(), out = [];
+  for (const it of raw.split(';')) { const [n, s] = it.trim().split('|'); if (n && s && !seen.has(n)) { seen.add(n); out.push([n, s]); } }
+  return out;
+})();
+
 // THE SIMULATION ENGINE (no drawing). One model shared by the build screens, the run screen and, later, the live game.
 //
 // The class is the world. Each student household stands for HHSCALE real households and each company for a large firm;
@@ -1462,7 +1652,17 @@ const SIM = (function () {
   }
   // Member A … Member Z, then Member A2 …
   const memberName = i => 'Member ' + 'ABCDEFGHJKLMNPQRSTUVWXYZ'[i % 24] + (i >= 24 ? (i / 24 | 0) + 1 : '');
-  function classFrom(members, seed) {
+  // Family names (Nov 25 2026): every household is offered five surnames of well-loved fictional characters (FICT_NAMES in
+  // fict_names.js), dealt from one shuffled list so no two households share an offer; NM = {pk: 0..4} is each household's pick.
+  function nameOffers(seed, k) {
+    const L = (typeof FICT_NAMES !== 'undefined' && FICT_NAMES.length) ? FICT_NAMES : [['Okafor', ''], ['Nguyen', ''], ['Garcia', ''], ['Patel', ''], ['Kim', '']];
+    const key = seed + ':fict:' + L.length;
+    let perm = nameOffers.memo && nameOffers.memo.key === key ? nameOffers.memo.perm : null;
+    if (!perm) { perm = L.map((_, i) => i).sort((a, b) => hash(seed + ':fn:' + a) - hash(seed + ':fn:' + b)); nameOffers.memo = { key, perm }; }
+    const lap = Math.floor(5 * k / L.length);
+    return [0, 1, 2, 3, 4].map(j => L[perm[(5 * k + j + lap * 7) % L.length]]);
+  }
+  function classFrom(members, seed, NM) {
     const C = { seed, r: rng(hash(seed + ':seq')), year: Y0, hh: [], biz: [], gov: [], pol: emptyPolicy(), hist: [], news: [], votes: [], elections: [], taken: new Set(), cum: 0, logs: {}, opts: {}, free: false };
     const hTaken = new Set();
     let ih = 0, ib = 0, ig = 0;
@@ -1470,7 +1670,9 @@ const SIM = (function () {
       const r = rk(C, 'id:' + m.pk);
       if (m.role === 'hh') {
         const tier = ih++ % 3, inc = [34000, 64000, 120000][tier] * (.85 + r() * .3);
-        const h = { id: m.pk, kind: 'hh', name: familyName(r, hTaken), tier, income: Math.round(inc / 1000) * 1000, people: 1 + ((r() * 4.2) | 0),
+        const offers = nameOffers(seed, ih - 1), pick = Math.max(0, Math.min(4, (NM && +NM[m.pk]) || 0));
+        familyName(r, hTaken);            // still drawn, so every household's luck stays what it was before the fictional names
+        const h = { id: m.pk, kind: 'hh', name: 'The ' + offers[pick][0] + ' household', fict: offers[pick], offers, tier, income: Math.round(inc / 1000) * 1000, people: 1 + ((r() * 4.2) | 0),
           cash: Math.round([8000, 38000, 90000][tier] * (.7 + r() * .6) / 1000) * 1000, concern: r(), loan: 0, loanPay: 0, carAge: 4 + ((r() * 8) | 0), events: [] };
         h.loc = tier === 0 ? wpick(r, { sub: 2, city: 3, flood: 3 }) : tier === 1 ? wpick(r, { sub: 5, city: 3, flood: 2 }) : wpick(r, { sub: 6, city: 3, flood: 1 });
         Object.assign(h, AS_BUILT_HH, { fly: ['0', '1', '3'][tier] });
@@ -1628,6 +1830,7 @@ const SIM = (function () {
       const left = .12 * h.income - (y.bills.total - h.bill0) - loanPay - dmg;
       h.cash += left; h.income *= 1.01; h.carAge++;
       h.last = { t: y.t, scope1: y.scope1, bills: y.bills, burden: y.bills.energy / h.income, dmg, left };
+      (h.trk ||= []).push([year, +y.t.total.toFixed(2), Math.round(y.bills.total), Math.round(h.cash), +(y.bills.energy / h.income).toFixed(4)]);
       hhScope1 += y.scope1 * HHSCALE / 1000;
       rev += y.scope1 * W.tax * HHSCALE / 1e6;                          // $M of carbon tax paid by households
       rows.hh.push(h.last);
@@ -1643,6 +1846,7 @@ const SIM = (function () {
       if (ev.includes('surge') && b.sec === 'steel') { y.profit -= 15 * wallF(C); }
       b.cash += y.profit;
       b.last = { ...y, accident };
+      (b.trk ||= []).push([year, Math.round(y.kt.total), +y.profit.toFixed(1), +(y.taxCost + y.permitCost).toFixed(1), +b.cash.toFixed(1)]);
       bizScope1 += y.kt.scope1;
       rev += y.taxCost; permitRev += y.permitCost;
       workers += b.workers; output += y.rev; profit += y.profit;
@@ -1683,7 +1887,7 @@ const SIM = (function () {
       meat: M.meatIdx, ccs: C.biz.filter(b => b.open && b.ccs === 'yes' && b.sec !== 'farm').length / Math.max(1, C.biz.filter(b => b.sec === 'power' || b.sec === 'steel').length),
       events: ev, tax: W.tax, permit, elecPrice: W.elec, output, profit, workers, jobsLost, burdenBy,
       govIn: income, govOut: dividend + subsidies + spend + seaWallCost, dividend, balance, debt: C.debt, sectorKt,
-      approval: C.lastApproval ?? null
+      approval: C.lastApproval ?? null, pol: { ...C.pol }
     };
     C.hist.push(rec);
     for (const e of ev) C.news.push({ year, kind: 'event', ev: e, text: EVT[e].name + (e === 'flood' ? ' hits the riverside homes' : e === 'surge' ? ' batters the coast' : e === 'heat' ? ' bakes the valley' : ' fills the sky') });
@@ -1750,6 +1954,7 @@ const SIM = (function () {
   }
   function applyLaw(C, id, v) {
     const pol = C.pol;
+    if (C.force && id in C.force) v = C.force[id];
     if (id === 'tax') { if (v !== pol.tax) { pol.taxFrom = effTax(C, C.year); pol.taxYear = C.year; } pol.tax = v; return; }
     if (id === 'cap') {
       if (v && !pol.cap) {
@@ -2174,12 +2379,13 @@ const SIM = (function () {
   const optsOf = o => ({ mid: !o || o.mid !== 0, trade: !o || o.trade !== 0, polls: !o || o.polls !== 0, emerg: !o || o.emerg !== 0 });
   const STAGES = ['init', 'vote0', 'adj0', 'runA1', 'mid1', 'runB1', 'elect1', 'revote1', 'adj1', 'runA2', 'mid2', 'runB2', 'elect2', 'revote2', 'adj2', 'runA3', 'mid3', 'runB3'];
   function replay(I, stage, yr) {
-    const C = classFrom(I.members, I.seed), upto = STAGES.indexOf(stage);
+    const C = classFrom(I.members, I.seed, I.NM), upto = STAGES.indexOf(stage);
     C.opts = optsOf(I.opts);
+    if (I.force) C.force = I.force;      // what-if: these laws are held at these values for the whole game
     for (let i = 0; i <= upto; i++) {
       const s = STAGES[i];
       if (s === 'init') initialChoices(C, I.D);
-      else if (s === 'vote0') C.logs.vote0 = govVote(C, false, I.V0);
+      else if (s === 'vote0') { C.logs.vote0 = govVote(C, false, I.V0); if (C.force) for (const id in C.force) applyLaw(C, id, C.force[id]); }
       else if (s === 'adj0') C.logs.adj0 = adjustAll(C, I.A0);
       else if (s.startsWith('run')) {
         const d = +s[4], end = 10 * (d - 1) + (s[3] === 'A' ? 5 : 10), lim = Y0 + Math.min(end, i === upto && yr != null ? yr : 99);
@@ -2206,7 +2412,11 @@ const SIM = (function () {
   ];
   const at = (pts, y) => { for (let i = 1; i < pts.length; i++) if (y <= pts[i][0]) return lerp(pts[i - 1][1], pts[i][1], (y - pts[i - 1][0]) / (pts[i][0] - pts[i - 1][0])); return pts[pts.length - 1][1]; };
 
-  return { packSwap, emergTrigger, emergLedger, EM_OPTS, EM_IDS, tradingNow, positions, parseOrder, clearMarket, optsOf, deal, classFrom, replay, STAGES, agendaOf, DEFAULT_AGENDA, VOTE_IDS, packHH, parseHH, packB, parseB, packVote, parseVote, parseBallot, REASONS, applyHH, applyB, AS_BUILT_HH, asBuiltBiz, pickH, pickB, hash, effTax, carPrice, costF, Y0, YN, ELECTIONS, HHSCALE, SECT, BILLS, SSP, at, HH_OPTS, POWER_INT, hhYear, hhUpfront, bizYear, bizCapex, newClass, initialChoices, govVote, stepYear, election, adjustAll, worldFor, market, emptyPolicy };
+  // the finale's what-ifs: the same class, the same people and the same frozen choices, with some laws held fixed
+  const LAW_OFF = { tax: 0, cap: false, evRebate: false, hpRebate: false, solarCredit: false, cleanStd: false, fuelStd: false, border: false, methane: false, seaWall: false, nuclear: false };
+  const LAW_STRONG = { tax: 150, cap: true, evRebate: true, hpRebate: true, solarCredit: true, use: 'dividend', cleanStd: true, fuelStd: true, border: true, methane: true, seaWall: true, nuclear: true };
+  function whatIf(I, force) { return replay({ ...I, force }, 'runB3', 30); }
+  return { nameOffers, whatIf, LAW_OFF, LAW_STRONG, packSwap, emergTrigger, emergLedger, EM_OPTS, EM_IDS, tradingNow, positions, parseOrder, clearMarket, optsOf, deal, classFrom, replay, STAGES, agendaOf, DEFAULT_AGENDA, VOTE_IDS, packHH, parseHH, packB, parseB, packVote, parseVote, parseBallot, REASONS, applyHH, applyB, AS_BUILT_HH, asBuiltBiz, pickH, pickB, hash, effTax, carPrice, costF, Y0, YN, ELECTIONS, HHSCALE, SECT, BILLS, SSP, at, HH_OPTS, POWER_INT, hhYear, hhUpfront, bizYear, bizCapex, newClass, initialChoices, govVote, stepYear, election, adjustAll, worldFor, market, emptyPolicy };
 })();
 
 // THE VALLEY: the shared living world. Everything visible is driven by the class's state:
@@ -4627,27 +4837,10 @@ const SFX = (function () {
     return `<div class="r-newgov" id="rNewGov"><div class="r-ngh"><span class="r-ceb">SWORN IN TODAY</span><h3>The new government</h3><p>Every seat goes to a voter. Each outgoing member takes over the home or company of the voter who replaced them.</p></div>
       <div class="r-ngs">${sw.map(x => `<div class="r-ng">${glyph(x.kind === 'hh' ? 'home' : 'factory', 16)}<div><b>${x.newName}</b><span>was ${x.name}</span></div><small>${x.oldName} takes over ${x.kind === 'hh' ? 'the home' : 'the company'}</small></div>`).join('')}</div></div>`;
   }
+  // the 2056 report (finale.js, Nov 25 2026): where the class landed, three valleys, what each law did, the chain, the ledger, you
   function showFinal(o) {
-    const C = R.C, h = C.hist, last = h[h.length - 1], first = h[0];
-    const near = SIM.SSP.map(s => [s, Math.abs(SIM.at(s.T, 2056) - last.T)]).sort((a, b) => a[1] - b[1])[0][0];
-    const openB = C.biz.filter(b => b.open && b.last);
-    const best = (arr, f) => arr.slice().sort((a, b) => f(b) - f(a))[0];
-    const lowHH = best(C.hh, x => -x.last.t.total), richB = best(openB, b => b.cash), cleanB = best(openB, b => -b.last.kt.total / Math.max(1, b.last.rev));
-    const aw = [['leaf', 'Lowest-carbon household', lowHH.name, `${lowHH.last.t.total.toFixed(1)} t a year · ${hhSummary(lowHH)}`],
-      ['factory', 'Most cash in the bank', richB.name, `${fmt$(richB.cash)} · ${bizSummary(richB)}`], ['wind', 'Cleanest company per dollar', cleanB.name, `${Math.round(cleanB.last.kt.total)} kt on ${fmt$(cleanB.last.rev)} of sales`]];
-    overlay(head('2056 · THIRTY YEARS LATER', 'Where did the class land?', `Your class finished at <b>+${last.T.toFixed(2)} °C</b>, closest to the IPCC’s <b>${near.id}</b> path (${near.name.toLowerCase()}). CO₂ reached <b>${last.ppm.toFixed(0)} ppm</b>.`) +
-      `<div class="r-final"><div class="r-fchart" id="rFChart"></div>
-        <div class="r-fstats">${[['Class emissions', pct(last.index), 'of the as-built class'], ['Clean electricity', pct(last.cleanElec), 'of the grid'], ['Electric cars', pct(last.evShare), 'of household cars'],
-          ['Companies closed', C.biz.filter(b => !b.open).length, `${last.jobsLost.toLocaleString()} jobs lost`], ['Low-income energy bills', (last.burdenBy[0] * 100).toFixed(1) + '%', `of income (was ${(first.burdenBy[0] * 100).toFixed(1)}%)`], ['Government debt', fmt$(Math.max(0, last.debt)), 'after 30 years']].map(([l, v, s]) => `<div><small>${l}</small><b>${v}</b><span>${s}</span></div>`).join('')}</div></div>
-      <div class="r-awards">${aw.map(([g, t, n, s]) => `<div class="r-aw">${glyph(g, 22)}<small>${t}</small><b>${n}</b><span>${s}</span></div>`).join('')}</div>
-      <p class="r-fine">A teaching model, not a forecast. The class stands in for the world; pathways are approximate, after IPCC AR6.</p>
-      ${act(o, 'Play again with a new class ↻', '<button class="btn ghost" id="rLook">Look at the valley</button>')}`, () => {
-      const box = $('#rFChart');
-      const ssp = SIM.SSP.map(s => ({ name: s.id, pts: [2026, 2031, 2036, 2041, 2046, 2051, 2056].map(y => [y, SIM.at(s.T, y)]) }));
-      chart(box, { title: 'Warming since 1850–1900', unit: '°C', yMin: 1.2, yMax: 2.5, dec: 2, refs: ssp, series: [{ name: 'Your class', color: '#b8432f', pts: h.map(r => [r.year, r.T]) }] });
-    });
-    wire(o);
-    $('#rLook').onclick = closeOv;
+    R.fin ||= window.FIN56({ R, chart, glyph, head, act, overlay, wire, fmt$, closeOv, $, hhSummary, bizSummary, SECN });
+    R.fin.show(o || {});
   }
 
 
@@ -4682,7 +4875,10 @@ const SFX = (function () {
     }).join('');
     overlay(head(`YEAR ${m.year} · THE PERMIT MARKET`, m.vol > 0 ? `The market cleared at $${m.price} a tonne` : 'Nobody traded',
       m.vol > 0 ? `${Math.round(m.vol)} kt of permits a year change hands for the next five years. Companies that cleaned up earn money for the cuts they made; the ones that didn’t pay for them.` : 'The buyers’ highest prices never reached the sellers’ lowest. Everyone keeps the permits they were given.') +
-      `<div class="r-mkt"><div class="r-fchart">${marketSvg(orders, m)}</div><ul class="r-mfills">${rows || '<li class="out">No company placed an order.</li>'}</ul></div>` + act(o, 'Show what households changed ▸'));
+      `<div class="r-mkt"><div class="r-fchart">${marketSvg(orders, m)}</div><ul class="r-mfills">${rows || '<li class="out">No company placed an order.</li>'}</ul></div>
+      <div class="cx-read"><div><b style="color:#2f8545">Green staircase</b> Sellers, cheapest first: companies that cleaned up and have spare permits.</div><div><b style="color:#2668a8">Blue staircase</b> Buyers, highest bid first: companies short of permits, for whom cutting costs more.</div><div><b style="color:#b8432f">Where they cross</b> One price for everyone. Every buyer at or above it gets permits; every seller at or below it sells.</div></div>` +
+      act(o, 'Show what households changed ▸', window.CAPX ? CAPX.button('How cap-and-trade works', 2) : ''));
+    if (window.CAPX) CAPX.wire($('#rCard'));
     wire(o);
   }
 
@@ -5270,6 +5466,344 @@ const EMERG = (function () {
   return { story, results, refresh, clock, close, isOpen };
 })();
 
+// HOW CAP-AND-TRADE WORKS (Nov 25 2026, Ryan: "add some additional explanation and visuals for the cap-and-trade system").
+// A five-step illustrated explainer, opened from the government's ballot (the cap-and-trade bill), the companies' permit
+// market, and the projector's host bar. Step 3 is a two-company market the student can play with: drag the permit price and
+// each company cuts wherever cutting is cheaper than a permit; the market clears where the permits one sells equal the
+// permits the other buys. The numbers in that example are invented to make the arithmetic easy; the rules described in
+// step 5 are the game's own (sim.js clearPermits, positions, permitMarket).
+'use strict';
+window.CAPX = (function () {
+  const INK = '#3b3222', GOLD = '#a8761a', GREEN = '#2f8545', BLUE = '#2668a8', RED = '#b8432f', PAPER = '#fbf5e6';
+  // the two companies in step 3: emissions 120 t, 100 free permits each; cutting q tonnes costs a·q per extra tonne
+  const FIRMS = [{ name: 'Cottonwood Steel', a: 1, max: 60, col: GREEN, note: 'can switch to scrap steel cheaply' }, { name: 'Ridgeline Power', a: 4, max: 30, col: BLUE, note: 'needs new plants to cut much' }];
+  const NEED = 20, CLEAR = 32;    // each is 20 t short; q_A + q_B = 40 → p + p/4 = 40 → p = 32
+  const cut = (f, p) => Math.min(f.max, p / f.a), cost = (f, q) => f.a * q * q / 2;
+
+  function capChart() {
+    const W = 520, H = 230, L = 44, R = 14, T = 18, B = 30, ys = []; for (let y = 2026; y <= 2056; y += 2) ys.push(y);
+    const X = y => L + (y - 2026) / 30 * (W - L - R), Y = v => T + (1 - v / 110) * (H - T - B), bw = (W - L - R) / ys.length * .62;
+    let s = `<text x="${L}" y="11" class="cx-ct">Permits handed out each year (the cap), as a share of the year it began</text>`;
+    for (const v of [0, 25, 50, 75, 100]) s += `<path d="M${L},${Y(v)} H${W - R}" stroke="#e8dcc0"/><text x="${L - 6}" y="${Y(v) + 3}" class="cx-ax" text-anchor="end">${v}%</text>`;
+    ys.forEach((y, i) => { const v = 100 * Math.pow(.97, y - 2026); s += `<rect class="cx-bar" style="animation-delay:${i * 45}ms" x="${X(y) - bw / 2}" y="${Y(v)}" width="${bw}" height="${Y(0) - Y(v)}" rx="2" fill="${GOLD}" opacity=".82"/>`; if (i % 3 === 0) s += `<text x="${X(y)}" y="${H - 12}" class="cx-ax" text-anchor="middle">${y}</text>`; });
+    s += `<path d="M${X(2026)},${Y(100)} ${ys.map(y => 'L' + X(y) + ',' + Y(100 * Math.pow(.97, y - 2026))).join(' ')}" fill="none" stroke="${RED}" stroke-width="2.4"/>`;
+    s += `<text x="${X(2056)}" y="${Y(58)}" class="cx-lab cx-halo" text-anchor="end" fill="${RED}">about 40% by 2056</text><text x="${X(2036)}" y="${Y(84)}" class="cx-lab cx-halo" fill="${RED}">falls 3% a year</text>`;
+    return `<svg viewBox="0 0 ${W} ${H}" class="cx-svg" role="img" aria-label="A cap that falls 3% a year">${s}</svg>`;
+  }
+  function permitArt() {
+    // a stack of permit tickets dealt to three companies in proportion to their emissions when the cap began
+    const co = [['Steel & cement', 46, '#8a4fa8'], ['Power', 34, RED], ['Farms & food', 20, GREEN]];
+    let s = `<text x="10" y="14" class="cx-ct">100 permits, shared out by each company’s emissions when the cap began</text>`, x = 14;
+    co.forEach(([n, k, c], j) => {
+      const cols = Math.ceil(k / 5), w = cols * 15;
+      for (let i = 0; i < k; i++) { const cx = x + (i / 5 | 0) * 15, cy = 150 - (i % 5) * 20; s += `<g class="cx-tk" style="animation-delay:${(j * 46 + i) * 12}ms"><rect x="${cx}" y="${cy}" width="12" height="16" rx="2" fill="#fffaf0" stroke="${c}" stroke-width="1.4"/><path d="M${cx + 3},${cy + 5} h6 M${cx + 3},${cy + 9} h6" stroke="${c}" stroke-width="1"/></g>`; }
+      s += `<text x="${x + w / 2}" y="190" class="cx-lab" text-anchor="middle" fill="${c}">${n}</text><text x="${x + w / 2}" y="206" class="cx-ax" text-anchor="middle">${k} permits</text>`;
+      x += w + 34;
+    });
+    s += `<g transform="translate(${x + 6} 66)"><rect width="150" height="88" rx="8" fill="#fffaf0" stroke="#d9c9a3"/><rect x="14" y="14" width="22" height="30" rx="3" fill="#fffaf0" stroke="${INK}" stroke-width="1.6"/><path d="M19,23 h12 M19,30 h12 M19,37 h8" stroke="${INK}"/>
+      <text x="46" y="27" class="cx-lab">1 permit =</text><text x="46" y="43" class="cx-lab">1 tonne of CO₂</text><text x="14" y="66" class="cx-ax">No permit, no emitting.</text><text x="14" y="80" class="cx-ax">Spare ones can be sold.</text></g>`;
+    return `<svg viewBox="0 0 ${Math.max(520, x + 170)} 216" class="cx-svg" role="img" aria-label="Permits shared among three companies">${s}</svg>`;
+  }
+  // step 3: two companies, one price
+  function marketArt(p) {
+    const [A, B] = FIRMS, qa = cut(A, p), qb = cut(B, p), sell = Math.max(0, qa - NEED), buy = Math.max(0, NEED - qb);
+    const W = 560, H = 250, base = 210, sc = 1.25, bw = 70;
+    const col = (f, x, q) => {
+      const kept = 120 - q, hP = 100 * sc, hK = kept * sc, hQ = q * sc;
+      let s = `<text x="${x + bw / 2}" y="${base + 18}" class="cx-lab" text-anchor="middle">${f.name}</text><text x="${x + bw / 2}" y="${base + 32}" class="cx-ax" text-anchor="middle">${f.note}</text>`;
+      s += `<rect x="${x}" y="${base - hK}" width="${bw}" height="${hK}" fill="#cfc6b0"/><rect x="${x}" y="${base - hK - hQ}" width="${bw}" height="${hQ}" fill="${f.col}" opacity=".28" stroke="${f.col}" stroke-dasharray="4 3"/>`;
+      s += `<text x="${x + bw / 2}" y="${base - hK / 2 + 4}" class="cx-v" text-anchor="middle">emits ${Math.round(kept)} t</text>`;
+      if (hQ > 14) s += `<text x="${x + bw / 2}" y="${base - hK - hQ / 2 + 4}" class="cx-v" text-anchor="middle" fill="${f.col}">cuts ${Math.round(q)} t</text>`;
+      s += `<path d="M${x - 10},${base - hP} H${x + bw + 10}" stroke="${GOLD}" stroke-width="2.4" stroke-dasharray="6 3"/><text x="${x - 12}" y="${base - hP + 4}" class="cx-ax" text-anchor="end">100 permits</text>`;
+      return s;
+    };
+    let s = col(A, 70, qa) + col(B, 400, qb);
+    // permits flowing from the seller to the buyer
+    const flow = Math.min(sell, buy), short = buy - sell;
+    s += `<path d="M160,120 C230,80 320,80 390,120" fill="none" stroke="${INK}" stroke-width="${1.5 + flow / 4}" marker-end="url(#cxArr)" opacity="${flow > .5 ? 1 : .2}"/>`;
+    s += `<text x="275" y="72" class="cx-lab" text-anchor="middle">${flow > .5 ? Math.round(flow) + ' permits change hands at $' + Math.round(p) : 'no trade'}</text>`;
+    s += `<defs><marker id="cxArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="${INK}"/></marker></defs>`;
+    const verdict = Math.abs(short) < .6 ? `<b class="ok">The market clears.</b> Steel sells exactly the ${Math.round(sell)} permits Power wants to buy.`
+      : short > 0 ? `<b class="hi">Too cheap.</b> Power wants ${Math.round(buy)} permits but Steel only sells ${Math.round(sell)}. Buyers bid the price up.`
+      : `<b class="hi">Too dear.</b> Steel offers ${Math.round(sell)} permits but Power only wants ${Math.round(buy)}. Sellers cut their price.`;
+    const alone = cost(A, NEED) + cost(B, NEED), traded = cost(A, cut(A, CLEAR)) + cost(B, cut(B, CLEAR));
+    return { svg: `<svg viewBox="0 0 ${W} ${H}" class="cx-svg" role="img" aria-label="Two companies trading permits">${s}</svg>`, verdict,
+      saving: `At $${CLEAR}, the same 40 tonnes get cut for <b>$${Math.round(traded)}</b> instead of <b>$${Math.round(alone)}</b> if each company had to cut its own 20: about ${Math.round((1 - traded / alone) * 100)}% cheaper, because the cuts happen where they cost least.` };
+  }
+  function compareArt() {
+    const box = (x, title, fixed, moves, col, g) => `<g transform="translate(${x} 10)"><rect width="250" height="168" rx="10" fill="#fffaf0" stroke="#d9c9a3"/><text x="16" y="26" class="cx-lab">${title}</text>${g}
+      <text x="16" y="138" class="cx-ax"><tspan font-weight="800" fill="${col}">Fixed:</tspan> ${fixed}</text><text x="16" y="154" class="cx-ax"><tspan font-weight="800" fill="${RED}">Moves:</tspan> ${moves}</text></g>`;
+    const tax = `<path d="M24,44 V112 H230" stroke="${INK}" fill="none"/><path d="M24,70 H230" stroke="${GREEN}" stroke-width="3"/><text x="226" y="64" class="cx-ax" text-anchor="end">price set by law</text>
+      <path d="M60,104 Q120,96 140,70 Q160,50 210,46" stroke="#9a8d70" stroke-dasharray="4 3" fill="none"/><text x="214" y="104" class="cx-ax" text-anchor="end">tonnes cut: ?</text>`;
+    const cap = `<path d="M24,44 V112 H230" stroke="${INK}" fill="none"/><path d="M150,44 V112" stroke="${GREEN}" stroke-width="3"/><text x="146" y="54" class="cx-ax" text-anchor="end">cap set by law</text>
+      <path d="M40,104 Q100,96 150,74 Q190,58 226,48" stroke="#9a8d70" stroke-dasharray="4 3" fill="none"/><circle cx="150" cy="74" r="5" fill="${RED}"/><text x="158" y="92" class="cx-ax">price: ?</text>`;
+    return `<svg viewBox="0 0 540 190" class="cx-svg" role="img" aria-label="A carbon tax fixes the price; a cap fixes the amount">${box(4, 'A carbon tax', 'the price of a tonne', 'how much gets cut', GREEN, tax)}${box(282, 'Cap-and-trade', 'how much is emitted', 'the price of a permit', GREEN, cap)}</svg>`;
+  }
+
+  const STEPS = [
+    { t: 'Set a cap', b: () => `<p>The government sets a limit on the total CO₂ that companies may emit each year, and lowers it over time. In this game the cap starts at the companies’ own emissions in the year the law passes and <b>falls 3% a year</b>, so thirty years later it is about 40% of where it began.</p>${capChart()}` },
+    { t: 'Hand out permits', b: () => `<p>The cap is cut into <b>permits</b>. Each one lets a company emit one tonne. In this game they are shared out in proportion to what each company emitted when the cap began (“grandfathering”); some real systems auction them instead. Either way, the permits add up to the cap.</p>${permitArt()}` },
+    { t: 'Cut, or buy a permit?', b: p => { const m = marketArt(p); return `<p>Two companies each emit 120 tonnes but got 100 permits: both are 20 short. Each one cuts whenever cutting a tonne costs less than buying a permit. <b>Drag the price</b> and find where the permits one sells equal the permits the other buys.</p>
+      <div class="cx-mkt">${m.svg}</div><div class="cx-ctl"><label>Permit price <b data-cxp>$${Math.round(p)}</b></label><input type="range" min="0" max="80" step="1" value="${Math.round(p)}" data-cxr></div><div class="cx-verdict">${m.verdict}</div>${Math.abs(p - CLEAR) < 1 ? `<div class="cx-save">${m.saving}</div>` : ''}` } },
+    { t: 'The cap fixes the amount', b: () => `<p>A carbon tax and cap-and-trade both put a price on carbon. The difference is what the law pins down. With a tax the price is certain and the amount cut is not. With a cap the amount is certain, and the price moves: it rises when the cap tightens or the economy grows, and falls when clean options get cheap.</p>${compareArt()}` },
+    { t: 'How it works in this game', b: () => `<ul class="cx-list">
+        <li><b>Who is covered.</b> Companies’ own emissions: what their plants, furnaces, on-site fuel and delivery trucks put out. Farms’ cattle methane only counts if the methane fee is law. Households are not under the cap; a carbon tax reaches them, the cap does not.</li>
+        <li><b>The price each year.</b> The permit price settles where the companies’ emissions just fit under the cap. If they would go over, the price climbs until enough cutting pays. It shows up in every company’s ledger as its permit cost.</li>
+        <li><b>A ceiling.</b> If the cap can’t be met even at <b>$150 a tonne</b>, the government sells extra permits at $150, so the price never goes higher.</li>
+        <li><b>Trading at the midterm.</b> If the game option is on, companies get their free permits for the next five years and place one sealed order to buy or sell. Everyone trades at a single price: the one where the most permits change hands.</li>
+        <li><b>The money.</b> What companies pay for permits goes to the government, like carbon-tax revenue, and follows the “carbon revenue” law: a dividend, clean-energy subsidies, or paying down debt.</li></ul>
+      <p class="cx-real">Real examples: the EU Emissions Trading System (since 2005), California’s cap-and-trade program (since 2013), and the US Acid Rain Program, which cut sulfur dioxide from power plants in the 1990s at a fraction of the expected cost.</p>` },
+  ];
+
+  let ov = null, at = 0, price = 12;
+  function draw() {
+    const st = STEPS[at];
+    ov.innerHTML = `<div class="cx-card" role="dialog" aria-modal="true" aria-label="How cap-and-trade works"><button class="cx-x" data-cxx aria-label="Close">×</button>
+      <div class="cx-eb">HOW CAP-AND-TRADE WORKS · ${at + 1} OF ${STEPS.length}</div><h3>${st.t}</h3>
+      <div class="cx-body">${st.b(price)}</div>
+      <div class="cx-nav"><button class="cx-b ghost" data-cxb${at ? '' : ' disabled'}>◂ Back</button><span class="cx-dots">${STEPS.map((_, i) => `<i class="${i === at ? 'on' : i < at ? 'done' : ''}" data-cxd="${i}"></i>`).join('')}</span>
+        <button class="cx-b" data-cxn>${at < STEPS.length - 1 ? 'Next ▸' : 'Done'}</button></div></div>`;
+    ov.querySelector('[data-cxx]').onclick = close;
+    ov.querySelector('[data-cxb]').onclick = () => { if (at) { at--; draw(); } };
+    ov.querySelector('[data-cxn]').onclick = () => { if (at < STEPS.length - 1) { at++; draw(); } else close(); };
+    ov.querySelectorAll('[data-cxd]').forEach(d => d.onclick = () => { at = +d.dataset.cxd; draw(); });
+    const r = ov.querySelector('[data-cxr]');
+    if (r) r.oninput = () => { price = +r.value; const m = marketArt(price), b = ov.querySelector('.cx-body');
+      b.querySelector('.cx-mkt').innerHTML = m.svg; b.querySelector('[data-cxp]').textContent = '$' + price; b.querySelector('.cx-verdict').innerHTML = m.verdict;
+      let sv = b.querySelector('.cx-save'); if (Math.abs(price - CLEAR) < 1) { if (!sv) { sv = document.createElement('div'); sv.className = 'cx-save'; b.appendChild(sv); } sv.innerHTML = m.saving; } else if (sv) sv.remove(); };
+  }
+  function close() { if (ov) { ov.hidden = true; ov.innerHTML = ''; } }
+  // open inside the game's root (so the scoped styles apply) at a given step
+  function open(root, step) {
+    const host = root.closest('.c56') || root;
+    ov = host.querySelector(':scope > .cx-ov');
+    if (!ov) { ov = document.createElement('div'); ov.className = 'cx-ov'; host.appendChild(ov); ov.addEventListener('click', e => { if (e.target === ov) close(); }); }
+    at = Math.max(0, Math.min(STEPS.length - 1, step || 0)); price = 12; ov.hidden = false; draw();
+  }
+  const button = (label, step) => `<button type="button" class="cx-how" data-capx="${step || 0}">${label || 'How cap-and-trade works'}</button>`;
+  // one delegated listener per root: any [data-capx] button opens the explainer
+  function wire(root) { if (root.dataset.capxWired) return; root.dataset.capxWired = '1'; root.addEventListener('click', e => { const b = e.target.closest('[data-capx]'); if (b) { e.preventDefault(); open(root, +b.dataset.capx || 0); } }); }
+  return { open, close, button, wire };
+})();
+
+// THE 2056 REPORT (Nov 25 2026, Ryan: "much-improved visuals/infographics/explainers at the end of the game", after Chapter 16's
+// "What your choices did" and the One Sky reckoning). A paged report on every screen, each screen paging on its own:
+//   1 Where did the class land?   warming against the IPCC pathways, the headline numbers, three awards
+//   2 Three valleys               the class against two what-ifs: no climate laws at all, and the strongest laws from day one
+//   3 What your laws did          each law that was ever in force, against the same game without it (Why? opens the story)
+//   4 From choices to climate     choices → emissions → the air → warming → what it brought → who felt it
+//   5 Who paid, who gained        households by income, companies by sector, the government's books, against no laws
+//   6 Your thirty years           (students) your own footprint, bills and savings, or your company's, against no laws
+// What-ifs replay the SAME class from the frozen inputs (same people, same choices students locked in, same luck) with laws
+// held fixed (SIM.whatIf); stand-ins still react to the prices. Without inputs (the prototype's demo) only page 1 shows.
+'use strict';
+window.FIN56 = function (K) {
+  const { R, chart, glyph, head, act, overlay, wire, fmt$, closeOv, $ } = K;
+  const GREEN = '#2f8545', BLUE = '#2668a8', RED = '#b8432f', GOLD = '#a8761a', GREY = '#9a8d70';
+  const sgn = (v, d = 0) => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(d);
+  const money = v => (v < 0 ? '−$' : '$') + Math.abs(Math.round(v)).toLocaleString('en-US');
+  const LAWT = { tax: 'Carbon tax', cap: 'Cap-and-trade', evRebate: 'EV rebate', hpRebate: 'Home efficiency rebates', solarCredit: 'Solar tax credit', cleanStd: 'Clean electricity standard', fuelStd: 'Fuel economy standard', border: 'Border carbon tariff', methane: 'Methane fee', seaWall: 'Flood & sea walls', nuclear: 'Nuclear permitting' };
+  const HOW = {
+    tax: 'put a price on every tonne of CO₂, so every household and company that burned fossil fuels paid more and looked for cheaper ways to cut.',
+    cap: 'capped the companies’ emissions and let the permit price find the cheapest cuts. Households were not covered.',
+    evRebate: 'paid $7,500 toward each electric car, so households replacing a car chose an EV more often. The government paid for every one.',
+    hpRebate: 'took $8,000 off heat pumps and helped with insulation, which cut gas burned at home.',
+    solarCredit: 'took 30% off rooftop solar, so more homes made some of their own power.',
+    cleanStd: 'fined power companies still burning mostly fossil fuels after 2036, pushing them to wind, solar or nuclear.',
+    fuelStd: 'fined automakers that only built SUVs, so lighter and electric cars reached the lots.',
+    border: 'charged imports for their carbon, so local steel could pass its own carbon costs on to buyers.',
+    methane: 'extended the carbon price to cattle methane, which is otherwise exempt.',
+    seaWall: 'spent $120M a year walling off the river and the coast, which cut flood and storm damage but not emissions.',
+    nuclear: 'let power companies build nuclear plants: almost no CO₂, but a huge cost up front.',
+  };
+  const OFF = { tax: 0, cap: false, evRebate: false, hpRebate: false, solarCredit: false, cleanStd: false, fuelStd: false, border: false, methane: false, seaWall: false, nuclear: false };
+
+  // ── numbers for one world ──
+  function stats(W) {
+    const h = W.hist, last = h[h.length - 1];
+    let bills = 0, nb = 0; for (const x of W.hh) for (const r of x.trk || []) { bills += r[2]; nb++; }
+    const cum = h.reduce((a, r) => a + r.classKt, 0), events = {}; for (const r of h) for (const e of r.events) events[e] = (events[e] || 0) + 1;
+    return { T: last.T, ppm: last.ppm, idx: last.index, cum, bills: nb ? bills / nb : 0, debt: last.debt, closed: W.biz.filter(b => !b.open).length, jobsLost: last.jobsLost,
+      clean: last.cleanElec, ev: last.evShare, burden: last.burdenBy, events, raised: h.reduce((a, r) => a + r.govIn, 0), dividends: h.reduce((a, r) => a + r.dividend, 0) };
+  }
+  function lawYears(C) {
+    const out = {};
+    for (const r of C.hist) { const p = r.pol || {}; for (const id in OFF) { const on = id === 'tax' ? p.tax > 0 : !!p[id]; if (!on) continue; (out[id] ||= []).push(r.year); } }
+    const spans = ys => { const s = []; for (const y of ys) { const l = s[s.length - 1]; if (l && y === l[1] + 1) l[1] = y; else s.push([y, y]); } return s.map(([a, b]) => a === b ? '' + a : a + '–' + b).join(', '); };
+    return Object.keys(out).map(id => ({ id, n: out[id].length, span: spans(out[id]), taxes: id === 'tax' ? [...new Set(C.hist.filter(r => r.pol && r.pol.tax).map(r => r.pol.tax))] : null }));
+  }
+  let memo = { key: '', L: null };
+  function compute(C, I) {
+    const key = JSON.stringify(I).length + ':' + I.seed + ':' + C.hist.length;
+    if (memo.key === key) return memo.L;
+    const L = { me: stats(C), none: SIM.whatIf(I, SIM.LAW_OFF), strong: SIM.whatIf(I, SIM.LAW_STRONG), laws: [] };
+    L.noneS = stats(L.none); L.strongS = stats(L.strong);
+    for (const lw of lawYears(C)) { const W = SIM.whatIf(I, { [lw.id]: OFF[lw.id] }); L.laws.push({ ...lw, W, S: stats(W) }); }
+    L.laws.sort((a, b) => (b.S.T - L.me.T) - (a.S.T - L.me.T));
+    memo = { key, L }; return L;
+  }
+
+  // ── page 1: where did the class land (the original final card) ──
+  function pageWorld(C) {
+    const h = C.hist, last = h[h.length - 1], first = h[0];
+    const near = SIM.SSP.map(s => [s, Math.abs(SIM.at(s.T, 2056) - last.T)]).sort((a, b) => a[1] - b[1])[0][0];
+    const openB = C.biz.filter(b => b.open && b.last), best = (arr, f) => arr.slice().sort((a, b) => f(b) - f(a))[0];
+    const lowHH = best(C.hh, x => -x.last.t.total), richB = best(openB, b => b.cash), cleanB = best(openB, b => -b.last.kt.total / Math.max(1, b.last.rev));
+    const aw = [lowHH && ['leaf', 'Lowest-carbon household', lowHH.name, `${lowHH.last.t.total.toFixed(1)} t a year · ${K.hhSummary(lowHH)}`],
+      richB && ['factory', 'Most cash in the bank', richB.name, `${fmt$(richB.cash)} · ${K.bizSummary(richB)}`], cleanB && ['wind', 'Cleanest company per dollar', cleanB.name, `${Math.round(cleanB.last.kt.total)} kt on ${fmt$(cleanB.last.rev)} of sales`]].filter(Boolean);
+    const pct = v => Math.round(v * 100) + '%';
+    return { html: head('2056 · THIRTY YEARS LATER', 'Where did the class land?', `Your class finished at <b>+${last.T.toFixed(2)} °C</b>, closest to the IPCC’s <b>${near.id}</b> path (${near.name.toLowerCase()}). CO₂ reached <b>${last.ppm.toFixed(0)} ppm</b>.`) +
+      `<div class="r-final"><div class="r-fchart" id="fnWorld"></div>
+        <div class="r-fstats">${[['Class emissions', pct(last.index), 'of the as-built class'], ['Clean electricity', pct(last.cleanElec), 'of the grid'], ['Electric cars', pct(last.evShare), 'of household cars'],
+          ['Companies closed', C.biz.filter(b => !b.open).length, `${last.jobsLost.toLocaleString()} jobs lost`], ['Low-income energy bills', (last.burdenBy[0] * 100).toFixed(1) + '%', `of income (was ${(first.burdenBy[0] * 100).toFixed(1)}%)`], ['Government debt', fmt$(Math.max(0, last.debt)), 'after 30 years']].map(([l, v, s]) => `<div><small>${l}</small><b>${v}</b><span>${s}</span></div>`).join('')}</div></div>
+      <div class="r-awards">${aw.map(([g, t, n, s]) => `<div class="r-aw">${glyph(g, 22)}<small>${t}</small><b>${n}</b><span>${s}</span></div>`).join('')}</div>`,
+      mount() { const ssp = SIM.SSP.map(s => ({ name: s.id, pts: [2026, 2031, 2036, 2041, 2046, 2051, 2056].map(y => [y, SIM.at(s.T, y)]) })); chart($('#fnWorld'), { title: 'Warming since 1850–1900', unit: '°C', yMin: 1.2, yMax: 2.5, dec: 2, refs: ssp, series: [{ name: 'Your class', color: RED, pts: h.map(r => [r.year, r.T]) }] }); } };
+  }
+
+  // ── page 2: three valleys ──
+  const MET = [
+    ['T', 'Warming', '°C', r => r.T, 2], ['index', 'Class emissions', '%', r => r.index * 100, 0], ['clean', 'Clean electricity', '%', r => r.cleanElec * 100, 0],
+    ['burden', 'Low-income energy bills', '%', r => r.burdenBy[0] * 100, 1], ['jobs', 'Jobs lost to closures', '', r => r.jobsLost, 0], ['debt', 'Government debt', '$M', r => Math.max(0, r.debt), 0]];
+  function pageValleys(C, L) {
+    const W3 = [['Your class', C, RED], ['No climate laws', L.none, GREY], ['Strongest laws', L.strong, GREEN]];
+    const card = (lbl, W, c) => { const s = stats(W); return `<div class="fn-vh" style="--c:${c}"><span>${lbl}</span><b>+${s.T.toFixed(2)} °C</b><em>${Math.round(s.idx * 100)}% emissions · ${Math.round(s.clean * 100)}% clean power · ${s.closed} closed</em></div>`; };
+    const dT = L.noneS.T - L.me.T, gap = L.me.T - L.strongS.T;
+    return { html: head('2056 · THREE VALLEYS', 'The same class, three governments', `Replay the same thirty years with the same people, the same choices you locked in and the same luck, and change only the laws. <b>No climate laws</b> holds every law off for the whole game. <b>Strongest laws</b> passes every bill on the ballot from the first day: a $150 carbon tax, the cap, every rebate and standard, with the money returned as a dividend.`) +
+      `<div class="fn-vheads">${W3.map(([l, W, c]) => card(l, W, c)).join('')}</div>
+      <p class="fn-lede">${dT > .005 ? `Your laws kept <b>${dT.toFixed(2)} °C</b> of warming out of 2056 compared with no laws at all.` : 'Your laws made almost no difference to the warming compared with no laws at all.'} ${gap > .005 ? `The strongest laws would have kept out another <b>${gap.toFixed(2)} °C</b>.` : 'The strongest laws would not have done much better.'} What did each cost? Read the panels below, then turn the page.</p>
+      <div class="fn-grid">${MET.map(m => `<div class="fn-mini" id="fnV_${m[0]}"></div>`).join('')}</div>`,
+      mount() {
+        for (const [k, t, u, f, d] of MET) {
+          const series = W3.map(([n, W, c]) => ({ name: n.split(' ')[0] === 'Your' ? 'You' : n.split(' ')[0] === 'No' ? 'No laws' : 'Strong', color: c, pts: W.hist.map(r => [r.year, f(r)]) }));
+          const all = series.flatMap(s => s.pts.map(p => p[1])), lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * .12 || 1;
+          chart($('#fnV_' + k), { title: t, unit: u, yMin: Math.max(k === 'T' ? 1 : 0, lo - pad), yMax: hi + pad, dec: d, series });
+        }
+      } };
+  }
+
+  // ── page 3: what each law did ──
+  function pageLaws(C, L) {
+    if (!L.laws.length) return { html: head('2056 · WHAT YOUR LAWS DID', 'No climate laws were ever in force', 'Every year of the game ran without a carbon price, a cap, a rebate or a standard. The three valleys on the previous page show what that cost.') };
+    const me = L.me, maxT = Math.max(.02, ...L.laws.map(l => Math.abs(l.S.T - me.T)));
+    const rows = L.laws.map((l, i) => {
+      const dT = l.S.T - me.T, dCum = (me.cum / l.S.cum - 1) * 100, dBill = me.bills - l.S.bills, dJobs = me.jobsLost - l.S.jobsLost, dDebt = me.debt - l.S.debt;
+      const w = Math.abs(dT) / maxT * 100;
+      const chip = (v, txt, good) => `<span class="fn-chip ${Math.abs(v) < 1e-9 ? '' : good ? 'gd' : 'bd'}">${txt}</span>`;
+      const title = l.id === 'tax' ? `Carbon tax ($${l.taxes.join(', $')} a tonne)` : LAWT[l.id];
+      const why = `<p><b>${title}</b>, in force ${l.span}, ${HOW[l.id]}</p>
+        <p>Replaying the same game without it: the class would have emitted <b>${Math.abs(dCum).toFixed(1)}% ${dCum < 0 ? 'more' : 'less'}</b> CO₂ over the thirty years, and 2056 would have been <b>${Math.abs(dT).toFixed(3)} °C ${dT > 0 ? 'warmer' : 'cooler'}</b>.
+        A typical household’s bills were <b>${money(Math.abs(dBill))} a year ${dBill > 0 ? 'higher' : 'lower'}</b> with the law${l.id === 'tax' || l.id === 'cap' ? (C.pol.use === 'dividend' ? ' (before any carbon dividend, which went straight to savings)' : '') : ''}. ${Math.abs(dJobs) > 0 ? `${Math.abs(dJobs).toLocaleString()} ${dJobs > 0 ? 'more' : 'fewer'} jobs were lost to closures.` : 'It made no difference to closures.'} The government ended ${money(Math.abs(dDebt))}M ${dDebt > 0 ? 'deeper in debt' : 'better off'}.</p>
+        <p class="fn-note">Other students’ locked-in choices stay as they were; the stand-ins react to the prices. Small differences can come from chance: a law that changes a company’s cash can change when it closes.</p>`;
+      return `<div class="fn-law" data-fl="${i}"><div class="fn-lname">${title}<small>in force ${l.span}</small></div>
+        <div class="fn-lbar"><span class="fn-zero"></span><i class="${dT >= 0 ? 'cool' : 'warm'}" style="width:${(w / 2).toFixed(1)}%;${dT >= 0 ? 'right:50%' : 'left:50%'}"></i><em>${dT >= 0 ? 'cooled' : 'warmed'} 2056 by ${Math.abs(dT).toFixed(3)} °C</em></div>
+        <div class="fn-chips">${chip(dCum, `${sgn(dCum, 1)}% CO₂`, dCum < 0)}${chip(dBill, `bills ${dBill >= 0 ? '+' : '−'}$${Math.abs(Math.round(dBill)).toLocaleString()}/yr`, dBill <= 0)}${chip(dJobs, `${sgn(dJobs)} jobs lost`, dJobs <= 0)}${chip(dDebt, `debt ${dDebt >= 0 ? '+' : '−'}$${Math.abs(Math.round(dDebt))}M`, dDebt <= 0)}</div>
+        <button class="fn-why" data-fw="${i}">Why?</button><div class="fn-wbox" hidden>${why}</div></div>`;
+    }).join('');
+    return { html: head('2056 · WHAT YOUR LAWS DID', 'Each law, against the same game without it', 'For every law that was ever in force, the game was replayed with only that law switched off. The bar shows how much warmer or cooler 2056 would have been without it; the chips show what it did to emissions, a typical household’s bills, jobs and the government’s debt.') +
+      `<div class="fn-key"><span><i class="cool"></i>kept warming out</span><span><i class="warm"></i>added warming</span><span class="gd">good for that measure</span><span class="bd">bad for it</span></div><div class="fn-laws">${rows}</div>`,
+      mount() { $('#rCard').querySelectorAll('[data-fw]').forEach(b => b.onclick = () => { const bx = b.nextElementSibling; bx.hidden = !bx.hidden; b.textContent = bx.hidden ? 'Why?' : 'Close'; }); } };
+  }
+
+  // ── page 4: the chain ──
+  function pageChain(C) {
+    const h = C.hist, a = h[0], z = h[h.length - 1], nH = C.hh.length;
+    const count = (arr, f) => arr.filter(f).length, laws = Object.keys(OFF).filter(id => id === 'tax' ? C.pol.tax > 0 : C.pol[id]);
+    const ev = {}; for (const r of h) for (const e of r.events) ev[e] = (ev[e] || 0) + 1;
+    const EVN = { heat: 'heat waves', flood: 'floods', fire: 'smoke seasons', surge: 'storm surges' };
+    const SEC = [['hh', 'Homes', BLUE], ['power', 'Power', RED], ['industry', 'Industry', '#8a4fa8'], ['farm', 'Farms', GREEN], ['data', 'Data', GOLD]];
+    const stack = r => { const tot = SEC.reduce((s, [k]) => s + (r.sectorKt[k] || 0), 0) || 1; return SEC.map(([k, n, c]) => `<i style="width:${((r.sectorKt[k] || 0) / Math.max(1, a.classKt) * 100).toFixed(1)}%;background:${c}" title="${n}"></i>`).join(''); };
+    const link = (n, g, t, big, body) => `<div class="fn-link" style="animation-delay:${n * 260}ms"><div class="fn-lh">${glyph(g, 20)}<span>${t}</span></div><b class="fn-big">${big}</b>${body}</div>`;
+    const arrow = n => `<div class="fn-arrow" style="animation-delay:${n * 260 + 130}ms"></div>`;
+    return { html: head('2056 · FROM CHOICES TO CLIMATE', 'Thirty years, link by link', 'How the class’s choices became emissions, how the emissions thickened the air, and how the warming came back to the people who made it.') +
+      `<div class="fn-chain">
+        ${link(0, 'home', 'Choices', `${count(C.hh, x => x.heat === 'hp')} of ${nH}`, `<p>homes heat with a heat pump · ${count(C.hh, x => x.car === 'ev')} drive electric · ${count(C.hh, x => x.sol !== 'none')} have solar · ${count(C.biz, b => b.sec === 'power' && b.open && (b.prod === 'ren' || b.prod === 'nuc'))} clean power companies · laws in force: ${laws.length ? laws.map(id => LAWT[id]).join(', ') : 'none'}</p>`)}${arrow(0)}
+        ${link(1, 'factory', 'Emissions', `${Math.round(z.index * 100)}%`, `<p>of the class’s 2026 emissions, each year by 2056</p><div class="fn-stk"><small>2026</small><span>${stack(a)}</span></div><div class="fn-stk"><small>2056</small><span>${stack(z)}</span></div><div class="fn-sk">${SEC.map(([, n, c]) => `<em><i style="background:${c}"></i>${n}</em>`).join('')}</div>`)}${arrow(1)}
+        ${link(2, 'co2', 'The air', `${Math.round(z.ppm)} ppm`, `<p>CO₂ in the air, up from ${Math.round(a.ppm)}. About half of each year’s CO₂ stays up there, so the air keeps filling while emissions are anything above zero.</p>`)}${arrow(2)}
+        ${link(3, 'therm', 'Warming', `+${z.T.toFixed(2)} °C`, `<p>Warming follows the total ever emitted: it only stops rising when emissions get close to zero. It was +${a.T.toFixed(2)} °C in 2026.</p>`)}${arrow(3)}
+        ${link(4, 'warn', 'What it brought', `${Object.values(ev).reduce((s, v) => s + v, 0)} disasters`, `<p>${Object.keys(ev).map(k => `${ev[k]} ${EVN[k] || k}`).join(' · ') || 'none'}${C.emerg && !C.emerg.pending ? ' · one national emergency' : ''}</p>`)}${arrow(4)}
+        ${link(5, 'shield', 'Who felt it', `${(z.burdenBy[0] * 100).toFixed(1)}%`, `<p>of income went to energy for the lowest-income homes (it was ${(a.burdenBy[0] * 100).toFixed(1)}%) · ${z.jobsLost.toLocaleString()} jobs lost to closures</p>`)}
+      </div>` };
+  }
+
+  // ── page 5: who paid, who gained ──
+  function pageLedger(C, L) {
+    const N = L.none, tiers = ['Lower income', 'Middle income', 'Higher income'];
+    const hhT = (W, t) => { const xs = W.hh.filter(x => x.tier === t); const m = f => xs.reduce((s, x) => s + f(x), 0) / Math.max(1, xs.length);
+      return { cash: m(x => x.cash), bills: m(x => (x.trk || []).reduce((s, r) => s + r[2], 0) / Math.max(1, (x.trk || []).length)) }; };
+    const SECS = ['power', 'steel', 'farm', 'auto', 'data'];
+    const prof = (W, s) => W.biz.filter(b => b.sec === s).reduce((a, b) => a + (b.trk || []).reduce((x, r) => x + r[2], 0), 0);
+    const bar = (v, max, c) => `<span class="fn-hb"><i style="width:${Math.max(1, Math.abs(v) / (max || 1) * 100).toFixed(1)}%;background:${c}"></i></span>`;
+    const tRows = [0, 1, 2].map(t => { const a = hhT(C, t), b = hhT(N, t), d = a.cash - b.cash; return { t, a, b, d }; }), tMax = Math.max(1, ...tRows.flatMap(r => [Math.abs(r.a.cash), Math.abs(r.b.cash)]));
+    const sRows = SECS.map(s => ({ s, a: prof(C, s), b: prof(N, s) })).filter(r => C.biz.some(b => b.sec === r.s)), sMax = Math.max(1, ...sRows.flatMap(r => [Math.abs(r.a), Math.abs(r.b)]));
+    const me = L.me, no = L.noneS;
+    return { html: head('2056 · THE LEDGER', 'Who paid, and who gained?', 'Your class’s 2056 against the same thirty years with no climate laws. Savings include everything: bills, rebates, dividends, flood damage and loans.') +
+      `<div class="fn-ledger"><section><h4>${glyph('home', 16)} Households: savings in 2056</h4>${tRows.map(r => `<div class="fn-lr"><span>${tiers[r.t]}</span><div class="fn-lb">${bar(r.a.cash, tMax, RED)}<b>${money(r.a.cash)}</b></div><div class="fn-lb">${bar(r.b.cash, tMax, GREY)}<b>${money(r.b.cash)}</b></div><em class="${r.d >= 0 ? 'gd' : 'bd'}">${r.d >= 0 ? '+' : '−'}${money(Math.abs(r.d)).replace('$', '$')}</em></div>`).join('')}
+          <p class="fn-small">Average yearly bills, all homes: <b>${money(me.bills)}</b> with your laws, ${money(no.bills)} without.</p></section>
+        <section><h4>${glyph('factory', 16)} Companies: profit over 30 years</h4>${sRows.map(r => `<div class="fn-lr"><span>${K.SECN[r.s]}</span><div class="fn-lb">${bar(r.a, sMax, r.a < 0 ? '#c4675d' : RED)}<b>${fmt$(r.a)}</b></div><div class="fn-lb">${bar(r.b, sMax, GREY)}<b>${fmt$(r.b)}</b></div><em class="${r.a >= r.b ? 'gd' : 'bd'}">${r.a >= r.b ? '+' : '−'}${fmt$(Math.abs(r.a - r.b))}</em></div>`).join('')}
+          <p class="fn-small">${me.closed} ${me.closed === 1 ? 'company' : 'companies'} closed with your laws, ${no.closed} without.</p></section>
+        <section><h4>${glyph('capitol', 16)} The government’s books</h4><div class="fn-gov"><div><small>Carbon money raised</small><b>${fmt$(me.raised)}</b><span>over 30 years</span></div><div><small>Paid back as dividends</small><b>${fmt$(me.dividends)}</b><span>${me.dividends > 0 ? 'to every household equally' : 'no dividend'}</span></div><div><small>Debt in 2056</small><b>${fmt$(Math.max(0, me.debt))}</b><span>${fmt$(Math.max(0, no.debt))} with no laws</span></div></div></section>
+        <div class="fn-lk"><span><i style="background:${RED}"></i>your class</span><span><i style="background:${GREY}"></i>no climate laws</span><span class="gd">+ better off with your laws</span><span class="bd">− worse off</span></div></div>` };
+  }
+
+  // ── page 6: your thirty years (students) ──
+  function pageYou(C, L, you) {
+    const a = C.hh.find(x => x.id === you) || C.biz.find(x => x.id === you); if (!a || !a.trk || !a.trk.length) return null;
+    const N = L.none, b = (N.hh.find(x => x.id === you) || N.biz.find(x => x.id === you)) || {}, bt = b.trk || [];
+    if (a.kind === 'hh') {
+      const avg = (t, k) => t.reduce((s, r) => s + r[k], 0) / Math.max(1, t.length), dB = avg(a.trk, 2) - avg(bt, 2), dC = a.cash - (b.cash || 0), cls = C.hist.map((r, i) => [r.year, C.hh.reduce((s, x) => s + ((x.trk || [])[i] || [0, 0])[1], 0) / C.hh.length]);
+      return { html: head('2056 · YOUR THIRTY YEARS', a.name, `${K.hhSummary(a)}. Against the same household in a valley with no climate laws.`) +
+        `<div class="fn-you"><div class="fn-mini" id="fnY1"></div><div class="fn-mini" id="fnY2"></div><div class="fn-ystats">
+          <div><small>Your footprint in 2056</small><b>${a.last.t.total.toFixed(1)} t</b><span>CO₂ a year (class average ${(C.hh.reduce((s, x) => s + x.last.t.total, 0) / C.hh.length).toFixed(1)} t)</span></div>
+          <div><small>The laws and your bills</small><b>${dB >= 0 ? '+' : '−'}$${Math.abs(Math.round(dB)).toLocaleString()}</b><span>a year on average, against no laws</span></div>
+          <div><small>Your savings in 2056</small><b>${money(a.cash)}</b><span>${dC >= 0 ? money(dC) + ' more' : money(-dC) + ' less'} than with no laws</span></div></div></div>`,
+        mount() { chart($('#fnY1'), { title: 'Your footprint', unit: 't', yMin: 0, yMax: Math.max(...a.trk.map(r => r[1]), ...bt.map(r => r[1]), ...cls.map(p => p[1])) * 1.12, dec: 1, series: [{ name: 'You', color: RED, pts: a.trk.map(r => [r[0], r[1]]) }, { name: 'No laws', color: GREY, pts: bt.map(r => [r[0], r[1]]) }, { name: 'Class', color: BLUE, pts: cls }] });
+          const cs = [...a.trk.map(r => r[3]), ...bt.map(r => r[3])]; chart($('#fnY2'), { title: 'Your savings', unit: '$k', yMin: Math.min(0, ...cs) / 1000, yMax: Math.max(...cs) / 1000 * 1.12, dec: 0, zero: true, series: [{ name: 'You', color: RED, pts: a.trk.map(r => [r[0], r[3] / 1000]) }, { name: 'No laws', color: GREY, pts: bt.map(r => [r[0], r[3] / 1000]) }] }); } };
+    }
+    const sum = (t, k) => t.reduce((s, r) => s + r[k], 0);
+    return { html: head('2056 · YOUR THIRTY YEARS', a.name, `${K.SECN[a.sec]} · ${K.bizSummary(a) || 'as built'}${a.open ? '' : ' · <b>closed</b>'}. Against the same company in a valley with no climate laws.`) +
+      `<div class="fn-you"><div class="fn-mini" id="fnY1"></div><div class="fn-mini" id="fnY2"></div><div class="fn-ystats">
+        <div><small>Profit over 30 years</small><b>${fmt$(sum(a.trk, 2))}</b><span>${fmt$(sum(bt, 2))} with no laws</span></div>
+        <div><small>Carbon costs paid</small><b>${fmt$(sum(a.trk, 3))}</b><span>carbon tax and permits</span></div>
+        <div><small>Your emissions in 2056</small><b>${a.open && a.last ? Math.round(a.last.kt.total) + ' kt' : 'closed'}</b><span>${bt.length ? Math.round(bt[bt.length - 1][1]) + ' kt with no laws' : ''}</span></div></div></div>`,
+      mount() { chart($('#fnY1'), { title: 'Your emissions', unit: 'kt', yMin: 0, yMax: Math.max(1, ...a.trk.map(r => r[1]), ...bt.map(r => r[1])) * 1.12, dec: 0, series: [{ name: 'You', color: RED, pts: a.trk.map(r => [r[0], r[1]]) }, { name: 'No laws', color: GREY, pts: bt.map(r => [r[0], r[1]]) }] });
+        const cs = [...a.trk.map(r => r[4]), ...bt.map(r => r[4])]; chart($('#fnY2'), { title: 'Your cash', unit: '$M', yMin: Math.min(0, ...cs), yMax: Math.max(...cs) * 1.12, dec: 0, zero: true, series: [{ name: 'You', color: RED, pts: a.trk.map(r => [r[0], r[4]]) }, { name: 'No laws', color: GREY, pts: bt.map(r => [r[0], r[4]]) }] }); } };
+  }
+
+  // ── the report ──
+  function show(o) {
+    const C = R.C, pages = [];
+    pages.push(['world', pageWorld(C)]);
+    if (o.I) {
+      let L = null; try { L = compute(C, o.I); } catch (e) { if (window.console) console.warn('2056 report what-ifs', e); }
+      if (L) {
+        pages.push(['valleys', pageValleys(C, L)], ['laws', pageLaws(C, L)], ['chain', pageChain(C)], ['ledger', pageLedger(C, L)]);
+        const y = o.you ? pageYou(C, L, o.you) : null; if (y) pages.push(['you', y]);
+      }
+    } else pages.push(['chain', pageChain(C)]);
+    const NEXT = { valleys: 'Three valleys ▸', laws: 'What your laws did ▸', chain: 'From choices to climate ▸', ledger: 'Who paid, who gained? ▸', you: 'Your thirty years ▸' };
+    let at = 0;
+    const draw = () => {
+      const [k, pg] = pages[at], last = at === pages.length - 1;
+      const nav = `<div class="fn-nav">${pages.map((p, i) => `<button class="fn-tab${i === at ? ' on' : ''}" data-fp="${i}">${{ world: '2056', valleys: 'Three valleys', laws: 'Your laws', chain: 'The chain', ledger: 'The ledger', you: 'You' }[p[0]]}</button>`).join('')}</div>`;
+      const fine = '<p class="r-fine">A teaching model, not a forecast. The class stands in for the world; pathways are approximate, after IPCC AR6. What-ifs replay the same class with laws held fixed.</p>';
+      const back = at ? '<button class="btn ghost" id="fnBack">◂ Back</button>' : '';
+      overlay(nav + pg.html + fine + (last ? act(o, 'Play again with a new class ↻', back + '<button class="btn ghost" id="rLook">Look at the valley</button>')
+        : `<div class="r-cact">${back}<button class="btn ghost" id="rLook">Look at the valley</button><button class="btn" id="fnNext">${NEXT[pages[at + 1][0]] || 'Next ▸'}</button></div>`), () => {
+        $('#rCard').classList.add('wide', 'fn-card'); if (pg.mount) pg.mount();
+        $('#rCard').querySelectorAll('[data-fp]').forEach(b => b.onclick = () => { at = +b.dataset.fp; draw(); });
+        const bk = $('#fnBack'); if (bk) bk.onclick = () => { at--; draw(); };
+        const nx = $('#fnNext'); if (nx) nx.onclick = () => { at++; draw(); };
+        $('#rLook').onclick = () => { closeOv(); reopen(); };
+      });
+      if (last) wire(o);
+    };
+    const reopen = () => { const st = document.querySelector('#run .r-stage'); if (!st || st.querySelector('.fn-reopen')) return; const b = document.createElement('button'); b.className = 'btn fn-reopen'; b.textContent = 'Show the 2056 report'; b.onclick = () => { b.remove(); draw(); }; st.appendChild(b); };
+    const old = document.querySelector('#run .fn-reopen'); if (old) old.remove();
+    draw();
+  }
+  return { show, compute, stats };
+};
+
 // LIVE: the class plays 2056 on laptops. Rides the deck's live backend (window.__deckLiveReady: sharded Firestore
 // writes, ?host = the projected copy). Phases (main doc):
 //   idle → lobby → build (timed) → laws → react (timed) → reacted → run (years tick) → elect (timed) → elected
@@ -5287,6 +5821,7 @@ const EMERG = (function () {
   let GID = slide.dataset.gameId || 'c56-test';
   const CG = window.__cg;
   CG.trapKeys(root);
+  CAPX.wire(root);
   // ?as=NAME plays as a named student (testing several students in one browser); otherwise one key per browser
   const AS = new URLSearchParams(location.search).get('as');
   let PK = AS ? 'as-' + AS.replace(/[^a-z0-9]/gi, '').slice(0, 16) : CG.pid(GID);
@@ -5297,7 +5832,7 @@ const EMERG = (function () {
   const visible = () => slide.classList.contains('active') || !slide.classList.contains('slide');
 
   // round lengths (seconds) and the years' pace
-  const SECS = { react: 150, elect: 75, revote: 120, mid: 100, emerg: 120 };
+  const SECS = { react: 60, elect: 60, revote: 60, mid: 60, emerg: 60 };   // Nov 25 2026 (Ryan): every round after the build is one minute
   let backend = null, HOST = false, state = {}, unsub = null, subMode = '';
   // only one projector copy runs the clock: whoever opened the lobby (or took over). Others can still press buttons.
   const HOSTID = (() => { try { let v = sessionStorage.getItem('c56-host'); if (!v) { v = Math.random().toString(36).slice(2, 10); sessionStorage.setItem('c56-host', v); } return v; } catch (e) { return Math.random().toString(36).slice(2, 10); } })();
@@ -5351,7 +5886,10 @@ const EMERG = (function () {
     if (!members().length) return null;
     const [st, y] = stageNow(), sig = memo.sig + '|' + st + '|' + y + '|' + (state.emx || '') + '|' + JSON.stringify(F());
     if (cMemo.sig !== sig) {
-      const C = st === 'init' && phase() === 'build' ? SIM.classFrom(dealt(), seed()) : SIM.replay(inputs(), st, y == null ? undefined : y);
+      const C = st === 'init' && phase() === 'build' ? SIM.classFrom(dealt(), seed(), F().NM) : SIM.replay(inputs(), st, y == null ? undefined : y);
+      // before the names are frozen, this student's own pick shows on their own screen
+      const myN = !(F().NM && F().NM[PK] != null) && mine('NM'), mh = myN && C.hh.find(h => h.id === PK);
+      if (mh && mh.offers && mh.offers[myN.i]) { mh.fict = mh.offers[myN.i]; mh.name = 'The ' + mh.fict[0] + ' household'; }
       cMemo = { sig, C };
     }
     return cMemo.C;
@@ -5389,7 +5927,7 @@ const EMERG = (function () {
     const ph = phase(), w = win(), tag = ph + ':' + yr() + ':' + w + ':' + gid();
     if (tag === lastAdv.tag && Date.now() - lastAdv.at < 4000) return;
     lastAdv = { tag, at: Date.now() };
-    if (ph === 'build') setPhase('laws', null, { F: { D: collect('D', ['hh', 'biz']), V0: collect('V0', ['gov']) } });
+    if (ph === 'build') setPhase('laws', null, { F: { D: collect('D', ['hh', 'biz']), V0: collect('V0', ['gov']), NM: collect('NM', ['hh']) } });
     else if (ph === 'react') setPhase('reacted', null, { F: { ['A' + w]: collect('A' + w, ['hh', 'biz']) } });
     else if (ph === 'run') {
       // the national emergency: once a game, the year after the disaster that triggers it has run
@@ -5427,13 +5965,14 @@ const EMERG = (function () {
     const bar = q('[data-hostbar]'); bar.hidden = false; slide.classList.add('c56-host');
     bar.innerHTML = `<span class="c56-hl">Instructor</span>
       <button class="c56-b go" data-open>Open the lobby</button>
-      <label class="c56-set">Build time <select data-mins><option value="4">4 min</option><option value="6" selected>6 min</option><option value="8">8 min</option></select></label>
+      <label class="c56-set">Build time <select data-mins><option value="3">3 min</option><option value="4">4 min</option><option value="6" selected>6 min</option><option value="8">8 min</option></select></label>
       <button class="c56-b go" data-start hidden>Start: deal the roles</button>
       <button class="c56-b" data-skip hidden>Close this round now</button>
       <label class="c56-set" data-pacewrap hidden>Pace <select data-pace><option value="12">Slow · 12 s a year</option><option value="8" selected>Normal · 8 s a year</option><option value="5">Fast · 5 s a year</option></select></label>
       <button class="c56-b" data-pause hidden>Pause</button>
       <button class="c56-b" data-take hidden>Run the clock from this screen</button>
       <button class="c56-b" data-samplebtn hidden>Sample student screen</button>
+      <button class="c56-b" data-capx="0">Explain cap-and-trade</button>
       <span class="c56-hs" data-hs></span>
       <button class="c56-b ghost" data-reset>Reset</button>`;
     bar.querySelector('[data-samplebtn]').onclick = () => sampleOpen('hh');
@@ -5471,7 +6010,7 @@ const EMERG = (function () {
       { t: 'Build a company', b: 3, cap: 'Companies choose how they make their product, where their power comes from, filters, carbon capture, trucks and safety. The ledger shows profit and carbon costs before they commit.' },
       { t: 'React to the laws', b: 6, cap: 'Once the laws are known, companies can rebuild at the new prices. A carbon tax or a permit price changes which choices pay off.' },
       { t: 'The years', b: 12, cap: 'The years run. Profits, carbon costs and the company’s emissions are tracked every year, and a company that runs out of cash closes.' },
-      { t: 'Permit trading', b: 15, cap: 'If cap-and-trade passed and trading is on, the midterm opens a two-minute permit market. Companies with spare permits sell, the rest buy, and one price clears the market. Otherwise companies make one change instead.' },
+      { t: 'Permit trading', b: 15, cap: 'If cap-and-trade passed and trading is on, the midterm opens a one-minute permit market. Companies with spare permits sell, the rest buy, and one price clears the market. Otherwise companies make one change instead.' },
       { t: 'The election', b: 25, cap: 'Companies vote in the elections too, with their own reasons: profits, carbon costs, or the climate.' },
       { t: 'National emergency', b: 30, cap: 'After a catastrophic flood, each company sees its own site in 3D, flooded or spared, and what each option would cost it.' },
       { t: 'The flood bill', b: 31, cap: 'The company’s bill once the government decides: damage and lost work, any aid, and the emergency tax every company pays.' }] },
@@ -5627,7 +6166,7 @@ const EMERG = (function () {
   function optsPanel() {
     const o = OPT(), row = (k, t, d) => `<label class="c56-opt"><input type="checkbox" data-opt="${k}"${o[k] ? ' checked' : ''}><span><b>${t}</b><small>${d}</small></span></label>`;
     return `<div class="c56-opts"><div class="c56-eb">GAME OPTIONS</div>${row('mid', 'Midterm sessions', 'At years 5, 15 and 25: the government reopens three laws, and everyone else makes one change.')}
-      ${row('trade', 'Permit trading at the midterm', 'If cap-and-trade is law, companies get free permits and trade them in a two-minute market while the government votes.')}
+      ${row('trade', 'Permit trading at the midterm', 'If cap-and-trade is law, companies get free permits and trade them in a one-minute market while the government votes.')}
       ${row('polls', 'Yearly polls', 'About 10% of households and companies get a quick, optional poll each year; results go to the news.')}
       ${row('emerg', 'National emergency', 'Once a game, after a catastrophic flood (between about 2038 and 2050): a red alarm, a breaking-news broadcast, and an emergency vote by the government.')}</div>`;
   }
@@ -5635,13 +6174,18 @@ const EMERG = (function () {
   function roleIntro(C) {
     const r = role(), a = myAgent(C), seenK = 'intro';
     if (mine(seenK)) return false;
-    const body = r === 'hh' ? `<b class="c56-rn">${esc(a.name)}</b><span>${a.people} ${a.people === 1 ? 'person' : 'people'} · income $${a.income.toLocaleString()} a year · $${a.cash.toLocaleString()} in savings</span>`
+    const pickNow = (mine('NM') || {}).i ?? 0;
+    const body = r === 'hh' ? `<div class="c56-names"><div class="c56-eb">CHOOSE YOUR FAMILY’S NAME</div><div class="c56-nopts">${(a.offers || []).map((o, i) => `<button class="c56-nm${i === pickNow ? ' on' : ''}" data-nm="${i}"><b>${esc(o[0])}</b></button>`).join('')}</div></div>
+        <span>${a.people} ${a.people === 1 ? 'person' : 'people'} · income $${a.income.toLocaleString()} a year · $${a.cash.toLocaleString()} in savings</span>`
       : r === 'biz' ? `<b class="c56-rn">${esc(a.name)}</b><span>${RUN.SECN[a.sec]} · ${a.workers} workers · $${a.cap}M to invest</span>`
       : `<b class="c56-rn">${esc(a.name)}</b><span>One of ${C.gov.length} members. The carbon tax is set by the middle vote; every other bill needs a majority.</span>`;
     const ov = q('[data-intro]');
     ov.innerHTML = `<div class="c56-card c56-flip"><div class="c56-eb">YOU ARE DEALT</div>${RUN.glyph(ROLE[r].g, 54)}<h3>${ROLE[r].t}</h3>${body}<p>${ROLE[r].d}</p><button class="c56-b go big" data-ok>${r === 'gov' ? 'Take my seat' : r === 'hh' ? 'Build my home' : 'Run my company'} ▸</button></div>`;
     ov.hidden = false;
-    ov.querySelector('[data-ok]').onclick = () => { setMine(seenK, 1); ov.hidden = true; render(); };
+    ov.querySelectorAll('[data-nm]').forEach(b => b.onclick = () => { const i = +b.dataset.nm; setMine('NM', { i }); if (phase() === 'build' && backend) backend.mergeDocShard('polls', GID, { in: { NM: { [PK]: String(i) } } });
+      ov.querySelectorAll('[data-nm]').forEach(x => x.classList.toggle('on', x === b)); cMemo.sig = ''; });
+    ov.querySelector('[data-ok]').onclick = () => { if (r === 'hh' && !mine('NM') && backend && phase() === 'build') { setMine('NM', { i: 0 }); backend.mergeDocShard('polls', GID, { in: { NM: { [PK]: '0' } } }); }
+      setMine(seenK, 1); ov.hidden = true; cMemo.sig = ''; render(); };
     return true;
   }
 
@@ -5707,7 +6251,7 @@ const EMERG = (function () {
       if (B.kind === 'level') ctl = B.opts.map(o => `<button class="c56-seg${cur === o ? ' on' : ''}" data-b="${id}" data-v="${o}">$${o}</button>`).join('');
       else if (B.kind === 'yn') ctl = [[1, 'Yes'], [0, 'No']].map(([x, l]) => `<button class="c56-seg${(+cur || 0) === x ? ' on' : ''}" data-b="${id}" data-v="${x}">${l}</button>`).join('');
       else ctl = B.labels.map((l, i) => `<button class="c56-seg${(+cur || 0) === i ? ' on' : ''}" data-b="${id}" data-v="${i}">${l}</button>`).join('');
-      return `<div class="c56-bill${B.extra ? ' x' : ''}"><div class="c56-bt"><b>${B.title}</b>${B.extra ? '<em>NEW</em>' : ''}<small>${B.q}</small></div><div class="c56-segs">${ctl}</div><p>${WHY[id]}</p></div>`;
+      return `<div class="c56-bill${B.extra ? ' x' : ''}"><div class="c56-bt"><b>${B.title}</b>${B.extra ? '<em>NEW</em>' : ''}<small>${B.q}</small></div><div class="c56-segs">${ctl}</div><p>${WHY[id]}${id === 'cap' ? ' ' + CAPX.button() : ''}</p></div>`;
     };
     const prev = previewLaws(C, v);
     q('[data-screen=gov]').innerHTML = `<div class="c56-gov"><div class="c56-bills">
@@ -5891,7 +6435,7 @@ const EMERG = (function () {
         <h3>${short > 0 ? `You are short ${short} kt a year` : short < 0 ? `You have ${-short} kt a year to spare` : 'You are exactly covered'}</h3>
         <div class="c56-pos"><div><small>Permits you got</small><b>${Math.round(me2.alloc)} kt</b><span>a year, free, from the cap</span></div><div><small>You emit</small><b>${Math.round(me2.emits)} kt</b><span>a year, as you run now</span></div><div><small>Last price</small><b>$${last}</b><span>per tonne, ${C.year - 1}</span></div></div>
         <div class="c56-gauge"><div class="c56-gt"><i class="em" style="width:${me2.emits >= me2.alloc ? 100 : me2.emits / me2.alloc * 100}%"></i><i class="al" style="width:${pct}%"></i></div><div class="c56-gl"><span>Your permits ${Math.round(me2.alloc)} kt</span><span>Your emissions ${Math.round(me2.emits)} kt</span></div></div>
-        <p class="c56-gsub">Every tonne you emit needs a permit. Short companies <b>buy</b> from classmates with spare ones; companies with spare permits <b>sell</b> them. Anything still uncovered each year is bought from the government at the year’s permit price, up to <b>$150</b>.</p>
+        <p class="c56-gsub">Every tonne you emit needs a permit. Short companies <b>buy</b> from classmates with spare ones; companies with spare permits <b>sell</b> them. Anything still uncovered each year is bought from the government at the year’s permit price, up to <b>$150</b>. ${CAPX.button('How cap-and-trade works', 2)}</p>
         ${mac ? `<div class="c56-mac">${mac}</div>` : ''}</div>
       <div class="c56-tcard"><div class="c56-eb">YOUR ONE ORDER</div>
         <div class="c56-side"><button class="c56-buy${cur.side === 'b' ? ' on' : ''}" data-ts="b">Buy permits</button><button class="c56-sell${cur.side === 's' ? ' on' : ''}" data-ts="s">Sell permits</button></div>
@@ -5956,7 +6500,7 @@ const EMERG = (function () {
     if (ph === 'reacted') { if (first) RUN.show.react(C.logs['adj' + w], w ? 'keep' : 'first', HOST ? { onGo: go.reacted, goLabel: 'Run the next ten years ▶' } : {}); return; }
     if (ph === 'elect' || ph === 'revote') return progress(C, first);
     if (ph === 'elected') { if (first) { const e = C.logs['elect' + w]; RUN.news(`Election: ${Math.round(e.pct * 100)}% approve. ${e.keep ? 'The government stays.' : 'The government is voted out.'}`, C.year); RUN.show.election(e, HOST ? { onGo: () => go.elected(e.keep), goLabel: e.keep ? 'The laws stay: react ▸' : 'The new government votes ▸' } : {}); } return; }
-    if (ph === 'final') { if (first) { RUN.news(`2056: the class finishes at +${C.hist[29].T.toFixed(2)} °C`, 2056); RUN.show.final(HOST ? { onGo: () => backend.setDoc('polls', GID, { phase: 'idle' }), goLabel: 'Close the game' } : { note: 'Thanks for playing.' }); } return; }
+    if (ph === 'final') { if (first) { RUN.news(`2056: the class finishes at +${C.hist[29].T.toFixed(2)} °C`, 2056); RUN.show.final(Object.assign(HOST ? { onGo: () => backend.setDoc('polls', GID, { phase: 'idle' }), goLabel: 'Close the game' } : { note: 'Thanks for playing.' }, { I: inputs(), you: HOST ? null : PK })); } return; }
     if (ph === 'mid') return progress(C, first);
     if (ph === 'midlaws') { if (first) { const rec = C.logs['mid' + (w + 1)]; RUN.news('Midterm: ' + RUN.lawLine(C.pol), C.year); RUN.show.vote(rec, HOST ? { onGo: go.midlaws, goLabel: 'Show what the class changed ▸' } : {}); } return; }
     if (ph === 'midtrade') { if (first) { const m = C.logs['mid' + (w + 1)].market; RUN.news(m.vol > 0 ? `Permit market: ${Math.round(m.vol)} kt a year trade at $${m.price} a tonne` : 'Permit market: no trades this time', C.year); RUN.show.trade(m, HOST ? { onGo: go.midtrade, goLabel: 'Show what households changed ▸' } : {}); } return; }
