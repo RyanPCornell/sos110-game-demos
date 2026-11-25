@@ -343,14 +343,47 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .c56 .r-wrap{display:grid;grid-template-columns:minmax(0,1fr) 392px;gap:16px;align-items:start}
 .c56 .r-stage{position:relative}
 .c56 .r-stage .v-svg{filter:drop-shadow(0 8px 18px rgba(60,45,20,.18))}
-.c56 .r-news{position:absolute;left:3.2%;right:3.2%;bottom:5.4%;display:flex;align-items:center;gap:.7rem;background:rgba(251,245,230,.95);border:1px solid var(--gold);border-radius:8px;padding:.38rem .7rem;box-shadow:0 4px 12px rgba(60,45,20,.18);font-family:Merriweather,serif}
+.c56 .r-main{display:flex;flex-direction:column;gap:10px;min-width:0}
+.c56 .r-news{display:flex;align-items:center;gap:.8rem;background:var(--paper);border:1px solid #d9c9a3;border-radius:10px;padding:.55rem .95rem;min-height:3rem;box-shadow:0 3px 10px rgba(60,45,20,.08);font-family:Merriweather,serif;transition:border-color .3s,box-shadow .3s}
+.c56 .r-news.big{border-color:#b8432f;box-shadow:0 0 0 2px rgba(184,67,47,.18)}
+.c56 .r-news.poll{border-color:#2668a8;background:#eef3f7}
+.c56 .r-news.poll .r-live{color:#2668a8}
+.c56 .r-news.poll .r-live i{background:#2668a8}
+.c56 .r-news.r-bflash{animation:rbflash 1.2s ease-out}
+@keyframes rbflash{0%{background:#fff1dc}100%{}}
 .c56 .r-live{display:flex;align-items:center;gap:.35rem;font:900 .62rem Inter;letter-spacing:.18em;color:#b8432f;white-space:nowrap;border-right:1px solid #d9c9a3;padding-right:.65rem}
 .c56 .r-live i{width:8px;height:8px;border-radius:50%;background:#b8432f;animation:rpulse 1.4s ease-in-out infinite}
 @keyframes rpulse{50%{opacity:.25;transform:scale(.7)}}
-.c56 .r-newst{flex:1;font:italic 700 clamp(.78rem,1.05vw,.95rem) Merriweather,serif;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c56 .r-newst{flex:1;min-width:0;font:italic 700 clamp(.9rem,1.25vw,1.12rem)/1.3 Merriweather,serif;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .c56 .r-newst.r-flash{animation:rflash .9s ease-out}
 @keyframes rflash{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
-.c56 .r-newsy{font:800 .66rem Inter;color:#8a7d60;letter-spacing:.1em}
+.c56 .r-newsy{font:800 .72rem Inter;color:#8a7d60;letter-spacing:.1em}
+.c56 .r-yr{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.6fr) auto;gap:.9rem;align-items:center;background:var(--paper);border:1px solid #d9c9a3;border-radius:10px;padding:.55rem .95rem;box-shadow:0 3px 10px rgba(60,45,20,.08)}
+.c56 .r-yr small{display:block;font:800 .58rem Inter;letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
+.c56 .r-yl ul{list-style:none;margin:.2rem 0 0;padding:0;display:flex;flex-direction:column;gap:.15rem}
+.c56 .r-yl li{display:flex;align-items:center;gap:.35rem;font:700 .8rem Merriweather,serif;color:#8e2f2a}
+.c56 .r-yl li.calm{color:#5e7a4f;font-style:italic;font-weight:400}
+.c56 .r-yl > b{font:italic 900 1.1rem Merriweather,serif}
+.c56 .r-yl > span{display:block;font-size:.72rem;color:var(--muted)}
+.c56 .r-ym{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem;border-left:1px dashed #d9c9a3;padding-left:.8rem}
+.c56 .r-ym b{display:block;font:900 1.05rem Merriweather,serif}
+.c56 .r-ym b.r-ybad{color:#8e2f2a}
+.c56 .r-ym span{display:block;font-size:.64rem;color:#8a7d60;line-height:1.25}
+.c56 .r-yt{text-align:right;border-left:1px dashed #d9c9a3;padding-left:.8rem}
+.c56 .r-yt b{display:block;font:900 1.45rem/1 Merriweather,serif;color:#8e2f2a}
+.c56 .r-yt span{font:700 .66rem Inter;color:var(--muted)}
+.c56 .r-yt em{display:block;font:italic .66rem Merriweather,serif;color:#8a7d60;margin-top:.15rem}
+.c56 .r-moms{position:absolute;left:0;right:0;top:20%;display:flex;justify-content:center;pointer-events:none;z-index:4}
+.c56 .r-mom{max-width:min(620px,86%);text-align:center;background:rgba(251,245,230,.97);border:1px solid var(--gold);border-top:6px solid #8a6a2f;border-radius:14px;padding:14px 26px 16px;
+  box-shadow:0 18px 50px rgba(30,20,8,.4),inset 0 0 0 4px rgba(251,245,230,.97),inset 0 0 0 5px #d9c9a3;animation:rmom 6.2s ease-out both}
+.c56 .r-mom.dis{border-top-color:#b8432f}
+.c56 .r-mom.warn{border-top-color:#b8432f}
+.c56 .r-mom.good{border-top-color:#2f8545;animation-duration:5.2s}
+.c56 .r-mom span{display:block;font:900 .68rem Inter;letter-spacing:.22em;color:#a8483f}
+.c56 .r-mom.good span{color:#2f8545}
+.c56 .r-mom b{display:block;margin:.3rem 0;font:italic 900 clamp(1.25rem,2.1vw,1.7rem)/1.2 Merriweather,serif;color:var(--ink)}
+.c56 .r-mom em{display:block;font-style:normal;font-size:.88rem;line-height:1.45;color:var(--muted)}
+@keyframes rmom{0%{opacity:0;transform:translateY(14px) scale(.96)}8%{opacity:1;transform:none}85%{opacity:1}100%{opacity:0;transform:translateY(-6px)}}
 .c56 .r-side{display:flex;flex-direction:column;gap:9px}
 .c56 .r-steps{display:flex;gap:3px;margin:0;padding:0;list-style:none;counter-reset:s}
 .c56 .r-steps li{flex:1;text-align:center;font:700 .58rem Inter;letter-spacing:.04em;color:#a99a78;padding:.3rem 0 .32rem;border-bottom:3px solid #e6dcc4;white-space:nowrap}
@@ -485,13 +518,15 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .c56 .r-aw b{display:block;font:italic 900 .95rem Merriweather,serif}
 .c56 .r-aw span{font-size:.68rem;color:#8a7d60}
 .c56 .r-fine{font-size:.68rem;color:#a99a78;margin:.6rem 0 0}
-@media (max-width:1000px){.c56 .r-wrap{grid-template-columns:1fr}
+@media (max-width:1000px){.c56 .r-yr{grid-template-columns:1fr}
+.c56 .r-ym,.c56 .r-yt{border-left:0;padding-left:0;text-align:left}
+.c56 .r-wrap{grid-template-columns:1fr}
 .c56 .r-deal,.c56 .r-react,.c56 .r-final,.c56 .r-elect{grid-template-columns:1fr}
 .c56 .r-why{grid-column:1;grid-row:auto}
 .c56 .r-awards{grid-template-columns:1fr}
 .c56 .r-bill{grid-template-columns:1fr}
 .c56 .r-bres{justify-self:start}}
-@media (prefers-reduced-motion:reduce){.c56 .r-chip,.c56 .r-acts li,.c56 .r-ball,.c56 .r-newst.r-flash{animation:none}
+@media (prefers-reduced-motion:reduce){.c56 .r-mom,.c56 .r-chip,.c56 .r-acts li,.c56 .r-ball,.c56 .r-newst.r-flash{animation:none}
 .c56 .r-vs,.c56 .r-bres,.c56 .r-stamp,.c56 .r-card{transition:none}}
 .c56 .r-you{background:var(--paper);border:1px solid var(--gold);border-radius:12px;padding:8px 11px;box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 4px #e6d8b8}
 .c56 .r-you h4{margin:0;font:800 .6rem Inter;letter-spacing:.16em;color:var(--gold);text-transform:uppercase}
@@ -1109,7 +1144,9 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .c56 .fn-sk i{display:inline-block;width:7px;height:7px;border-radius:1px;margin-right:.2rem}
 .c56 .fn-ledger{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .c56 .fn-ledger section{background:#fffaf0;border:1px solid #e2d5b6;border-radius:10px;padding:.6rem .75rem}
-.c56 .fn-ledger section:nth-child(3){grid-column:1 / -1}
+.c56 .fn-ledger section:nth-child(3),.c56 .fn-ledger section:nth-child(4){grid-column:1 / -1}
+.c56 .fn-hc{border-color:rgba(184,67,47,.35) !important}
+.c56 .fn-hc .fn-gov b{color:#8e2f2a}
 .c56 .fn-ledger h4{display:flex;align-items:center;gap:.4rem;margin:0 0 .45rem;font:800 .66rem Inter;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
 .c56 .fn-lr{display:grid;grid-template-columns:7.5rem 1fr 1fr 5.5rem;gap:.5rem;align-items:center;padding:.22rem 0;border-bottom:1px dashed #e6dcc4}
 .c56 .fn-lr > span{font:700 .74rem Inter}
@@ -1135,6 +1172,29 @@ img.bleed{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 .c56 .fn-chain{grid-template-columns:1fr}
 .c56 .fn-arrow{display:none}
 .c56 .fn-ledger,.c56 .fn-you{grid-template-columns:1fr}}
+.c56 .dc-wrap{max-width:980px}
+.c56 .dc-real{margin:.5rem 0 0;padding:.55rem .75rem;border-left:3px solid #b8432f;background:#fffaf0;border-radius:0 8px 8px 0;font:400 .84rem/1.5 Merriweather,serif;color:var(--ink)}
+.c56 .dc-real span{display:block;font:800 .56rem Inter;letter-spacing:.16em;color:#b8432f}
+.c56 .dc-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:8px;margin-top:.4rem}
+.c56 .dc-opt{display:flex;flex-direction:column;gap:.25rem;text-align:left;padding:.65rem .8rem;border:1.5px solid #d9c9a3;border-radius:10px;background:#fffaf0;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s}
+.c56 .dc-opt b{font:900 .98rem Merriweather,serif;color:var(--ink)}
+.c56 .dc-does{font:400 .76rem/1.4 Merriweather,serif;color:var(--muted)}
+.c56 .dc-opt em{font:600 .72rem Inter;font-style:normal;color:#8a7d60}
+.c56 .dc-opt:hover:not(:disabled){border-color:var(--gold)}
+.c56 .dc-opt.on{border-color:var(--ink);background:#fff;box-shadow:0 0 0 2px rgba(59,50,34,.15);transform:translateY(-1px)}
+.c56 .dc-opt.off{opacity:.5;cursor:default}
+.c56 .dc-opt.pass{justify-content:center}
+.c56 .dc-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:.15rem}
+.c56 .dc-chip{font:700 .64rem Inter;padding:.14rem .45rem;border-radius:999px;border:1px solid #d9c9a3;color:#8a7d60;background:#fff}
+.c56 .dc-chip.gd{color:#2f8545;border-color:rgba(47,133,69,.5);background:rgba(47,133,69,.06)}
+.c56 .dc-chip.bd{color:#b8432f;border-color:rgba(184,67,47,.45);background:rgba(184,67,47,.05)}
+.c56 .dc-src{margin:.55rem 0 0;font-size:.68rem;line-height:1.4;color:#8a7d60}
+.c56 .dc-board .dc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:.6rem}
+.c56 .dc-board .dc-grid > div{background:#fffaf0;border:1px solid #e2d5b6;border-radius:9px;padding:.45rem .6rem}
+.c56 .dc-board .dc-grid b{display:flex;align-items:center;gap:.3rem;font:800 .62rem Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.c56 .dc-board ul{margin:.25rem 0 0;padding-left:1rem;font-size:.76rem;line-height:1.4}
+.c56 .dc-board li.pass{list-style:none;margin-left:-1rem;color:#8a7d60;font-style:italic}
+@media(max-width:900px){.c56 .dc-board .dc-grid{grid-template-columns:1fr}}
 /* one slide, one game: the lecture chrome only gets in the way here */
 .nav-btn,.hud,.menu{display:none !important;}
 /* [hidden] has to beat the bar's own display:flex */
@@ -1490,11 +1550,13 @@ const SIM = (function () {
   // W = the world this year: grid (kg/kWh), elec ($/kWh), gas ($/therm), fuel ($/gal), T (warming), pol (laws)
   function hhYear(h, W) {
     const people = h.people;
-    const heatDemand = (h.loc === 'city' ? 34 : 62) * (h.ins === 'up' ? .7 : 1) * { 68: .9, 72: 1, 76: 1.12 }[h.th];
-    let kwh = (h.loc === 'city' ? 5200 : 7800) + Math.max(0, (W.T - 1.3)) * (h.loc === 'city' ? 700 : 1300);   // warmer summers → more AC
+    const X = h.x || {};      // extras chosen at the decisions between rounds (none of them is in the build screen)
+    const heatDemand = (h.loc === 'city' ? 34 : 62) * (h.ins === 'up' ? .7 : 1) * { 68: .9, 72: 1, 76: 1.12 }[h.th] * (X.smart ? .92 : 1);
+    const acX = (X.smart ? .92 : 1) * (X.roof ? .8 : 1) * (X.trees ? .85 : 1);
+    let kwh = (h.loc === 'city' ? 5200 : 7800) + Math.max(0, (W.T - 1.3)) * (h.loc === 'city' ? 700 : 1300) * acX;   // warmer summers → more AC
     let therms = 0;
     if (h.heat === 'gas') therms = heatDemand / .95 * 10; else kwh += heatDemand * 293.07 / 2.8;
-    const miles = h.loc === 'city' ? 6500 : 12000;
+    const miles = (h.loc === 'city' ? 6500 : 12000) * (X.ebike ? .8 : 1);
     let gal = 0, transit = 0;
     if (h.car === 'sedan') gal = miles / 32; else if (h.car === 'suv') gal = miles / 24; else if (h.car === 'hyb') gal = miles / 50;
     else if (h.car === 'ev') kwh += miles * .3; else transit = .45 * people;
@@ -1502,17 +1564,18 @@ const SIM = (function () {
     const gridKwh = Math.max(0, kwh - solar * (h.sol === 'pvb' ? 1 : .85));
     const meatPrice = 1 + (W.pol.methane ? .12 : 0);
     const t = {
-      heat: therms * 5.3 / 1000, elec: gridKwh * W.grid / 1000, car: gal * 8.89 / 1000 + transit,
-      food: DIET_T[h.diet] * people, fly: +h.fly * .6 * people
+      heat: therms * 5.3 / 1000, elec: gridKwh * W.grid / 1000 * (X.csolar ? .5 : 1), car: gal * 8.89 / 1000 + transit,
+      food: DIET_T[h.diet] * people * (X.waste ? .85 : 1) * (X.garden ? .97 : 1), fly: +h.fly * .6 * people
     };
     t.total = t.heat + t.elec + t.car + t.food + t.fly;
     const scope1 = t.heat + gal * 8.89 / 1000 + t.fly;                 // what the household burns itself (taxable)
     const bills = {
       elec: gridKwh * W.elec, gas: therms * W.gas, fuel: gal * W.fuel + (h.car === 'none' ? 720 * people : 0),
-      food: DIET_COST[h.diet] * people * (h.diet === 'meat' || h.diet === 'mixed' ? meatPrice : 1),
+      food: DIET_COST[h.diet] * people * (h.diet === 'meat' || h.diet === 'mixed' ? meatPrice : 1) * (X.waste ? .9 : 1) * (X.garden ? .95 : 1),
       fly: +h.fly * 450 * people * (1 + W.tax / 1000), ins: h.loc === 'flood' ? 2400 : 0, car: h.car === 'none' ? 0 : 900,
       home: { sub: 0, city: 2500, flood: -4000 }[h.loc]          // rent or mortgage compared with the suburbs
     };
+    if (X.csolar) bills.elec *= .95;
     bills.energy = bills.elec + bills.gas + bills.fuel;
     bills.total = Object.keys(bills).filter(k => k !== 'energy').reduce((a, k) => a + bills[k], 0);
     return { t, scope1, gridKwh, kwh, solar, therms, gal, bills };
@@ -1555,24 +1618,26 @@ const SIM = (function () {
   function bizYear(b, W, M) {
     const S = SECT[b.sec], p = S.prods[b.prod];
     let rev = p[1], cost = p[2], proc = p[3], gen = 0;
-    const gwh = bizGwh(b, M);
+    const X = b.x || {};      // extras chosen at the decisions between rounds
+    const gwh = bizGwh(b, M) * (X.eff ? XEFF[b.sec] || .9 : 1) * (b.sec === 'data' && X.maint ? .92 : 1);
     const cprice = W.tax + (W.pol.cap ? W.permit : 0);                  // $ per tonne seen by covered firms
     if (b.sec === 'power') {
       gen = M.genShare;                                                 // GWh this company generates
-      proc = gen * POWER_INT[b.prod];
-      rev = gen * W.wholesale; cost = p[2] + gen * POWER_FUEL[b.prod];
+      proc = gen * POWER_INT[b.prod] * (X.eff ? .95 : 1);
+      rev = gen * W.wholesale; cost = p[2] + gen * POWER_FUEL[b.prod] * (X.eff ? .95 : 1);
       if (W.pol.cleanStd && W.year >= 2036 && POWER_INT[b.prod] > .2) cost += 30;   // clean electricity standard fine
     } else if (b.sec === 'farm') {
       const meatIdx = M.meatIdx;
       rev *= MEAT_PRODS[b.prod] ? Math.pow(meatIdx, .9) : 1 + (1 - meatIdx) * .9;
-      if (W.heatEvent) rev *= .9;
+      if (W.heatEvent) rev *= X.heat ? .97 : .9;
+      if (X.store) rev *= 1.04;
     } else if (b.sec === 'auto') {
       const ev = b.prod === 'ev', share = ev ? M.evDemand / Math.max(.15, M.evSupply) : (1 - M.evDemand) / Math.max(.15, 1 - M.evSupply);
       rev *= clamp(.55 + .45 * share, .45, 1.6); cost *= clamp(.6 + .4 * share, .5, 1.4);
       if (W.pol.fuelStd && (b.prod === 'suv')) cost += 15;
     } else if (b.sec === 'data') {
       rev *= M.dataGrowth; cost *= Math.pow(M.dataGrowth, .85);
-      if (W.heatEvent) cost += 3;
+      if (W.heatEvent && !X.heat) cost += 3;
     } else if (b.sec === 'steel') {
       const pass = W.pol.border ? 1 : .4;                                // share of carbon cost passed to customers
       rev += pass * proc * cprice / 1000;
@@ -1595,6 +1660,10 @@ const SIM = (function () {
     if (b.filt === 'yes') cost += 2;
     if (b.fleet === 'ev') cost -= 1.5 * S.fleet;
     cost += { cut: -6, code: 0, plus: 4 }[b.safe];
+    cost += (X.maint ? 2 : 0) + (X.trees ? 1.5 : 0) + (X.heat ? 1 : 0) + (X.feed ? 2 : 0) + (X.store ? 1 : 0);
+    if (b.sec !== 'power' && b.sec !== 'data' && X.maint) proc *= b.sec === 'farm' ? .9 : .92;
+    if (b.sec === 'power' && X.maint) proc *= .92;
+    if (X.feed && MEAT_PRODS[b.prod]) proc *= .8;
     const fleetKt = (b.fleet === 'ev' ? 0 : 6) * S.fleet;
     const procNet = Math.max(0, proc - captured);
     // carbon costs: farms' methane only under a methane fee
@@ -1611,11 +1680,12 @@ const SIM = (function () {
     if (W.pol.cap && b.tq) cost += b.tq * (b.tqP || 0) / 1000;            // the midterm trade, paid (or earned) every year
     const air = clamp(((proc + siteKt) / 900) * (b.filt === 'yes' ? .25 : 1) + (b.fleet === 'diesel' ? .05 * S.fleet : 0));
     const kt = { proc: procNet * (1 - (b.sec === 'farm' && !W.pol.methane ? 0 : abFrac)), site: siteKt * (1 - abFrac), fleet: fleetKt * (1 - abFrac), scope2: siteGrid * W.grid };
-    kt.scope1 = kt.proc + kt.site + kt.fleet;
+    kt.seq = X.trees ? 8 : 0;                                          // trees on company land take up CO2 (not credited against taxes)
+    kt.scope1 = Math.max(0, kt.proc + kt.site + kt.fleet - kt.seq);
     kt.total = kt.scope1 + kt.scope2;
     const totalCost = cost + siteCost + taxCost + permitCost + abCost;
     return { rev, cost: totalCost, taxCost, permitCost, profit: rev - totalCost, kt, gen, siteGrid, gwh, air,
-      risk: { cut: .18, code: .04, plus: .01 }[b.safe], capturedKt: captured, covered: emitTaxed };
+      risk: { cut: .18, code: .04, plus: .01 }[b.safe] + (W.heatEvent && !X.heat ? .03 : 0), capturedKt: captured, covered: emitTaxed };
   }
   function bizCapex(b, prev, year, pol) {
     const S = SECT[b.sec];
@@ -1823,8 +1893,9 @@ const SIM = (function () {
       const y = hhYear(h, W);
       let dmg = 0;
       if (ev.includes('flood') && h.loc === 'flood') dmg += 26000 * wallF(C) * .3;      // insured: pays the deductible share
-      if (ev.includes('fire')) dmg += 250;
-      if (ev.includes('heat')) dmg += h.tier === 0 ? 400 : 150;
+      const hx = h.x || {};
+      if (ev.includes('fire')) dmg += 250 * (hx.purifier ? .4 : 1);
+      if (ev.includes('heat')) dmg += (h.tier === 0 ? 400 : 150) * (hx.purifier ? .6 : 1) * (hx.roof ? .8 : 1) * (hx.trees ? .85 : 1);
       const loanPay = h.loan > 0 ? Math.min(h.loan, h.loanPay) : 0; h.loan -= loanPay;
       // a household saves about 12% of its income, more or less as its bills come in under or over its as-built bills
       const left = .12 * h.income - (y.bills.total - h.bill0) - loanPay - dmg;
@@ -1857,6 +1928,17 @@ const SIM = (function () {
       if (accident) C.news.push({ year, kind: 'acc', text: `Accident at ${b.name}${b.safe === 'cut' ? ' (safety corners had been cut)' : ''}` });
       rows.biz.push(b.last);
     }
+    // health and hidden costs (Nov 25 2026): early deaths from the class's power plants (deaths per TWh, Our World in Data)
+    // and the climate damage of this year's CO2 (EPA social cost of carbon, 2% rate, 2020 dollars)
+    const scc = sccAt(year);
+    let deaths = 0, sccM = 0;
+    for (const b of C.biz) if (b.open && b.last) {
+      b.last.deaths = b.sec === 'power' ? b.last.gen / 1000 * DPT[b.prod] : 0;
+      b.last.sccM = b.last.kt.scope1 * scc / 1000;                     // kt × $/t → $M
+      deaths += b.last.deaths; sccM += b.last.sccM;
+      if (b.trk) b.trk[b.trk.length - 1].push(+b.last.deaths.toFixed(2), +b.last.sccM.toFixed(1));
+    }
+    for (const h of C.hh) { h.last.scc = h.last.t.total * scc; sccM += h.last.scope1 * HHSCALE * scc / 1e6; if (h.trk) h.trk[h.trk.length - 1].push(Math.round(h.last.scc)); }
     // government budget ($M)
     const evBuyers = C.pendingRebates || 0; C.pendingRebates = 0;
     spend += evBuyers;
@@ -1889,12 +1971,26 @@ const SIM = (function () {
       meat: M.meatIdx, ccs: C.biz.filter(b => b.open && b.ccs === 'yes' && b.sec !== 'farm').length / Math.max(1, C.biz.filter(b => b.sec === 'power' || b.sec === 'steel').length),
       events: ev, tax: W.tax, permit, elecPrice: W.elec, output, profit, workers, jobsLost, burdenBy,
       govIn: income, govOut: dividend + subsidies + spend + seaWallCost, dividend, balance, debt: C.debt, sectorKt,
-      approval: C.lastApproval ?? null, pol: { ...C.pol }
+      approval: C.lastApproval ?? null, pol: { ...C.pol }, deaths, sccM, scc
     };
     C.hist.push(rec);
     for (const e of ev) C.news.push({ year, kind: 'event', ev: e, text: EVT[e].name + (e === 'flood' ? ' hits the riverside homes' : e === 'surge' ? ' batters the coast' : e === 'heat' ? ' bakes the valley' : ' fills the sky') });
     C.year++;
     return rec;
+  }
+
+  // ── health & hidden costs: the data ──
+  // Deaths per TWh of electricity from air pollution and accidents (Our World in Data, "What are the safest and cleanest
+  // sources of energy?", 2021 values: coal 24.62, gas 2.821, nuclear 0.03, wind 0.035, solar 0.019; fossil rates from
+  // Markandya & Wilkinson 2007, The Lancet; wind and solar from Sovacool et al. 2016). The game's "wind + solar" is 0.03.
+  const DPT = { coal: 24.62, gas: 2.821, ren: .03, nuc: .03 };
+  // Social cost of carbon, 2020 dollars per tonne of CO2 at the 2.0% near-term discount rate (US EPA 2023, Table ES.1)
+  const SCC = [[2020, 190], [2030, 230], [2040, 270], [2050, 310], [2060, 350]];
+  const sccAt = y => { for (let i = 1; i < SCC.length; i++) if (y <= SCC[i][0]) return lerp(SCC[i - 1][1], SCC[i][1], (y - SCC[i - 1][0]) / 10); return 350; };
+  // the class grid's deaths per TWh: 60% from the class's power companies (what they burn), 40% from the clean share
+  function gridDPT(C) {
+    const pw = C.biz.filter(b => b.sec === 'power' && b.open);
+    return .6 * (pw.length ? pw.reduce((a, b) => a + DPT[b.prod], 0) / pw.length : DPT.gas) + .4 * .03;
   }
 
   // ───────────────────────── government ─────────────────────────
@@ -1979,9 +2075,13 @@ const SIM = (function () {
     const h0 = C.hist[0], hN = C.hist[C.hist.length - 1], prev = C.hist[Math.max(0, C.hist.length - 11)];
     const climate = (prev.index - hN.index) / Math.max(.05, prev.index);       // share cut this decade
     const ballots = [];
+    // Nov 25 2026: stand-in voters judge the government on what it did, so the extras a household or company chose for
+    // itself at the decisions between rounds (h.x / b.x) are left out of the bills and profits they vote on
+    let Wv = null, Mv = null; const wv = () => Wv || (Wv = worldFor(C, hN.year, hN.permit)), mv = () => Mv || (Mv = market(C, wv()));
     for (const h of C.hh) {
       const first = h.firstBurden ?? (h.firstBurden = h.last.burden);
-      const econ = -(h.last.burden - first) / .02 - (h.cash < 0 ? .8 : 0);
+      const burden = h.x && Object.keys(h.x).length ? hhYear({ ...h, x: {} }, wv()).bills.energy / h.income : h.last.burden;
+      const econ = -(burden - first) / .02 - (h.cash < 0 ? .8 : 0);
       const clim = (climate - .05) * 5 + C.pol.tax / 300 - hN.events.length * .1;
       const score = h.concern * clim + (1 - h.concern) * econ + (rk(C, 'el:' + C.year + ':' + h.id)() - .5) * .5 + emergThanks(C, h);
       const real = parseBallot(given[h.id]);
@@ -1992,7 +2092,7 @@ const SIM = (function () {
       const realB = parseBallot(given[b.id]);
       if (!b.open) { ballots.push({ who: b.id, kind: 'biz', approve: realB ? realB.approve : false, why: realB ? realB.why : 'my company went under', real: realB ? 1 : 0 }); continue; }
       if (realB) { ballots.push({ who: b.id, kind: 'biz', approve: realB.approve, why: realB.why, real: 1 }); continue; }
-      const p = b.last.profit, base = SECT[b.sec].prods[b.prod][1] * .15;
+      const p = b.x && Object.keys(b.x).length ? b.last.profit - (bizYear(b, wv(), mv()).profit - bizYear({ ...b, x: {} }, wv(), mv()).profit) : b.last.profit, base = SECT[b.sec].prods[b.prod][1] * .15;
       const econ = (p - base) / Math.max(10, Math.abs(base)) - (b.last.taxCost + b.last.permitCost) / 40;
       const clim = (climate - .12) * 5;
       const score = b.concern * .6 * clim + (1 - b.concern * .6) * econ + (rk(C, 'el:' + C.year + ':' + b.id)() - .5) * .5;
@@ -2228,6 +2328,97 @@ const SIM = (function () {
     return vote;
   }
 
+  // ───────────────────────── decisions between rounds ─────────────────────────
+  // Nov 25 2026 (Ryan, after Chapter 16): four times a game the years stop for 30 seconds and every household and company gets a
+  // choice that fits it (a household, or that type of company). The choice is real: it changes the household's or the
+  // company's setup at that year's prices (paid from savings or cash), and so its bills, profits, emissions and health toll.
+  // Stand-ins decide for absent students, leaning on their concern. Inputs EV<id>: {pk: option index | 'n'}, frozen with '_'.
+  // n = years run when the decision comes (never a midterm or an election year).
+  // Nov 25 2026 (Ryan, second pass): the choices are NEW things nobody saw in the build screens, smaller than a new car or a
+  // new plant. Sizes are game estimates unless a source is named. o = [key, label, what it does, cost (households $; companies
+  // $M now)]; companies' yearly costs live in bizYear.
+  const XEFF = { power: .95, steel: .88, farm: .85, auto: .9, data: .85 };
+  const HHX = {
+    ebike: ['An e-bike for short trips', 'Takes about a fifth of your car miles.', 1500],
+    purifier: ['HEPA air purifiers for the house', 'Cleaner indoor air on smoke and heat days: smoke costs your family 60% less, heat 40% less.', 250],
+    smart: ['A smart thermostat', 'Cuts heating and cooling energy about 8% (ENERGY STAR).', 250],
+    csolar: ['Subscribe to community solar', 'Half your electricity comes from a shared solar farm, for about 5% less. No upfront cost.', 0],
+    roof: ['A reflective cool roof', 'Cuts the extra air conditioning that heat brings by a fifth, and heat-wave costs too.', 2500],
+    trees: ['Plant shade trees', 'Shade cuts the extra air conditioning by about 15%, and heat-wave costs too.', 400],
+    waste: ['Cut your food waste: plan meals, compost', 'Food’s footprint down 15%, the grocery bill down 10% (USDA: 30–40% of the U.S. food supply is wasted). No cost.', 0],
+    garden: ['Grow a vegetable garden', 'A little less food to buy and to truck in.', 300],
+  };
+  const BX = {
+    maint: { power: 'Find and fix boiler and pipeline leaks', steel: 'Seal the furnaces and fix air leaks', farm: 'Cover the manure lagoons', auto: 'Capture the paint shop’s fumes', data: 'Raise the server-room temperature 2 °C',
+      d: s => s === 'data' ? 'Cuts the center’s electricity about 8%. $3M now, $2M a year.' : s === 'farm' ? 'Cuts the farm’s methane and CO₂ about 10%. $3M now, $2M a year.' : 'Cuts the plant’s own emissions about 8%. $3M now, $2M a year.', c: () => 3 },
+    eff: { power: 'Upgrade the turbines: 5% less fuel per megawatt-hour', steel: 'Recover the furnaces’ waste heat', farm: 'Efficient pumps and LED barns', auto: 'Efficient motors and air-line repairs', data: 'Liquid cooling for the servers',
+      d: s => s === 'power' ? 'Burns 5% less fuel for the same power: lower fuel bills, CO₂ and smoke.' : `Cuts the energy you use about ${Math.round((1 - XEFF[s]) * 100)}%.`, c: s => ({ power: 30, steel: 25, farm: 6, auto: 15, data: 12 })[s] },
+    heat: { power: 'Heat-proof the plant: backup cooling, shade for crews', steel: 'Shade, water and rest breaks for workers', farm: 'Shade, water and rest for field crews', auto: 'Shade, water and rest breaks for workers', data: 'Backup cooling for heat waves',
+      d: () => 'Heat waves stop hurting your crew and your output: fewer heat injuries and outages. $2M now, $1M a year.', c: () => 2 },
+    trees: { all: 'Plant trees on company land', d: () => 'Takes up about 8 kt of CO₂ a year (not counted against your carbon bill). $1.5M a year.', c: () => 0 },
+    feed: { all: 'A seaweed feed additive for the herd', d: () => 'Cuts the cattle’s methane about 20% (some trials found far more). $2M a year.', c: () => 0 },
+    store: { all: 'Cold storage to cut food loss', d: () => 'Sell about 4% more of what you grow. $4M now, $1M a year.', c: () => 4 },
+  };
+  const hh = (...ks) => ks.map(k => ['h', k]), bz = (...ks) => ks.map(k => ['b', k]);
+  const DECIDE = [
+    { id: 'air', n: 3, kicker: 'Air-quality alert', title: 'A week of unhealthy air',
+      real: 'Ozone forms when tailpipe and smokestack gases cook in strong sun and heat (U.S. EPA). Electricity from coal causes about 24.6 deaths per terawatt-hour from air pollution and accidents, gas about 2.8, wind about 0.035 and solar about 0.019 (Our World in Data, from Markandya & Wilkinson 2007 and Sovacool et al. 2016).',
+      opts: a => a.kind === 'hh' ? hh('ebike', 'purifier') : bz('maint', 'trees') },
+    { id: 'gas', n: 8, kicker: 'Energy prices', title: 'Fuel prices spike',
+      real: 'In June 2022 the U.S. average price of regular gasoline passed $5 a gallon for the first time (U.S. Energy Information Administration).',
+      opts: a => a.kind === 'hh' ? hh('smart', 'csolar') : bz('eff') },
+    { id: 'heat', n: 17, kicker: 'Breaking news', title: 'The longest heat wave on record',
+      real: 'In July 2023, Phoenix hit 110°F or hotter 31 days in a row, a record (National Weather Service). Maricopa County counted 645 heat deaths that year.',
+      opts: a => a.kind === 'hh' ? hh('roof', 'trees') : bz('heat') },
+    { id: 'food', n: 23, kicker: 'Groceries', title: 'Food prices jump',
+      real: 'In 2022, U.S. food-at-home prices rose 11.4%, the fastest in decades (USDA Economic Research Service). USDA estimates that 30 to 40 percent of the U.S. food supply is wasted.',
+      opts: a => a.kind === 'hh' ? hh('waste', 'garden') : a.sec === 'farm' ? bz(MEAT_PRODS[a.prod] ? 'feed' : 'store', 'trees') : bz('trees', 'eff') },
+  ];
+  // [key, label, what it does, cost] for this household or company
+  function decideOpts(E, a) {
+    return E.opts(a).map(([w, k]) => w === 'h' ? [k, HHX[k][0], HHX[k][1], HHX[k][2]] : [k, BX[k][a.sec] || BX[k].all, BX[k].d(a.sec), BX[k].c(a.sec)]);
+  }
+  // what one option would do for this household or company, at this year's prices: cost, and the change in bills/profit,
+  // CO2, climate damage (social cost of carbon) and early deaths. ok=false when it is already done or can't be afforded.
+  function decideEffect(C, E, a, j) {
+    const o = decideOpts(E, a)[j]; if (!o) return null;
+    const [k, , , c0] = o, p0 = C.hist.length ? C.hist[C.hist.length - 1].permit : 0, W = worldFor(C, C.year, p0), scc = sccAt(C.year);
+    if ((a.x || {})[k]) return { o, ok: false, why: 'Already done' };
+    if (a.kind === 'hh' && k === 'ebike' && (a.car === 'none' || a.car === 'ev')) return { o, ok: false, why: a.car === 'none' ? 'You already get around without a car' : 'Your car is already electric' };
+    if (a.kind === 'hh') {
+      const cost = c0, nx = { ...a, x: { ...(a.x || {}), [k]: 1 } };
+      const y0 = hhYear({ ...a }, W), y1 = hhYear(nx, W), dt = y1.t.total - y0.t.total;
+      const g = gridDPT(C), dDeaths = (y1.gridKwh - y0.gridKwh) * HHSCALE / 1e9 * g * (k === 'csolar' ? 0 : 1) - (k === 'csolar' ? y0.gridKwh * .5 * HHSCALE / 1e9 * g : 0);
+      return { o, ok: cost <= Math.max(0, a.cash), why: cost > a.cash ? 'More than your savings' : '', cost, dBills: y1.bills.total - y0.bills.total, dT: dt, dScc: dt * scc, dDeaths, perHomes: HHSCALE };
+    }
+    if (!a.open) return { o, ok: false, why: 'Your company has closed' };
+    const nx = { ...a, x: { ...(a.x || {}), [k]: 1 } }, capex = c0, M = market(C, W);
+    const y0 = bizYear(a, W, M), y1 = bizYear(nx, W, M), dkt = y1.kt.scope1 - y0.kt.scope1;
+    const d0 = a.sec === 'power' ? y0.gen / 1000 * DPT[a.prod] : 0, d1 = a.sec === 'power' ? y1.gen / 1000 * DPT[a.prod] * (k === 'eff' ? .95 : 1) : 0;
+    return { o, ok: capex <= Math.max(0, a.cash), why: capex > a.cash ? 'More than your cash' : '', cost: capex, dProfit: y1.profit - y0.profit, dKt: dkt, dScc: dkt * scc / 1000, dDeaths: d1 - d0 };
+  }
+  // apply the class's decisions: students' frozen picks, stand-ins for everyone else
+  function decide(C, E, given) {
+    const log = [];
+    for (const a of [...C.hh, ...C.biz]) {
+      if (a.kind === 'biz' && !a.open) continue;
+      const g = given && given[a.id];
+      let j = -1;
+      if (g != null && g !== '' && g !== 'n') j = +g;
+      else if (g == null) {   // a stand-in: one look at each option, more likely to act the more it cares
+        const r = rk(C, 'dec:' + E.id + ':' + a.id);
+        decideOpts(E, a).forEach((_, i) => { if (j < 0) { const f = decideEffect(C, E, a, i); if (f && f.ok && r() < .2 + .45 * (a.concern || .5) + (f.dBills < 0 || f.dProfit > 0 ? .15 : 0)) j = i; } });
+      }
+      const f = j >= 0 ? decideEffect(C, E, a, j) : null;
+      if (!f || !f.ok) continue;
+      const k = f.o[0];
+      a.x = { ...(a.x || {}), [k]: 1 };
+      if (a.kind === 'hh') pay(a, f.cost); else { a.cash -= f.cost; }
+      log.push([a.id, k, 1, g != null ? 1 : 0]);
+    }
+    return log;
+  }
+
   // ───────────────────────── the midterm permit market ─────────────────────────
   // Every covered company gets free permits for the next five years: its share of the cap. Each places ONE sealed order
   // (buy or sell, how many kt a year, a price limit); the market clears at the single price where the most permits change
@@ -2380,7 +2571,7 @@ const SIM = (function () {
     const E = C.emerg; if (!E || E.pending || C.year - E.year > 10 || !E.hit.includes(h.id)) return 0;
     return { relief: .6, retreat: .45, walls: .3, none: -.6 }[E.pick] || 0;
   }
-  const optsOf = o => ({ mid: !o || o.mid !== 0, trade: !o || o.trade !== 0, polls: !o || o.polls !== 0, emerg: !o || o.emerg !== 0 });
+  const optsOf = o => ({ mid: !o || o.mid !== 0, trade: !o || o.trade !== 0, polls: !o || o.polls !== 0, emerg: !o || o.emerg !== 0, decide: !o || o.decide !== 0 });
   const STAGES = ['init', 'vote0', 'adj0', 'runA1', 'mid1', 'runB1', 'elect1', 'revote1', 'adj1', 'runA2', 'mid2', 'runB2', 'elect2', 'revote2', 'adj2', 'runA3', 'mid3', 'runB3'];
   function replay(I, stage, yr) {
     const C = classFrom(I.members, I.seed, I.NM), upto = STAGES.indexOf(stage);
@@ -2397,6 +2588,7 @@ const SIM = (function () {
           stepYear(C);
           // the national emergency, once called (I.emx = how many years had run): its facts, and its decision once frozen
           if (I.emx && C.hist.length === +I.emx && !C.emerg) C.emerg = emergency(C, I.EG);
+          if (C.opts.decide) for (const E of DECIDE) if (C.hist.length === E.n && I['EV' + E.id] && !C.logs['ev' + E.id]) C.logs['ev' + E.id] = decide(C, E, I['EV' + E.id]);
         }
       }
       else if (s.startsWith('mid')) { if (C.opts.mid !== false) C.logs[s] = midterm(C, I['AG' + s[3]], I['MV' + s[3]], I['MA' + s[3]], I['MT' + s[3]]); }
@@ -2420,7 +2612,7 @@ const SIM = (function () {
   const LAW_OFF = { tax: 0, cap: false, evRebate: false, hpRebate: false, solarCredit: false, cleanStd: false, fuelStd: false, border: false, methane: false, seaWall: false, nuclear: false };
   const LAW_STRONG = { tax: 150, cap: true, evRebate: true, hpRebate: true, solarCredit: true, use: 'dividend', cleanStd: true, fuelStd: true, border: true, methane: true, seaWall: true, nuclear: true };
   function whatIf(I, force) { return replay({ ...I, force }, 'runB3', 30); }
-  return { nameOffers, whatIf, LAW_OFF, LAW_STRONG, packSwap, emergTrigger, emergLedger, EM_OPTS, EM_IDS, tradingNow, positions, parseOrder, clearMarket, optsOf, deal, classFrom, replay, STAGES, agendaOf, DEFAULT_AGENDA, VOTE_IDS, packHH, parseHH, packB, parseB, packVote, parseVote, parseBallot, REASONS, applyHH, applyB, AS_BUILT_HH, asBuiltBiz, pickH, pickB, hash, effTax, carPrice, costF, Y0, YN, ELECTIONS, HHSCALE, SECT, BILLS, SSP, at, HH_OPTS, POWER_INT, hhYear, hhUpfront, bizYear, bizCapex, newClass, initialChoices, govVote, stepYear, election, adjustAll, worldFor, market, emptyPolicy };
+  return { DECIDE, decideOpts, decideEffect, DPT, SCC, sccAt, gridDPT, nameOffers, whatIf, LAW_OFF, LAW_STRONG, packSwap, emergTrigger, emergLedger, EM_OPTS, EM_IDS, tradingNow, positions, parseOrder, clearMarket, optsOf, deal, classFrom, replay, STAGES, agendaOf, DEFAULT_AGENDA, VOTE_IDS, packHH, parseHH, packB, parseB, packVote, parseVote, parseBallot, REASONS, applyHH, applyB, AS_BUILT_HH, asBuiltBiz, pickH, pickB, hash, effTax, carPrice, costF, Y0, YN, ELECTIONS, HHSCALE, SECT, BILLS, SSP, at, HH_OPTS, POWER_INT, hhYear, hhUpfront, bizYear, bizCapex, newClass, initialChoices, govVote, stepYear, election, adjustAll, worldFor, market, emptyPolicy };
 })();
 
 // THE VALLEY: the shared living world. Everything visible is driven by the class's state:
@@ -3278,6 +3470,12 @@ const SIM = (function () {
     if (k === 'car' && v === 'none' && base.car !== 'none') return '+$8,000 from selling the car';
     if (k === 'loc' && cfg.mode === 'build') return '';
     const up = SIM.hhUpfront({ ...base, [k]: v }, base, pol, cfg.year);
+    // choices with no upfront price (thermostat, food, flights) show what they do to the yearly bills instead (Nov 25 2026)
+    if (!up.gross && (k === 'th' || k === 'diet' || k === 'fly')) {
+      const d = Math.round((calc({ ...s, [k]: v }).yr - calc(s).yr) / 10) * 10;
+      if (s[k] === v) return 'Your choice';
+      return !d ? 'No change to bills' : (d < 0 ? 'Saves $' + (-d).toLocaleString() : 'Costs $' + d.toLocaleString() + ' more') + ' a year' + (k === 'th' ? ' on heating' : '');
+    }
     if (!up.gross) return 'Free';
     return '$' + (Math.round(up.cost / 100) * 100).toLocaleString() + (up.rebate ? ' after rebate' : '') + (k === 'car' && base.car !== 'none' ? ' with trade-in' : '');
   }
@@ -4446,9 +4644,9 @@ const SFX = (function () {
   host.innerHTML = `
   <div class="r-wrap">
     <div class="r-main">
-      <div class="r-stage"><div id="rValley"></div>
-        <div class="r-news" id="rNews" aria-live="polite"><span class="r-live"><i></i>BREAKING</span><span class="r-newst" id="rNewsT">The class takes its seats.</span><span class="r-newsy" id="rNewsY"></span></div>
-      </div>
+      <div class="r-stage"><div id="rValley"></div><div class="r-moms" id="rMoms" aria-live="polite"></div></div>
+      <div class="r-news" id="rNews" aria-live="polite"><span class="r-live" id="rNewsL"><i></i>BREAKING</span><span class="r-newst" id="rNewsT">The class takes its seats.</span><span class="r-newsy" id="rNewsY"></span></div>
+      <div class="r-yr" id="rYr"></div>
     </div>
     <aside class="r-side">
       <ol class="r-steps" id="rSteps"></ol>
@@ -4489,24 +4687,61 @@ const SFX = (function () {
   }
 
   // ── headlines ──
-  function news(text, year) { R.heads.unshift({ text, year }); R.heads = R.heads.slice(0, 6); R.headI = 0; R.headT = 0; showHead(true); }
+  // kind: 'poll' (blue POLL label) or 'big' (a red frame for the year's biggest story)
+  function news(text, year, kind) { R.heads.unshift({ text, year, kind }); R.heads = R.heads.slice(0, 6); R.headI = 0; R.headT = 0; showHead(true); }
   function showHead(flash) {
     const h = R.heads[R.headI]; if (!h) return;
     const el = $('#rNewsT'); el.textContent = h.text; $('#rNewsY').textContent = h.year || '';
-    if (flash) { el.classList.remove('r-flash'); void el.offsetWidth; el.classList.add('r-flash'); }
+    $('#rNewsL').innerHTML = `<i></i>${h.kind === 'poll' ? 'POLL' : 'BREAKING'}`;
+    const bar = $('#rNews'); bar.classList.toggle('poll', h.kind === 'poll'); bar.classList.toggle('big', h.kind === 'big');
+    if (flash) { el.classList.remove('r-flash'); void el.offsetWidth; el.classList.add('r-flash'); bar.classList.remove('r-bflash'); void bar.offsetWidth; bar.classList.add('r-bflash'); }
+  }
+  // ── the moment: a card in the middle of the valley for the year's biggest story (a disaster, a closure, a milestone) ──
+  const EVM = {
+    flood: ['RIVER FLOOD', 'The river breaks its banks', 'Riverside homes flood. Floods like this get more likely as the valley warms.'],
+    surge: ['STORM SURGE', 'A storm surge batters the coast', 'Higher seas push the surge further inland, onto the steel works by the shore.'],
+    fire: ['WILDFIRE SMOKE', 'Smoke fills the valley', 'Wildfires upwind send smoke over every home. Fire seasons grow with the heat.'],
+    heat: ['HEAT WAVE', 'A heat wave bakes the valley', 'Cooling bills spike, and lower-income homes are hit hardest.'],
+  };
+  function moment(tag, title, sub, cls) {
+    const box = $('#rMoms'); if (!box) return;
+    box.innerHTML = `<div class="r-mom ${cls || ''}"><span>${tag}</span><b>${title}</b>${sub ? `<em>${sub}</em>` : ''}</div>`;
+    clearTimeout(box._t); box._t = setTimeout(() => { box.innerHTML = ''; }, cls === 'good' ? 5200 : 6200);
+  }
+  // the strip under the news: what this year brought, the prices people face, and the running tally
+  function yearStrip() {
+    const el = $('#rYr'); if (!el) return;
+    const C = R.C, h = C ? C.hist : [], rec = h[h.length - 1];
+    if (!rec) { el.innerHTML = `<div class="r-yl"><small>THE VALLEY · 2026</small><b>As built</b><span>Gas furnaces, gas cars, a coal and gas grid.</span></div>`; return; }
+    const evs = rec.events.map(e => `<li>${glyph(e === 'heat' ? 'therm' : 'warn', 15)}${EVM[e] ? EVM[e][1] : e}</li>`).join('') || '<li class="calm">A calm year: no disasters</li>';
+    const nev = h.reduce((a, r) => a + r.events.length, 0), bill = C.hh.length ? C.hh.reduce((a, x) => a + (x.last ? x.last.bills.total : 0), 0) / C.hh.length : 0;
+    const cp = rec.tax + (rec.permit || 0);
+    el.innerHTML = `<div class="r-yl"><small>THIS YEAR IN THE VALLEY · ${rec.year}</small><ul>${evs}</ul></div>
+      <div class="r-ym"><div><small>A typical home’s bills</small><b>$${Math.round(bill / 10) * 10 >= 1000 ? (Math.round(bill / 100) / 10).toFixed(1) + 'k' : Math.round(bill)}</b><span>a year, energy and food</span></div>
+        <div><small>Carbon price</small><b>$${Math.round(cp)}</b><span>${rec.permit ? `tax $${Math.round(rec.tax)} + permit $${Math.round(rec.permit)}` : 'a tonne of CO₂'}</span></div>
+        <div><small>Air pollution</small><b class="r-ybad">${(rec.deaths || 0).toFixed(rec.deaths < 10 ? 1 : 0)}</b><span>early deaths this year from the valley’s power plants</span></div>
+        <div><small>Climate damage</small><b class="r-ybad">${fmt$(rec.sccM || 0)}</b><span>caused by this year’s CO₂ ($${Math.round(rec.scc || 190)}/t, EPA)</span></div></div>
+      <div class="r-yt"><b>${nev}</b><span>${nev === 1 ? 'disaster' : 'disasters'} since 2026</span><em>+${(rec.T - 1.33).toFixed(2)} °C since the class began</em></div>`;
   }
   function milestones(rec) {
-    const C = R.C, once = (k, t) => { if (!R.seen[k]) { R.seen[k] = 1; news(t, rec.year); } };
-    for (const n of C.news.filter(n => n.year === rec.year)) news(n.text, rec.year);
-    if (rec.ppm >= 450) once('ppm450', 'CO₂ in the air passes 450 parts per million');
+    const C = R.C; let shown = false;
+    const big = (tag, title, sub, cls) => { if (!shown) { shown = true; moment(tag, title, sub, cls); } };
+    const once = (k, t, sub) => { if (!R.seen[k]) { R.seen[k] = 1; news(t, rec.year); big(`MILESTONE · ${rec.year}`, t, sub, k === 't15' || k === 't20' || k === 'ppm450' || k === 'ppm475' ? 'warn' : 'good'); } };
+    for (const n of C.news.filter(n => n.year === rec.year)) news(n.text, rec.year, n.kind === 'event' || n.kind === 'close' ? 'big' : undefined);
+    // a disaster first (the worst of the year), then a company closing
+    const ev = ['flood', 'surge', 'fire', 'heat'].find(e => rec.events.includes(e));
+    if (ev) big(`${EVM[ev][0]} · ${rec.year}`, EVM[ev][1], EVM[ev][2], 'dis');
+    const cl = C.news.find(n => n.year === rec.year && n.kind === 'close');
+    if (cl) big(`A COMPANY CLOSES · ${rec.year}`, cl.text.replace(/;.*$/, ''), cl.text.includes(';') ? cl.text.split('; ')[1].replace(/^./, c => c.toUpperCase()) + '.' : '', 'dis');
+    if (rec.ppm >= 450) once('ppm450', 'CO₂ in the air passes 450 parts per million', 'It was about 280 before the industrial age, and 428 when the class began.');
     if (rec.ppm >= 475) once('ppm475', 'CO₂ passes 475 ppm, the highest in millions of years');
-    if (rec.T >= 1.5) once('t15', 'The world passes 1.5 °C of warming');
-    if (rec.T >= 2) once('t20', 'Warming reaches 2 °C');
+    if (rec.T >= 1.5) once('t15', 'The world passes 1.5 °C of warming', 'The goal the Paris Agreement asked the world to try to stay under.');
+    if (rec.T >= 2) once('t20', 'Warming reaches 2 °C', 'The Paris Agreement’s upper limit.');
     if (rec.evShare >= .5) once('ev50', 'Electric cars now outnumber gas cars in the class');
-    if (rec.coalShare < .005) once('coal0', 'The last coal plant goes dark');
+    if (rec.coalShare < .005) once('coal0', 'The last coal plant goes dark', 'Coal was the dirtiest power in the valley: about a tonne of CO₂ for every megawatt-hour.');
     if (rec.cleanElec >= .9) once('clean90', 'Clean sources now make 90% of the class’s electricity');
     if (rec.permit >= 100) once('pmt100', `Carbon permits trade above $100 a tonne`);
-    if (rec.dividend > 0 && !R.seen.div) { R.seen.div = 1; news(`First carbon dividend: every household gets $${Math.round(rec.dividend * 1e6 / (C.hh.length * SIM.HHSCALE)).toLocaleString()}`, rec.year); }
+    if (rec.dividend > 0 && !R.seen.div) { R.seen.div = 1; const t = `First carbon dividend: every household gets $${Math.round(rec.dividend * 1e6 / (C.hh.length * SIM.HHSCALE)).toLocaleString()}`; news(t, rec.year); big(`MILESTONE · ${rec.year}`, t, 'The carbon money comes back as an equal check to every home.', 'good'); }
     if (rec.jobsLost > (R.lastLost || 0)) { R.lastLost = rec.jobsLost; }
   }
 
@@ -4538,6 +4773,7 @@ const SFX = (function () {
     const C = R.C, h = C.hist, last = h[h.length - 1], first = h[0];
     $('#rYear').textContent = last ? last.year : 2026;
     paintSteps();
+    yearStrip();
     // laws in force
     const p = C.pol, tax = SIM.effTax(C, C.year);
     const laws = [];
@@ -4574,7 +4810,7 @@ const SFX = (function () {
   }
 
   // ── charts ──
-  const TABS = [['warm', 'Warming'], ['co2', 'CO₂'], ['emis', 'Emissions'], ['econ', 'Economy'], ['fair', 'Fairness'], ['budget', 'Budget'], ['price', 'Carbon price'], ['class', 'Class']];
+  const TABS = [['warm', 'Warming'], ['co2', 'CO₂'], ['emis', 'Emissions'], ['econ', 'Economy'], ['fair', 'Fairness'], ['budget', 'Budget'], ['price', 'Carbon price'], ['health', 'Health'], ['class', 'Class']];
   function drawTab() {
     $('#rTabs').innerHTML = TABS.map(([k, l]) => `<button role="tab" aria-selected="${R.tab === k}" data-t="${k}">${l}</button>`).join('');
     $$('#rTabs button').forEach(b => b.onclick = () => { R.tab = b.dataset.t; drawTab(); });
@@ -4602,6 +4838,12 @@ const SFX = (function () {
     } else if (R.tab === 'price') {
       legend(lg, [['#2668a8', 'Carbon tax'], ['#8a4fa8', 'Permit price']]);
       chart(box, { title: 'The price of a tonne of CO₂', unit: '$/t', dec: 0, yMin: 0, yMax: 160, series: [{ name: 'Carbon tax', color: '#2668a8', pts: h.map(r => [r.year, r.tax]) }, { name: 'Permit price', color: '#8a4fa8', pts: h.map(r => [r.year, r.permit]) }] });
+    } else if (R.tab === 'health') {
+      // early deaths from the class's power plants (deaths per TWh, Our World in Data) and the climate damage of the year's CO2
+      legend(lg, [['#b8432f', 'Early deaths from power-plant pollution'], ['#a8761a', 'Climate damage ($B, EPA social cost of carbon)']]);
+      const d = h.map(r => [r.year, r.deaths || 0]), mx = Math.max(5, ...d.map(p => p[1]));
+      chart(box, { title: 'Early deaths a year, from the valley’s power plants', unit: 'deaths', dec: 0, yMin: 0, yMax: Math.ceil(mx * 1.15), series: [{ name: 'Deaths', color: '#b8432f', pts: d }],
+        note: r => r.sccM != null ? `Climate damage this year: ${fmt$(r.sccM)} at $${Math.round(r.scc)} a tonne` : '' });
     } else classTable(box);
   }
   function legend(el, items) { el.innerHTML = items.map(([c, l]) => `<span><i style="background:${c}"></i>${l}</span>`).join(''); }
@@ -5628,7 +5870,8 @@ window.FIN56 = function (K) {
     let bills = 0, nb = 0; for (const x of W.hh) for (const r of x.trk || []) { bills += r[2]; nb++; }
     const cum = h.reduce((a, r) => a + r.classKt, 0), events = {}; for (const r of h) for (const e of r.events) events[e] = (events[e] || 0) + 1;
     return { T: last.T, ppm: last.ppm, idx: last.index, cum, bills: nb ? bills / nb : 0, debt: last.debt, closed: W.biz.filter(b => !b.open).length, jobsLost: last.jobsLost,
-      clean: last.cleanElec, ev: last.evShare, burden: last.burdenBy, events, raised: h.reduce((a, r) => a + r.govIn, 0), dividends: h.reduce((a, r) => a + r.dividend, 0) };
+      clean: last.cleanElec, ev: last.evShare, burden: last.burdenBy, events, raised: h.reduce((a, r) => a + r.govIn, 0), dividends: h.reduce((a, r) => a + r.dividend, 0),
+      deaths: h.reduce((a, r) => a + (r.deaths || 0), 0), sccM: h.reduce((a, r) => a + (r.sccM || 0), 0) };
   }
   function lawYears(C) {
     const out = {};
@@ -5691,17 +5934,18 @@ window.FIN56 = function (K) {
     if (!L.laws.length) return { html: head('2056 · WHAT YOUR LAWS DID', 'No climate laws were ever in force', 'Every year of the game ran without a carbon price, a cap, a rebate or a standard. The three valleys on the previous page show what that cost.') };
     const me = L.me, maxT = Math.max(.02, ...L.laws.map(l => Math.abs(l.S.T - me.T)));
     const rows = L.laws.map((l, i) => {
-      const dT = l.S.T - me.T, dCum = (me.cum / l.S.cum - 1) * 100, dBill = me.bills - l.S.bills, dJobs = me.jobsLost - l.S.jobsLost, dDebt = me.debt - l.S.debt;
+      const dT = l.S.T - me.T, dCum = (me.cum / l.S.cum - 1) * 100, dBill = me.bills - l.S.bills, dJobs = me.jobsLost - l.S.jobsLost, dDebt = me.debt - l.S.debt, dDeath = me.deaths - l.S.deaths;
       const w = Math.abs(dT) / maxT * 100;
       const chip = (v, txt, good) => `<span class="fn-chip ${Math.abs(v) < 1e-9 ? '' : good ? 'gd' : 'bd'}">${txt}</span>`;
       const title = l.id === 'tax' ? `Carbon tax ($${l.taxes.join(', $')} a tonne)` : LAWT[l.id];
       const why = `<p><b>${title}</b>, in force ${l.span}, ${HOW[l.id]}</p>
+        ${Math.abs(dDeath) >= .5 ? `<p>Over thirty years it ${dDeath < 0 ? 'prevented' : 'caused'} about <b>${Math.abs(Math.round(dDeath))} early deaths</b> from power-plant air pollution in the valley.</p>` : ''}
         <p>Replaying the same game without it: the class would have emitted <b>${Math.abs(dCum).toFixed(1)}% ${dCum < 0 ? 'more' : 'less'}</b> CO₂ over the thirty years, and 2056 would have been <b>${Math.abs(dT).toFixed(3)} °C ${dT > 0 ? 'warmer' : 'cooler'}</b>.
         A typical household’s bills were <b>${money(Math.abs(dBill))} a year ${dBill > 0 ? 'higher' : 'lower'}</b> with the law${l.id === 'tax' || l.id === 'cap' ? (C.pol.use === 'dividend' ? ' (before any carbon dividend, which went straight to savings)' : '') : ''}. ${Math.abs(dJobs) > 0 ? `${Math.abs(dJobs).toLocaleString()} ${dJobs > 0 ? 'more' : 'fewer'} jobs were lost to closures.` : 'It made no difference to closures.'} The government ended ${money(Math.abs(dDebt))}M ${dDebt > 0 ? 'deeper in debt' : 'better off'}.</p>
         <p class="fn-note">Other students’ locked-in choices stay as they were; the stand-ins react to the prices. Small differences can come from chance: a law that changes a company’s cash can change when it closes.</p>`;
       return `<div class="fn-law" data-fl="${i}"><div class="fn-lname">${title}<small>in force ${l.span}</small></div>
         <div class="fn-lbar"><span class="fn-zero"></span><i class="${dT >= 0 ? 'cool' : 'warm'}" style="width:${(w / 2).toFixed(1)}%;${dT >= 0 ? 'right:50%' : 'left:50%'}"></i><em>${dT >= 0 ? 'cooled' : 'warmed'} 2056 by ${Math.abs(dT).toFixed(3)} °C</em></div>
-        <div class="fn-chips">${chip(dCum, `${sgn(dCum, 1)}% CO₂`, dCum < 0)}${chip(dBill, `bills ${dBill >= 0 ? '+' : '−'}$${Math.abs(Math.round(dBill)).toLocaleString()}/yr`, dBill <= 0)}${chip(dJobs, `${sgn(dJobs)} jobs lost`, dJobs <= 0)}${chip(dDebt, `debt ${dDebt >= 0 ? '+' : '−'}$${Math.abs(Math.round(dDebt))}M`, dDebt <= 0)}</div>
+        <div class="fn-chips">${chip(dCum, `${sgn(dCum, 1)}% CO₂`, dCum < 0)}${chip(dBill, `bills ${dBill >= 0 ? '+' : '−'}$${Math.abs(Math.round(dBill)).toLocaleString()}/yr`, dBill <= 0)}${chip(dJobs, `${sgn(dJobs)} jobs lost`, dJobs <= 0)}${chip(dDebt, `debt ${dDebt >= 0 ? '+' : '−'}$${Math.abs(Math.round(dDebt))}M`, dDebt <= 0)}${Math.abs(dDeath) >= .5 ? chip(dDeath, `${sgn(dDeath)} early deaths`, dDeath <= 0) : ''}</div>
         <button class="fn-why" data-fw="${i}">Why?</button><div class="fn-wbox" hidden>${why}</div></div>`;
     }).join('');
     return { html: head('2056 · WHAT YOUR LAWS DID', 'Each law, against the same game without it', 'For every law that was ever in force, the game was replayed with only that law switched off. The bar shows how much warmer or cooler 2056 would have been without it; the chips show what it did to emissions, a typical household’s bills, jobs and the government’s debt.') +
@@ -5726,7 +5970,7 @@ window.FIN56 = function (K) {
         ${link(2, 'co2', 'The air', `${Math.round(z.ppm)} ppm`, `<p>CO₂ in the air, up from ${Math.round(a.ppm)}. About half of each year’s CO₂ stays up there, so the air keeps filling while emissions are anything above zero.</p>`)}${arrow(2)}
         ${link(3, 'therm', 'Warming', `+${z.T.toFixed(2)} °C`, `<p>Warming follows the total ever emitted: it only stops rising when emissions get close to zero. It was +${a.T.toFixed(2)} °C in 2026.</p>`)}${arrow(3)}
         ${link(4, 'warn', 'What it brought', `${Object.values(ev).reduce((s, v) => s + v, 0)} disasters`, `<p>${Object.keys(ev).map(k => `${ev[k]} ${EVN[k] || k}`).join(' · ') || 'none'}${C.emerg && !C.emerg.pending ? ' · one national emergency' : ''}</p>`)}${arrow(4)}
-        ${link(5, 'shield', 'Who felt it', `${(z.burdenBy[0] * 100).toFixed(1)}%`, `<p>of income went to energy for the lowest-income homes (it was ${(a.burdenBy[0] * 100).toFixed(1)}%) · ${z.jobsLost.toLocaleString()} jobs lost to closures</p>`)}
+        ${link(5, 'shield', 'Who felt it', `${Math.round(h.reduce((s2, r) => s2 + (r.deaths || 0), 0))} deaths`, `<p>early deaths from the power plants’ air pollution over 30 years · ${(z.burdenBy[0] * 100).toFixed(1)}% of income went to energy for the lowest-income homes (it was ${(a.burdenBy[0] * 100).toFixed(1)}%) · ${z.jobsLost.toLocaleString()} jobs lost to closures</p>`)}
       </div>` };
   }
 
@@ -5746,6 +5990,11 @@ window.FIN56 = function (K) {
           <p class="fn-small">Average yearly bills, all homes: <b>${money(me.bills)}</b> with your laws, ${money(no.bills)} without.</p></section>
         <section><h4>${glyph('factory', 16)} Companies: profit over 30 years</h4>${sRows.map(r => `<div class="fn-lr"><span>${K.SECN[r.s]}</span><div class="fn-lb">${bar(r.a, sMax, r.a < 0 ? '#c4675d' : RED)}<b>${fmt$(r.a)}</b></div><div class="fn-lb">${bar(r.b, sMax, GREY)}<b>${fmt$(r.b)}</b></div><em class="${r.a >= r.b ? 'gd' : 'bd'}">${r.a >= r.b ? '+' : '−'}${fmt$(Math.abs(r.a - r.b))}</em></div>`).join('')}
           <p class="fn-small">${me.closed} ${me.closed === 1 ? 'company' : 'companies'} closed with your laws, ${no.closed} without.</p></section>
+        <section class="fn-hc"><h4>${glyph('warn', 16)} Health and hidden costs, 2026–2056</h4><div class="fn-gov">
+          <div><small>Early deaths from power-plant pollution</small><b>${Math.round(me.deaths).toLocaleString()}</b><span>${Math.round(no.deaths).toLocaleString()} with no climate laws · ${Math.round(L.strongS.deaths).toLocaleString()} with the strongest</span></div>
+          <div><small>Climate damage caused</small><b>${fmt$(me.sccM)}</b><span>${fmt$(no.sccM)} with no climate laws · paid by people everywhere, now and later</span></div>
+          <div><small>Who pays it</small><b>Mostly not the polluter</b><span>Without a carbon price neither cost shows up on any bill in the valley: that makes them externalities. A carbon tax or a cap puts part of the climate cost back on the polluter.</span></div></div>
+          <p class="fn-small">Deaths: deaths per terawatt-hour of electricity by source (Our World in Data, 2021 values: coal 24.6, gas 2.8, wind 0.035, solar 0.019; the game uses 0.03 for wind and solar together). Climate damage: U.S. EPA (2023) social cost of carbon, 2% rate, $190 a tonne for 2020 emissions rising to $310 for 2050, in 2020 dollars.</p></section>
         <section><h4>${glyph('capitol', 16)} The government’s books</h4><div class="fn-gov"><div><small>Carbon money raised</small><b>${fmt$(me.raised)}</b><span>over 30 years</span></div><div><small>Paid back as dividends</small><b>${fmt$(me.dividends)}</b><span>${me.dividends > 0 ? 'to every household equally' : 'no dividend'}</span></div><div><small>Debt in 2056</small><b>${fmt$(Math.max(0, me.debt))}</b><span>${fmt$(Math.max(0, no.debt))} with no laws</span></div></div></section>
         <div class="fn-lk"><span><i style="background:${RED}"></i>your class</span><span><i style="background:${GREY}"></i>no climate laws</span><span class="gd">+ better off with your laws</span><span class="bd">− worse off</span></div></div>` };
   }
@@ -5760,7 +6009,8 @@ window.FIN56 = function (K) {
         `<div class="fn-you"><div class="fn-mini" id="fnY1"></div><div class="fn-mini" id="fnY2"></div><div class="fn-ystats">
           <div><small>Your footprint in 2056</small><b>${a.last.t.total.toFixed(1)} t</b><span>CO₂ a year (class average ${(C.hh.reduce((s, x) => s + x.last.t.total, 0) / C.hh.length).toFixed(1)} t)</span></div>
           <div><small>The laws and your bills</small><b>${dB >= 0 ? '+' : '−'}$${Math.abs(Math.round(dB)).toLocaleString()}</b><span>a year on average, against no laws</span></div>
-          <div><small>Your savings in 2056</small><b>${money(a.cash)}</b><span>${dC >= 0 ? money(dC) + ' more' : money(-dC) + ' less'} than with no laws</span></div></div></div>`,
+          <div><small>Your savings in 2056</small><b>${money(a.cash)}</b><span>${dC >= 0 ? money(dC) + ' more' : money(-dC) + ' less'} than with no laws</span></div>
+          <div><small>Climate damage your home caused</small><b>${money(a.trk.reduce((s2, r) => s2 + (r[5] || 0), 0))}</b><span>over 30 years (EPA social cost of carbon), paid by others</span></div></div></div>`,
         mount() { chart($('#fnY1'), { title: 'Your footprint', unit: 't', yMin: 0, yMax: Math.max(...a.trk.map(r => r[1]), ...bt.map(r => r[1]), ...cls.map(p => p[1])) * 1.12, dec: 1, series: [{ name: 'You', color: RED, pts: a.trk.map(r => [r[0], r[1]]) }, { name: 'No laws', color: GREY, pts: bt.map(r => [r[0], r[1]]) }, { name: 'Class', color: BLUE, pts: cls }] });
           const cs = [...a.trk.map(r => r[3]), ...bt.map(r => r[3])]; chart($('#fnY2'), { title: 'Your savings', unit: '$k', yMin: Math.min(0, ...cs) / 1000, yMax: Math.max(...cs) / 1000 * 1.12, dec: 0, zero: true, series: [{ name: 'You', color: RED, pts: a.trk.map(r => [r[0], r[3] / 1000]) }, { name: 'No laws', color: GREY, pts: bt.map(r => [r[0], r[3] / 1000]) }] }); } };
     }
@@ -5769,7 +6019,8 @@ window.FIN56 = function (K) {
       `<div class="fn-you"><div class="fn-mini" id="fnY1"></div><div class="fn-mini" id="fnY2"></div><div class="fn-ystats">
         <div><small>Profit over 30 years</small><b>${fmt$(sum(a.trk, 2))}</b><span>${fmt$(sum(bt, 2))} with no laws</span></div>
         <div><small>Carbon costs paid</small><b>${fmt$(sum(a.trk, 3))}</b><span>carbon tax and permits</span></div>
-        <div><small>Your emissions in 2056</small><b>${a.open && a.last ? Math.round(a.last.kt.total) + ' kt' : 'closed'}</b><span>${bt.length ? Math.round(bt[bt.length - 1][1]) + ' kt with no laws' : ''}</span></div></div></div>`,
+        <div><small>Your emissions in 2056</small><b>${a.open && a.last ? Math.round(a.last.kt.total) + ' kt' : 'closed'}</b><span>${bt.length ? Math.round(bt[bt.length - 1][1]) + ' kt with no laws' : ''}</span></div>
+        <div><small>Hidden costs you caused</small><b>${fmt$(sum(a.trk, 6))}</b><span>climate damage over 30 years${a.sec === 'power' ? ` · ${sum(a.trk, 5).toFixed(0)} early deaths from your plant’s air pollution` : ''}</span></div></div></div>`,
       mount() { chart($('#fnY1'), { title: 'Your emissions', unit: 'kt', yMin: 0, yMax: Math.max(1, ...a.trk.map(r => r[1]), ...bt.map(r => r[1])) * 1.12, dec: 0, series: [{ name: 'You', color: RED, pts: a.trk.map(r => [r[0], r[1]]) }, { name: 'No laws', color: GREY, pts: bt.map(r => [r[0], r[1]]) }] });
         const cs = [...a.trk.map(r => r[4]), ...bt.map(r => r[4])]; chart($('#fnY2'), { title: 'Your cash', unit: '$M', yMin: Math.min(0, ...cs), yMax: Math.max(...cs) * 1.12, dec: 0, zero: true, series: [{ name: 'You', color: RED, pts: a.trk.map(r => [r[0], r[4]]) }, { name: 'No laws', color: GREY, pts: bt.map(r => [r[0], r[4]]) }] }); } };
   }
@@ -5837,7 +6088,7 @@ window.FIN56 = function (K) {
   const visible = () => slide.classList.contains('active') || !slide.classList.contains('slide');
 
   // round lengths (seconds) and the years' pace
-  const SECS = { react: 60, elect: 60, revote: 60, mid: 60, emerg: 60 };   // Nov 25 2026 (Ryan): every round after the build is one minute
+  const SECS = { react: 60, elect: 60, revote: 60, mid: 60, emerg: 60, decide: 30 };   // Nov 25 2026 (Ryan): every round after the build is one minute; decisions between rounds 30 s
   let backend = null, HOST = false, state = {}, unsub = null, subMode = '';
   // only one projector copy runs the clock: whoever opened the lobby (or took over). Others can still press buttons.
   const HOSTID = (() => { try { let v = sessionStorage.getItem('c56-host'); if (!v) { v = Math.random().toString(36).slice(2, 10); sessionStorage.setItem('c56-host', v); } return v; } catch (e) { return Math.random().toString(36).slice(2, 10); } })();
@@ -5878,7 +6129,7 @@ window.FIN56 = function (K) {
     if (ph === 'build') return ['init', null];
     if (ph === 'laws' || ph === 'react') return w ? ['revote' + w, null] : ['vote0', null];
     if (ph === 'reacted') return ['adj' + w, null];
-    if (ph === 'run' || ph === 'emerg' || ph === 'emergres') return [(yr() < 10 * w + 5 ? 'runA' : 'runB') + (w + 1), yr()];
+    if (ph === 'run' || ph === 'emerg' || ph === 'emergres' || ph === 'decide') return [(yr() < 10 * w + 5 ? 'runA' : 'runB') + (w + 1), yr()];
     if (ph === 'mid') return ['runA' + (w + 1), null];
     if (ph === 'midlaws' || ph === 'midtrade' || ph === 'midreact') return ['mid' + (w + 1), null];
     if (ph === 'elect') return ['runB' + w, null];
@@ -5902,7 +6153,7 @@ window.FIN56 = function (K) {
   const myAgent = C => C && (C.hh.find(h => h.id === PK) || C.biz.find(b => b.id === PK) || C.gov.find(g => g.id === PK)) || null;
 
   // ── this student's draft for the open round (kept in localStorage so a refresh keeps it) ──
-  const roundKey = () => { const ph = phase(), w = win(); return ph === 'build' ? 'D' : ph === 'react' ? 'A' + w : ph === 'elect' ? 'B' + w : ph === 'revote' ? 'V' + w : ph === 'mid' ? (role() === 'biz' && tradingOpen() ? 'MT' : 'MA') + (w + 1) : null; };
+  const roundKey = () => { const ph = phase(), w = win(); return ph === 'decide' ? 'EV' + state.ev : ph === 'build' ? 'D' : ph === 'react' ? 'A' + w : ph === 'elect' ? 'B' + w : ph === 'revote' ? 'V' + w : ph === 'mid' ? (role() === 'biz' && tradingOpen() ? 'MT' : 'MA') + (w + 1) : null; };
   const tradingOpen = () => phase() === 'mid' && cMemo.C && SIM.tradingNow(cMemo.C);
   const govKey = () => { const ph = phase(), w = win(); return ph === 'build' ? 'V0' : ph === 'revote' ? 'V' + w : ph === 'mid' ? 'MV' + (w + 1) : null; };
   const mineKey = k => 'c56:' + GID + ':' + gid() + ':' + PK + ':' + k;
@@ -5937,6 +6188,8 @@ window.FIN56 = function (K) {
     else if (ph === 'run') {
       // the national emergency: once a game, the year after the disaster that triggers it has run
       if (!state.emx && OPT().emerg) { const T = SIM.emergTrigger(classNow()); if (T && T <= yr()) { setPhase('emerg', SECS.emerg, { emx: String(T) }); return; } }
+      // a decision between rounds (Nov 25 2026): after its year has run, the years stop for 30 seconds
+      if (OPT().decide) { const E = SIM.DECIDE.find(e => e.n === yr() && !F()['EV' + e.id]); if (E) { setPhase('decide', SECS.decide, { ev: E.id }); return; } }
       let n = yr() + 1;
       // never step over a stop: the midterm (year 5) and the end of the decade
       if (yr() < 10 * w + 5 && n > 10 * w + 5) n = 10 * w + 5;
@@ -5946,6 +6199,7 @@ window.FIN56 = function (K) {
       else if (n === 10 * w + 5 && OPT().mid) setPhase('mid', SECS.mid, { yr: n, PR: tallyPolls(n + 3), F: { ['AG' + (w + 1)]: agendaFromPolls(w, tallyPolls(n + 3)) } });
       else setPhase('run', state.held ? null : pace(), { yr: n, PR });
     }
+    else if (ph === 'decide') setPhase('run', state.held ? null : pace(), { ev: '', F: { ['EV' + state.ev]: { ...collect('EV' + state.ev, ['hh', 'biz']), _: '1' } } });
     else if (ph === 'emerg') setPhase('emergres', null, { F: { EG: { ...collect('EG', ['gov']), _: '1' } } });   // '_' so an all-stand-in vote still freezes
     else if (ph === 'elect') {
       // count the ballots now: if the government lost, freeze who replaces it, so every screen agrees on the new roles
@@ -5989,7 +6243,7 @@ window.FIN56 = function (K) {
       setPhase('build', (+bar.querySelector('[data-mins]').value || 6) * 60, { roster: roster.sort().join(','), win: 0, yr: 0 });
     };
     bar.querySelector('[data-skip]').onclick = () => {
-      if (['build', 'react', 'elect', 'revote', 'mid', 'emerg'].includes(phase())) advance();
+      if (['build', 'react', 'elect', 'revote', 'mid', 'emerg', 'decide'].includes(phase())) advance();
       else if (phase() === 'run') { const w = win(), stop = yr() < 10 * w + 5 ? 10 * w + 5 : 10 * (w + 1); if (confirm(`Jump ahead to ${2026 + stop}?`)) backend.mergeDoc('polls', GID, { yr: stop - 1, deadline: Date.now() + 500, paused: 0 }); }
     };
     bar.querySelector('[data-pace]').onchange = e => backend.mergeDoc('polls', GID, { pace: +e.target.value });
@@ -6094,7 +6348,7 @@ window.FIN56 = function (K) {
     const bar = q('[data-hostbar]'), ph = phase(), n = Object.keys(state.players || {}).length;
     const show = (sel, on) => { const el = bar.querySelector(sel); if (el) el.hidden = !on; };
     show('[data-open]', ph === 'idle' || ph === 'final'); show('[data-start]', ph === 'lobby'); show('[data-samplebtn]', ph === 'idle' || ph === 'lobby');
-    show('[data-skip]', ['build', 'react', 'elect', 'revote', 'run', 'mid', 'emerg'].includes(ph)); show('[data-pacewrap]', ['run', 'reacted', 'midlaws', 'midtrade', 'midreact'].includes(ph)); show('[data-pause]', ph === 'run');
+    show('[data-skip]', ['build', 'react', 'elect', 'revote', 'run', 'mid', 'emerg', 'decide'].includes(ph)); show('[data-pacewrap]', ['run', 'reacted', 'midlaws', 'midtrade', 'midreact'].includes(ph)); show('[data-pause]', ph === 'run');
     bar.querySelector('[data-pause]').textContent = state.paused ? 'Resume' : 'Pause';
     const ps = bar.querySelector('[data-pace]'); if (state.pace && ps.value !== String(state.pace)) ps.value = String(state.pace);
     show('[data-take]', !clockMine() && ph !== 'idle');
@@ -6141,6 +6395,7 @@ window.FIN56 = function (K) {
     if (ph === 'run') return 'The years are passing. Watch your screen and the big screen.';
     if (ph === 'emerg') return r === 'gov' ? (mine('EG') ? 'Vote cast. You can change it until the session closes.' : 'National emergency: vote on the government’s response.') : 'National emergency: the government is meeting.';
     if (ph === 'emergres') return 'The government has decided.';
+    if (ph === 'decide') return r === 'gov' ? 'Households and companies are deciding.' : (m && m.locked ? 'Decision made. You can change it until time runs out.' : 'A decision for you: pick one, or pass.');
     if (ph === 'elect') return r === 'gov' ? 'The voters are deciding your fate.' : (m && m.locked ? 'Ballot cast.' : 'Do you approve of the government? Vote now.');
     if (ph === 'elected') return 'The votes are counted.';
     if (ph === 'revote') return r === 'gov' ? (m && m.locked ? 'Votes cast.' : 'You were voted out. Re-vote, with new options.') : 'The government is re-voting.';
@@ -6163,7 +6418,7 @@ window.FIN56 = function (K) {
       <div class="c56-lr"><div class="c56-count"><b>${n}</b><span>${n === 1 ? 'student' : 'students'} joined</span></div><div class="c56-dots">${dots}</div>
         ${HOST ? optsPanel() : ''}
         ${!HOST && ph === 'lobby' ? (joined() ? '<div class="c56-in">You are in.</div>' : '<button class="c56-b go big" data-join>Join the game</button>') : ''}</div></div>`;
-    box.querySelectorAll('[data-opt]').forEach(c => c.onchange = () => { const o = { ...OPT() }; o[c.dataset.opt] = c.checked; backend.mergeDoc('polls', GID, { opts: { mid: o.mid ? 1 : 0, trade: o.trade ? 1 : 0, polls: o.polls ? 1 : 0, emerg: o.emerg ? 1 : 0 } }); });
+    box.querySelectorAll('[data-opt]').forEach(c => c.onchange = () => { const o = { ...OPT() }; o[c.dataset.opt] = c.checked; backend.mergeDoc('polls', GID, { opts: { mid: o.mid ? 1 : 0, trade: o.trade ? 1 : 0, polls: o.polls ? 1 : 0, emerg: o.emerg ? 1 : 0, decide: o.decide ? 1 : 0 } }); });
     const j = box.querySelector('[data-join]');
     if (j) j.onclick = () => { if (!backend) return; backend.mergeDocShard('polls', GID, { players: { [PK]: { t: Date.now() } } }); j.disabled = true; j.textContent = 'Joining…'; };
   }
@@ -6173,6 +6428,7 @@ window.FIN56 = function (K) {
     return `<div class="c56-opts"><div class="c56-eb">GAME OPTIONS</div>${row('mid', 'Midterm sessions', 'At years 5, 15 and 25: the government reopens three laws, and everyone else makes one change.')}
       ${row('trade', 'Permit trading at the midterm', 'If cap-and-trade is law, companies get free permits and trade them in a one-minute market while the government votes.')}
       ${row('polls', 'Yearly polls', 'About 10% of households and companies get a quick, optional poll each year; results go to the news.')}
+      ${row('decide', 'Decisions between rounds', 'Four times a game the years stop for 30 seconds: real-world news, and a choice for every household and company that fits it. Choices change the game.')}
       ${row('emerg', 'National emergency', 'Once a game, after a catastrophic flood (between about 2038 and 2050): a red alarm, a breaking-news broadcast, and an emergency vote by the government.')}</div>`;
   }
   // ── role card (first time a student sees their role) ──
@@ -6396,7 +6652,7 @@ window.FIN56 = function (K) {
   let announced = {};
   function announcePolls() {
     const PR = state.PR || {};
-    for (const k of Object.keys(PR).sort((a, b) => PR[a].y - PR[b].y)) { if (announced[gid() + k]) continue; announced[gid() + k] = 1; const t = pollLine(PR[k]); if (t) RUN.news(t, PR[k].y); }
+    for (const k of Object.keys(PR).sort((a, b) => PR[a].y - PR[b].y)) { if (announced[gid() + k]) continue; announced[gid() + k] = 1; const t = pollLine(PR[k]); if (t) RUN.news(t, PR[k].y, 'poll'); }
   }
   // the student's poll card: bottom-left, never in the way, and they can always say "not now"
   let pollShown = '';
@@ -6418,6 +6674,48 @@ window.FIN56 = function (K) {
     box.querySelector('[data-pno]').onclick = () => { setMine('poll' + c, 'skip'); box.hidden = true; pollShown = ''; };
   }
 
+
+  // ── decisions between rounds (Nov 25 2026) ──
+  const SECL = { hh: 'Households', power: 'Power companies', steel: 'Cement & steel', farm: 'Farms & food', auto: 'Automakers', data: 'Data centers' };
+  function decideBoard(E) {
+    return `<div class="dc-board"><div class="dc-real"><span>THE REAL WORLD</span>${E.real}</div>
+      <div class="dc-grid">${Object.keys(SECL).map(k => { const reps = k === 'hh' ? [{ kind: 'hh' }] : k === 'farm' ? [{ kind: 'biz', sec: 'farm', prod: 'beef' }, { kind: 'biz', sec: 'farm', prod: 'crops' }] : [{ kind: 'biz', sec: k, prod: '' }];
+        const labels = [...new Set(reps.flatMap(a => SIM.decideOpts(E, a).map(o => o[1])))];
+        return `<div><b>${RUN.glyph(k === 'hh' ? 'home' : 'factory', 14)} ${SECL[k]}</b><ul>${labels.map(l => `<li>${l}</li>`).join('')}<li class="pass">or pass</li></ul></div>`; }).join('')}</div>
+      <p class="dc-src">Health: deaths per terawatt-hour of electricity, Our World in Data (Markandya &amp; Wilkinson 2007; Sovacool et al. 2016). Climate damage: U.S. EPA social cost of carbon (2023), $190–$310 a tonne.</p></div>`;
+  }
+  let decSig = '';
+  function paintDecide(C) {
+    screen('ballot');
+    const E = SIM.DECIDE.find(e => e.id === state.ev); if (!E) return;
+    const k = 'EV' + E.id, m = mine(k) || {}, a = myAgent(C), hh = a.kind === 'hh';
+    const sig = gid() + k + (m.v || '') + (m.draft || '') + (m.locked ? 1 : 0); if (sig === decSig) return; decSig = sig;
+    const cur = m.draft != null ? m.draft : m.v;
+    const fx = SIM.decideOpts(E, a).map((o, j) => SIM.decideEffect(C, E, a, j));
+    const $s = v => (v < 0 ? '−$' : '+$') + Math.abs(Math.round(v)).toLocaleString();
+    // only the effects that move: a purifier changes nothing on an ordinary day, so it shows no chips (its description says when it pays)
+    const chip = (v, txt, good, tiny = .5) => Math.abs(v) < tiny ? '' : `<span class="dc-chip ${good ? 'gd' : 'bd'}">${txt}</span>`;
+    const card = (f, j) => {
+      const on = String(cur) === String(j), dis = !f.ok;
+      if (f.dBills == null && f.dProfit == null) return `<button class="dc-opt off" disabled><b>${f.o[1]}</b><span class="dc-does">${f.o[2]}</span><em>${f.why}</em></button>`;
+      const money = hh ? chip(f.dBills, `bills ${$s(f.dBills)} a year`, f.dBills <= 0) : chip(f.dProfit, `profit ${f.dProfit >= 0 ? '+' : '−'}$${Math.abs(f.dProfit).toFixed(1)}M a year`, f.dProfit >= 0, .05);
+      const co2 = hh ? chip(f.dT, `${f.dT <= 0 ? '−' : '+'}${Math.abs(f.dT).toFixed(2)} t CO₂ a year`, f.dT <= 0, .005) : chip(f.dKt, `${f.dKt <= 0 ? '−' : '+'}${Math.abs(f.dKt).toFixed(1)} kt CO₂ a year`, f.dKt <= 0, .05);
+      const dmg = hh ? chip(f.dScc, `climate damage ${$s(f.dScc)} a year`, f.dScc <= 0) : chip(f.dScc, `climate damage ${f.dScc >= 0 ? '+' : '−'}$${Math.abs(f.dScc).toFixed(1)}M a year`, f.dScc <= 0, .05);
+      const hl = !f.dDeaths || Math.abs(f.dDeaths) < .005 ? '' : hh ? chip(f.dDeaths, `${f.dDeaths > 0 ? '+' : '−'}${Math.abs(f.dDeaths).toFixed(2)} early deaths a year across 12,500 homes like yours (power-plant pollution)`, f.dDeaths <= 0)
+        : chip(f.dDeaths, `${f.dDeaths > 0 ? '+' : '−'}${Math.abs(f.dDeaths).toFixed(1)} early deaths a year from air pollution`, f.dDeaths <= 0);
+      return `<button class="dc-opt${on ? ' on' : ''}${dis ? ' off' : ''}" data-dj="${j}"${dis ? ' disabled' : ''}><b>${f.o[1]}</b><span class="dc-does">${f.o[2]}</span><em>${dis ? f.why : f.cost > 0 ? `Costs ${hh ? '$' + Math.round(f.cost).toLocaleString() : '$' + Math.round(f.cost) + 'M'} now` : 'No upfront cost'}</em>
+        <span class="dc-chips">${money}${co2}${dmg}${hl}</span></button>`;
+    };
+    q('[data-screen=ballot]').innerHTML = `<div class="c56-ballot dc-wrap"><div class="c56-eb">YEAR ${C.year} · ${E.kicker.toUpperCase()}</div><h3>${E.title}</h3>
+      <div class="dc-real"><span>THE REAL WORLD</span>${E.real}</div>
+      <div class="c56-eb" style="margin-top:.7rem">YOUR CHOICE · ${esc(a.name)}${hh ? '' : ' · ' + RUN.SECN[a.sec]}</div>
+      <div class="dc-opts">${fx.map(card).join('')}<button class="dc-opt pass${String(cur) === 'n' ? ' on' : ''}" data-dj="n"><b>Pass</b><em>Keep things as they are</em></button></div>
+      <p class="dc-src">New this round: none of these were in the build screens. Costs and effects at this year’s prices and laws; their sizes are game estimates unless a source is named. Climate damage uses the U.S. EPA social cost of carbon ($${Math.round(SIM.sccAt(C.year))} a tonne in ${C.year}). Early deaths use deaths per terawatt-hour of electricity by source (Our World in Data). ${hh ? 'Your home stands for 12,500 like it.' : ''}</p>
+      <div class="c56-glock"><div class="h-lockst">${m.locked ? 'Decision made. You can change it until time runs out.' : ''}</div><button class="c56-b go big" data-dgo${cur == null ? ' disabled' : ''}>${m.locked ? 'Change my decision' : 'Lock in my decision'}</button></div></div>`;
+    const box = q('[data-screen=ballot]');
+    box.querySelectorAll('[data-dj]').forEach(b => b.onclick = () => { if ((mine(k) || {}).locked) return; setMine(k, { ...(mine(k) || {}), draft: b.dataset.dj, touched: 1 }); decSig = ''; paintDecide(C); });
+    box.querySelector('[data-dgo]').onclick = () => { const c = mine(k) || {}; if (c.locked) setMine(k, { ...c, locked: 0, draft: c.v }); else if (c.draft != null) submit(k, String(c.draft)); decSig = ''; paintDecide(C); };
+  }
 
   // ── a company's trading screen (midterm, when the window is open) ──
   let tradeSig = '';
@@ -6487,6 +6785,7 @@ window.FIN56 = function (K) {
 
   // ── the run screen, its overlays, and the student's own panel ──
   let ovSig = '';
+  const decAnn = {};
   function paintRun(C) {
     screen('run');
     if (!C) return;
@@ -6497,7 +6796,7 @@ window.FIN56 = function (K) {
     RUN.setPhase(ph === 'run' ? (state.paused ? 'Paused' : state.held ? 'Waiting…' : 'Years passing…') : ph === 'final' ? 'Thirty years later' : '');
     RUN.setYou(youPanel(C));
     const sig = ph + w + (ph === 'run' ? '' : JSON.stringify(F()).length) + (HOST ? 'h' : 's');
-    if (sig === ovSig && !['build', 'react', 'elect', 'revote', 'mid', 'emerg'].includes(ph)) return;
+    if (sig === ovSig && !['build', 'react', 'elect', 'revote', 'mid', 'emerg', 'decide'].includes(ph)) return;
     const first = sig !== ovSig; ovSig = sig;
     if (ph === 'build') return progress(C, first);
     if (ph === 'laws') { if (first) { const rec = w ? C.logs['vote' + w] : C.logs.vote0; if (rec) { RUN.news('New laws: ' + RUN.lawLine(C.pol), C.year); RUN.show.vote(rec, HOST ? { onGo: go.laws, goLabel: 'Open the reaction round ▸' } : {}); } } return; }
@@ -6507,10 +6806,15 @@ window.FIN56 = function (K) {
     if (ph === 'elected') { if (first) { const e = C.logs['elect' + w]; RUN.news(`Election: ${Math.round(e.pct * 100)}% approve. ${e.keep ? 'The government stays.' : 'The government is voted out.'}`, C.year); RUN.show.election(e, HOST ? { onGo: () => go.elected(e.keep), goLabel: e.keep ? 'The laws stay: react ▸' : 'The new government votes ▸' } : {}); } return; }
     if (ph === 'final') { if (first) { RUN.news(`2056: the class finishes at +${C.hist[29].T.toFixed(2)} °C`, 2056); RUN.show.final(Object.assign(HOST ? { onGo: () => backend.setDoc('polls', GID, { phase: 'idle' }), goLabel: 'Close the game' } : { note: 'Thanks for playing.' }, { I: inputs(), you: HOST ? null : PK })); } return; }
     if (ph === 'mid') return progress(C, first);
+    if (ph === 'decide') return progress(C, first);
     if (ph === 'midlaws') { if (first) { const rec = C.logs['mid' + (w + 1)]; RUN.news('Midterm: ' + RUN.lawLine(C.pol), C.year); RUN.show.vote(rec, HOST ? { onGo: go.midlaws, goLabel: 'Show what the class changed ▸' } : {}); } return; }
     if (ph === 'midtrade') { if (first) { const m = C.logs['mid' + (w + 1)].market; RUN.news(m.vol > 0 ? `Permit market: ${Math.round(m.vol)} kt a year trade at $${m.price} a tonne` : 'Permit market: no trades this time', C.year); RUN.show.trade(m, HOST ? { onGo: go.midtrade, goLabel: 'Show what households changed ▸' } : {}); } return; }
     if (ph === 'midreact') { if (first) RUN.show.react(C.logs['mid' + (w + 1)].adj, 'mid', HOST ? { onGo: go.midreact, goLabel: 'Continue the years ▶' } : {}); return; }
-    if (ph === 'run') { if (RUN.isOpen()) RUN.show.close(); return; }
+    if (ph === 'run') { if (RUN.isOpen()) RUN.show.close();
+      for (const E of SIM.DECIDE) { const lg = C.logs['ev' + E.id]; if (!lg || decAnn[gid() + E.id]) continue; decAnn[gid() + E.id] = 1;
+        const nh = lg.filter(x => C.hh.some(h => h.id === x[0])).length, nb = lg.length - nh;
+        RUN.news(`${E.title}: ${nh} ${nh === 1 ? 'household' : 'households'} and ${nb} ${nb === 1 ? 'company' : 'companies'} acted`, 2026 + E.n); }
+      return; }
     // a screen that joins (or reloads) well into the session skips the alarm and goes straight to the session
     if (ph === 'emerg') { if (first) showEmerg(C, !!state.deadline && Date.now() - (state.deadline - SECS.emerg * 1000) > 12000); else EMERG.refresh(); return; }
     if (ph === 'emergres') { if (first) { if (RUN.isOpen()) RUN.show.close(); const E = C.emerg; if (E && !E.pending) { RUN.news(`Emergency session: ${SIM.EM_OPTS[E.pick].title.toLowerCase()}`, E.year); EMERG.results(root, { E, you: myAgent(C), kind: HOST ? 'host' : role(), onGo: HOST ? go.emergres : null }); } } return; }
@@ -6558,6 +6862,10 @@ window.FIN56 = function (K) {
       rows: [['home', 'Households', has('A' + w, ['hh']), cnt('hh')], ['factory', 'Companies', has('A' + w, ['biz']), cnt('biz')]] };
     else if (ph === 'elect') o = { id: 'e' + w + gid(), eb: `YEAR ${C.year} · ELECTION`, title: 'Voting is open', sub: 'Households and companies vote: do you approve of the government? Ballots are secret until the count.',
       rows: [['home', 'Households', has('B' + w, ['hh']), cnt('hh')], ['factory', 'Companies', has('B' + w, ['biz']), cnt('biz')]] };
+    else if (ph === 'decide') { const E = SIM.DECIDE.find(e => e.id === state.ev) || SIM.DECIDE[0];
+      o = { id: 'd' + E.id + gid(), eb: `YEAR ${C.year} · ${E.kicker.toUpperCase()}`, title: E.title, sub: 'Every household and company gets a new, smaller choice that fits it: nothing from the build screens. Choices are real: they cost money now and change bills, profits, emissions and health for the rest of the game.',
+        rows: [['home', 'Households', has('EV' + E.id, ['hh']), cnt('hh')], ['factory', 'Companies', has('EV' + E.id, ['biz']), cnt('biz')]] };
+      o.body = decideBoard(E); o.bodySig = 'd' + E.id; }
     else if (ph === 'mid') o = { id: 'm' + w + gid(), eb: `YEAR ${C.year} · MIDTERM`, title: 'The midterm session', sub: `The government reopens three laws: ${SIM.agendaOf(F()['AG' + (w + 1)]).map(id => SIM.BILLS[id].title.replace(/^[A-Z][a-z]/, m => m.toLowerCase())).join(', ')}. Households and companies may make one change each.`,
       rows: [['capitol', 'Government votes', has('MV' + (w + 1), ['gov']), cnt('gov')], ['home', 'Households', has('MA' + (w + 1), ['hh']), cnt('hh')], ['factory', SIM.tradingNow(C) ? 'Company orders' : 'Companies', has((SIM.tradingNow(C) ? 'MT' : 'MA') + (w + 1), ['biz']), cnt('biz')]] };
     else o = { id: 'v' + w + gid(), eb: `YEAR ${C.year} · A NEW VOTE`, title: 'The new government votes', sub: 'The old government lost the election. Its replacements, chosen from the voters, vote on every law again, with six more bills on the table.', rows: [['capitol', 'Government votes', has('V' + w, ['gov']), cnt('gov')]] };
@@ -6584,12 +6892,12 @@ window.FIN56 = function (K) {
     if (r === 'hh') {
       const L = a.last; if (!L) return '';
       const hit = last.events.includes('flood') && a.loc === 'flood' ? `A flood reached your home: $${Math.round(L.dmg).toLocaleString()} in damage.` : L.dmg > 300 ? `Extreme weather cost you $${Math.round(L.dmg).toLocaleString()} this year.` : '';
-      return `<h4>You · ${last.year}</h4><b class="nm">${esc(a.name)}</b>${row('Bills this year', '$' + Math.round(L.bills.total).toLocaleString())}${row('Energy and fuel', (L.burden * 100).toFixed(1) + '% of income')}${row('Footprint', L.t.total.toFixed(1) + ' t CO₂')}${row('Savings', (a.cash < 0 ? '−$' : '$') + Math.abs(Math.round(a.cash)).toLocaleString(), a.cash < 0 ? 'neg' : '')}${a.loan > 1 ? row('Loans to repay', '$' + Math.round(a.loan).toLocaleString(), 'neg') : ''}${hit ? `<div class="r-yev">${hit}</div>` : ''}`;
+      return `<h4>You · ${last.year}</h4><b class="nm">${esc(a.name)}</b>${row('Bills this year', '$' + Math.round(L.bills.total).toLocaleString())}${row('Energy and fuel', (L.burden * 100).toFixed(1) + '% of income')}${row('Footprint', L.t.total.toFixed(1) + ' t CO₂')}${L.scc ? row('Climate damage it causes', '$' + Math.round(L.scc).toLocaleString() + ' a year') : ''}${row('Savings', (a.cash < 0 ? '−$' : '$') + Math.abs(Math.round(a.cash)).toLocaleString(), a.cash < 0 ? 'neg' : '')}${a.loan > 1 ? row('Loans to repay', '$' + Math.round(a.loan).toLocaleString(), 'neg') : ''}${hit ? `<div class="r-yev">${hit}</div>` : ''}`;
     }
     if (r === 'biz') {
       if (!a.open) return `<h4>You · ${last.year}</h4><b class="nm">${esc(a.name)}</b><div class="r-yev">Your company went bankrupt. ${a.workers} workers lost their jobs.</div>`;
       const L = a.last; if (!L) return '';
-      return `<h4>You · ${last.year}</h4><b class="nm">${esc(a.name)}</b>${row('Profit this year', RUN.fmt$(L.profit), L.profit < 0 ? 'neg' : '')}${row('Carbon costs', RUN.fmt$(L.taxCost + L.permitCost))}${row('Emissions', Math.round(L.kt.total) + ' kt CO₂')}${a.share && C.pol.cap && C.free ? row('Permits, free', Math.round(a.share * C.pol.capStart * Math.pow(.97, last.year - C.pol.capYear) + (a.tq || 0)) + ' kt') : ''}${row('Cash', RUN.fmt$(a.cash), a.cash < 0 ? 'neg' : '')}${L.accident ? '<div class="r-yev">An accident at your plant cost $40M.</div>' : ''}`;
+      return `<h4>You · ${last.year}</h4><b class="nm">${esc(a.name)}</b>${row('Profit this year', RUN.fmt$(L.profit), L.profit < 0 ? 'neg' : '')}${row('Carbon costs', RUN.fmt$(L.taxCost + L.permitCost))}${row('Emissions', Math.round(L.kt.total) + ' kt CO₂')}${L.sccM != null ? row('Climate damage it causes', RUN.fmt$(L.sccM) + ' a year', 'neg') : ''}${L.deaths > .005 ? row('Early deaths from its air pollution', L.deaths.toFixed(1) + ' a year', 'neg') : ''}${a.share && C.pol.cap && C.free ? row('Permits, free', Math.round(a.share * C.pol.capStart * Math.pow(.97, last.year - C.pol.capYear) + (a.tq || 0)) + ' kt') : ''}${row('Cash', RUN.fmt$(a.cash), a.cash < 0 ? 'neg' : '')}${L.accident ? '<div class="r-yev">An accident at your plant cost $40M.</div>' : ''}`;
     }
     const e = C.elections[C.elections.length - 1];
     return `<h4>You · ${last.year}</h4><b class="nm">${esc(a.name)}, government</b>${row('Your laws', esc(RUN.lawLine(C.pol)))}${row('Budget this year', RUN.fmt$(last.govIn - last.govOut), last.govIn < last.govOut ? 'neg' : '')}${e ? row('Last election', Math.round(e.pct * 100) + '% approved') : ''}`;
@@ -6675,6 +6983,7 @@ window.FIN56 = function (K) {
     if (ph === 'elect' && r !== 'gov') return paintBallot(C);
     if (ph === 'revote' && r === 'gov') return paintGov(C);
     if (ph === 'mid') return r === 'gov' ? paintGov(C) : r === 'biz' && SIM.tradingNow(C) ? paintTrade(C) : paintBuilder(C);
+    if (ph === 'decide' && r !== 'gov' && myAgent(C) && (myAgent(C).kind === 'hh' || myAgent(C).open)) return paintDecide(C);
     paintRun(C);
   }
 
@@ -6759,7 +7068,7 @@ window.FIN56 = function (K) {
     function botsBallots(key, no) { const o = {}; [...byRole('hh'), ...byRole('biz')].forEach((m, i) => o[m.pk] = i % 10 < no ? ['n0', 'n1', 'n2'][i % 3] : 'y3'); shard({ in: { [key]: o } }); }
     const years = (n, cap) => { const out = []; for (let i = 0; i < n; i++) out.push([1300, () => advance(), cap]); return out; };
     const stepUntil = done => { for (let k = 0; k < 200; k++) { const ph = phase(); if (done(ph)) return;
-      if (ph === 'run' || ph === 'mid' || ph === 'elect' || ph === 'revote' || ph === 'react' || ph === 'emerg') advance();
+      if (ph === 'run' || ph === 'mid' || ph === 'elect' || ph === 'revote' || ph === 'react' || ph === 'emerg' || ph === 'decide') advance();
       else if (ph === 'laws') go.laws(); else if (ph === 'reacted') go.reacted(); else if (ph === 'midlaws') go.midlaws(); else if (ph === 'midtrade') go.midtrade(); else if (ph === 'midreact') go.midreact();
       else if (ph === 'emergres') go.emergres();
       else if (ph === 'elected') go.elected(C().logs['elect' + win()].keep); } };
